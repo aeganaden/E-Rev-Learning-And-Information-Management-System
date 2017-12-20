@@ -7,7 +7,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		$data = array(
-			"title" => "eRev - Welcome"
+			"title" => "Engineering Correl - Learning Management System | FEU - Institute of Techonology"
 		);
 		$this->load->view('includes/header',$data);
 		$this->load->view('welcome');
