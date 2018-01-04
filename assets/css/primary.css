@@ -12,31 +12,31 @@ font-family: 'PT Sans Narrow', sans-serif;*/
 
 
 body{
-	/* 	font-family: 'Raleway', sans-serif; */
-	font-family: 'Montserrat', sans-serif;
-	min-height: 100vh;
-}
+	font-family: 'Source Sans Pro', sans-serif !important;
+	 /*
+	 font-family: 'Montserrat', sans-serif !important;*/
 
-a{	text-decoration: none !important;}
+	}
+
+	a{	
+		text-decoration: none !important;
+	}
 
 
 /*==============================
 =            COLORS            =
 ==============================*/
 
-.primary-color-yellow {
-	color: #F2A900;
-}
-.primary-color-green{
-	color: #007A33;
-}
-.primary-bg-yellow {
-	background-color: #F2A900;
-}
-.primary-bg-green{
-	background-color: #007A33;
-}
+/*Text Colors*/
+.color-white {color: #F5F5DC !important; border-color: #F5F5DC;} /* White */
+.primary-color-yellow {	color: #F2A900 !important; } /*Yellow*/
+.primary-color-green{	color: #007A33 !important;} /*Green*/
 
+
+
+/*BACKGROUNDS*/
+.primary-bg-yellow {	background-color: #F2A900 !important; } /*Yellow*/
+.primary-bg-green{	background-color: #007A33 !important;} /*Green*/
 /*=====  End of COLORS  ======*/
 
 
