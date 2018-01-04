@@ -8,8 +8,8 @@
 	<div id="a-div-slider" class="slider" style="position: relative; z-index: 0;">
 		<ul class="slides">
 			<li>
-				<img src="https://lorempixel.com/580/250/nature/1">
-				<!-- <img src="<?=base_url()?>assets/img/1.png" > -->
+				<!-- <img src="https://lorempixel.com/580/250/nature/1"> -->
+				<img src="<?=base_url()?>assets/img/1.png" > 
 				<div class="caption left-align">
 					<h3>This is our big Tagline!</h3>
 					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
