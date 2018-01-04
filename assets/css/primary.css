@@ -13,14 +13,13 @@ font-family: 'PT Sans Narrow', sans-serif;*/
 
 body{
 	font-family: 'Source Sans Pro', sans-serif !important;
-	 /*
-	 font-family: 'Montserrat', sans-serif !important;*/
+	background-color: #F5F5DC !important;
 
-	}
+}
 
-	a{	
-		text-decoration: none !important;
-	}
+a{	
+	text-decoration: none !important;
+}
 
 
 /*==============================
@@ -29,24 +28,32 @@ body{
 
 /*Text Colors*/
 .color-white {color: #F5F5DC !important; border-color: #F5F5DC;} /* White */
-.primary-color-yellow {	color: #F2A900 !important; } /*Yellow*/
-.primary-color-green{	color: #007A33 !important;} /*Green*/
+.color-primary-yellow {	color: #F2A900 !important; border-color: #F2A900;} /*Yellow*/
+.color-primary-green{	color: #007A33 !important; border-color: #007A33;} /*Green*/
 
 
 
 /*BACKGROUNDS*/
-.primary-bg-yellow {	background-color: #F2A900 !important; } /*Yellow*/
-.primary-bg-green{	background-color: #007A33 !important;} /*Green*/
+.bg-primary-yellow {	background-color: #F2A900 !important; } /*Yellow*/
+.bg-primary-green{	background-color: #007A33 !important;} /*Green*/
+.bg-color-white {background-color: #F5F5DC !important;} /* White */
 /*=====  End of COLORS  ======*/
 
 
 .a-navbar{
 	font-family: 'Source Sans Pro', sans-serif;
 }
-
 .a-nav-elements > li > a:hover{
 	color: white !important;
 }
 .a-nav-elements > li > a{
 	font-size: 2vh;
+}
+
+#a-div-overlay{
+	position: absolute;
+	z-index: 1; 
+	right: 0;
+	background-color: rgba(0, 122, 51, 0.5);
+	width: 40vw;
 }

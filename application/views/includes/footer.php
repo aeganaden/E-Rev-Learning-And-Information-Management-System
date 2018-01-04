@@ -1,13 +1,4 @@
-<script type="text/javascript">
-	$(document).ready(function() {
-		$(".button-collapse").sideNav();
-		$('.modal').modal();
-	});
-</script>
-
-
-
-
+<script type="text/javascript" src="<?=base_url()?>assets/js/main.js?v=<?=time();?>"></script>
 
 </body>
 </html>
