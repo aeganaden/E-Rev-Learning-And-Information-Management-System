@@ -1,3 +1,16 @@
+/*=============================
+=            FONTS            =
+=============================*/
+
+@import url('https://fonts.googleapis.com/css?family=Muli|PT+Sans+Narrow|Source+Sans+Pro');
+/*font-family: 'Source Sans Pro', sans-serif;
+font-family: 'Muli', sans-serif;
+font-family: 'PT Sans Narrow', sans-serif;*/
+
+
+/*=====  End of FONTS  ======*/
+
+
 body{
 	/* 	font-family: 'Raleway', sans-serif; */
 	font-family: 'Montserrat', sans-serif;
@@ -5,6 +18,11 @@ body{
 }
 
 a{	text-decoration: none !important;}
+
+
+/*==============================
+=            COLORS            =
+==============================*/
 
 .primary-color-yellow {
 	color: #F2A900;
@@ -17,4 +35,18 @@ a{	text-decoration: none !important;}
 }
 .primary-bg-green{
 	background-color: #007A33;
+}
+
+/*=====  End of COLORS  ======*/
+
+
+.a-navbar{
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.a-nav-elements > li > a:hover{
+	color: white !important;
+}
+.a-nav-elements > li > a{
+	font-size: 2vh;
 }
