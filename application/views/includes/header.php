@@ -19,12 +19,9 @@
 	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="<?=base_url(); ?>assets/css/materialize.min.css"  media="screen,projection"/>
 
-
 	<!-- Primary Css -->
 	<link rel="stylesheet" type="text/css" href='<?=base_url(); ?>assets/css/primary.css?v=<?=time();?>'>
 
-	<!-- CSS Bootstrap Grid -->
-	<link rel="stylesheet" type="text/css" href='<?=base_url(); ?>assets/css/bootstrap.min.css?v=<?=time();?>'>
 
 </head>
 <body>
