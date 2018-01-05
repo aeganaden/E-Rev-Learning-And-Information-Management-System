@@ -1,6 +1,9 @@
 <?php $this->load->view('includes/navbar'); ?>
 
+<!-- Include in footer
 
+<div>Icons made by <a href="https://www.flaticon.com/authors/popcorns-arts" title="Icon Pond">Icon Pond</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+-->
 <!--======================================
 =            Banner Slideshow            =
 =======================================-->
@@ -9,15 +12,15 @@
 		<ul class="slides">
 			<li>
 				<!-- <img src="https://lorempixel.com/580/250/nature/1"> -->
-				<img src="<?=base_url()?>assets/img/slides/slide-1.jpeg" > 
+				<img src="<?=base_url()?>assets/img/slides/slide-5.jpg" style="filter: blur(2px);"> 
 				<div  class="caption left-align">
-					<h3>Sharpen your skills</h3>
+					<h3 >Sharpen your skills</h3>
 					<h5 class="light grey-text text-lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
 				</div>
 			</li>
 			<li>
-				<img src="<?=base_url()?>assets/img/slides/slide-2.jpeg" > 
-								<!-- <img src="https://lorempixel.com/580/250/nature/2"> -->
+				<img src="<?=base_url()?>assets/img/slides/slide-2.jpeg" style="filter: blur(2px);"> 
+				<!-- <img src="https://lorempixel.com/580/250/nature/2"> -->
 				<!-- <img src="<?=base_url()?>assets/img/2.png" >  -->
 				<div class="caption left-align">
 					<h3>Achieve your Goal</h3>
@@ -25,23 +28,18 @@
 				</div>
 			</li>
 			<li>
-				<img src="<?=base_url()?>assets/img/slides/slide-3.jpeg" > 
-								<!-- <img src="<?=base_url()?>assets/img/3.png" >  -->
-				<div class="caption left-align">
-					<h3>Right Aligned Caption</h3>
-					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-				</div>
+				<img src="<?=base_url()?>assets/img/slides/slide-3.jpg" > 
+				<!-- <img src="<?=base_url()?>assets/img/3.png" >  -->
+				
 			</li>
 			<li>
-				<img src="<?=base_url()?>assets/img/slides/slide-4.jpeg" > 
-								<!-- <img src="<?=base_url()?>assets/img/4.png" > -->
-				<div class="caption left-align">
-					<h3>This is our big Tagline!</h3>
-					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
-				</div>
+				<img src="<?=base_url()?>assets/img/slides/slide-4.jpg" > 
+				<!-- <img src="<?=base_url()?>assets/img/4.png" > -->
+				
 			</li>
 		</ul>
 	</div>
+
 </div>
 
 <!--====  End of Banner Slideshow  ====-->
@@ -53,7 +51,48 @@
 
 <div class="row">
 	<div class="row">
-		
+		<center><i class="material-icons small color-primary-green">clear_all</i></center>
+		<h4 class="center a-roboto-cond">Features</h4>
+	</div>
+	<div class="row">
+		<div class="col s12">
+			<div class="col s3">	
+				<center>
+					<img src="<?=base_url()?>assets/img/icons/learning.svg" class="a-icons-landing" alt="">
+					<h5 class="a-icons-header center">Learn Online</h5>
+				</center>
+				<p class="a-icons-description">
+					Est pariatur ullamco fugiat velit labore dolor pariatur aute officia in ad consectetur minim et excepteur cupidatat qui ut occaecat qui fugiat in adipisicing cupidatat amet.
+				</p>
+			</div>	
+			<div class="col s3">
+				<center>
+					<img src="<?=base_url()?>assets/img/icons/personalized.svg" class="a-icons-landing" alt="">
+					<h5 class="a-icons-header center">Personalized Experience</h5>
+				</center>
+				<p class="a-icons-description">
+					Est pariatur ullamco fugiat velit labore dolor pariatur aute officia in ad consectetur minim et excepteur cupidatat qui ut occaecat qui fugiat in adipisicing cupidatat amet.
+				</p>
+			</div>
+			<div class="col s3">
+				<center>
+					<img src="<?=base_url()?>assets/img/icons/analytics.svg" class="a-icons-landing" alt="">
+					<h5 class="a-icons-header center">Grades Analysis</h5>
+				</center>
+				<p class="a-icons-description">
+					Est pariatur ullamco fugiat velit labore dolor pariatur aute officia in ad consectetur minim et excepteur cupidatat qui ut occaecat qui fugiat in adipisicing cupidatat amet.
+				</p>
+			</div>
+			<div class="col s3">
+				<center>
+					<img src="<?=base_url()?>assets/img/icons/monitor.svg" class="a-icons-landing" alt="">
+					<h5 class="a-icons-header center">Lecturer Monitoring</h5>
+				</center>
+				<p class="a-icons-description">
+					Est pariatur ullamco fugiat velit labore dolor pariatur aute officia in ad consectetur minim et excepteur cupidatat qui ut occaecat qui fugiat in adipisicing cupidatat amet.
+				</p>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -105,3 +144,45 @@
 
 
 <!--====  End of Modal Login  ====-->
+
+
+
+
+
+<!--============================
+=            FOOTER            =
+=============================-->
+
+
+<footer class="page-footer bg-primary-yellow color-black">
+	<div class="container">
+		<div class="row">
+			<div class="col l6 s12">
+				<h5 class="">P. PAREDES ST, SAMPALOC, MANILA</h5>
+				<div >Icons made by 
+					<a class="color-black a-Footer_Credits" href="http://www.freepik.com" title="Freepik">Freepik</a> 
+					from 
+					<a class="color-black a-Footer_Credits" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+					is licensed by
+					<a class="color-black a-Footer_Credits" href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+				</div>
+			</div>
+			<div class="col l4 offset-l2 s12">
+				<h5 class="">External Links</h5>
+				<ul>
+					<li><a class="color-black" href="#!">FEU - Institute of Technology</a></li>
+					<li><a class="color-black" href="#!">Somelink</a></li>
+					<li><a class="color-black" href="#!">Somelink</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="footer-copyright">
+		<div class="color-black">
+			© 2017 LAGDDA - ONLINE COMMUNITY
+		</div>
+	</div>
+</footer>
+
+
+<!--====  End of FOOTER  ====-->
