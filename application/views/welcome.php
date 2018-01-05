@@ -9,31 +9,32 @@
 		<ul class="slides">
 			<li>
 				<!-- <img src="https://lorempixel.com/580/250/nature/1"> -->
-				<img src="<?=base_url()?>assets/img/1.png" > 
-				<div class="caption left-align">
-					<h3>This is our big Tagline!</h3>
-					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+				<img src="<?=base_url()?>assets/img/slides/slide-1.jpeg" > 
+				<div  class="caption left-align">
+					<h3>Sharpen your skills</h3>
+					<h5 class="light grey-text text-lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
 				</div>
 			</li>
 			<li>
-				<img src="https://lorempixel.com/580/250/nature/2">
+				<img src="<?=base_url()?>assets/img/slides/slide-2.jpeg" > 
+								<!-- <img src="https://lorempixel.com/580/250/nature/2"> -->
 				<!-- <img src="<?=base_url()?>assets/img/2.png" >  -->
 				<div class="caption left-align">
-					<h3>Left Aligned Caption</h3>
-					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
+					<h3>Achieve your Goal</h3>
+					<h5 class="light grey-text text-lighten-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
 				</div>
 			</li>
 			<li>
-				<img src="https://lorempixel.com/580/250/nature/3">
-				<!-- <img src="<?=base_url()?>assets/img/3.png" >  -->
+				<img src="<?=base_url()?>assets/img/slides/slide-3.jpeg" > 
+								<!-- <img src="<?=base_url()?>assets/img/3.png" >  -->
 				<div class="caption left-align">
 					<h3>Right Aligned Caption</h3>
 					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
 				</div>
 			</li>
 			<li>
-				<img src="https://lorempixel.com/580/250/nature/4">
-				<!-- <img src="<?=base_url()?>assets/img/4.png" > -->
+				<img src="<?=base_url()?>assets/img/slides/slide-4.jpeg" > 
+								<!-- <img src="<?=base_url()?>assets/img/4.png" > -->
 				<div class="caption left-align">
 					<h3>This is our big Tagline!</h3>
 					<h5 class="light grey-text text-lighten-3">Here's our small slogan.</h5>
@@ -41,13 +42,22 @@
 			</li>
 		</ul>
 	</div>
-
-	<div id="a-div-overlay" class="hide-on-med-and-down row">
-		s
-	</div>
 </div>
 
 <!--====  End of Banner Slideshow  ====-->
+
+
+<!--==============================
+=            Features            =
+===============================-->
+
+<div class="row">
+	<div class="row">
+		
+	</div>
+</div>
+
+<!--====  End of Features  ====-->
 
 
 

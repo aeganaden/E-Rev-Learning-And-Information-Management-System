@@ -50,10 +50,3 @@ a{
 	font-size: 2vh;
 }
 
-#a-div-overlay{
-	position: absolute;
-	z-index: 1; 
-	right: 0;
-	background-color: rgba(0, 122, 51, 0.5);
-	width: 40vw;
-}
