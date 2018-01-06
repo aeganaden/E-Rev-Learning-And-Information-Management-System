@@ -117,7 +117,7 @@
 				<blockquote class="color-primary-yellow">
 					<h3 class="color-primary-green">LOGIN</h3>
 				</blockquote>
-				<form>
+				<form action="<?=base_url()?>Login " method="post">
 					<div class="row ">
 						<div class="input-field">
 							<input id="username" type="text" class="validate">
@@ -130,8 +130,8 @@
 							<label for="password" class="color-primary-green">Password</label>
 						</div>
 					</div>
+					<button href="#!" class="waves-effect waves-light btn bg-primary-green right color-white">LOG IN</button>
 				</form>
-				<a href="#!" class="waves-effect waves-light btn bg-primary-green right color-white">LOG IN</a>
 				<a href="#!" class="modal-effect modal-close waves-effect waves-light btn red left color-white">Return</a>
 			</div>
 			<div class="col s2"></div>

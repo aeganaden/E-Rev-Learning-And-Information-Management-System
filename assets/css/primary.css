@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Muli|PT+Sans+Narrow|Source+Sans+Pro');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 /*font-family: 'Source Sans Pro', sans-serif;
 font-family: 'Muli', sans-serif;
 font-family: 'PT Sans Narrow', sans-serif;
@@ -29,6 +30,9 @@ a{
 
 .a-roboto-cond{
 	font-family: 'Roboto Condensed', sans-serif;
+}
+.a-oswald{
+	font-family: 'Oswald', sans-serif;
 }
 
 /*=====  End of FONTS CSS  ======*/
@@ -63,6 +67,17 @@ a{
 .a-nav-elements > li > a{
 	font-size: 2vh;
 }
+
+
+/*======================================
+=            Admin Page Css            =
+======================================*/
+
+.nav-admin ul li a{
+	color: #212121  !important; 
+}
+
+/*=====  End of Admin Page Css  ======*/
 
 
 
