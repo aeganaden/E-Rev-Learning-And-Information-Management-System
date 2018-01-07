@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2018 at 09:37 AM
+-- Generation Time: Jan 07, 2018 at 10:29 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -32,7 +32,8 @@ CREATE TABLE `activity` (
   `activity_venue` varchar(10) NOT NULL,
   `activity_topic` varchar(30) NOT NULL,
   `activity_status` tinyint(4) NOT NULL,
-  `activity_details_id` tinyint(4) NOT NULL
+  `activity_details_id` tinyint(4) NOT NULL,
+  `topic_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -199,10 +200,9 @@ CREATE TABLE `offering` (
   `offering_course_title` varchar(30) NOT NULL,
   `offering_program` varchar(3) NOT NULL,
   `offering_section` bigint(20) NOT NULL,
-  `activity_id` varchar(10) NOT NULL,
+  `offering_lecturer_id` bigint(20) NOT NULL,
   `enrollment_id` bigint(20) NOT NULL,
-  `professor_id` bigint(20) NOT NULL,
-  `offering_lecturer_id` bigint(20) NOT NULL
+  `professor_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -278,7 +278,8 @@ CREATE TABLE `topic` (
 --
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`activity_id`),
-  ADD KEY `activity_activity_details_fk` (`activity_details_id`);
+  ADD KEY `activity_activity_details_fk` (`activity_details_id`),
+  ADD KEY `activity_topic_fk` (`topic_id`);
 
 --
 -- Indexes for table `activity_details`
@@ -358,7 +359,6 @@ ALTER TABLE `lecturer_feedback`
 --
 ALTER TABLE `offering`
   ADD PRIMARY KEY (`offering_id`),
-  ADD KEY `offering_activity_fk` (`activity_id`),
   ADD KEY `offering_enrollment_fk` (`enrollment_id`),
   ADD KEY `offering_professor_fk` (`professor_id`);
 
@@ -398,7 +398,8 @@ ALTER TABLE `topic`
 -- Constraints for table `activity`
 --
 ALTER TABLE `activity`
-  ADD CONSTRAINT `activity_activity_details_fk` FOREIGN KEY (`activity_details_id`) REFERENCES `activity_details` (`activity_details_id`);
+  ADD CONSTRAINT `activity_activity_details_fk` FOREIGN KEY (`activity_details_id`) REFERENCES `activity_details` (`activity_details_id`),
+  ADD CONSTRAINT `activity_topic_fk` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`);
 
 --
 -- Constraints for table `comment`
@@ -436,7 +437,6 @@ ALTER TABLE `lecturer_feedback`
 -- Constraints for table `offering`
 --
 ALTER TABLE `offering`
-  ADD CONSTRAINT `offering_activity_fk` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`),
   ADD CONSTRAINT `offering_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`),
   ADD CONSTRAINT `offering_professor_fk` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`);
 
