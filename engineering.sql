@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2018 at 04:52 AM
+-- Generation Time: Jan 07, 2018 at 09:37 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -98,7 +98,7 @@ CREATE TABLE `comment` (
   `comment_id` bigint(20) NOT NULL,
   `comment_content` varchar(1000) NOT NULL,
   `comment_user_id` bigint(20) NOT NULL,
-  `courseware_file_id` bigint(20) NOT NULL
+  `courseware_question_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -120,9 +120,9 @@ CREATE TABLE `courseware_file` (
 --
 
 CREATE TABLE `courseware_question` (
-  `courseware_file_id` bigint(20) NOT NULL,
-  `courseware_file_question` varchar(500) NOT NULL,
-  `courseware_file_reference` varchar(500) NOT NULL,
+  `courseware_question_id` bigint(20) NOT NULL,
+  `courseware_question` varchar(500) NOT NULL,
+  `courseware_question_reference` varchar(500) DEFAULT NULL,
   `topic_id` bigint(20) NOT NULL,
   `choice_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -183,8 +183,8 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_time` bigint(20) NOT NULL,
   `lecturer_feedback_date` bigint(20) NOT NULL,
   `lecturer_feedback_comment` varchar(300) NOT NULL,
-  `lecturer_feedback_user_id` bigint(20) NOT NULL,
-  `offering_id` bigint(20) NOT NULL
+  `offering_id` bigint(20) NOT NULL,
+  `student_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -251,7 +251,6 @@ CREATE TABLE `student` (
   `student_program` varchar(3) NOT NULL,
   `student_email` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
-  `student_made_feedback` tinyint(4) NOT NULL,
   `enrollment_id` bigint(20) NOT NULL,
   `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -310,7 +309,7 @@ ALTER TABLE `choice`
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`comment_id`),
-  ADD KEY `comment_courseware_question_fk` (`courseware_file_id`);
+  ADD KEY `comment_courseware_question_fk` (`courseware_question_id`);
 
 --
 -- Indexes for table `courseware_file`
@@ -323,7 +322,7 @@ ALTER TABLE `courseware_file`
 -- Indexes for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
-  ADD PRIMARY KEY (`courseware_file_id`),
+  ADD PRIMARY KEY (`courseware_question_id`),
   ADD KEY `courseware_question_choice_fk` (`choice_id`),
   ADD KEY `courseware_question_topic_fk` (`topic_id`);
 
@@ -351,7 +350,8 @@ ALTER TABLE `lecturer_attendance`
 --
 ALTER TABLE `lecturer_feedback`
   ADD PRIMARY KEY (`lecturer_feedback_id`),
-  ADD KEY `lecturer_feedback_offering_fk` (`offering_id`);
+  ADD KEY `lecturer_feedback_offering_fk` (`offering_id`),
+  ADD KEY `lecturer_feedback_student_fk` (`student_id`);
 
 --
 -- Indexes for table `offering`
@@ -404,7 +404,7 @@ ALTER TABLE `activity`
 -- Constraints for table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_courseware_question_fk` FOREIGN KEY (`courseware_file_id`) REFERENCES `courseware_question` (`courseware_file_id`);
+  ADD CONSTRAINT `comment_courseware_question_fk` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`);
 
 --
 -- Constraints for table `courseware_file`
@@ -429,7 +429,8 @@ ALTER TABLE `lecturer_attendance`
 -- Constraints for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  ADD CONSTRAINT `lecturer_feedback_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
+  ADD CONSTRAINT `lecturer_feedback_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`),
+  ADD CONSTRAINT `lecturer_feedback_student_fk` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`);
 
 --
 -- Constraints for table `offering`
