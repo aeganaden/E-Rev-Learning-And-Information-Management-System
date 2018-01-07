@@ -1,29 +1,27 @@
 <br><br>
 <div class="container">
-    <table class="striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Subject</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Alvin</td>
-                <td>Algebra</td>
-                <td><a class="waves-effect waves-light btn light-green" href="<?= base_url() ?>Feedback/content">feedback</a></td>
-            </tr>
-            <tr>
-                <td>Alan</td>
-                <td>Geometry</td>
-                <td><a class="waves-effect waves-light btn light-green disabled" href="">feedback</a></td>
-            </tr>
-            <tr>
-                <td>Jonathan</td>
-                <td>Trigonometric</td>
-                <td><a class="waves-effect waves-light btn light-green" href="<?= base_url() ?>Feedback/content">feedback</a></td>
-            </tr>
-        </tbody>
-    </table>
+    <?php if (!$lecturer): ?>
+        <h1>Table is EMPTY</h1>
+    <?php else: ?>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($lecturer as $lecturer): ?>
+                    <tr>
+                        <td><?= $lecturer->lecturer_firstname ?> <?= $lecturer->lecturer_lastname ?></td>
+                        <td><?= $lecturer->lecturer_expertise ?></td>
+                        <td>
+                            <a class="waves-effect waves-light btn light-green" onclick="window.location = '<?= base_url() ?>feedback/content/'<?= $lecturer->lecturer_id ?>">feedback</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif ?>
 </div>

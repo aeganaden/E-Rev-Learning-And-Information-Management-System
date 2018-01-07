@@ -2,9 +2,16 @@
 
 class Feedback extends CI_Controller {
 
+    function __construct() {
+        parent::__construct();
+        $this->load->model('Crud_model');
+    }
+
     public function index() {
+        $allItems = $this->Crud_model->fetch("lecturer");
         $data = array(
-            "title" => "Feedback"
+            'title' => "Feedback",
+            'lecturer' => $allItems,
         );
         $this->load->view('includes/header', $data);
         $this->load->view('feedback/feedback_main');
