@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2018 at 03:42 AM
+-- Generation Time: Jan 07, 2018 at 04:18 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -183,7 +183,7 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_date` bigint(20) NOT NULL,
   `lecturer_feedback_comment` varchar(300) NOT NULL,
   `lecturer_feedback_user_id` bigint(20) NOT NULL,
-  `offering_id` bigint(20) NOT NULL
+  `offering_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -198,9 +198,9 @@ CREATE TABLE `offering` (
   `offering_course_title` varchar(30) NOT NULL,
   `offering_program` varchar(3) NOT NULL,
   `offering_section` bigint(20) NOT NULL,
-  `activity_id` varchar(10) NOT NULL,
-  `enrollment_id` bigint(20) NOT NULL,
-  `professor_id` bigint(20) NOT NULL
+  `activity_id` varchar(10) DEFAULT NULL,
+  `enrollment_id` bigint(20) DEFAULT NULL,
+  `professor_id` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -406,6 +406,15 @@ ALTER TABLE `topic`
   ADD PRIMARY KEY (`topic_id`),
   ADD KEY `topic_offering_fk` (`offering_id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `lecturer_feedback`
+--
+ALTER TABLE `lecturer_feedback`
+  MODIFY `lecturer_feedback_id` bigint(20) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
