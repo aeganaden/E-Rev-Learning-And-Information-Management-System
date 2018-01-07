@@ -34,7 +34,7 @@ class Login extends CI_Controller {
 			$bool = sha1("lecturer");
 		}elseif ($this->Crud_model->fetch("professor",$where)) {
 			$bool = sha1("professor");
-		}elseif ($this->Crud_model->fetch("administrator",$where)) {
+		}elseif ($this->Crud_model->fetch("admin",$where)) {
 			$bool = sha1("administrator");
 		}elseif ($this->Crud_model->fetch("student",$where)) {
 			$bool = sha1("student");
@@ -101,7 +101,7 @@ class Login extends CI_Controller {
 			break;
 			case 'b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3':
 				# administrator
-			$info = $this->Crud_model->fetch("administrator",array("username"=>$this->input->post("username")));
+			$info = $this->Crud_model->fetch("admin",array("username"=>$this->input->post("username")));
 			$info = $info[0];
 			$userData = array(
 				'user'=> $info,
