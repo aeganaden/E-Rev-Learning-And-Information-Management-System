@@ -50,7 +50,7 @@
     <a class="subheader">Subheader</a>
   </li>
   <li>
-    <a class="waves-effect" href="#!">Third Link With Waves</a>
+    <a class="waves-effect color-white" href="<?=base_url()?>Login/logout ">Log Out</a>
   </li>
 </ul>
 

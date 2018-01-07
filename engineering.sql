@@ -1,13 +1,25 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Jan 07, 2018 at 04:18 AM
+=======
+<<<<<<< HEAD
+-- Generation Time: Jan 06, 2018 at 01:48 PM
+-- Server version: 10.1.28-MariaDB
+-- PHP Version: 7.1.11
+=======
+-- Generation Time: Jan 07, 2018 at 03:42 AM
+>>>>>>> 478691791e13840b5c01c0d9649fdcd4ffb720b3
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -50,6 +62,18 @@ CREATE TABLE `activity_details` (
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
+-- Table structure for table `administrator`
+--
+
+CREATE TABLE `administrator` (
+  `administrator_id` int(100) NOT NULL,
+  `firstname` varchar(225) NOT NULL,
+  `middlename` varchar(225) NOT NULL,
+  `lastname` varchar(225) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL
+=======
 -- Table structure for table `admin`
 --
 
@@ -74,6 +98,7 @@ CREATE TABLE `announcement` (
   `announcement_is_active` decimal(20,0) NOT NULL,
   `announcement_audience` tinyint(4) NOT NULL,
   `announcement_announcer_id` bigint(20) NOT NULL
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -147,6 +172,8 @@ CREATE TABLE `enrollment` (
 
 CREATE TABLE `lecturer` (
   `lecturer_id` bigint(20) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL,
   `lecturer_firstname` varchar(30) NOT NULL,
   `lecturer_midname` varchar(30) NOT NULL,
   `lecturer_lastname` varchar(30) NOT NULL,
@@ -211,6 +238,8 @@ CREATE TABLE `offering` (
 
 CREATE TABLE `professor` (
   `professor_id` bigint(20) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL,
   `professor_firstname` varchar(30) NOT NULL,
   `professor_midname` varchar(30) NOT NULL,
   `professor_lastname` varchar(30) NOT NULL,
@@ -297,6 +326,12 @@ ALTER TABLE `activity_details`
   ADD PRIMARY KEY (`activity_details_id`);
 
 --
+<<<<<<< HEAD
+-- Indexes for table `administrator`
+--
+ALTER TABLE `administrator`
+  ADD PRIMARY KEY (`administrator_id`);
+=======
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
@@ -307,6 +342,7 @@ ALTER TABLE `admin`
 --
 ALTER TABLE `announcement`
   ADD PRIMARY KEY (`announcement_id`);
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 
 --
 -- Indexes for table `choice`
@@ -411,10 +447,18 @@ ALTER TABLE `topic`
 --
 
 --
+<<<<<<< HEAD
 -- AUTO_INCREMENT for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
   MODIFY `lecturer_feedback_id` bigint(20) NOT NULL AUTO_INCREMENT;
+=======
+-- AUTO_INCREMENT for table `administrator`
+--
+ALTER TABLE `administrator`
+  MODIFY `administrator_id` int(100) NOT NULL AUTO_INCREMENT;
+
+>>>>>>> 478691791e13840b5c01c0d9649fdcd4ffb720b3
 --
 -- Constraints for dumped tables
 --
@@ -489,6 +533,7 @@ ALTER TABLE `student`
 --
 ALTER TABLE `topic`
   ADD CONSTRAINT `topic_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

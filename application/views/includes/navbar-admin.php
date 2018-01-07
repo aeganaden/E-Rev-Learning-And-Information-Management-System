@@ -3,7 +3,7 @@
   <li><a href="#!">one</a></li>
   <li><a href="#!">two</a></li>
   <li class="divider"></li>
-  <li><a href="#!">Log Out</a></li>
+  <li><a href="<?=base_url()?>Login/logout ">Log Out</a></li>
 </ul>
 <nav class="bg-primary-yellow">
   <div class="nav-wrapper nav-admin">
