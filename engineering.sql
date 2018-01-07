@@ -3,9 +3,15 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: Jan 06, 2018 at 01:48 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
+=======
+-- Generation Time: Jan 07, 2018 at 03:42 AM
+-- Server version: 10.1.19-MariaDB
+-- PHP Version: 5.6.28
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -34,8 +40,7 @@ CREATE TABLE `activity` (
   `activity_venue` varchar(10) NOT NULL,
   `activity_topic` varchar(30) NOT NULL,
   `activity_status` tinyint(4) NOT NULL,
-  `activity_details_id` tinyint(4) NOT NULL,
-  `enrollment_id` bigint(20) NOT NULL
+  `activity_details_id` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -53,6 +58,7 @@ CREATE TABLE `activity_details` (
 -- --------------------------------------------------------
 
 --
+<<<<<<< HEAD
 -- Table structure for table `administrator`
 --
 
@@ -63,6 +69,32 @@ CREATE TABLE `administrator` (
   `lastname` varchar(225) NOT NULL,
   `username` varchar(225) NOT NULL,
   `password` varchar(225) NOT NULL
+=======
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `admin_id` bigint(20) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcement`
+--
+
+CREATE TABLE `announcement` (
+  `announcement_id` bigint(20) NOT NULL,
+  `announcement_tite` varchar(100) NOT NULL,
+  `announcement_content` varchar(800) NOT NULL,
+  `announcement_created_at` decimal(20,0) NOT NULL,
+  `announcement_edited_at` decimal(20,0) NOT NULL,
+  `announcement_is_active` decimal(20,0) NOT NULL,
+  `announcement_audience` tinyint(4) NOT NULL,
+  `announcement_announcer_id` bigint(20) NOT NULL
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -124,8 +156,6 @@ CREATE TABLE `courseware_question` (
 
 CREATE TABLE `enrollment` (
   `enrollment_id` bigint(20) NOT NULL,
-  `enrollment_course_code` varchar(20) NOT NULL,
-  `enrollment_section` varchar(6) NOT NULL,
   `enrollment_sy` varchar(10) NOT NULL,
   `enrollment_term` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -144,8 +174,10 @@ CREATE TABLE `lecturer` (
   `lecturer_midname` varchar(30) NOT NULL,
   `lecturer_lastname` varchar(30) NOT NULL,
   `lecturer_expertise` varchar(200) NOT NULL,
-  `lecturer_status` tinyint(4) NOT NULL,
-  `lecturer_feedback_id` bigint(20) NOT NULL
+  `username` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `lecturer_email` varchar(30) NOT NULL,
+  `lecturer_status` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -159,8 +191,7 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_date` bigint(20) NOT NULL,
   `lecturer_attendance_in` bigint(20) DEFAULT NULL,
   `lecturer_attendance_out` bigint(20) DEFAULT NULL,
-  `offering_id` bigint(20) NOT NULL,
-  `lecturer_id` bigint(20) NOT NULL
+  `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -174,8 +205,8 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_time` bigint(20) NOT NULL,
   `lecturer_feedback_date` bigint(20) NOT NULL,
   `lecturer_feedback_comment` varchar(300) NOT NULL,
-  `offering_id` bigint(20) NOT NULL,
-  `lecturer_id` bigint(20) NOT NULL
+  `lecturer_feedback_user_id` bigint(20) NOT NULL,
+  `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -189,13 +220,10 @@ CREATE TABLE `offering` (
   `offering_course_code` varchar(20) NOT NULL,
   `offering_course_title` varchar(30) NOT NULL,
   `offering_program` varchar(3) NOT NULL,
-  `offering_sy` varchar(10) NOT NULL,
-  `schedule_id` bigint(20) NOT NULL,
-  `lecturer_id` bigint(20) NOT NULL,
+  `offering_section` bigint(20) NOT NULL,
   `activity_id` varchar(10) NOT NULL,
-  `professor_id` bigint(20) NOT NULL,
-  `lecturer_feedback_id` bigint(20) NOT NULL,
-  `enrollment_id` bigint(20) NOT NULL
+  `enrollment_id` bigint(20) NOT NULL,
+  `professor_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -213,7 +241,19 @@ CREATE TABLE `professor` (
   `professor_lastname` varchar(30) NOT NULL,
   `professor_department` varchar(10) NOT NULL,
   `professor_email` varchar(50) NOT NULL,
-  `offering_id` bigint(20) NOT NULL
+  `username` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `r_lecturer_offering`
+--
+
+CREATE TABLE `r_lecturer_offering` (
+  `lecturer_lecturer_id` bigint(20) NOT NULL,
+  `offering_offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -227,8 +267,7 @@ CREATE TABLE `schedule` (
   `schedule_start_time` bigint(20) NOT NULL,
   `schedule_end_time` bigint(20) NOT NULL,
   `schedule_venue` varchar(10) NOT NULL,
-  `offering_id` bigint(20) NOT NULL,
-  `enrollment_id` bigint(20) NOT NULL
+  `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -242,11 +281,13 @@ CREATE TABLE `student` (
   `student_firstname` varchar(30) NOT NULL,
   `student_midname` varchar(30) NOT NULL,
   `student_lastname` varchar(30) NOT NULL,
-  `student_username` varchar(30) NOT NULL,
+  `username` varchar(30) NOT NULL,
   `student_program` varchar(3) NOT NULL,
   `student_email` varchar(30) NOT NULL,
-  `student_password` varchar(30) NOT NULL,
-  `enrollment_id` bigint(20) NOT NULL
+  `password` varchar(30) NOT NULL,
+  `student_made_feedback` tinyint(4) NOT NULL,
+  `enrollment_id` bigint(20) NOT NULL,
+  `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -259,6 +300,7 @@ CREATE TABLE `topic` (
   `topic_id` bigint(20) NOT NULL,
   `topic_name` varchar(50) NOT NULL,
   `topic_description` varchar(500) NOT NULL,
+  `topic_done` tinyint(4) DEFAULT NULL,
   `offering_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -271,8 +313,7 @@ CREATE TABLE `topic` (
 --
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`activity_id`),
-  ADD KEY `activity_activity_details_fk` (`activity_details_id`),
-  ADD KEY `activity_enrollment_fk` (`enrollment_id`);
+  ADD KEY `activity_activity_details_fk` (`activity_details_id`);
 
 --
 -- Indexes for table `activity_details`
@@ -281,10 +322,23 @@ ALTER TABLE `activity_details`
   ADD PRIMARY KEY (`activity_details_id`);
 
 --
+<<<<<<< HEAD
 -- Indexes for table `administrator`
 --
 ALTER TABLE `administrator`
   ADD PRIMARY KEY (`administrator_id`);
+=======
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`admin_id`);
+
+--
+-- Indexes for table `announcement`
+--
+ALTER TABLE `announcement`
+  ADD PRIMARY KEY (`announcement_id`);
+>>>>>>> 481b3712b621b8120c3cfa7fb7a1d4b06ebfa8ee
 
 --
 -- Indexes for table `choice`
@@ -324,15 +378,13 @@ ALTER TABLE `enrollment`
 -- Indexes for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  ADD PRIMARY KEY (`lecturer_id`),
-  ADD UNIQUE KEY `lecturer__idx` (`lecturer_feedback_id`);
+  ADD PRIMARY KEY (`lecturer_id`);
 
 --
 -- Indexes for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
   ADD PRIMARY KEY (`lecturer_attendance_id`),
-  ADD KEY `lecturer_attendance_lecturer_fk` (`lecturer_id`),
   ADD KEY `lecturer_attendance_offering_fk` (`offering_id`);
 
 --
@@ -340,42 +392,44 @@ ALTER TABLE `lecturer_attendance`
 --
 ALTER TABLE `lecturer_feedback`
   ADD PRIMARY KEY (`lecturer_feedback_id`),
-  ADD UNIQUE KEY `lecturer_feedback__idx` (`offering_id`),
-  ADD UNIQUE KEY `lecturer_feedback__idxv1` (`lecturer_id`);
+  ADD KEY `lecturer_feedback_offering_fk` (`offering_id`);
 
 --
 -- Indexes for table `offering`
 --
 ALTER TABLE `offering`
   ADD PRIMARY KEY (`offering_id`),
-  ADD UNIQUE KEY `offering__idx` (`professor_id`),
-  ADD UNIQUE KEY `offering__idxv1` (`lecturer_feedback_id`),
-  ADD UNIQUE KEY `offering__idxv2` (`schedule_id`),
   ADD KEY `offering_activity_fk` (`activity_id`),
   ADD KEY `offering_enrollment_fk` (`enrollment_id`),
-  ADD KEY `offering_lecturer_fk` (`lecturer_id`);
+  ADD KEY `offering_professor_fk` (`professor_id`);
 
 --
 -- Indexes for table `professor`
 --
 ALTER TABLE `professor`
-  ADD PRIMARY KEY (`professor_id`),
-  ADD UNIQUE KEY `professor__idx` (`offering_id`);
+  ADD PRIMARY KEY (`professor_id`);
+
+--
+-- Indexes for table `r_lecturer_offering`
+--
+ALTER TABLE `r_lecturer_offering`
+  ADD PRIMARY KEY (`lecturer_lecturer_id`,`offering_offering_id`),
+  ADD KEY `r_lecturer_offering_offering_fk` (`offering_offering_id`);
 
 --
 -- Indexes for table `schedule`
 --
 ALTER TABLE `schedule`
   ADD PRIMARY KEY (`schedule_id`),
-  ADD UNIQUE KEY `schedule__idx` (`offering_id`),
-  ADD KEY `schedule_enrollment_fk` (`enrollment_id`);
+  ADD KEY `schedule_offering_fk` (`offering_id`);
 
 --
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`student_id`),
-  ADD KEY `student_enrollment_fk` (`enrollment_id`);
+  ADD KEY `student_enrollment_fk` (`enrollment_id`),
+  ADD KEY `student_offering_fk` (`offering_id`);
 
 --
 -- Indexes for table `topic`
@@ -402,8 +456,7 @@ ALTER TABLE `administrator`
 -- Constraints for table `activity`
 --
 ALTER TABLE `activity`
-  ADD CONSTRAINT `activity_activity_details_fk` FOREIGN KEY (`activity_details_id`) REFERENCES `activity_details` (`activity_details_id`),
-  ADD CONSTRAINT `activity_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`);
+  ADD CONSTRAINT `activity_activity_details_fk` FOREIGN KEY (`activity_details_id`) REFERENCES `activity_details` (`activity_details_id`);
 
 --
 -- Constraints for table `comment`
@@ -425,23 +478,15 @@ ALTER TABLE `courseware_question`
   ADD CONSTRAINT `courseware_question_topic_fk` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`);
 
 --
--- Constraints for table `lecturer`
---
-ALTER TABLE `lecturer`
-  ADD CONSTRAINT `lecturer_lecturer_feedback_fk` FOREIGN KEY (`lecturer_feedback_id`) REFERENCES `lecturer_feedback` (`lecturer_feedback_id`);
-
---
 -- Constraints for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
-  ADD CONSTRAINT `lecturer_attendance_lecturer_fk` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`),
   ADD CONSTRAINT `lecturer_attendance_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
 
 --
 -- Constraints for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  ADD CONSTRAINT `lecturer_feedback_lecturer_fk` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`),
   ADD CONSTRAINT `lecturer_feedback_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
 
 --
@@ -450,29 +495,27 @@ ALTER TABLE `lecturer_feedback`
 ALTER TABLE `offering`
   ADD CONSTRAINT `offering_activity_fk` FOREIGN KEY (`activity_id`) REFERENCES `activity` (`activity_id`),
   ADD CONSTRAINT `offering_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`),
-  ADD CONSTRAINT `offering_lecturer_feedback_fk` FOREIGN KEY (`lecturer_feedback_id`) REFERENCES `lecturer_feedback` (`lecturer_feedback_id`),
-  ADD CONSTRAINT `offering_lecturer_fk` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`),
-  ADD CONSTRAINT `offering_professor_fk` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`),
-  ADD CONSTRAINT `offering_schedule_fk` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`);
+  ADD CONSTRAINT `offering_professor_fk` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`);
 
 --
--- Constraints for table `professor`
+-- Constraints for table `r_lecturer_offering`
 --
-ALTER TABLE `professor`
-  ADD CONSTRAINT `professor_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
+ALTER TABLE `r_lecturer_offering`
+  ADD CONSTRAINT `r_lecturer_offering_lecturer_fk` FOREIGN KEY (`lecturer_lecturer_id`) REFERENCES `lecturer` (`lecturer_id`),
+  ADD CONSTRAINT `r_lecturer_offering_offering_fk` FOREIGN KEY (`offering_offering_id`) REFERENCES `offering` (`offering_id`);
 
 --
 -- Constraints for table `schedule`
 --
 ALTER TABLE `schedule`
-  ADD CONSTRAINT `schedule_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`),
   ADD CONSTRAINT `schedule_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
 
 --
 -- Constraints for table `student`
 --
 ALTER TABLE `student`
-  ADD CONSTRAINT `student_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`);
+  ADD CONSTRAINT `student_enrollment_fk` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`),
+  ADD CONSTRAINT `student_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
 
 --
 -- Constraints for table `topic`
