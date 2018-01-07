@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2018 at 01:19 PM
--- Server version: 10.1.19-MariaDB
--- PHP Version: 5.6.28
+-- Generation Time: Jan 06, 2018 at 01:48 PM
+-- Server version: 10.1.28-MariaDB
+-- PHP Version: 7.1.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -46,6 +48,21 @@ CREATE TABLE `activity_details` (
   `activity_details_id` tinyint(4) NOT NULL,
   `activity_details_name` varchar(100) NOT NULL,
   `activity_details_status` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `administrator`
+--
+
+CREATE TABLE `administrator` (
+  `administrator_id` int(100) NOT NULL,
+  `firstname` varchar(225) NOT NULL,
+  `middlename` varchar(225) NOT NULL,
+  `lastname` varchar(225) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -121,6 +138,8 @@ CREATE TABLE `enrollment` (
 
 CREATE TABLE `lecturer` (
   `lecturer_id` bigint(20) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL,
   `lecturer_firstname` varchar(30) NOT NULL,
   `lecturer_midname` varchar(30) NOT NULL,
   `lecturer_lastname` varchar(30) NOT NULL,
@@ -187,6 +206,8 @@ CREATE TABLE `offering` (
 
 CREATE TABLE `professor` (
   `professor_id` bigint(20) NOT NULL,
+  `username` varchar(225) NOT NULL,
+  `password` varchar(225) NOT NULL,
   `professor_firstname` varchar(30) NOT NULL,
   `professor_midname` varchar(30) NOT NULL,
   `professor_lastname` varchar(30) NOT NULL,
@@ -258,6 +279,12 @@ ALTER TABLE `activity`
 --
 ALTER TABLE `activity_details`
   ADD PRIMARY KEY (`activity_details_id`);
+
+--
+-- Indexes for table `administrator`
+--
+ALTER TABLE `administrator`
+  ADD PRIMARY KEY (`administrator_id`);
 
 --
 -- Indexes for table `choice`
@@ -358,6 +385,16 @@ ALTER TABLE `topic`
   ADD KEY `topic_offering_fk` (`offering_id`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `administrator`
+--
+ALTER TABLE `administrator`
+  MODIFY `administrator_id` int(100) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -442,6 +479,7 @@ ALTER TABLE `student`
 --
 ALTER TABLE `topic`
   ADD CONSTRAINT `topic_offering_fk` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`);
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

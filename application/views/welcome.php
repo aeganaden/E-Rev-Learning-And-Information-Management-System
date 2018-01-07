@@ -116,22 +116,29 @@
 			<div class="col s8">
 				<blockquote class="color-primary-yellow">
 					<h3 class="color-primary-green">LOGIN</h3>
+					<p style="display: none" id="login-message">Invalid Account</p>
 				</blockquote>
-				<form action="<?=base_url()?>Login " method="post">
-					<div class="row ">
-						<div class="input-field">
-							<input id="username" type="text" class="validate">
-							<label for="username" class="color-primary-green">Username</label>
-						</div>
+				<!--===================================
+				=            Login Section            =
+				====================================-->
+
+				<div class="row ">
+					<div class="input-field">
+						<input id="login-username" type="text" class="validate ">
+						<label for="login-username" class="color-primary-green">Username</label>
 					</div>
-					<div class="row ">
-						<div class="input-field">
-							<input id="password" type="password" class="validate">
-							<label for="password" class="color-primary-green">Password</label>
-						</div>
+				</div>
+				<div class="row ">
+					<div class="input-field">
+						<input id="login-password" type="password" class="validate">
+						<label for="login-password" class="color-primary-green">Password</label>
 					</div>
-					<button href="#!" class="waves-effect waves-light btn bg-primary-green right color-white">LOG IN</button>
-				</form>
+				</div>
+
+				<!--====  End of Login Section  ====-->
+
+				<button id="btn-login" class="waves-effect waves-light btn bg-primary-green right color-white">LOG IN</button>
+
 				<a href="#!" class="modal-effect modal-close waves-effect waves-light btn red left color-white">Return</a>
 			</div>
 			<div class="col s2"></div>
@@ -186,3 +193,13 @@
 
 
 <!--====  End of FOOTER  ====-->
+
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+
+
+	});
+
+
+</script>
