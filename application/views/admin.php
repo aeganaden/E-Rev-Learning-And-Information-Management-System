@@ -40,8 +40,41 @@
 		</div>
 	</div>
 	<div class="col s9">
-		<div class="row red" id="div-card-cosml" style="display: none;">
-			<h1>REPORT 1</h1>
+		<div class="row" id="div-card-cosml" style="display: none;">
+			<h3>Course Offering Schedule Master List</h3>
+			<table id="tbl-card-cosml" >
+				<thead >
+					<tr>
+						<th>ID</th>
+						<th>Course Code</th>
+						<th>Course Title</th>
+						<th>Section</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th>Venue</th>
+						<th>Assigned Lecturer</th>
+						<th>Term</th>
+						<th>School Year</th>
+					</tr>
+				</thead>
+
+				<tbody class="bg-color-white">
+					<tr class="bg-color-white">
+						<?php foreach ($div_cosml_data as $key => $value): ?>
+							<td><?= $value->schedule_id ?></td>
+							<td><?= strtoupper($value->course_code) ?></td>
+							<td><?= ucwords($value->course_title) ?></td>
+							<td><?= strtoupper($value->course_section) ?></td>
+							<td><?= date("h:i A",$value->schedule_start_time) ?></td>
+							<td><?= date("h:i A",$value->schedule_end_time) ?></td>
+							<td><?= strtoupper($value->schedule_venue) ?></td>
+							<td><?= ucwords($value->lecturer_name) ?></td>
+							<td><?= $value->term ?></td>
+							<td><?= $value->sy ?></td>
+						<?php endforeach ?>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		<div class="row blue" id="div-card-ls" style="display: none;">
 			<h1>REPORT 2</h1>

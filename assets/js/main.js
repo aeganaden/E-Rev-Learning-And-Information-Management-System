@@ -6,19 +6,10 @@ $(document).ready(function() {
 		indicators:false,
 		height: 500
 	});
-	positionOverlayDiv();
 	initiateOnClick();
 	login_verify();
 });
 
-function positionOverlayDiv(){
-	var margin_top = getDivHeightClass("a-navbar");
-	var height = getDivHeightID("a-div-slider");
-	$("#a-div-overlay").css({
-		"top":margin_top, 
-		"height": height
-	});
-}
 
 function getDivHeightClass(x){	
 	var height = $("."+x).height();
@@ -28,6 +19,18 @@ function getDivHeightID(x){
 	var height = $("#"+x).height();
 	return height;
 }
+
+/*=====================================
+=            Datatables JS            =
+=====================================*/
+
+$(document).ready(function() {
+	$('#tbl-card-cosml').DataTable();
+} );
+
+/*=====  End of Datatables JS  ======*/
+
+
 
 /*======================================
 =            Login Modal JS            =

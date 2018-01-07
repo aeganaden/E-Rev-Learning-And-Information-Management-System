@@ -19,6 +19,12 @@
     <!-- Primary Css -->
     <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/css/primary.css?v=<?= time(); ?>'>
 
+    <!-- Data tables CSS-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+
+    <!-- Data tables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
     <!-- MARK'S CSS!!! -->
     <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/css/mark_css.css?v=<?= time(); ?>'>
 
