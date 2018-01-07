@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2018 at 10:29 AM
+-- Generation Time: Jan 07, 2018 at 11:01 AM
 -- Server version: 10.1.19-MariaDB
 -- PHP Version: 5.6.28
 
@@ -199,7 +199,7 @@ CREATE TABLE `offering` (
   `offering_course_code` varchar(20) NOT NULL,
   `offering_course_title` varchar(30) NOT NULL,
   `offering_program` varchar(3) NOT NULL,
-  `offering_section` bigint(20) NOT NULL,
+  `offering_section` varchar(10) NOT NULL,
   `offering_lecturer_id` bigint(20) NOT NULL,
   `enrollment_id` bigint(20) NOT NULL,
   `professor_id` bigint(20) NOT NULL
