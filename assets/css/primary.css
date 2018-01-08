@@ -47,6 +47,22 @@ a{
 .color-white {color: #F5F5DC !important; border-color: #F5F5DC;} /* White */
 .color-primary-yellow {	color: #F2A900 !important; border-color: #F2A900;} /*Yellow*/
 .color-primary-green{	color: #007A33 !important; border-color: #007A33;} /*Green*/
+.color-red { color: #f44336  !important; } /* Red */
+.color-orange { color: #ff9800  !important; } /* Orange */
+.color-pink { color: #FF7C72 !important; } /* Orange */
+.color-yellow { color: #FBF38C !important; } /* Yellow */
+.color-citrus { color: #A6FF8F !important; } /* Citrus */
+.color-green { color: #4CAF50  !important; border-color: #4CAF50 ;} /* Green */
+.color-darkgreen { color: #1CE2B2 !important; } /* Darkgreen */
+.color-turquoise { color: #5EF3FB !important; } /* Turquoise */
+.color-lightblue { color: #61C3FF !important; } /* Lightblue */
+.color-blue { color: #5A87FF !important; border-color: #5A87FF} /* Blue */
+.color-purple { color: #8453E3 !important; } /* Purple */
+.color-lavender { color: #C26EFF !important; } /* Lavender */
+.color-pink { color: #FB89FB !important; } /* Pink */ 
+.color-white{color: #F5F5DC !important;} /* White */
+.color-grey { color: #616161 !important; }
+.color-pink-light-2 { color: #f06292   !important; } /* PINK */
 
 
 
@@ -55,6 +71,21 @@ a{
 .bg-primary-green{	background-color: #007A33 !important;} /*Green*/
 .bg-color-white {background-color: #F5F5DC !important;} /* White */
 .bg-color-black {background-color: #212121  !important;} /* Black */
+.bg-transparent{ background-color: transparent; }
+.bg-color-grey { background-color: #616161 !important; }
+.bg-color-red { background-color: #f44336  !important; } /* Red */
+.bg-color-orange { background-color: #ff9800  !important; } /* Orange */
+.bg-color-pink { background-color: #FF7C72 !important; } /* Orange */
+.bg-color-yellow { background-color: #FBF38C !important; } /* Yellow */
+.bg-color-citrus { background-color: #A6FF8F !important; } /* Citrus */
+.bg-color-green { background-color: #4CAF50  !important; } /* Green */
+.bg-color-darkgreen { background-color: #1CE2B2 !important; } /* Darkgreen */
+.bg-color-turquoise { background-color: #5EF3FB !important; } /* Turquoise */
+.bg-color-lightblue { background-color: #61C3FF !important; } /* Lightblue */
+.bg-color-blue { background-color: #5A87FF !important; } /* Blue */
+.bg-color-purple { background-color: #8453E3 !important; } /* Purple */
+.bg-color-lavender { background-color: #C26EFF !important; } /* Lavender */
+.bg-color-pink { background-color: #FB89FB !important; } /* Pink */ 
 /*=====  End of COLORS  ======*/
 
 

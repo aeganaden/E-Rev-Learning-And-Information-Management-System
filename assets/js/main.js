@@ -26,6 +26,21 @@ function getDivHeightID(x){
 
 $(document).ready(function() {
 	$('#tbl-card-cosml').DataTable();
+	$('#tbl-card-ls').DataTable();
+	$('#tbl-mdl-attendance').DataTable( {
+		"processing":true,
+		"serverSide":true,
+		"order":[],
+		"ajax": {
+			url: base_url+"Admin/fetchLecturer",
+			type: "post"
+		},
+		"columnDefs":[
+		{
+			"target":[0,3,4],
+			"orderable":false
+		}]
+	} );
 } );
 
 /*=====  End of Datatables JS  ======*/
