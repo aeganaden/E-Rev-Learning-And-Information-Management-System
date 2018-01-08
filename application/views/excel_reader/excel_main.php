@@ -1,6 +1,6 @@
 
 <div class='container'>
-    <?php echo form_open_multipart('excel_import/import_data'); ?>
+    <?php echo form_open_multipart('Importdata/1'); ?>
     <input type="file" name="userfile"/>
     <br><br>
     <input type="submit" value="upload" />

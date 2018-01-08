@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Excel_import extends CI_Controller {
+class Importdata extends CI_Controller {
 
     function __construct() {
         parent::__construct();
@@ -12,25 +12,42 @@ class Excel_import extends CI_Controller {
     }
 
     public function index() {
-        $data = array(
-            'title' => "Import Excel",
-        );
-        $this->load->view('includes/header', $data);
-        $this->load->view('excel_reader/excel_main');
-        $this->load->view('includes/footer');
-    }
-
-    public function import_data() {
 
         $config['upload_path'] = FCPATH . 'assets\uploads\\';
         $config['allowed_types'] = 'xls|csv|xlsx';
 
         $this->load->library('upload', $config);
+        $data = array(
+            'title' => "Import Excel"
+        );
+
+        $segment = $this->uri->segment(3);
         if ($this->upload->do_upload('userfile')) {
-            $data = array(
-                'upload_data' => $this->upload->data(),
-                'title' => "Import Excel"
-            );
+
+        } else if ($segment > 0) {
+            $error = array('error' => $this->upload->display_errors());
+            $this->load->view('includes/header', $data);
+            $this->load->view('excel_reader/excel_main', $error);
+            $this->load->view('includes/footer');
+        } else {
+            $this->load->view('includes/header', $data);
+            $this->load->view('excel_reader/excel_main');
+            $this->load->view('includes/footer');
+        }
+    }
+
+    public function step2() {
+        //$_SERVER['HTTP_REFERER']
+
+        $config['upload_path'] = FCPATH . 'assets\uploads\\';
+        $config['allowed_types'] = 'xls|csv|xlsx';
+
+        $this->load->library('upload', $config);
+        $data = array(
+            'title' => "Import Excel"
+        );
+        if ($this->upload->do_upload('userfile')) {
+            $data[] = array('upload_data' => $this->upload->data());
             //echo ($this->upload->data()["full_path"]);
             $obj = PHPExcel_IOFactory::load($this->upload->data()["full_path"]);
             $cell = $obj->getActiveSheet()->getCellCollection();
@@ -52,7 +69,9 @@ class Excel_import extends CI_Controller {
             $this->load->view('includes/footer');
         } else {
             $error = array('error' => $this->upload->display_errors());
+            $this->load->view('includes/header', $data);
             $this->load->view('excel_reader/excel_main', $error);
+            $this->load->view('includes/footer');
         }
     }
 
