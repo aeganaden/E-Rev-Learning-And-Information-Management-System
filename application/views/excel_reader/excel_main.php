@@ -11,10 +11,3 @@
 if (!empty($error)) {
     print($error);
 }
-
-//echo form_open_multipart('excel_import/import_data');
-//echo form_upload('file');
-//echo '<br>';
-//echo form_submit(null, 'Upload');
-//echo form_close();
-?>
