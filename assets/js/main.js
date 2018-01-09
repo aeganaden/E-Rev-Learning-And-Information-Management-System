@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	$(".button-collapse").sideNav();
 	$('.modal').modal();
+	$('.collapsible').collapsible();
+	$('select').material_select();
 	$(".dropdown-button").dropdown();
 	$('.slider').slider({
 		indicators:false,
@@ -27,20 +29,7 @@ function getDivHeightID(x){
 $(document).ready(function() {
 	$('#tbl-card-cosml').DataTable();
 	$('#tbl-card-ls').DataTable();
-	$('#tbl-mdl-attendance').DataTable( {
-		"processing":true,
-		"serverSide":true,
-		"order":[],
-		"ajax": {
-			url: base_url+"Admin/fetchLecturer",
-			type: "post"
-		},
-		"columnDefs":[
-		{
-			"target":[0,3,4],
-			"orderable":false
-		}]
-	} );
+	$('#tbl-att-lec').DataTable();
 } );
 
 /*=====  End of Datatables JS  ======*/
