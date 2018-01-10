@@ -91,10 +91,20 @@ class Admin extends CI_Controller {
 		$this->load->view('includes/footer');
 	}
 
+	public function fetchAnnouncement()
+	{
+		$announcement_id = $this->input->post("id");
+		$data = $this->Crud_model->fetch("announcement", array("announcement_id"=>$announcement_id));
+		echo json_encode($data);
+	}
+
 	public function addAnnouncement()
 	{
 		$column = "";
 		$info = $this->session->userdata('userInfo');
+		// echo "<pre>";
+		// print_r($info);
+		// die();
 		switch ($info["identifier"]) {
 			case 'administrator':
 			$column="admin_id";
@@ -125,7 +135,7 @@ class Admin extends CI_Controller {
 			"announcement_edited_at"=>time(),
 			"announcement_is_active"=>time(),
 			"announcement_audience"=>$audience,
-			"announcement_announcer_id"=>$info["user"]->$column
+			"announcement_announcer"=>ucwords($info["user"]->firstname." ".$info["user"]->lastname)
 
 		);
 		if ($this->Crud_model->insert("announcement",$data)) {

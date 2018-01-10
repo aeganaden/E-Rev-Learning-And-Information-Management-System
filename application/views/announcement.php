@@ -54,6 +54,7 @@
 				<td>Status</td>
 				<td>Audience</td>
 				<td>Announced by</td>
+				<td>Actions</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -87,14 +88,98 @@
 				<tr>
 					<td><?=$value->announcement_id?></td>
 					<td><?=$value->announcement_title?></td>
-					<td><?=$value->announcement_content?></td>
+					<td class="truncate"><?=$value->announcement_content?></td>
 					<td><?=date("M d, Y - h:i A",$value->announcement_created_at)?></td>
 					<td><?=date("M d, Y - h:i A",$value->announcement_edited_at)?></td>
 					<td class="<?=$is_active_color?>"><?=$is_active?></td>
 					<td><?=$audience?></td>
-					<td><?=$audience?></td>
+					<td><?=$value->announcement_announcer?></td>
+					<td><i data-id="<?=$value->announcement_id?>" class="ann-modal-btn material-icons color-primary-green modal-trigger waves-effect waves-light" href="#ann_modal" style="cursor: pointer;">edit</i></td>
 				</tr>
 			<?php endforeach ?>
 		</tbody>
 	</table>
 </div>
+
+
+<!--===================================
+=            Modal Section            =
+====================================-->
+
+<div id="ann_modal" class="modal">
+	<div class="modal-content">
+		<h4>Edit Announcement</h4>
+		<div class="row">
+			<div class="input-field">
+				<input type="text" value="" placeholder="" id="ann_modal_title" class="validate" name="">
+				<label for="ann_title">Announcement Title</label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field">
+				<textarea id="ann_modal_content" class="materialize-textarea">
+
+				</textarea>
+				<label for="ann_modal_title">Content</label>
+			</div>
+		</div>	
+		<div class="row">
+			<div class="col s4"></div>
+			<div class="col s4">
+				<center>
+					<div class="switch">
+						<p class="color-green">STATUS</p>
+						<label>
+							Deactivated
+							<input type="checkbox">
+							<span class="lever"></span>
+							Activated
+						</label>
+					</div>
+				</center>
+			</div>
+			<div class="col s4"></div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect left waves-light red btn">Cancel</a>
+		<a href="#!" class="modal-action modal-close waves-effect right waves-light green btn">Update</a>
+	</div>
+</div>
+
+
+<!--====  End of Modal Section  ====-->
+
+
+<!--==================================
+=            Ajax Section            =
+===================================-->
+
+<script type="text/javascript">
+	
+	jQuery(document).ready(function($) {
+		$(".ann-modal-btn").click(function(event) {
+
+			$.ajax({
+				url: "<?=base_url()?>Admin/fetchAnnouncement",
+				type:"post",
+				dataType: "json",
+				data: {
+					id: $(this).attr("data-id"),
+				},
+				success: function(data){
+					// console.log(data[0].announcement_id);	
+					$("#ann_modal_title").val(data[0].announcement_title);
+					$("#ann_modal_content").val(data[0].announcement_content);
+				},
+				error: function(data){
+
+				}
+			});
+		});
+	});
+
+</script>
+
+<!--====  End of Ajax Section  ====-->
+
