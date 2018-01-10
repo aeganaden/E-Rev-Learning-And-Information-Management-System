@@ -15,6 +15,24 @@ class Importdata extends CI_Controller {
         $data = array(
             'title' => "Import Excel"
         );
+//        $sample = array(
+//            array(
+//                'admin_id' => 3,
+//                'username' => 'test',
+//                'password' => '12345678901234567890123456789012345678abc'
+//            ),
+//            array(
+//                'admin_id' => 4,
+//                'username' => 'test',
+//                'password' => '12345678901234567890123456789012345678abc'
+//            )
+//        );
+//        if (!empty($this->Crud_model->insert_batch('admin', $sample)['message'])) {
+//            echo $this->Crud_model->insert_batch('admin', $sample)['message'];
+//        } else {
+//            echo "succes";
+//        }
+        //$this->db->_error_message();
 //        echo "<pre>";
 //        print_r($this->Crud_model->table_names());
 //        echo "</pre>";
@@ -29,7 +47,6 @@ class Importdata extends CI_Controller {
         $data = array(
             'username' => $this->input->post('username'),
         );
-
         $userInfo = $this->Crud_model->fetch('admin', $data);
         if (!$userInfo) {
             $data = array(
@@ -69,14 +86,6 @@ class Importdata extends CI_Controller {
             'title' => "Import Excel"
         );
         $this->load->view('includes/header', $data);
-        echo "<div class=\"container\">";
-
-//        echo "<pre>";
-//        $col_data_hold = get_object_vars($this->Crud_model->col_data('lecturer')[0]);
-//        print_r($this->Crud_model->col_data('lecturer'));
-//        echo $col_data_hold['type'];
-//        echo $col_data_hold['max_length'];
-//        echo "</pre>";
 
         if ($this->upload->do_upload('userfile')) {
 
@@ -85,20 +94,13 @@ class Importdata extends CI_Controller {
             $sheetnames = $obj->getSheetNames();
 
             $counter = 0;
+            include(APPPATH . 'views\excel_reader\custom1.php');
 
-            $this->load->view('excel_reader/loading_import', $data);
-            echo "<span id=\"text_color\" class=\"red-text\">";
-            echo " <ul class=\"collapsible\" data-collapsible=\"accordion\">
-                    <li>
-                      <div id=\"title_error\" class=\"collapsible-header\">
-                        <i id=\"title_icon\" class=\"material-icons\">error</i>Error
-                      </div>
-                      <div class=\"collapsible-body\"><span>";
             $tab_names = $this->Crud_model->table_names();
             $error_counter = 0;              //for checking field/column names
             $alphas = range('A', 'Z');       //array for A-Z
             foreach ($sheetnames as $sheet) {
-                if (in_array($sheet, $tab_names)) {         //found the table names are correct
+                if (in_array($sheet, $tab_names)) {                  //found the table names are correct
                     $worksheet = $obj->getSheet($counter);
                     $hold[$sheet] = $worksheet->toArray(null, true, true, false);
                     $col_names = $this->Crud_model->col_names($sheet);
@@ -108,24 +110,28 @@ class Importdata extends CI_Controller {
                             $error_counter++;
                         }
                     }
-                    $col_data_hold = get_object_vars($this->Crud_model->col_data($sheet)[0]);
                     if ($error_counter == 0) {
-                        for ($z = 1; $z < count($hold[$sheet]); $z++) {
+                        for ($z = 1; $z < count($hold[$sheet]); $z++) {         //loop base on row on excel 2 and beyond
                             $inner_counter = 0;
+
                             foreach ($hold[$sheet][$z] as $col_hold) {          //getting values
-//                                echo $col_hold . "<br>";
-//                                    echo $col_data_hold['type'] . "<br>";
+                                $col_data_hold = get_object_vars($this->Crud_model->col_data($sheet)[$inner_counter]);
+                                //print_r($col_data_hold['type']);
                                 $col_type = $col_data_hold['type'];
                                 $col_length = $col_data_hold['max_length'];
-                                if ($col_type === "bigint" || $col_type === "tinyint") {    //check data types
-                                    if (is_int($col_hold) && $col_length === strlen($col_hold)) {           //ayaw pumasok dito ***LAST**
+                                if ($col_type === "bigint" || $col_type === "tinyint" || $col_type === "int") {    //check data types
+                                    if (is_int((int) $col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
+                                        $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : array_push($stack_hold, array($col_data_hold['name'] => $col_hold));
+                                        echo "<pre>";
+                                        print_r($stack_hold);
+                                        echo "</pre>";
                                     } else {
-                                        echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
+                                        echo "\"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
                                         $error_counter++;
                                         //break;
                                     }
                                 } else if ($col_type === "varchar" || $col_type === "text") { //check data types
-                                    if (is_string($col_hold) && $col_length >= strlen($col_hold)) {
+                                    if (is_string($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
 
                                     } else {
                                         echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
@@ -133,11 +139,12 @@ class Importdata extends CI_Controller {
                                         //break;
                                     }
                                 }
+
                                 $inner_counter++;
                             }
                         }
                     } else {
-                        $error_message_last = "The file was not imported to the database due to the errors.<br>";
+                        $error_message_last = "The data from the file was not imported to the database due to the errors.<br>";
                     }
                 } else {                //no found table name like that
                     echo "There is no \"" . $sheet . "\" table in the database.<br>";
@@ -148,48 +155,11 @@ class Importdata extends CI_Controller {
             }
             if (!empty($error_message_last)) {
                 echo $error_message_last;
+                $this->load->view('excel_reader/sample', array('error_counter' => "Error(" . $error_counter . ")"));
             } else {
-                echo "No errors found.";
-                echo "<script>document.getElementById(\"text_color\").className = \"green-text\";</script>";    //ASTIG! font color changed to green
-                echo "<script>document.getElementById(\"title_icon\").innerHTML = \"check\";</script>";
+                include(APPPATH . 'views\excel_reader\custom2.php');
             }
-            echo "</li></ul>";
-            echo "</span><br>";
-            $data[$sheet] = $hold[$sheet];
-//$this->Crud_model->insert_batch($sheet, $values);
-            $counter++;
-//$worksheet = $obj->getSheet($counter);
-//                    $hold[$sheet] = $worksheet->toArray(null, true, true, true);
-//                    if (count($hold['$sheet']) >= 2) {
-//                        if ($hold['$sheet'][1]) {
-//                            print_r($hold['lecturer'][1]);
-//                            for ($c = 2; $c < count($hold[$sheet]); $c++) { //get row count
-//                            }
-//                        } else {
-//
-//                        }
-//                    } else {
-//                        echo "The sheet \"" . $sheet . "\" does not have required values";
-//                    }
-//print_r($data);
-//            for($counter=0; 0 > count($data['worksheet_names']); $counter++){
-//            $cell = $obj->getSheet($counter)->getCellCollection();
-//                foreach ($cell as $cl) {
-//                    $column = $obj->getActiveSheet()->getCell($cl)->getColumn();
-//                    $row = $obj->getActiveSheet()->getCell($cl)->getRow();
-//                    $data_value = $obj->getActiveSheet()->getCell($cl)->getValue();
-//
-//                    if ($row == 1) {
-//                        $header[$row][$column] = $data_value;
-//                    } else {
-//                        $arr_data[$row][$column] = $data_value;
-//                    }
-//                }
-//            }
-//            $data['header'] = $header;
-//            $data['values'] = $arr_data;
-            $this->load->view('excel_reader/filecheck', $data);
-            echo "<div>";
+
             $this->load->view('includes/footer');
         } else {
             $error = array('error' => $this->upload->display_errors());
