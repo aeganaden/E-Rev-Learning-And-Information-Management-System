@@ -31,7 +31,7 @@
                 <button type="submit" value="upload" class="modal-action modal-close waves-effect waves-light btn right">
                     proceed
                 </button>
-                <button class="modal-action modal-close waves-effect red waves-light btn">
+                <button type="button" class="modal-action modal-close waves-effect red waves-light btn">
                     cancel
                 </button>
             </div>
