@@ -25,7 +25,7 @@
             </div>
             <div class="row" style="margin-bottom: 0px !important">
                 <blockquote class="color-primary-green">
-                    <h4>Lecturer</h4>
+                    <h4><?= ucfirst($info["identifier"]) ?></h4>
                 </blockquote>
             </div>
             <div class="row">

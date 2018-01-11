@@ -1,0 +1,1 @@
+<span id="error" class="red-text center-align"></span>

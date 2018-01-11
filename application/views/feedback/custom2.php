@@ -1,0 +1,1 @@
+<script>document.getElementById("error").innerHTML = "Error: offering_id not fetched"</script>
