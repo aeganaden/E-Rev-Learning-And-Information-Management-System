@@ -40,20 +40,22 @@
 		// Activity details
 		$details = $this->Crud_model->fetch("activity_details", array("activity_details_id"=>$value->activity_details_id));
 		$details = $details[0];
+		$topic = $this->Crud_model->fetch("topic", array("topic_id"=>$value->topic_id));
+		$topic = $topic[0];
 		?>
 		<div class="col s4">
 			<div class="card bg-primary-green ">
 				<div class="card-content white-text">
 					<div class="row" style="margin-bottom: 0 !important;">
-						<div class="col s4">
+						<div class="col s8">
 							<blockquote class="color-primary-yellow">
 								<span class="card-title color-white"><?=$details->activity_details_name?></span>
+								<i><?=$topic->topic_name?></i>
 							</blockquote>
 						</div>
-						<div class="col s4"></div>
 						<div class="col s4">
-							<i class="material-icons right color-primary-yellow" style="cursor: pointer;">edit</i>
-							<i class="material-icons right color-primary-yellow" style="cursor: pointer;">delete</i>
+							<i class="material-icons right color-white" style="cursor: pointer;">delete</i>
+							<i class="material-icons right color-primary-yellow modal-trigger" data-id="" href="#modal_activity" style="cursor: pointer;">edit</i>
 						</div>
 					</div>
 					<p><i>Added on <?=date("M d, Y", $value->activity_date_time)?></i></p>
@@ -63,4 +65,16 @@
 			</div>
 		</div>
 	<?php endforeach ?>
+</div>
+
+
+<!-- Modal Structure -->
+<div id="modal_activity" class="modal">
+	<div class="modal-content">
+		<h4>Modal Header</h4>
+		<p>A bunch of text</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+	</div>
 </div>
