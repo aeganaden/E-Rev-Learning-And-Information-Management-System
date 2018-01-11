@@ -11,8 +11,8 @@
 	</div>
 	<div class="col s4">
 		<center>
-			<img src="<?=base_url()?>assets/img/feu-header.png" style="width: 40vh; margin-top: 2%;">
-		</center> 
+			<img src="<?=base_url() ?>assets/img/feu-header.png" style="width: 40vh; margin-top: 2%;">
+		</center>
 	</div>
 	<div class="col s4"></div>
 </div>
@@ -22,7 +22,6 @@
 
 <div class="row">
 	<div class="col s4">
-		
 		<blockquote class="color-primary-green">
 			<?php echo strtotime("+1 day") ?>
 			<h1 class="color-black">Activity</h1>
@@ -76,6 +75,17 @@
 </div>
 
 
+<!-- Modal Structure -->
+
+<div id="modal_activity" class="modal bg-color-white">
+	<div class="modal-content">
+		<h4>Edit Activity</h4>
+		<p id="">A bunch of text</p>
+	</div>
+	<div class="modal-footer bg-color-white">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+	</div>
+</div>
 
 
 <script type="text/javascript">
