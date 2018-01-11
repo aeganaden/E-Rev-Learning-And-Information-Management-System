@@ -9,43 +9,23 @@ class Importdata extends CI_Controller {
         $this->load->model('Crud_model');
         $this->load->library('form_validation');
         $this->load->library('Excelfile');
+        $this->load->library('Session');
     }
 
     public function index() {
-        $data = array(
-            'title' => "Import Excel"
-        );
-//        $sample = array(
-//            'enrollment_sy' => "2017-2018",
-//            'enrollment_term' => 3
-//        );
-//        $this->Crud_model->insert('enrollment', $sample);
-//        $sample = array(
-//            array(
-//                'admin_id' => 3,
-//                'username' => 'test',
-//                'password' => '12345678901234567890123456789012345678abc'
-//            ),
-//            array(
-//                'admin_id' => 4,
-//                'username' => 'test',
-//                'password' => '12345678901234567890123456789012345678abc'
-//            )
-//        );
-//        if (!empty($this->Crud_model->insert_batch('admin', $sample)['message'])) {
-//            echo $this->Crud_model->insert_batch('admin', $sample)['message'];
-//        } else {
-//            echo "succes";
-//        }
-        //$this->db->_error_message();
-//        echo "<pre>";
-//        print_r($sample);
-//        echo "</pre>";
-//        $this->session->set_flashdata('file_path', 'test');
-//        echo $this->session->flashdata('file_path');
-        $this->load->view('includes/header', $data);
-        $this->load->view('excel_reader/index');
-        $this->load->view('includes/footer');
+        $userInfo = $this->session->userdata('userInfo')['user'];
+        $temp = array('username' => $userInfo->username, 'password' => $userInfo->password);
+        $temp = $this->Crud_model->fetch('admin', $temp);
+        if ($temp) {
+            $data = array(
+                'title' => "Import Excel"
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('excel_reader/index');
+            $this->load->view('includes/footer');
+        } else {
+            redirect("");
+        }
     }
 
     public function credentialcheck() {
@@ -56,15 +36,22 @@ class Importdata extends CI_Controller {
         if (!$userInfo) {
             $data = array(
                 'error' => 'Invalid account. Please try again.',
+                'title' => "Import Excel"
             );
-
             $this->load->view('includes/header', $data);
             $this->load->view('excel_reader/index');
             $this->load->view('includes/footer');
         } else {
             $userInfo = $userInfo[0];
 
-            if ($userInfo->password == sha1($this->input->post('password'))) {
+//            if ($userInfo->password == sha1($this->input->post('password'))) {
+            if ($userInfo->password == $this->input->post('password')) {
+                $temp = $this->session->userdata('userInfo');
+                $insertion_info = array(
+                    "username" => $temp['username'],
+                    "password" => $temp['password']
+                );
+                $this->session->set_userdata('insertion_info', $insertion_info);
                 redirect('importdata/uploadfile');
             } else {
                 $data = array(
@@ -85,6 +72,7 @@ class Importdata extends CI_Controller {
         $config['upload_path'] = FCPATH . 'assets\uploads\\';
         $config['allowed_types'] = 'xls|csv|xlsx';
         $config['max_size'] = '10000';
+        $stack_hold = array();
 
         $this->load->library('upload', $config);
         $data = array(
@@ -125,7 +113,7 @@ class Importdata extends CI_Controller {
                                 $col_type = $col_data_hold['type'];
                                 $col_length = $col_data_hold['max_length'];
                                 if ($col_type === "bigint" || $col_type === "tinyint" || $col_type === "int") {    //check data types
-                                    if (is_numeric($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold) && preg_match('/^\d+$/', $col_hold)) {
+                                    if ($this->is_this_string_an_integer($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
                                         $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                     } else {
                                         echo "\"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
@@ -142,6 +130,9 @@ class Importdata extends CI_Controller {
                                     }
                                 }
                                 $inner_counter++;
+//                                echo"<pre>";
+//                                print_r($stack_hold);
+//                                echo"</pre>";
                             }
                             $batch_holder[$sheet][] = $stack_hold;
 //                            echo"<pre>";
@@ -160,15 +151,29 @@ class Importdata extends CI_Controller {
             }
             if (!empty($error_message_last)) {          //error
                 echo $error_message_last;
-                $this->load->view('excel_reader/sample', array('error_counter' => "Error"));
-            } else {                                    //success
+                $this->load->view('excel_reader/sample');
+            } else {                                    //success magiinsert na
                 include(APPPATH . 'views\excel_reader\custom2.php');
+                $temp_counter = 0;
+                $this->db->trans_begin();
                 foreach ($sheetnames as $sheet) {
-                    if (empty($this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'])) {
-                        echo "Success insertion on table '$sheet'<br>";
+
+                    $temp = $this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'];
+                    //print_r($temp);
+                    //print_r($this->Crud_model->fetch('activity_details'));
+                    if ($this->db->trans_status() === FALSE && !empty($temp)) {
+                        echo $temp . " on '$sheet' table<br>";
+                        $temp_counter++;
+                        include(APPPATH . 'views\excel_reader\custom4.php');
                     } else {
-                        echo $this->db->error()['message'] . "<br>";
+                        echo "<br>Insertion success on table '$sheet'";
                     }
+                }
+                if ($temp_counter > 0) {
+                    $this->db->trans_rollback();
+                    echo "<b>Insertion fail. Transaction rollback.<b>";
+                } else {
+                    $this->db->trans_commit();
                 }
             }
 
@@ -192,24 +197,45 @@ class Importdata extends CI_Controller {
     }
 
     public function sha1it() {
-        echo sha1('testing');
+        echo sha1('admin');
     }
 
-    public function test() {
-        for ($x = 0; $x < 6; $x++) {
-            $hold = array(
-                'test1' => $x,
-                'test2' => $x,
-                'test3' => $x,
-                'test4' => $x,
-                'test5' => $x,
-                'test6' => $x
-            );
-            $data[] = $hold;
+    function is_this_string_an_integer($string) {
+
+        // Assume from the start that the string IS an integer.
+        // If we hit any problems, we'll bail out and say it's NOT an integer.
+        $is_integer = true;
+
+        // Convert the string into an array of characters.
+        $array_of_chars = str_split($string);
+
+        // If there are no characters, we don't have an integer.
+        if (empty($array_of_chars)) {
+            $is_integer = false;
         }
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
+
+        // If the first character is a zero, we don't have an integer.
+        // Instead, we have a string with leading zeros.
+        if ($is_integer && $array_of_chars[0] == '0') {
+            $is_integer = false;
+        }
+
+        // If we still think it might be an integer,
+        // step through each char and see if it's a legitimate digit.
+        if ($is_integer) {
+            foreach ($array_of_chars as $i => $char) {
+
+                // Use PHP's ctype_digit() function to see if this
+                // character is a digit. If not, we can bail.
+                if (!ctype_digit($char)) {
+                    $is_integer = false;
+                    break;
+                }
+            }
+        }
+
+        // Finally, do we have an integer string or not?
+        return $is_integer;
     }
 
 }

@@ -6,9 +6,20 @@ class Home extends CI_Controller {
 	{
 		parent::__construct();
 
+<<<<<<< HEAD
 		$this->load->library('session'); 
 		$this->load->model('Crud_model');
 	}
+=======
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->load->library('session'); 
+		$this->load->model('Crud_model');
+	}
+
+>>>>>>> fd1515f29778644bf53d56a2e072e87138e3320d
 	public function index()
 	{
 		$info = $this->session->userdata('userInfo');
@@ -95,11 +106,17 @@ class Home extends CI_Controller {
 	{
 		$activity_details = $this->Crud_model->fetch("activity");
 		$info = $this->session->userdata('userInfo');
+		$activity = $this->Crud_model->fetch("activity");
+
 		if ($info['logged_in'] && $info['identifier']!="administrator"){
 			$data = array(
 				"title" => "Activity - Learning Management System | FEU - Institute of Techonology",
 				"info"=>$info,
+<<<<<<< HEAD
 				"activity"=>$activity_details
+=======
+				"activity"=>$activity
+>>>>>>> fd1515f29778644bf53d56a2e072e87138e3320d
 			);
 			$this->load->view('includes/header',$data);
 			$this->load->view('home-activity');
