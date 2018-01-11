@@ -8,11 +8,14 @@ class Feedback extends CI_Controller {
     }
 
     public function index() {
-        $userInfo = array(
-            'logged_in' => 1,
-            'identifier' => 'lecturer'
-        );
-        $allItems = $this->Crud_model->fetch("lecturer");
+        $enrollment_id = $this->session->userdata('userInfo')['user']->enrollment_id;
+        $offering_id = $this->session->userdata('userInfo')['user']->offering_id;
+        $result = $this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0];
+        if (empty($result->offering_lecturer_id)) { //last
+            echo "wala";
+        } else {
+            echo "meron";
+        }
         $data = array(
             'title' => "Feedback",
             'lecturer' => $allItems

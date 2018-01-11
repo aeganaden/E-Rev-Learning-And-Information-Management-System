@@ -83,9 +83,8 @@ class Importdata extends CI_Controller {
                 'title' => "Import Excel"
             );
             $this->load->view('includes/header', $data);
-
+            $past_path = $this->upload->data();
             if ($this->upload->do_upload('userfile')) {
-
                 $data[] = array('upload_data' => $this->upload->data());
                 $obj = PHPExcel_IOFactory::load($this->upload->data()["full_path"]);
                 $sheetnames = $obj->getSheetNames();
@@ -134,14 +133,8 @@ class Importdata extends CI_Controller {
                                         }
                                     }
                                     $inner_counter++;
-//                                echo"<pre>";
-//                                print_r($stack_hold);
-//                                echo"</pre>";
                                 }
                                 $batch_holder[$sheet][] = $stack_hold;
-//                            echo"<pre>";
-//                            print_r($batch_holder);
-//                            echo"</pre>";
                             }
                         } else {
                             $error_message_last = "The data from the file was not imported to the database due to the errors.<br>";
@@ -155,7 +148,7 @@ class Importdata extends CI_Controller {
                 }
                 if (!empty($error_message_last)) {          //error
                     echo $error_message_last;
-                    $this->load->view('excel_reader/sample');
+                    $this->load->view('excel_reader/sample');       //changes text to error
                 } else {                                    //success magiinsert na
                     include(APPPATH . 'views\excel_reader\custom2.php');
                     $temp_counter = 0;
@@ -163,8 +156,6 @@ class Importdata extends CI_Controller {
                     foreach ($sheetnames as $sheet) {
 
                         $temp = $this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'];
-                        //print_r($temp);
-                        //print_r($this->Crud_model->fetch('activity_details'));
                         if ($this->db->trans_status() === FALSE && !empty($temp)) {
                             echo $temp . " on '$sheet' table<br>";
                             $temp_counter++;
@@ -179,8 +170,9 @@ class Importdata extends CI_Controller {
                     } else {
                         $this->db->trans_commit();
                     }
+                    include(APPPATH . 'views\excel_reader\custom3.php');
+                    include(APPPATH . 'views\excel_reader\custom5.php');
                 }
-
                 $this->load->view('includes/footer');
             } else {
                 $error = array('error' => $this->upload->display_errors());

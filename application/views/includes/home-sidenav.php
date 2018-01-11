@@ -38,7 +38,7 @@
         </li>
     <?php endif ?>
     <li>
-        <a href="#!">Second Link</a>
+        <a href="<?= base_url() ?>feedback"><i class="material-icons color-white">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
     <li>
         <div class="divider"></div>
