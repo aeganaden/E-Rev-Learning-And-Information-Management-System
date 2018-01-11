@@ -55,8 +55,8 @@
 							</blockquote>
 						</div>
 						<div class="col s4">
-							<i class="material-icons right color-white" style="cursor: pointer;">delete</i>
-							<i class="material-icons right color-primary-yellow modal-trigger" data-id="" href="#modal_activity" style="cursor: pointer;">edit</i>
+							<i class="material-icons right color-white" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
+							<i class="btn_edit_activity material-icons right color-primary-yellow modal-trigger" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;">edit</i>
 						</div>
 					</div>
 					<p><i>Added on <?=date("M d, Y", $value->activity_date_time)?></i></p>
@@ -70,13 +70,20 @@
 
 
 <!-- Modal Structure -->
-<div id="modal_activity" class="modal">
+<div id="modal_activity" class="modal bg-color-white">
 	<div class="modal-content">
-		<h4>Modal Header</h4>
-		<p>A bunch of text</p>
+		<h4>Edit Activity</h4>
+		<p id="">A bunch of text</p>
 	</div>
-	<div class="modal-footer">
+	<div class="modal-footer bg-color-white">
 		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
 	</div>
-	>>>>>>> fd1515f29778644bf53d56a2e072e87138e3320d
 </div>
+
+
+
+<script type="text/javascript">
+	$("#btn_edit_activity").click(function(event) {
+		
+	});
+</script>
