@@ -1,4 +1,12 @@
-<br><br>
+<!--====================================
+=            Navigation Top            =
+=====================================-->
+
+<?php $this->load->view('includes/home-navbar'); ?>
+
+<!--====  End of Navigation Top  ====<--></-->
+<?php $this->load->view('includes/home-sidenav'); ?>
+<!--ABOVE IS PERMA-->
 <div class="container">
     <?php if (!$lecturer): ?>
         <h1>Table is EMPTY</h1>
