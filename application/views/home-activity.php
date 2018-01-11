@@ -33,23 +33,7 @@
 </div>
 
 <div class="row">
-<<<<<<< HEAD
-	<?php foreach ($activity as $key => $value): ?>
-		<div class="col s4">
-			<div class="card bg-primary-green ">
-				<div class="card-content white-text">
-					<span class="card-title">Card Title</span>
-					<p>I am a very simple card. I am good at containing small bits of information.
-					I am convenient because I require little markup to use effectively.</p>
-				</div>
-				<div class="card-action">
-					<a href="#">This is a link</a>
-					<a href="#">This is a link</a>
-				</div>
-			</div>
-		</div>
-	<?php endforeach ?>
-=======
+
 
 	<?php foreach ($activity as $key => $value): ?>
 		<?php 
@@ -94,5 +78,5 @@
 	<div class="modal-footer">
 		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
 	</div>
->>>>>>> fd1515f29778644bf53d56a2e072e87138e3320d
+	>>>>>>> fd1515f29778644bf53d56a2e072e87138e3320d
 </div>
