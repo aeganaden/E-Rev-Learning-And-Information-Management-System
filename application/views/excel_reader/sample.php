@@ -1,3 +1,3 @@
 <script>
-    document.getElementById("text_title").innerHTML = <?= $error_counter ?>;
+    document.getElementById("text_title").innerHTML = "Error";
 </script>
