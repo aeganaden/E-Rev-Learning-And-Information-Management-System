@@ -38,7 +38,7 @@
 								<p><?=strtoupper($value->activity_venue)?></p>
 							</blockquote>
 							<div class="row div-edit" style="display: none">
-								<input type="text" class="timepicker time_data" value="Change Time">
+								<input type="text"  class="timepicker time_data" value="Change Time">
 								<input type="text" class="datepicker date_data" value="Change Date">
 								<textarea id="txtarea" class="materialize-textarea desc_data"><?=$value->activity_description?></textarea>
 								<label for="txtarea">Description</label>
@@ -101,6 +101,20 @@
 	});
 
 	$(".btn_delete_activity").click(function(event) {
+		$.ajax({
+			url: '/path/to/file',
+			type: 'post',
+			dataType: 'json',
+			data: {
+				id: $(this).attr("data-id");
+			},
+			success: function(data){
+
+			},
+			error: function(data){
+
+			}
+		});
 		
 	});
 </script>
