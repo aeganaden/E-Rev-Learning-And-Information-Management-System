@@ -21,7 +21,7 @@ class Admin extends CI_Controller {
 
     public function index() {
 
-
+        $this->session->unset_userdata('insertion_info');
 
         // Fetch Schedule
         $report_cosml = $this->Crud_model->fetch("schedule");

@@ -16,8 +16,10 @@
         <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
         </div>
+
         <!-- Modal Trigger -->
         <div class="input-field">
+            <a href="<?= base_url() ?>importdata" class="waves-effect waves-light btn left red">back</a>
             <a class="waves-effect waves-light btn modal-trigger right" href="#modal1">Next</a>
         </div>
 

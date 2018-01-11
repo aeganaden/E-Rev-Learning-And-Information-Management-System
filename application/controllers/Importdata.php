@@ -9,10 +9,11 @@ class Importdata extends CI_Controller {
         $this->load->model('Crud_model');
         $this->load->library('form_validation');
         $this->load->library('Excelfile');
-        $this->load->library('Session');
+        $this->load->library('session');
     }
 
     public function index() {
+        $this->session->unset_userdata('insertion_info');
         $userInfo = $this->session->userdata('userInfo')['user'];
         $temp = array('username' => $userInfo->username, 'password' => $userInfo->password);
         $temp = $this->Crud_model->fetch('admin', $temp);
@@ -20,18 +21,20 @@ class Importdata extends CI_Controller {
             $data = array(
                 'title' => "Import Excel"
             );
-            $insertion_info = 1;
-            $this->session->set_userdata('insertion_info', $insertion_info);
             $this->load->view('includes/header', $data);
             $this->load->view('excel_reader/index');
             $this->load->view('includes/footer');
-        } else {
+        } else {                    //kapag di naka login
             redirect("");
         }
     }
 
     public function credentialcheck() {
-        if ($this->session->userdata('insertion_info')) {
+        $this->session->unset_userdata('insertion_info');
+        $userInfo = $this->session->userdata('userInfo')['user'];
+        $temp = array('username' => $userInfo->username, 'password' => $userInfo->password);
+        $temp = $this->Crud_model->fetch('admin', $temp);
+        if ($temp) {
             $data = array(
                 'username' => $this->input->post('username'),
             );
@@ -49,11 +52,7 @@ class Importdata extends CI_Controller {
 
 //            if ($userInfo->password == sha1($this->input->post('password'))) {
                 if ($userInfo->password == $this->input->post('password')) {
-                    $temp = $this->session->userdata('userInfo');
-                    $insertion_info = array(
-                        "username" => $temp['username'],
-                        "password" => $temp['password']
-                    );
+                    $insertion_info = array('logged_in' => true);
                     $this->session->set_userdata('insertion_info', $insertion_info);
                     redirect('importdata/uploadfile');
                 } else {
@@ -66,15 +65,14 @@ class Importdata extends CI_Controller {
                     $this->load->view('includes/footer');
                 }
             }
-
             $this->load->view('includes/footer');
-        } else {
+        } else {                    //kapag di naka login
             redirect("");
         }
     }
 
     public function filecheck() {
-        if ($this->session->userdata('insertion_info')) {
+        if (!empty($this->session->userdata('insertion_info')['logged_in']) && $this->session->userdata('insertion_info')['logged_in'] == 1) {
             $config['upload_path'] = FCPATH . 'assets\uploads\\';
             $config['allowed_types'] = 'xls|csv|xlsx';
             $config['max_size'] = '10000';
@@ -196,7 +194,8 @@ class Importdata extends CI_Controller {
     }
 
     public function uploadfile() {
-        if ($this->session->userdata('insertion_info')) {
+
+        if (!empty($this->session->userdata('insertion_info')['logged_in']) && $this->session->userdata('insertion_info')['logged_in'] == 1) {
             $data = array(
                 'title' => "Import Excel"
             );
