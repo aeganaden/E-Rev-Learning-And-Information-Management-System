@@ -16,6 +16,11 @@ class Importdata extends CI_Controller {
             'title' => "Import Excel"
         );
 //        $sample = array(
+//            'enrollment_sy' => "2017-2018",
+//            'enrollment_term' => 3
+//        );
+//        $this->Crud_model->insert('enrollment', $sample);
+//        $sample = array(
 //            array(
 //                'admin_id' => 3,
 //                'username' => 'test',
@@ -34,7 +39,7 @@ class Importdata extends CI_Controller {
 //        }
         //$this->db->_error_message();
 //        echo "<pre>";
-//        print_r($this->Crud_model->table_names());
+//        print_r($sample);
 //        echo "</pre>";
 //        $this->session->set_flashdata('file_path', 'test');
 //        echo $this->session->flashdata('file_path');
@@ -120,11 +125,8 @@ class Importdata extends CI_Controller {
                                 $col_type = $col_data_hold['type'];
                                 $col_length = $col_data_hold['max_length'];
                                 if ($col_type === "bigint" || $col_type === "tinyint" || $col_type === "int") {    //check data types
-                                    if (is_int((int) $col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
-                                        $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : array_push($stack_hold, array($col_data_hold['name'] => $col_hold));
-                                        echo "<pre>";
-                                        print_r($stack_hold);
-                                        echo "</pre>";
+                                    if (is_numeric($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold) && preg_match('/^\d+$/', $col_hold)) {
+                                        $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                     } else {
                                         echo "\"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
                                         $error_counter++;
@@ -132,16 +134,19 @@ class Importdata extends CI_Controller {
                                     }
                                 } else if ($col_type === "varchar" || $col_type === "text") { //check data types
                                     if (is_string($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
-
+                                        $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                     } else {
                                         echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
                                         $error_counter++;
                                         //break;
                                     }
                                 }
-
                                 $inner_counter++;
                             }
+                            $batch_holder[$sheet][] = $stack_hold;
+//                            echo"<pre>";
+//                            print_r($batch_holder);
+//                            echo"</pre>";
                         }
                     } else {
                         $error_message_last = "The data from the file was not imported to the database due to the errors.<br>";
@@ -153,11 +158,18 @@ class Importdata extends CI_Controller {
                 }
                 $counter++;
             }
-            if (!empty($error_message_last)) {
+            if (!empty($error_message_last)) {          //error
                 echo $error_message_last;
-                $this->load->view('excel_reader/sample', array('error_counter' => "Error(" . $error_counter . ")"));
-            } else {
+                $this->load->view('excel_reader/sample', array('error_counter' => "Error"));
+            } else {                                    //success
                 include(APPPATH . 'views\excel_reader\custom2.php');
+                foreach ($sheetnames as $sheet) {
+                    if (empty($this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'])) {
+                        echo "Success insertion on table '$sheet'<br>";
+                    } else {
+                        echo $this->db->error()['message'] . "<br>";
+                    }
+                }
             }
 
             $this->load->view('includes/footer');
