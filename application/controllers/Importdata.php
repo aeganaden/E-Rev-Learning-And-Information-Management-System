@@ -9,75 +9,23 @@ class Importdata extends CI_Controller {
         $this->load->model('Crud_model');
         $this->load->library('form_validation');
         $this->load->library('Excelfile');
+        $this->load->library('Session');
     }
 
     public function index() {
-        $data = array(
-            'title' => "Import Excel"
-        );
-
-        $this->db->trans_begin();
-        $test = array(array(
-                "lecturer_id" => 201011111,
-                "lecturer_firstname" => "Ronald",
-                "lecturer_midname" => "Gatan",
-                "lecturer_lastname" => "Babaran",
-                "lecturer_expertise" => 201011111,
-                "username" => "rbbabaran",
-                "password" => "ronald",
-                "lecturer_email" => "rbbabaran@gmail.com",
-                "lecturer_status" => 1,
-                "lecturer_offering_id" => 1,
-            ), array(
-                "lecturer_id" => "201011111",
-                "lecturer_firstname" => "Ronald",
-                "lecturer_midname" => "Gatan",
-                "lecturer_lastname" => "Babaran",
-                "lecturer_expertise" => "201011111",
-                "username" => "rbbabaran",
-                "password" => "ronald",
-                "lecturer_email" => "rbbabaran@gmail.com",
-                "lecturer_status" => 1,
-                "lecturer_offering_id" => 1,
-        ));
-        $temp = $this->Crud_model->insert_batch('lecturer', $test)['message'];
-        if ($this->db->trans_status() === FALSE) {
-            print($temp);
-            $this->db->trans_rollback();
+        $userInfo = $this->session->userdata('userInfo')['user'];
+        $temp = array('username' => $userInfo->username, 'password' => $userInfo->password);
+        $temp = $this->Crud_model->fetch('admin', $temp);
+        if ($temp) {
+            $data = array(
+                'title' => "Import Excel"
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('excel_reader/index');
+            $this->load->view('includes/footer');
         } else {
-            $this->db->trans_commit();
+            redirect("");
         }
-//        $sample = array(
-//            'enrollment_sy' => "2017-2018",
-//            'enrollment_term' => 3
-//        );
-//        $this->Crud_model->insert('enrollment', $sample);
-//        $sample = array(
-//            array(
-//                'admin_id' => 3,
-//                'username' => 'test',
-//                'password' => '12345678901234567890123456789012345678abc'
-//            ),
-//            array(
-//                'admin_id' => 4,
-//                'username' => 'test',
-//                'password' => '12345678901234567890123456789012345678abc'
-//            )
-//        );
-//        if (!empty($this->Crud_model->insert_batch('admin', $sample)['message'])) {
-//            echo $this->Crud_model->insert_batch('admin', $sample)['message'];
-//        } else {
-//            echo "succes";
-//        }
-        //$this->db->_error_message();
-//        echo "<pre>";
-//        print_r($sample);
-//        echo "</pre>";
-//        $this->session->set_flashdata('file_path', 'test');
-//        echo $this->session->flashdata('file_path');
-        $this->load->view('includes/header', $data);
-        $this->load->view('excel_reader/index');
-        $this->load->view('includes/footer');
     }
 
     public function credentialcheck() {
@@ -88,15 +36,22 @@ class Importdata extends CI_Controller {
         if (!$userInfo) {
             $data = array(
                 'error' => 'Invalid account. Please try again.',
+                'title' => "Import Excel"
             );
-
             $this->load->view('includes/header', $data);
             $this->load->view('excel_reader/index');
             $this->load->view('includes/footer');
         } else {
             $userInfo = $userInfo[0];
 
-            if ($userInfo->password == sha1($this->input->post('password'))) {
+//            if ($userInfo->password == sha1($this->input->post('password'))) {
+            if ($userInfo->password == $this->input->post('password')) {
+                $temp = $this->session->userdata('userInfo');
+                $insertion_info = array(
+                    "username" => $temp['username'],
+                    "password" => $temp['password']
+                );
+                $this->session->set_userdata('insertion_info', $insertion_info);
                 redirect('importdata/uploadfile');
             } else {
                 $data = array(
@@ -242,24 +197,7 @@ class Importdata extends CI_Controller {
     }
 
     public function sha1it() {
-        echo sha1('testing');
-    }
-
-    public function test() {
-        for ($x = 0; $x < 6; $x++) {
-            $hold = array(
-                'test1' => $x,
-                'test2' => $x,
-                'test3' => $x,
-                'test4' => $x,
-                'test5' => $x,
-                'test6' => $x
-            );
-            $data[] = $hold;
-        }
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
+        echo sha1('admin');
     }
 
     function is_this_string_an_integer($string) {

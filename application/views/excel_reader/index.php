@@ -20,6 +20,7 @@
                 <label for="password">Password</label>
             </div>
             <div class="input-field">
+                <a href="<?= base_url() ?>admin" class="waves-effect waves-light btn left red">return</a>
                 <button type="submit" value="upload" class="waves-effect waves-light btn right">
                     next
                 </button>
