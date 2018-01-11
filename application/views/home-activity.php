@@ -35,6 +35,7 @@
 <div class="row">
 
 
+<<<<<<< HEAD
     <?php foreach ($activity as $key => $value): ?>
         <?php
         // Activity details
@@ -65,10 +66,44 @@
             </div>
         </div>
     <?php endforeach ?>
+=======
+	<?php foreach ($activity as $key => $value): ?>
+		<?php 
+		
+		// Activity details
+		$details = $this->Crud_model->fetch("activity_details", array("activity_details_id"=>$value->activity_details_id));
+		$details = $details[0];
+		$topic = $this->Crud_model->fetch("topic", array("topic_id"=>$value->topic_id));
+		$topic = $topic[0];
+		?>
+		<div class="col s4">
+			<div class="card bg-primary-green ">
+				<div class="card-content white-text">
+					<div class="row" style="margin-bottom: 0 !important;">
+						<div class="col s8">
+							<blockquote class="color-primary-yellow">
+								<span class="card-title color-white"><?=$details->activity_details_name?></span>
+								<i><?=$topic->topic_name?></i>
+							</blockquote>
+						</div>
+						<div class="col s4">
+							<i class="material-icons right color-white" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
+							<i class="btn_edit_activity material-icons right color-primary-yellow modal-trigger" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;">edit</i>
+						</div>
+					</div>
+					<p><i>Added on <?=date("M d, Y", $value->activity_date_time)?></i></p>
+					<h5><?=$value->activity_description?></h5>
+				</div>
+				
+			</div>
+		</div>
+	<?php endforeach ?>
+>>>>>>> f9c6e29aae826a368fb85c4d7b9ad8bad07ca112
 </div>
 
 
 <!-- Modal Structure -->
+<<<<<<< HEAD
 <div id="modal_activity" class="modal">
     <div class="modal-content">
         <h4>Modal Header</h4>
@@ -77,4 +112,22 @@
     <div class="modal-footer">
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
     </div>
+=======
+<div id="modal_activity" class="modal bg-color-white">
+	<div class="modal-content">
+		<h4>Edit Activity</h4>
+		<p id="">A bunch of text</p>
+	</div>
+	<div class="modal-footer bg-color-white">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+	</div>
+>>>>>>> f9c6e29aae826a368fb85c4d7b9ad8bad07ca112
 </div>
+
+
+
+<script type="text/javascript">
+	$("#btn_edit_activity").click(function(event) {
+		
+	});
+</script>

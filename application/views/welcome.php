@@ -124,7 +124,7 @@
 
 				<div class="row ">
 					<div class="input-field">
-						<input id="login-username" type="text" class="validate ">
+						<input id="login-username" autofocus="" type="text" class="validate ">
 						<label for="login-username" class="color-primary-green">Username</label>
 					</div>
 				</div>
