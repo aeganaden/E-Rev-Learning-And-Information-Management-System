@@ -29,7 +29,9 @@ function getDivHeightID(x){
 $(document).ready(function() {
 	$('#tbl-card-cosml').DataTable();
 	$('#tbl-card-ls').DataTable();
+	$('#tbl-card-lcl').DataTable();
 	$('#tbl-att-lec').DataTable();
+	$('#tbl-com').DataTable();
 } );
 
 /*=====  End of Datatables JS  ======*/
@@ -142,19 +144,21 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
+	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr");
 }
 
-function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3){
+function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4){
 	$("#"+id).click(function(event) {
 		$("#"+div_id).fadeIn();
 		$("#"+div_id).css("display","block");
 		$("#"+div_hide_1).css("display","none");
 		$("#"+div_hide_2).css("display","none");
 		$("#"+div_hide_3).css("display","none");
+		$("#"+div_hide_4).css("display","none");
 
 	});
 }

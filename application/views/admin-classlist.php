@@ -17,7 +17,7 @@
     <li>
       <div class="collapsible-header  bg-primary-green color-white"><i class="material-icons">people_outline</i><?=$value->offering_section?></div>
       <div>
-       <table id="tbl-card-lahr" >
+       <table id="tbl-card-lcl" style="padding: 2%;">
         <thead >
           <tr>
             <th>Student ID</th>

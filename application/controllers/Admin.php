@@ -68,9 +68,12 @@ class Admin extends CI_Controller {
 			}
 		}
 
+		$offering_data = $this->Crud_model->fetch("offering");
+
 		$data = array(
 			"title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
-			"div_cosml_data" => $report_cosml
+			"div_cosml_data" => $report_cosml,
+			"offering"=>$offering_data,
 		);
 		$this->load->view('includes/header',$data);
 		$this->load->view('admin');
@@ -96,6 +99,26 @@ class Admin extends CI_Controller {
 		$announcement_id = $this->input->post("id");
 		$data = $this->Crud_model->fetch("announcement", array("announcement_id"=>$announcement_id));
 		echo json_encode($data);
+	}
+
+	public function updateAnnouncement()
+	{
+		$title = $this->input->post("title");
+		$content = $this->input->post("content");
+		$status = $this->input->post("status");
+		$edited_at = time();
+		$id = $this->input->post("id");
+		$data = array(
+			"announcement_title"=>$title,
+			"announcement_content"=>$content,
+			"announcement_is_active"=>$status,
+			"announcement_edited_at"=> $edited_at
+		);
+
+		if ($this->Crud_model->update("announcement",$data, array("announcement_id"=>$id))) {
+			echo json_encode("success");
+		}
+
 	}
 
 	public function addAnnouncement()
@@ -142,6 +165,14 @@ class Admin extends CI_Controller {
 			redirect('Admin/announcements','refresh');
 		}
 
+	}
+
+	public function deleteAnnouncement()
+	{
+		$id = $this->input->post("id");
+		if ($this->Crud_model->delete("announcement",array("announcement_id"=>$id))) {
+			echo json_encode(true);
+		}
 	}
 
 
@@ -199,6 +230,42 @@ class Admin extends CI_Controller {
 		$this->load->view('includes/header',$data);
 		$this->load->view('admin-classlist');
 		$this->load->view('includes/footer');
+	}
+
+	public function fetchOffering()
+	{
+		$id = $this->input->post("id");
+		$where = array(
+			"offering_id"=>$id
+		);
+
+		$data = $this->Crud_model->fetch("offering",$where);
+		if ($data) {
+			echo json_encode($data);
+		}
+
+	}
+
+	public function updateOffering()
+	{
+		$id = $this->input->post("id");
+		$title = $this->input->post("title");
+		$code = $this->input->post("code");
+		$data = array(
+			"offering_course_code"=>$code,
+			"offering_course_title"=>$title,
+		);
+		if ($this->Crud_model->update("offering",$data,array("offering_id"=>$id))) {
+			echo json_encode(true);
+		}
+	}
+
+	public function deleteOffering()
+	{
+		$id = $this->input->post("id");
+		if ($this->Crud_model->delete("offering",array("offering_id"=>$id))) {
+			echo json_encode(true);
+		}
 	}
 
 
