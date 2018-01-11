@@ -8,10 +8,14 @@ class Feedback extends CI_Controller {
     }
 
     public function index() {
+        $userInfo = array(
+            'logged_in' => 1,
+            'identifier' => 'lecturer'
+        );
         $allItems = $this->Crud_model->fetch("lecturer");
         $data = array(
             'title' => "Feedback",
-            'lecturer' => $allItems,
+            'lecturer' => $allItems
         );
         $this->load->view('includes/header', $data);
         $this->load->view('feedback/feedback_main');
