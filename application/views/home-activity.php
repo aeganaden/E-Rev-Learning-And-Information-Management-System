@@ -38,18 +38,20 @@
 								<p><?=strtoupper($value->activity_venue)?></p>
 							</blockquote>
 							<div class="row div-edit" style="display: none">
-								<input type="text" class="timepicker" value="Change Time">
-								<input type="text" class="datepicker" value="Change Date">
+								<input type="text" class="timepicker time_data" value="Change Time">
+								<input type="text" class="datepicker date_data" value="Change Date">
+								<textarea id="txtarea" class="materialize-textarea desc_data"><?=$value->activity_description?></textarea>
+								<label for="txtarea">Description</label>
+								<button class="btn waves-effect waves-light right btn_update_activity" data-id="<?=$value->activity_id?>">Update</button>
 							</div>
-
 						</div>
 						<div class="col s4">
 
-							<i class="material-icons right color-white tooltipped" data-tooltip="Delete Activity" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
-							<i class="tooltipped btn_edit_activity material-icons right color-primary-yellow" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;" data-tooltip="Change Activity">edit</i>
+							<i class="material-icons right color-white tooltipped btn_delete_activity" data-tooltip="Delete Activity" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
+							<i class="tooltipped btn_edit_activity material-icons right color-primary-yellow" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;" data-tooltip="Edit Activity">edit</i>
 						</div>
 					</div>
-					<h5><?=$value->activity_description?></h5>
+					<h5 style="display: block;" class="activity_paragraph_desc"><?=$value->activity_description?></h5>
 				</div>
 				
 			</div>
@@ -58,21 +60,47 @@
 </div>
 
 
-<!-- Modal Structure -->
-
-<div id="modal_activity" class="modal bg-color-white">
-	<div class="modal-content">
-		<h4>Edit Activity</h4>
-		<p id="">A bunch of text</p>
-	</div>
-	<div class="modal-footer bg-color-white">
-		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-	</div>
-</div>
-
 
 <script type="text/javascript">
 	$(".btn_edit_activity").click(function(event) {
 		$(".div-edit").toggle("slow");
+		if ($(".activity_paragraph_desc").css("display")=="block") {
+			$(".activity_paragraph_desc").fadeOut();
+			$(".activity_paragraph_desc").css("display","none");
+		}else{
+			$(".activity_paragraph_desc").fadeIn();
+			$(".activity_paragraph_desc").css("display","block");
+		}
+
+	});
+
+	$(".btn_update_activity").click(function(event) {
+		$time = $(".time_data").val();
+		$date = $(".date_data").val();
+		$desc = $(".desc_data").val();
+		$.ajax({
+			url: '<?=base_url()?>Home/updateActivity ',
+			type: 'post',
+			dataType: 'json',
+			data: {
+				id: $(this).attr("data-id"),
+				time: $time,
+				date: $date,
+				desc: $desc
+			},
+			success: function(data){
+
+				swal("Done!", "Successfully edited", "success").then(function(){
+					// console.log(data);	
+					window.location.reload(true);
+				});
+				
+			}
+		});
+
+	});
+
+	$(".btn_delete_activity").click(function(event) {
+		
 	});
 </script>
