@@ -99,6 +99,7 @@ class Home extends CI_Controller {
 		$info = $this->session->userdata('userInfo');
 		$activity = $this->Crud_model->fetch("activity");
 
+
 		if ($info['logged_in'] && $info['identifier']!="administrator"){
 			$data = array(
 				"title" => "Activity - Learning Management System | FEU - Institute of Techonology",
@@ -112,6 +113,23 @@ class Home extends CI_Controller {
 			redirect('Admin');
 		}else{
 			redirect('Welcome','refresh');
+		}
+	}
+
+	public function updateActivity()
+	{
+		$id = $this->input->post("id");
+		$time = $this->input->post("time");
+		$date = $this->input->post("date");
+		$desc = $this->input->post("desc");
+		$dateFull = strtotime($date." ".$time);
+		
+		$data = array(
+			"activity_description"=>$desc,
+			"activity_date_time"=>$dateFull
+		);
+		if ($this->Crud_model->update("activity",$data,array("activity_id"=>$id))) {
+			echo json_encode(true);
 		}
 	}
 

@@ -14,6 +14,9 @@ $(document).ready(function() {
     today: 'Today',
     clear: 'Clear',
     close: 'Ok',
+    hiddenName: true,
+    min: new Date("now"),
+    format: 'mmmm d, yyyy',
     closeOnSelect: false // Close upon selecting a date,
 });
 	$('.timepicker').pickatime({
