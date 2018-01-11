@@ -3,6 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
 
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->load->library('session'); 
+		$this->load->model('Crud_model');
+	}
+
 	public function index()
 	{
 		$info = $this->session->userdata('userInfo');
@@ -88,10 +96,13 @@ class Home extends CI_Controller {
 	public function Activity()
 	{
 		$info = $this->session->userdata('userInfo');
+		$activity = $this->Crud_model->fetch("activity");
+
 		if ($info['logged_in'] && $info['identifier']!="administrator"){
 			$data = array(
 				"title" => "Activity - Learning Management System | FEU - Institute of Techonology",
-				"info"=>$info
+				"info"=>$info,
+				"activity"=>$activity
 			);
 			$this->load->view('includes/header',$data);
 			$this->load->view('home-activity');

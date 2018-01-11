@@ -24,7 +24,7 @@
 	<div class="col s4">
 		
 		<blockquote class="color-primary-green">
-			<?php echo strtotime("now") ?>
+			<?php echo strtotime("+1 day") ?>
 			<h1 class="color-black">Activity</h1>
 		</blockquote>
 	</div>
@@ -33,17 +33,34 @@
 </div>
 
 <div class="row">
-	<div class="col s4">
-		<div class="card bg-primary-green ">
-			<div class="card-content white-text">
-				<span class="card-title">Card Title</span>
-				<p>I am a very simple card. I am good at containing small bits of information.
-				I am convenient because I require little markup to use effectively.</p>
-			</div>
-			<div class="card-action">
-				<a href="#">This is a link</a>
-				<a href="#">This is a link</a>
+
+	<?php foreach ($activity as $key => $value): ?>
+		<?php 
+		
+		// Activity details
+		$details = $this->Crud_model->fetch("activity_details", array("activity_details_id"=>$value->activity_details_id));
+		$details = $details[0];
+		?>
+		<div class="col s4">
+			<div class="card bg-primary-green ">
+				<div class="card-content white-text">
+					<div class="row" style="margin-bottom: 0 !important;">
+						<div class="col s4">
+							<blockquote class="color-primary-yellow">
+								<span class="card-title color-white"><?=$details->activity_details_name?></span>
+							</blockquote>
+						</div>
+						<div class="col s4"></div>
+						<div class="col s4">
+							<i class="material-icons right color-primary-yellow" style="cursor: pointer;">edit</i>
+							<i class="material-icons right color-primary-yellow" style="cursor: pointer;">delete</i>
+						</div>
+					</div>
+					<p><i>Added on <?=date("M d, Y", $value->activity_date_time)?></i></p>
+					<h5><?=$value->activity_description?></h5>
+				</div>
+				
 			</div>
 		</div>
-	</div>
+	<?php endforeach ?>
 </div>
