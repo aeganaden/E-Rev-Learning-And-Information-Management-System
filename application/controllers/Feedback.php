@@ -55,22 +55,34 @@ class Feedback extends CI_Controller {
     }
 
     public function content() {
+        //print_r($this->session->userdata('userInfo'));
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $temp = $this->uri->segment(3);
             $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $temp));
-            $info["user"] = new stdClass();
             if ($offering_id != FALSE) {
                 if (($offering_id[0]->lecturer_offering_id) == ($this->session->userdata('userInfo')['user']->offering_id)) {
+                    $lect["user"] = new stdClass();
+                    $info["user"] = new stdClass();
                     $result = $offering_id[0];
-                    $info["id"] = $result->lecturer_id;
-                    $info["firstname"] = $result->lecturer_firstname;
-                    $info["midname"] = $result->lecturer_midname;
-                    $info["lastname"] = $result->lecturer_lastname;
-                    $info["expertise"] = $result->lecturer_expertise;
-                    $info["email"] = $result->lecturer_email;
+                    //print_r($this->session->userdata('userInfo')['user']);
+
+                    $lect["id"] = $result->lecturer_id;
+                    $lect["firstname"] = $result->lecturer_firstname;
+                    $lect["midname"] = $result->lecturer_midname;
+                    $lect["lastname"] = $result->lecturer_lastname;
+                    $lect["expertise"] = $result->lecturer_expertise;
+                    $lect["email"] = $result->lecturer_email;
+
+                    $result = $this->session->userdata('userInfo')['user'];
+                    $info["id"] = $result->id;
+                    $info["firstname"] = $result->firstname;
+                    $info["midname"] = $result->midname;
+                    $info["lastname"] = $result->lastname;
+                    $info["email"] = $result->email;
                     $info["identifier"] = "student";
                     $data = array(
                         'title' => "Feedback",
+                        'lect' => $lect,
                         'info' => $info
                     );
                     $this->load->view('includes/header', $data);
@@ -120,7 +132,7 @@ class Feedback extends CI_Controller {
                 reidrect("");
             }
         } else {
-            reidrect("");
+            redirect("");
         }
     }
 

@@ -3,7 +3,7 @@
 =            Side-Nav Section            =
 =======================================-->
 
-
+<?= print_r($info); ?>
 <ul id="slide-out" class="side-nav bg-primary-green">
     <li><div class="user-view">
             <div class="background bg-primary-yellow">
@@ -19,7 +19,6 @@
                 <div class="col s8">
                     <div class="row " style="margin-bottom: 0 !important">
                         <h5><span class="color-black"><?= ucwords($info["user"]->firstname) . " " . ucwords($info["user"]->lastname) ?></span></h5>
-
                     </div>
                 </div>
             </div>
@@ -37,6 +36,9 @@
             <a href="<?= base_url() ?>Home/Activity" class="color-white"><i class="material-icons color-white">remove_from_queue</i>Activity</a>
         </li>
     <?php endif ?>
+    <li>
+        <a href="<?= base_url() ?>Home"><i class="material-icons color-white">home</i>Home</a> <!--mark - naglagay-->
+    </li>
     <li>
         <a href="<?= base_url() ?>feedback"><i class="material-icons color-white">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
