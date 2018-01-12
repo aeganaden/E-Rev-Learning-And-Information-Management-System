@@ -1,0 +1,1 @@
+<script>document.getElementById("error").innerHTML = "Error: lecturer_id not fetched"</script>
