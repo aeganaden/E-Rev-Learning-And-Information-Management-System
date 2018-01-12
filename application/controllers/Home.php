@@ -98,13 +98,16 @@ class Home extends CI_Controller {
 		$activity_details = $this->Crud_model->fetch("activity");
 		$info = $this->session->userdata('userInfo');
 		$activity = $this->Crud_model->fetch("activity");
+		$id = $info['user']->id;
+		$offering = $this->Crud_model->fetch("offering",array("offering_lecturer_id"=>$id));
 
 
 		if ($info['logged_in'] && $info['identifier']!="administrator"){
 			$data = array(
 				"title" => "Activity - Learning Management System | FEU - Institute of Techonology",
 				"info"=>$info,
-				"activity"=>$activity_details
+				"activity"=>$activity_details,
+				"offering"=>$offering
 			);
 			$this->load->view('includes/header',$data);
 			$this->load->view('home-activity');
@@ -115,6 +118,16 @@ class Home extends CI_Controller {
 			redirect('Welcome','refresh');
 		}
 	}
+
+	public function fetchSchedule()
+	{
+		$id = $this->input->post("id");
+		$data = $this->Crud_model->fetch("schedule",array("offering_id"=>$id));
+		$data = $data[0];
+		$data->min = $data->
+		echo json_encode($data);
+	}
+
 
 	public function updateActivity()
 	{
@@ -129,6 +142,17 @@ class Home extends CI_Controller {
 			"activity_date_time"=>$dateFull
 		);
 		if ($this->Crud_model->update("activity",$data,array("activity_id"=>$id))) {
+			echo json_encode(true);
+		}
+	}
+
+	public function deleteActivity()
+	{
+		$id = $this->input->post("id");
+		$where = array(
+			"activity_id"=>$id
+		);
+		if ($this->Crud_model->delete("activity",$where)) {
 			echo json_encode(true);
 		}
 	}
