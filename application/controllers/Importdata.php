@@ -83,7 +83,6 @@ class Importdata extends CI_Controller {
                 'title' => "Import Excel"
             );
             $this->load->view('includes/header', $data);
-            $past_path = $this->upload->data();
             if ($this->upload->do_upload('userfile')) {
                 $data[] = array('upload_data' => $this->upload->data());
                 $obj = PHPExcel_IOFactory::load($this->upload->data()["full_path"]);
@@ -100,34 +99,39 @@ class Importdata extends CI_Controller {
                         $worksheet = $obj->getSheet($counter);
                         $hold[$sheet] = $worksheet->toArray(null, true, true, false);
                         $col_names = $this->Crud_model->col_names($sheet);
+                        $name_counter = 0;
                         foreach ($hold[$sheet][0] as $col_hold) {           //check field/column names
-                            if (!in_array($col_hold, $col_names)) {
-                                echo "There is no \"" . $col_hold . "\" field in the database table \"" . $sheet . "\"<br>";
+                            if (!in_array($col_hold, $col_names) && empty($col_hold)) {
+                                echo "There is no \"" . $col_hold . "\", located at 1" . $alphas[$name_counter] . ", field in the database table \"" . $sheet . "\" (missing column)<br>";
                                 $error_counter++;
                             }
+                            $name_counter++;
                         }
                         if ($error_counter == 0) {
                             for ($z = 1; $z < count($hold[$sheet]); $z++) {         //loop base on row on excel 2 and beyond
                                 $inner_counter = 0;
-
                                 foreach ($hold[$sheet][$z] as $col_hold) {          //getting values
                                     $col_data_hold = get_object_vars($this->Crud_model->col_data($sheet)[$inner_counter]);
-                                    //print_r($col_data_hold['type']);
+
                                     $col_type = $col_data_hold['type'];
                                     $col_length = $col_data_hold['max_length'];
                                     if ($col_type === "bigint" || $col_type === "tinyint" || $col_type === "int") {    //check data types
-                                        if ($this->is_this_string_an_integer($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
+                                        if (($this->is_this_string_an_integer($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) || $col_hold == 0) { //kapag tinanggal rightmost, bawal ang 0
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
-                                            echo "\"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
+                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;
                                         }
-                                    } else if ($col_type === "varchar" || $col_type === "text") { //check data types
-                                        if (is_string($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) {
+                                    } else if ($col_type == "varchar" || $col_type == "text") { //check data types
+                                        if (is_string($col_hold) == 1 && $col_length >= strlen($col_hold) && !empty($col_hold)) {
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
-                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . ", does not qualify to \"" . $col_type . ".<br>";
+                                            echo strlen($col_hold) . "-" . $col_length . " 1<br>";
+//                                            echo is_string("mgbabaran@fit.edu.ph") . " 2<br>";
+//                                            echo $col_length >= strlen($col_hold) . " 3<br>";
+//                                            print(!empty($col_hold) . " 4<br>");
+                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;
                                         }
@@ -147,17 +151,21 @@ class Importdata extends CI_Controller {
                     $counter++;
                 }
                 if (!empty($error_message_last)) {          //error
+                    echo "----------<br>";
                     echo $error_message_last;
                     $this->load->view('excel_reader/sample');       //changes text to error
+                    if (file_exists($this->upload->data()["full_path"])) {
+                        unlink($this->upload->data()["full_path"]);
+                        echo "<b>The file is deleted.</b>";
+                    }
                 } else {                                    //success magiinsert na
                     include(APPPATH . 'views\excel_reader\custom2.php');
                     $temp_counter = 0;
                     $this->db->trans_begin();
                     foreach ($sheetnames as $sheet) {
-
                         $temp = $this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'];
                         if ($this->db->trans_status() === FALSE && !empty($temp)) {
-                            echo $temp . " on '$sheet' table<br>";
+                            echo "<br>***" . $temp . " on '$sheet' table";
                             $temp_counter++;
                             include(APPPATH . 'views\excel_reader\custom4.php');
                         } else {
@@ -166,7 +174,10 @@ class Importdata extends CI_Controller {
                     }
                     if ($temp_counter > 0) {
                         $this->db->trans_rollback();
-                        echo "<b>Insertion fail. Transaction rollback.<b>";
+                        echo "<br><b>Insertion fail. Transaction rollback.</b>";
+                        if (file_exists($this->upload->data()["full_path"])) {
+                            unlink($this->upload->data()["full_path"]) or die('failed deleting: ' . $this->upload->data()["full_path"]);
+                        }
                     } else {
                         $this->db->trans_commit();
                     }
@@ -223,7 +234,6 @@ class Importdata extends CI_Controller {
         if ($is_integer && $array_of_chars[0] == '0') {
             $is_integer = false;
         }
-
         // If we still think it might be an integer,
         // step through each char and see if it's a legitimate digit.
         if ($is_integer) {

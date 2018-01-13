@@ -1,163 +1,156 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Home extends CI_Controller {
-	public function __construct()
-	{
-		parent::__construct();
+
+    public function __construct() {
+        parent::__construct();
 
 
-		$this->load->library('session'); 
-		$this->load->model('Crud_model');
-	}
+        $this->load->library('session');
+        $this->load->model('Crud_model');
+    }
 
-	public function index()
-	{
-		$info = $this->session->userdata('userInfo');
-		
-
-		switch ($info["identifier"]) {
-			case 'student':
-			if (isset($info["user"]->student_id)) {
-
-				$info["user"]->id = $info["user"]->student_id;
-				$info["user"]->firstname = $info["user"]->student_firstname;
-				$info["user"]->midname = $info["user"]->student_midname;
-				$info["user"]->lastname = $info["user"]->student_lastname;
-				$info["user"]->program = $info["user"]->student_program;
-				$info["user"]->email = $info["user"]->student_email;
-				unset($info["user"]->student_firstname);
-				unset($info["user"]->student_midname);
-				unset($info["user"]->student_lastname);
-				unset($info["user"]->student_program);
-				unset($info["user"]->student_email);
-				unset($info["user"]->student_id);
-
-			}
-			break;
-
-			case 'professor':
-			if (isset($info["user"]->professor_id)) {
-				$info["user"]->id = $info["user"]->professor_id;
-				$info["user"]->midname = $info["user"]->professor_midname;
-				$info["user"]->lastname = $info["user"]->professor_lastname;
-				$info["user"]->department = $info["user"]->professor_department;
-				$info["user"]->email = $info["user"]->professor_email;
-				unset($info["user"]->professor_firstname);
-				unset($info["user"]->professor_midname);
-				unset($info["user"]->professor_lastname);
-				unset($info["user"]->professor_department);
-				unset($info["user"]->professor_email);
-				unset($info["user"]->professor_id);
-			}
-			break;
-			case 'lecturer':
-			if (isset($info["user"]->lecturer_id)) {
-				$info["user"]->id = $info["user"]->lecturer_id;
-				$info["user"]->firstname = $info["user"]->lecturer_firstname;
-				$info["user"]->midname = $info["user"]->lecturer_midname;
-				$info["user"]->lastname = $info["user"]->lecturer_lastname;
-				$info["user"]->expertise = $info["user"]->lecturer_expertise;
-				$info["user"]->email = $info["user"]->lecturer_email;
-				unset($info["user"]->lecturer_firstname);
-				unset($info["user"]->lecturer_midname);
-				unset($info["user"]->lecturer_lastname);
-				unset($info["user"]->lecturer_expertise);
-				unset($info["user"]->lecturer_email);
-				unset($info["user"]->lecturer_id);
-			}
-			break;
-
-			default:
-			break;
-		}
-		
-		// echo "<pre>";
-		// print_r($info);
-
-		
-		// die();
-		
-		if ($info['logged_in'] && $info['identifier']!="administrator"){
-			$data = array(
-				"title" => "Home - Learning Management System | FEU - Institute of Techonology",
-				"info"=>$info
-			);
-			$this->load->view('includes/header',$data);
-			$this->load->view('home');
-			$this->load->view('includes/footer');
-		}elseif($info['identifier']=="administrator"){
-			redirect('Admin');
-		}else{
-			redirect('Welcome','refresh');
-		}
-	}
-
-	public function Activity()
-	{
-		$activity_details = $this->Crud_model->fetch("activity");
-		$info = $this->session->userdata('userInfo');
-		$activity = $this->Crud_model->fetch("activity");
-		$id = $info['user']->id;
-		$offering = $this->Crud_model->fetch("offering",array("offering_lecturer_id"=>$id));
+    public function index() {
+        $info = $this->session->userdata('userInfo');
 
 
-		if ($info['logged_in'] && $info['identifier']!="administrator"){
-			$data = array(
-				"title" => "Activity - Learning Management System | FEU - Institute of Techonology",
-				"info"=>$info,
-				"activity"=>$activity_details,
-				"offering"=>$offering
-			);
-			$this->load->view('includes/header',$data);
-			$this->load->view('home-activity');
-			$this->load->view('includes/footer');
-		}elseif($info['identifier']=="administrator"){
-			redirect('Admin');
-		}else{
-			redirect('Welcome','refresh');
-		}
-	}
+        switch ($info["identifier"]) {
+            case 'student':
+                if (isset($info["user"]->student_id)) {
 
-	public function fetchSchedule()
-	{
-		$id = $this->input->post("id");
-		$data = $this->Crud_model->fetch("schedule",array("offering_id"=>$id));
-		$data = $data[0];
-		$data->min = $data->
-		echo json_encode($data);
-	}
+                    $info["user"]->id = $info["user"]->student_id;
+                    $info["user"]->firstname = $info["user"]->student_firstname;
+                    $info["user"]->midname = $info["user"]->student_midname;
+                    $info["user"]->lastname = $info["user"]->student_lastname;
+                    $info["user"]->program = $info["user"]->student_program;
+                    $info["user"]->email = $info["user"]->student_email;
+                    unset($info["user"]->student_firstname);
+                    unset($info["user"]->student_midname);
+                    unset($info["user"]->student_lastname);
+                    unset($info["user"]->student_program);
+                    unset($info["user"]->student_email);
+                    unset($info["user"]->student_id);
+                }
+                break;
+
+            case 'professor':
+                if (isset($info["user"]->professor_id)) {
+                    $info["user"]->id = $info["user"]->professor_id;
+                    $info["user"]->midname = $info["user"]->professor_midname;
+                    $info["user"]->lastname = $info["user"]->professor_lastname;
+                    $info["user"]->department = $info["user"]->professor_department;
+                    $info["user"]->email = $info["user"]->professor_email;
+                    unset($info["user"]->professor_firstname);
+                    unset($info["user"]->professor_midname);
+                    unset($info["user"]->professor_lastname);
+                    unset($info["user"]->professor_department);
+                    unset($info["user"]->professor_email);
+                    unset($info["user"]->professor_id);
+                }
+                break;
+            case 'lecturer':
+                if (isset($info["user"]->lecturer_id)) {
+                    $info["user"]->id = $info["user"]->lecturer_id;
+                    $info["user"]->firstname = $info["user"]->lecturer_firstname;
+                    $info["user"]->midname = $info["user"]->lecturer_midname;
+                    $info["user"]->lastname = $info["user"]->lecturer_lastname;
+                    $info["user"]->expertise = $info["user"]->lecturer_expertise;
+                    $info["user"]->email = $info["user"]->lecturer_email;
+                    unset($info["user"]->lecturer_firstname);
+                    unset($info["user"]->lecturer_midname);
+                    unset($info["user"]->lecturer_lastname);
+                    unset($info["user"]->lecturer_expertise);
+                    unset($info["user"]->lecturer_email);
+                    unset($info["user"]->lecturer_id);
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        // echo "<pre>";
+        // print_r($info);
+        // die();
+
+        if ($info['logged_in'] && $info['identifier'] != "administrator") {
+            $data = array(
+                "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                "info" => $info
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('home');
+            $this->load->view('includes/footer');
+        } elseif ($info['identifier'] == "administrator") {
+            redirect('Admin');
+        } else {
+            redirect('Welcome', 'refresh');
+        }
+    }
+
+    public function Activity() {
+        $activity_details = $this->Crud_model->fetch("activity");
+        $info = $this->session->userdata('userInfo');
+        $activity = $this->Crud_model->fetch("activity");
+        $id = $info['user']->id;
+        $offering = $this->Crud_model->fetch("offering", array("offering_lecturer_id" => $id));
 
 
-	public function updateActivity()
-	{
-		$id = $this->input->post("id");
-		$time = $this->input->post("time");
-		$date = $this->input->post("date");
-		$desc = $this->input->post("desc");
-		$dateFull = strtotime($date." ".$time);
-		
-		$data = array(
-			"activity_description"=>$desc,
-			"activity_date_time"=>$dateFull
-		);
-		if ($this->Crud_model->update("activity",$data,array("activity_id"=>$id))) {
-			echo json_encode(true);
-		}
-	}
+        if ($info['logged_in'] && $info['identifier'] != "administrator") {
+            $data = array(
+                "title" => "Activity - Learning Management System | FEU - Institute of Techonology",
+                "info" => $info,
+                "activity" => $activity_details,
+                "offering" => $offering
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('home-activity');
+            $this->load->view('includes/footer');
+        } elseif ($info['identifier'] == "administrator") {
+            redirect('Admin');
+        } else {
+            redirect('Welcome', 'refresh');
+        }
+    }
 
-	public function deleteActivity()
-	{
-		$id = $this->input->post("id");
-		$where = array(
-			"activity_id"=>$id
-		);
-		if ($this->Crud_model->delete("activity",$where)) {
-			echo json_encode(true);
-		}
-	}
+    /* COMMENT DAHIL ERROR SA SIDE KO - MARK
+      public function fetchSchedule()
+      {
+      $id = $this->input->post("id");
+      $data = $this->Crud_model->fetch("schedule",array("offering_id"=>$id));
+      $data = $data[0];
+      $data->min = $data->
+      echo json_encode($data);
+      }
+     */
 
-	
+    public function updateActivity() {
+        $id = $this->input->post("id");
+        $time = $this->input->post("time");
+        $date = $this->input->post("date");
+        $desc = $this->input->post("desc");
+        $dateFull = strtotime($date . " " . $time);
+
+        $data = array(
+            "activity_description" => $desc,
+            "activity_date_time" => $dateFull
+        );
+        if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
+            echo json_encode(true);
+        }
+    }
+
+    public function deleteActivity() {
+        $id = $this->input->post("id");
+        $where = array(
+            "activity_id" => $id
+        );
+        if ($this->Crud_model->delete("activity", $where)) {
+            echo json_encode(true);
+        }
+    }
 
 }
 
