@@ -98,7 +98,95 @@
 
 <!--====  End of Features  ====-->
 
+<div class="row">
+	<center><i class="material-icons small color-primary-green">clear_all</i></center>
+	<h4 class="center a-roboto-cond" style="text-transform: uppercase;">What you'll get as a student</h4>
+	<div class="row valign-wrapper">
+		<div class="col s6">
+			<center>
+				<img src="<?=base_url()?>assets/img/icons/tailored.svg " style="width: 50%;">
+			</center>
+		</div>
+		<div class="col s6">
+			<h2 style="text-transform: capitalize;">Tailored experience, especially made for your needs</h2>
+			<p>Eiusmod ea occaecat do esse adipisicing irure culpa cillum do sit pariatur veniam esse aute officia sit deserunt officia sint deserunt mollit veniam elit labore enim dolor et in proident irure ea sint dolor occaecat ex aliqua eiusmod irure.</p>
+		</div>
+	</div>
+	<div class="row valign-wrapper">
+		<div class="col s6">
+			<h2 style="text-transform: capitalize;">enhance your skills and knowledge</h2>
+			<p>Eiusmod ea occaecat do esse adipisicing irure culpa cillum do sit pariatur veniam esse aute officia sit deserunt officia sint deserunt mollit veniam elit labore enim dolor et in proident irure ea sint dolor occaecat ex aliqua eiusmod irure.</p>
+		</div>
+		<div class="col s6">
+			<center>
+				<img src="<?=base_url()?>assets/img/icons/brain.svg " style="width: 50%;">
+			</center>
+		</div>
+	</div>
+	<div class="row valign-wrapper">
+		<div class="col s6">
+			<center>
+				<img src="<?=base_url()?>assets/img/icons/megaphone.svg " style="width: 50%;">
+			</center>
+		</div>
+		<div class="col s6">
+			<h2 style="text-transform: capitalize;">Increase communication</h2>
+			<p>Eiusmod ea occaecat do esse adipisicing irure culpa cillum do sit pariatur veniam esse aute officia sit deserunt officia sint deserunt mollit veniam elit labore enim dolor et in proident irure ea sint dolor occaecat ex aliqua eiusmod irure.</p>
+		</div>
+	</div>
+</div>
 
+
+<div class="row">
+	<div class="col s2"></div>
+	<div class="col s8 ">
+		<h4>
+			<center>
+				<i class="material-icons small color-primary-green">clear_all</i>
+				<p style="text-transform: uppercase;">FEU - Tech engineering students</p>
+			</center>
+		</h4>
+		<!-- Hisham -->
+		<div class="row valign-wrapper">
+			<div class="col s5 ">
+				<div class="col s6"></div>
+				<div class="col s6 ">
+					<img  class="circle responsive-img right" style="width: 100px;
+					height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/profile.jpg" >
+
+				</div>
+			</div>
+			<div class="col s7">
+				<h5 class="">Engr. Hisham Sacar</h5>
+				<blockquote class="color-primary-green">
+					<h5 class="color-black">1st Placer 2017 CE Board Exam</h5>
+				</blockquote>
+				<p>Hisham, 21, a graduate from Quirino High School, emerged No. 1 among the 2,514 board passers nationwide. His excellent academic performance has enabled him to get a full-academic scholarship from FEU Tech. </p>
+				<a href="www.feutech.edu.ph"><i> - https://www.feutech.edu.ph</i></a>
+			</div>
+		</div>
+		<!-- David Flores -->
+		<div class="row valign-wrapper">
+			<div class="col s5 ">
+				<div class="col s6"></div>
+				<div class="col s6 ">
+					<img  class="circle responsive-img right" style="width: 100px;
+					height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/profile.jpg" >
+
+				</div>
+			</div>
+			<div class="col s7">
+				<h5 class="">Engr. David Flores</h5>
+				<blockquote class="color-primary-green">
+					<h5 class="color-black">2nd Placer 2017 CE Board Exam</h5>
+				</blockquote>
+				<p>Hisham, 21, a graduate from Quirino High School, emerged No. 1 among the 2,514 board passers nationwide. His excellent academic performance has enabled him to get a full-academic scholarship from FEU Tech. </p>
+				<a href="www.feutech.edu.ph"><i> - https://www.feutech.edu.ph</i></a>
+			</div>
+		</div>
+	</div>
+	<div class="col s2"></div>
+</div>
 
 <!--=================================
 =            Modal Login            =
