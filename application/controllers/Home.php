@@ -21,9 +21,9 @@ class Home extends CI_Controller {
                 if (isset($info["user"]->student_id)) {
 
                     $info["user"]->id = $info["user"]->student_id;
-                    $info["user"]->firstname = $info["user"]->student_firstname;
-                    $info["user"]->midname = $info["user"]->student_midname;
-                    $info["user"]->lastname = $info["user"]->student_lastname;
+                    $info["user"]->firstname = $info["user"]->firstname;
+                    $info["user"]->midname = $info["user"]->midname;
+                    $info["user"]->lastname = $info["user"]->lastname;
                     $info["user"]->program = $info["user"]->student_program;
                     $info["user"]->email = $info["user"]->student_email;
                     unset($info["user"]->student_firstname);
@@ -38,8 +38,8 @@ class Home extends CI_Controller {
             case 'professor':
                 if (isset($info["user"]->professor_id)) {
                     $info["user"]->id = $info["user"]->professor_id;
-                    $info["user"]->midname = $info["user"]->professor_midname;
-                    $info["user"]->lastname = $info["user"]->professor_lastname;
+                    $info["user"]->midname = $info["user"]->midname;
+                    $info["user"]->lastname = $info["user"]->lastname;
                     $info["user"]->department = $info["user"]->professor_department;
                     $info["user"]->email = $info["user"]->professor_email;
                     unset($info["user"]->professor_firstname);
@@ -53,9 +53,9 @@ class Home extends CI_Controller {
             case 'lecturer':
                 if (isset($info["user"]->lecturer_id)) {
                     $info["user"]->id = $info["user"]->lecturer_id;
-                    $info["user"]->firstname = $info["user"]->lecturer_firstname;
-                    $info["user"]->midname = $info["user"]->lecturer_midname;
-                    $info["user"]->lastname = $info["user"]->lecturer_lastname;
+                    $info["user"]->firstname = $info["user"]->firstname;
+                    $info["user"]->midname = $info["user"]->midname;
+                    $info["user"]->lastname = $info["user"]->lastname;
                     $info["user"]->expertise = $info["user"]->lecturer_expertise;
                     $info["user"]->email = $info["user"]->lecturer_email;
                     unset($info["user"]->lecturer_firstname);

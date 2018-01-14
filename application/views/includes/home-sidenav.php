@@ -3,7 +3,6 @@
 =            Side-Nav Section            =
 =======================================-->
 
-<?= print_r($info); ?>
 <ul id="slide-out" class="side-nav bg-primary-green">
     <li><div class="user-view">
             <div class="background bg-primary-yellow">

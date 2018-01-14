@@ -9,6 +9,8 @@ class Feedback extends CI_Controller {
     }
 
     public function index() {
+        $offering_id = 1;
+        print_r($this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]);
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $data = array(
                 'title' => "Feedback"
@@ -24,9 +26,9 @@ class Feedback extends CI_Controller {
                     if ($result != FALSE) {
                         if (!empty($result)) {
                             $info["user"]->id = $result->lecturer_id;
-                            $info["user"]->firstname = $result->lecturer_firstname;
-                            $info["user"]->midname = $result->lecturer_midname;
-                            $info["user"]->lastname = $result->lecturer_lastname;
+                            $info["user"]->firstname = $result->firstname;
+                            $info["user"]->midname = $result->midname;
+                            $info["user"]->lastname = $result->lastname;
                             $info["user"]->expertise = $result->lecturer_expertise;
                             $info["user"]->email = $result->lecturer_email;
                             $info["identifier"] = "student";
@@ -40,14 +42,14 @@ class Feedback extends CI_Controller {
                     } else {
                         include(APPPATH . 'views\feedback\custom4.php');
                     }
-                } else {
+                } else {                    //lecturer_id
                     include(APPPATH . 'views\feedback\custom3.php');
                 }
             } else {
                 include(APPPATH . 'views\feedback\custom2.php');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-
+            echo "test";
         } else {
             redirect("");
         }
