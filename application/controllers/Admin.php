@@ -23,6 +23,17 @@ class Admin extends CI_Controller {
 
         $this->session->unset_userdata('insertion_info');
 
+
+        /*=============================================================
+        =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
+        =============================================================*/
+        
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
+        $active_enrollment = $active_enrollment[0];
+        
+        /*=====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ======*/
+        
+
         /*==============================================
         =            COSML REPORTS FETCHING            =
         ==============================================*/
@@ -73,9 +84,6 @@ class Admin extends CI_Controller {
         =            LECTURERS SCHEDULE            =
         ==========================================*/
         
-        // Fetch Active Enrollment Data
-        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
-        $active_enrollment = $active_enrollment[0];
 
         // fetch lecturer
         $lecturer = $this->Crud_model->fetch("lecturer");
@@ -85,31 +93,24 @@ class Admin extends CI_Controller {
             // fetch topic
             $topic = $this->Crud_model->fetch("topic",array("topic_id"=>$value->topic_id));
             $topic = $topic[0];
-
-            // fetch active Offering 
-            $offering = $this->Crud_model->fetch("offering",array(
-                "offering_id"=>$topic->offering_id,
-                "enrollment_id"=>$active_enrollment->enrollment_id
-            ));
-            $offering = $offering[0];
-            
-            $schedule = $this->Crud_model->fetch("schedule",array("offering_id"=>$offering->offering_id));
-            $schedule = $schedule[0];
-
-            $value->schedule_id = $schedule->schedule_id;
-            $value->start_time = $schedule->schedule_start_time;
-            $value->end_time = $schedule->schedule_end_time;
-            $value->venue = $schedule->schedule_venue;
-
-            
+            $value->topic_name = $topic->topic_name;
 
         }
 
-        echo "<pre>";
-        print_r($lecturer);
-        die();
+        // echo "<pre>";
+        // print_r($lecturer);
+        // die();
         
         /*=====  End of LECTURERS SCHEDULE  ======*/
+
+        /*===========================================
+        =            Lecturer Attendance            =
+        ===========================================*/
+        
+        
+        
+        /*=====  End of Lecturer Attendance  ======*/
+        
         
 
 
