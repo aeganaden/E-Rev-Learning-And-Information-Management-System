@@ -20,8 +20,8 @@ class Admin extends CI_Controller {
     }
 
     public function index() {
-
         $this->session->unset_userdata('insertion_info');
+
 
 
         /*=============================================================
@@ -123,6 +123,7 @@ class Admin extends CI_Controller {
         $this->load->view('includes/header', $data);
         $this->load->view('admin');
         $this->load->view('includes/footer');
+
     }
 
     public function Announcements() {

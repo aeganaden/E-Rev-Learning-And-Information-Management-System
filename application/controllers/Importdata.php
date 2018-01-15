@@ -127,10 +127,7 @@ class Importdata extends CI_Controller {
                                         if (is_string($col_hold) == 1 && $col_length >= strlen($col_hold) && !empty($col_hold)) {
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
-                                            echo strlen($col_hold) . "-" . $col_length . " 1<br>";
-//                                            echo is_string("mgbabaran@fit.edu.ph") . " 2<br>";
-//                                            echo $col_length >= strlen($col_hold) . " 3<br>";
-//                                            print(!empty($col_hold) . " 4<br>");
+                                            print_r($col_data_hold) . "<br>";
                                             echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;
