@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2018 at 06:26 AM
+-- Generation Time: Jan 15, 2018 at 02:36 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin1', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adasd');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'awdsawdsa');
 
 -- --------------------------------------------------------
 
@@ -218,17 +218,18 @@ CREATE TABLE `lecturer` (
   `lecturer_email` varchar(50) NOT NULL,
   `lecturer_status` tinyint(1) NOT NULL,
   `image_path` varchar(100) NOT NULL,
+  `lecturer_is_confirm` tinyint(1) NOT NULL,
   `topic_id` int(20) NOT NULL,
-  `lecturer_is_confirm` tinyint(1) NOT NULL
+  `schedule_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `topic_id`, `lecturer_is_confirm`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 0),
-(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2, 0);
+INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`, `topic_id`, `schedule_id`) VALUES
+(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 1, 1),
+(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -507,7 +508,8 @@ ALTER TABLE `grade_assessment`
 --
 ALTER TABLE `lecturer`
   ADD PRIMARY KEY (`lecturer_id`),
-  ADD KEY `fk_lecturer_topic1_idx` (`topic_id`);
+  ADD KEY `fk_lecturer_topic1_idx` (`topic_id`),
+  ADD KEY `fk_lecturer_schedule1_idx` (`schedule_id`);
 
 --
 -- Indexes for table `lecturer_attendance`
@@ -707,6 +709,7 @@ ALTER TABLE `course_modules`
 -- Constraints for table `lecturer`
 --
 ALTER TABLE `lecturer`
+  ADD CONSTRAINT `fk_lecturer_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_lecturer_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

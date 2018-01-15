@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = "Error: offering_id not fetched"</script>
+<script>document.getElementById("error").innerHTML = "Error: You do not have any lecturer this term."</script>
