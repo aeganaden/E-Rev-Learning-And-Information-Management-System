@@ -13,6 +13,7 @@ class Home extends CI_Controller {
     }
 
     public function index() {
+        $this->session->unset_userdata('insertion_info');
         $info = $this->session->userdata('userInfo');
 
 
@@ -91,6 +92,7 @@ class Home extends CI_Controller {
     }
 
     public function Activity() {
+        $this->session->unset_userdata('insertion_info');
         $activity_details = $this->Crud_model->fetch("activity");
         $info = $this->session->userdata('userInfo');
         $activity = $this->Crud_model->fetch("activity");
@@ -127,6 +129,7 @@ class Home extends CI_Controller {
      */
 
     public function updateActivity() {
+        $this->session->unset_userdata('insertion_info');
         $id = $this->input->post("id");
         $time = $this->input->post("time");
         $date = $this->input->post("date");
@@ -143,6 +146,7 @@ class Home extends CI_Controller {
     }
 
     public function deleteActivity() {
+        $this->session->unset_userdata('insertion_info');
         $id = $this->input->post("id");
         $where = array(
             "activity_id" => $id
