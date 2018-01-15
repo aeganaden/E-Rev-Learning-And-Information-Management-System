@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2018 at 01:52 PM
+-- Generation Time: Jan 15, 2018 at 06:26 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin1', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'qweqweqwe');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adasd');
 
 -- --------------------------------------------------------
 
@@ -176,15 +176,17 @@ CREATE TABLE `course_modules` (
 CREATE TABLE `enrollment` (
   `enrollment_id` int(20) NOT NULL,
   `enrollment_sy` varchar(20) NOT NULL,
-  `enrollment_term` tinyint(1) NOT NULL
+  `enrollment_term` tinyint(1) NOT NULL,
+  `enrollment_is_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `enrollment`
 --
 
-INSERT INTO `enrollment` (`enrollment_id`, `enrollment_sy`, `enrollment_term`) VALUES
-(1, '2017-2018', 3);
+INSERT INTO `enrollment` (`enrollment_id`, `enrollment_sy`, `enrollment_term`, `enrollment_is_active`) VALUES
+(1, '2017-2018', 2, 1),
+(2, '2017-2018', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -216,16 +218,17 @@ CREATE TABLE `lecturer` (
   `lecturer_email` varchar(50) NOT NULL,
   `lecturer_status` tinyint(1) NOT NULL,
   `image_path` varchar(100) NOT NULL,
-  `topic_id` int(20) NOT NULL
+  `topic_id` int(20) NOT NULL,
+  `lecturer_is_confirm` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `topic_id`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2);
+INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `topic_id`, `lecturer_is_confirm`) VALUES
+(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 0),
+(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -322,17 +325,6 @@ INSERT INTO `offering` (`offering_id`, `offering_course_code`, `offering_course_
 -- --------------------------------------------------------
 
 --
--- Table structure for table `offering_has_lecturer`
---
-
-CREATE TABLE `offering_has_lecturer` (
-  `offering_id` int(20) NOT NULL,
-  `lecturer_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `professor`
 --
 
@@ -415,16 +407,17 @@ CREATE TABLE `topic` (
   `topic_id` int(20) NOT NULL,
   `topic_name` varchar(100) NOT NULL,
   `topic_description` varchar(800) NOT NULL,
-  `topic_done` int(11) NOT NULL
+  `topic_done` int(11) NOT NULL,
+  `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `topic`
 --
 
-INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`) VALUES
-(1, 'Trigonometry', 'Introduction to trigonometry', 0),
-(2, 'Solid Mensuration', 'I don\'t even know what are the topics that they\'re tackling in here', 1);
+INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`, `offering_id`) VALUES
+(1, 'Trigonometry', 'Introduction to trigonometry', 0, 1),
+(2, 'Solid Mensuration', 'I don\'t even know what are the topics that they\'re tackling in here', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -553,14 +546,6 @@ ALTER TABLE `offering`
   ADD KEY `fk_offering_professor1_idx` (`professor_id`);
 
 --
--- Indexes for table `offering_has_lecturer`
---
-ALTER TABLE `offering_has_lecturer`
-  ADD PRIMARY KEY (`offering_id`,`lecturer_id`),
-  ADD KEY `fk_offering_has_lecturer_lecturer1_idx` (`lecturer_id`),
-  ADD KEY `fk_offering_has_lecturer_offering1_idx` (`offering_id`);
-
---
 -- Indexes for table `professor`
 --
 ALTER TABLE `professor`
@@ -584,7 +569,8 @@ ALTER TABLE `student`
 -- Indexes for table `topic`
 --
 ALTER TABLE `topic`
-  ADD PRIMARY KEY (`topic_id`);
+  ADD PRIMARY KEY (`topic_id`),
+  ADD KEY `fk_topic_offering1_idx` (`offering_id`);
 
 --
 -- Indexes for table `total_grade`
@@ -643,7 +629,7 @@ ALTER TABLE `course_modules`
 -- AUTO_INCREMENT for table `enrollment`
 --
 ALTER TABLE `enrollment`
-  MODIFY `enrollment_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `enrollment_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `grade_assessment`
@@ -750,13 +736,6 @@ ALTER TABLE `offering`
   ADD CONSTRAINT `fk_offering_professor1` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `offering_has_lecturer`
---
-ALTER TABLE `offering_has_lecturer`
-  ADD CONSTRAINT `fk_offering_has_lecturer_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_offering_has_lecturer_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `schedule`
 --
 ALTER TABLE `schedule`
@@ -767,6 +746,12 @@ ALTER TABLE `schedule`
 --
 ALTER TABLE `student`
   ADD CONSTRAINT `fk_student_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `topic`
+--
+ALTER TABLE `topic`
+  ADD CONSTRAINT `fk_topic_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `total_grade`

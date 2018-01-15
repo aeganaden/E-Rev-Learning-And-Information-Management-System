@@ -10,7 +10,7 @@ class Feedback extends CI_Controller {
 
     public function index() {
         $offering_id = 1;
-        print_r($this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]);
+        print_r($this->Crud_model->fetch('topic', array('offering_id' => $offering_id))[0]);
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $data = array(
                 'title' => "Feedback"
@@ -20,16 +20,18 @@ class Feedback extends CI_Controller {
             include(APPPATH . 'views\feedback\hold1.php');
             $offering_id = $this->session->userdata('userInfo')['user']->offering_id;
             if ($offering_id != FALSE) {
-                $lecturer_id = $this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]->offering_lecturer_id;
-                if ($lecturer_id != FALSE) {
-                    $result = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lecturer_id))[0];
+                $topic_hold = $this->Crud_model->fetch('topic', array('offering_id' => $offering_id))[0];
+                $topic_id = $topic_hold->topic_id;
+                if ($topic_id != FALSE) {
+                    $info["user"]->topic = $topic_hold->topic_name;
+                    $result = $this->Crud_model->fetch('lecturer', array('topic_id' => $topic_id))[0];
                     if ($result != FALSE) {
+                        print_r($result);
                         if (!empty($result)) {
                             $info["user"]->id = $result->lecturer_id;
                             $info["user"]->firstname = $result->firstname;
                             $info["user"]->midname = $result->midname;
                             $info["user"]->lastname = $result->lastname;
-                            $info["user"]->expertise = $result->lecturer_expertise;
                             $info["user"]->email = $result->lecturer_email;
                             $info["identifier"] = "student";
                             $data = array(
@@ -62,6 +64,7 @@ class Feedback extends CI_Controller {
             $temp = $this->uri->segment(3);
             $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $temp));
             if ($offering_id != FALSE) {
+                print_r($offering_id);
                 if (($offering_id[0]->lecturer_offering_id) == ($this->session->userdata('userInfo')['user']->offering_id)) {
                     $lect["user"] = new stdClass();
                     $info["user"] = new stdClass();
@@ -91,13 +94,16 @@ class Feedback extends CI_Controller {
                     $this->load->view('feedback/feedback_content');
                     $this->load->view('includes/footer');
                 } else {
-                    redirect("");
+                    echo "test1";
+//                    redirect("");
                 }
             } else {
-                redirect("");
+                echo "test2";
+//                redirect("");
             }
         } else {
-            redirect("");
+            echo "test3";
+//            redirect("");
         }
     }
 
