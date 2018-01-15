@@ -22,7 +22,8 @@ class Admin extends CI_Controller {
     public function index() {
         $this->session->unset_userdata('insertion_info');
 
-
+        // echo strtotime("+3 day 9 hours");
+        // die();
 
         /*=============================================================
         =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
@@ -85,16 +86,26 @@ class Admin extends CI_Controller {
         ==========================================*/
         
 
-        // fetch lecturer
-        $lecturer = $this->Crud_model->fetch("lecturer");
+        $schedule = $this->Crud_model->fetch("schedule");
 
-        foreach ($lecturer as $key => $value) {
-
-            // fetch topic
-            $topic = $this->Crud_model->fetch("topic",array("topic_id"=>$value->topic_id));
-            $topic = $topic[0];
-            $value->topic_name = $topic->topic_name;
-
+        foreach ($schedule as $key => $sched) {
+            // fetch lecturer
+            $lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$sched->lecturer_id));
+            $lecturer = $lecturer[0];
+            $sched->lecturer_id = $lecturer->lecturer_id;
+            $sched->firstname =$lecturer->firstname;
+            $sched->midname =$lecturer->midname;
+            $sched->lastname =$lecturer->lastname;
+            $sched->expertise = $lecturer->lecturer_expertise;
+            $sched->status = $lecturer->lecturer_status;
+            // fetch offering
+            $offering = $this->Crud_model->fetch("offering",array("offering_id"=>$sched->offering_id));
+            $offering = $offering[0];
+            $sched->offering = $offering->offering_course_code;
+            // fetch subject
+            $subject = $this->Crud_model->fetch("subject", array("subject_id"=>$lecturer->subject_id));
+            $subject = $subject[0];
+            $sched->subject = $subject->subject_name;
         }
 
         // echo "<pre>";
@@ -118,7 +129,7 @@ class Admin extends CI_Controller {
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
             "offering" => $offering_data,
-            "lecturer"=>$lecturer
+            "schedule"=>$schedule
         );
         $this->load->view('includes/header', $data);
         $this->load->view('admin');

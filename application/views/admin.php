@@ -116,32 +116,44 @@
 					<thead >
 						<tr>
 							<th>ID</th>
+							<th>Offering</th>
+							<th>Subject</th>
+							<th>Day</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+							<th>Venue</th>
 							<th>Last Name</th>
 							<th>First Name</th>
 							<th>Middle Name</th>
 							<th>Expertise</th>
 							<th>Status</th>
-							<th>Actions</th>
+							
+
 						</tr>
 					</thead>
 
 					<tbody class="bg-color-white">
-						<?php if ($lecturer): ?>
-							<?php foreach ($lecturer as $key => $value): ?>
+						<?php if ($schedule): ?>
+							<?php foreach ($schedule as $key => $value): ?>
 								<tr class="bg-color-white">
 									<td><?= $value->lecturer_id ?></td>
+									<td><?= $value->offering ?></td>
+									<td><?= $value->subject ?></td>
+									<td><?=date("l", $value->schedule_start_time)?></td>
+									<td><?=date("h:i A", $value->schedule_start_time)?></td>
+									<td><?=date("h:i A", $value->schedule_end_time)?></td>
+									<td><?=$value->schedule_venue?></td>
 									<td><?= ucwords($value->lastname) ?></td>
 									<td><?= ucwords($value->firstname) ?></td>
 									<td><?= ucwords($value->midname) ?></td>
-									<td><?= ucwords($value->lecturer_expertise) ?></td>
+									<td><?= ucwords($value->expertise) ?></td>
 									<td>
-										<?php if ($value->lecturer_status == 1): ?>
+										<?php if ($value->status == 1): ?>
 											<p class="color-green">Active</p>
 										<?php else: ?>
 											<p class="color-red">Inactive</p>
 										<?php endif ?>
 									</td>
-									<td><a href="<?=base_url()?>Admin/<?= $value->lecturer_id?>"><button class="btn waves-effect waves-light">Go</button></a></td>
 								</tr>
 							<?php endforeach ?>
 						<?php endif ?>
