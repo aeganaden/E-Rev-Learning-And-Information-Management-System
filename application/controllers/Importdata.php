@@ -84,7 +84,6 @@ class Importdata extends CI_Controller {
             );
             $this->load->view('includes/header', $data);
             if ($this->upload->do_upload('userfile')) {
-                echo $this->upload->data()["full_path"];
                 $data[] = array('upload_data' => $this->upload->data());
                 $obj = PHPExcel_IOFactory::load($this->upload->data()["full_path"]);
                 $sheetnames = $obj->getSheetNames();
