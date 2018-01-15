@@ -32,7 +32,6 @@ $(document).ready(function() {
 });
 
 	initiateOnClick();
-	login_verify();
 });
 
 
@@ -64,26 +63,32 @@ $(document).ready(function() {
 /*======================================
 =            Login Modal JS            =
 ======================================*/
+document.getElementById('login-password').onkeydown = function(event) {
+	if (event.keyCode == 13) {
+		login_verify();
+	}
+}
+
 
 function login_verify() {
-	$("#btn-login").click(function(event) {
-		$username = $("#login-username").val();
-		$password = $("#login-password").val();
-		$.ajax({
-			url: base_url+"Login/verify",
-			type: "post",
-			dataType: "json",
-			data:{
-				username: $username,
-				password: $password
-			},
-			success: function(data){
-				if (data == false) {
-					$("#login-username").addClass('invalid');
-					$("#login-password").addClass('invalid');
-					$("#login-message").css('display', 'block');
-				}else if(data == "1dfbba5b5fa79b789c93cfc2911d846124153615"){
-					$.ajax({
+
+	$username = $("#login-username").val();
+	$password = $("#login-password").val();
+	$.ajax({
+		url: base_url+"Login/verify",
+		type: "post",
+		dataType: "json",
+		data:{
+			username: $username,
+			password: $password
+		},
+		success: function(data){
+			if (data == false) {
+				$("#login-username").addClass('invalid');
+				$("#login-password").addClass('invalid');
+				$("#login-message").css('display', 'block');
+			}else if(data == "1dfbba5b5fa79b789c93cfc2911d846124153615"){
+				$.ajax({
 						// lecturer
 						url: base_url+"Login/redirect/1dfbba5b5fa79b789c93cfc2911d846124153615",
 						type: "post",
@@ -99,8 +104,8 @@ function login_verify() {
 						}
 
 					});
-				}else if(data == "68d5fef94c7754840730274cf4959183b4e4ec35"){
-					$.ajax({
+			}else if(data == "68d5fef94c7754840730274cf4959183b4e4ec35"){
+				$.ajax({
 						// professor
 						url: base_url+"Login/redirect/68d5fef94c7754840730274cf4959183b4e4ec35",
 						type: "post",
@@ -116,8 +121,8 @@ function login_verify() {
 						}
 
 					});
-				}else if(data == "b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3"){
-					$.ajax({
+			}else if(data == "b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3"){
+				$.ajax({
 						// administrator
 						url: base_url+"Login/redirect/b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3",
 						type: "post",
@@ -133,8 +138,8 @@ function login_verify() {
 						}
 
 					});
-				}else if(data == "204036a1ef6e7360e536300ea78c6aeb4a9333dd"){
-					$.ajax({
+			}else if(data == "204036a1ef6e7360e536300ea78c6aeb4a9333dd"){
+				$.ajax({
 						// student
 						url: base_url+"Login/redirect/204036a1ef6e7360e536300ea78c6aeb4a9333dd",
 						type: "post",
@@ -150,12 +155,12 @@ function login_verify() {
 						}
 
 					});
-				}
-			},
-			error: function(data){
 			}
-		});
+		},
+		error: function(data){
+		}
 	});
+
 }
 
 /*=====  End of Login Modal JS  ======*/
