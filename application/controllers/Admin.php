@@ -20,108 +20,108 @@ class Admin extends CI_Controller {
     }
 
     public function index() {
-
         $this->session->unset_userdata('insertion_info');
-
-        /*==============================================
-        =            COSML REPORTS FETCHING            =
-        ==============================================*/
-        
-        
-        // Fetch Schedule
-        $report_cosml = $this->Crud_model->fetch("schedule");
-
-        // Count Schedule
-        $count_res = $this->Crud_model->countResult("schedule");
-
-        $this->verify_login();
-
-        if ($report_cosml) {
-            foreach ($report_cosml as $key => $value) {
-                // Fetch Offering Data
-                $report_cosml_offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
-
-                foreach ($report_cosml_offering as $key => $offer) {
-
-                    // Insert offering data to object
-                    $value->course_code = $offer->offering_course_code;
-                    $value->course_title = $offer->offering_course_title;
-                    $value->course_section = $offer->offering_section;
-                    $value->professor_id = $offer->professor_id;
-                    $value->enrollment_id = $offer->enrollment_id;
-                }
-                $professor = $this->Crud_model->fetch("professor",array("professor_id"=> $value->professor_id));
-                foreach ($professor as $key => $prof) {
-                    $value->professor_name = $prof->firstname . " " . $prof->lastname;
-                }
-
-
-                // Fetch Enrollment Data
-                $value_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_id" => $value->enrollment_id));
-                foreach ($value_enrollment as $key => $enroll) {
-                    $value->term = $enroll->enrollment_term;
-                    $value->sy = $enroll->enrollment_sy;
-                }
-            }
-        }
-        $offering_data = $this->Crud_model->fetch("offering");
-        
-        /*=====  End of COSML REPORTS FETCHING  ======*/
-        
-        
-        /*==========================================
-        =            LECTURERS SCHEDULE            =
-        ==========================================*/
-        
-        // Fetch Active Enrollment Data
-        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
-        $active_enrollment = $active_enrollment[0];
-
-        // fetch lecturer
-        $lecturer = $this->Crud_model->fetch("lecturer");
-
-        foreach ($lecturer as $key => $value) {
-
-            // fetch topic
-            $topic = $this->Crud_model->fetch("topic",array("topic_id"=>$value->topic_id));
-            $topic = $topic[0];
-
-            // fetch active Offering 
-            $offering = $this->Crud_model->fetch("offering",array(
-                "offering_id"=>$topic->offering_id,
-                "enrollment_id"=>$active_enrollment->enrollment_id
-            ));
-            $offering = $offering[0];
-            
-            $schedule = $this->Crud_model->fetch("schedule",array("offering_id"=>$offering->offering_id));
-            $schedule = $schedule[0];
-
-            $value->schedule_id = $schedule->schedule_id;
-            $value->start_time = $schedule->schedule_start_time;
-            $value->end_time = $schedule->schedule_end_time;
-            $value->venue = $schedule->schedule_venue;
-
-            
-
-        }
-
-        echo "<pre>";
-        print_r($lecturer);
-        die();
-        
-        /*=====  End of LECTURERS SCHEDULE  ======*/
-        
-
-
-        $data = array(
-            "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
-            "div_cosml_data" => $report_cosml,
-            "offering" => $offering_data,
-            "lecturer"=>$lecturer
-        );
         $this->load->view('includes/header', $data);
         $this->load->view('admin');
         $this->load->view('includes/footer');
+//              COMMENTED BY MARK KASI DI MO TINAPOS TANGINA KA DI KO MAUPLOAD SA ADMIN YUNG EXCEL!!!!
+//              SAYANG ORAS TSK TSK WALA KA RIN GAGAMITIN PANO YAN
+//        /* ==============================================
+//          =            COSML REPORTS FETCHING            =
+//          ============================================== */
+//
+//
+//        // Fetch Schedule
+//        $report_cosml = $this->Crud_model->fetch("schedule");
+//
+//        // Count Schedule
+//        $count_res = $this->Crud_model->countResult("schedule");
+//
+//        $this->verify_login();
+//
+//        if ($report_cosml) {
+//            foreach ($report_cosml as $key => $value) {
+//                // Fetch Offering Data
+//                $report_cosml_offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
+//
+//                foreach ($report_cosml_offering as $key => $offer) {
+//
+//                    // Insert offering data to object
+//                    $value->course_code = $offer->offering_course_code;
+//                    $value->course_title = $offer->offering_course_title;
+//                    $value->course_section = $offer->offering_section;
+//                    $value->professor_id = $offer->professor_id;
+//                    $value->enrollment_id = $offer->enrollment_id;
+//                }
+//                $professor = $this->Crud_model->fetch("professor", array("professor_id" => $value->professor_id));
+//                foreach ($professor as $key => $prof) {
+//                    $value->professor_name = $prof->firstname . " " . $prof->lastname;
+//                }
+//
+//
+//                // Fetch Enrollment Data
+//                $value_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_id" => $value->enrollment_id));
+//                foreach ($value_enrollment as $key => $enroll) {
+//                    $value->term = $enroll->enrollment_term;
+//                    $value->sy = $enroll->enrollment_sy;
+//                }
+//            }
+//        }
+//        $offering_data = $this->Crud_model->fetch("offering");
+//
+//        /* =====  End of COSML REPORTS FETCHING  ====== */
+//
+//
+//        /* ==========================================
+//          =            LECTURERS SCHEDULE            =
+//          ========================================== */
+//
+//        // Fetch Active Enrollment Data
+//        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+//        $active_enrollment = $active_enrollment[0];
+//
+//        // fetch lecturer
+//        $lecturer = $this->Crud_model->fetch("lecturer");
+//
+//        foreach ($lecturer as $key => $value) {
+//
+//            // fetch topic
+//            $topic = $this->Crud_model->fetch("topic", array("topic_id" => $value->topic_id));
+//            $topic = $topic[0];
+//
+//            // fetch active Offering
+//            $offering = $this->Crud_model->fetch("offering", array(
+//                "offering_id" => $topic->offering_id,
+//                "enrollment_id" => $active_enrollment->enrollment_id
+//            ));
+//            $offering = $offering[0];
+//
+//            $schedule = $this->Crud_model->fetch("schedule", array("offering_id" => $offering->offering_id));
+//            $schedule = $schedule[0];
+//
+//            $value->schedule_id = $schedule->schedule_id;
+//            $value->start_time = $schedule->schedule_start_time;
+//            $value->end_time = $schedule->schedule_end_time;
+//            $value->venue = $schedule->schedule_venue;
+//        }
+//
+//        echo "<pre>";
+//        print_r($lecturer);
+//        die();
+//
+//        /* =====  End of LECTURERS SCHEDULE  ====== */
+//
+//
+//
+//        $data = array(
+//            "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
+//            "div_cosml_data" => $report_cosml,
+//            "offering" => $offering_data,
+//            "lecturer" => $lecturer
+//        );
+//        $this->load->view('includes/header', $data);
+//        $this->load->view('admin');
+//        $this->load->view('includes/footer');
     }
 
     public function Announcements() {
@@ -168,21 +168,21 @@ class Admin extends CI_Controller {
         // die();
         switch ($info["identifier"]) {
             case 'administrator':
-            $column = "admin_id";
-            break;
+                $column = "admin_id";
+                break;
             case 'student':
-            $column = "student_id";
-            break;
+                $column = "student_id";
+                break;
             case 'lecturer':
-            $column = "lecturer_id";
-            break;
+                $column = "lecturer_id";
+                break;
             case 'professor':
-            $column = "professor_id";
-            break;
+                $column = "professor_id";
+                break;
 
             default:
                 # code...
-            break;
+                break;
         }
 
 

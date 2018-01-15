@@ -9,48 +9,54 @@ class Feedback extends CI_Controller {
     }
 
     public function index() {
+
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $data = array(
                 'title' => "Feedback"
             );
             $info["user"] = new stdClass();
             $this->load->view('includes/header', $data);
-            include(APPPATH . 'views\feedback\hold1.php');
+            include(APPPATH . 'views\feedback\hold1.php');      //<span>
             $offering_hold = $this->session->userdata('userInfo')['user'];
             $offering_id = $offering_hold->offering_id;
             $enrollment_is_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $offering_id));
 //            echo "<pre>";
 //            print_r($enrollment_is_active);
 //            echo "</pre>";
-
-            if ($offering_id != FALSE && $enrollment_is_active->enrollment_is_active == 1) {
+            if ($offering_id != FALSE && $enrollment_is_active[0]->enrollment_is_active == 1) {
                 $topic_hold = $this->Crud_model->fetch('topic', array('offering_id' => $offering_id))[0];
                 $topic_id = $topic_hold->topic_id;
-                if ($topic_id != FALSE) {
-                    $info["user"]->topic = $topic_hold->topic_name;
-                    $result = $this->Crud_model->fetch('lecturer', array('topic_id' => $topic_id))[0];
-                    if ($result != FALSE) {
-                        if (!empty($result)) {
-                            $info["user"]->id = $result->lecturer_id;
-                            $info["user"]->firstname = $result->firstname;
-                            $info["user"]->midname = $result->midname;
-                            $info["user"]->lastname = $result->lastname;
-                            $info["user"]->email = $result->lecturer_email;
-                            $info["identifier"] = "student";
-                            $data = array(
-                                'title' => "Feedback",
-                                'info' => $info
-                            );
-                            $this->load->view('feedback/feedback_main', $data);
-                            include(APPPATH . 'views\feedback\custom1.php');
-                        }
-                    } else {
-                        include(APPPATH . 'views\feedback\custom4.php');
-                    }
-                } else {                    //lecturer_id
-                    include(APPPATH . 'views\feedback\custom3.php');
-                }
-            } else {                        //Error: offering_id not fetched
+                echo "<pre>";
+                print_r($topic_hold);
+                echo "</pre>";
+//                if ($topic_id != FALSE) {
+//                    $info["user"]->topic = $topic_hold->topic_name;
+//                    $result = $this->Crud_model->fetch('lecturer', array('topic_id' => $topic_id))[0];
+//                    echo "<pre>";
+//                    print_r($this->Crud_model->fetch('lecturer', array('topic_id' => $topic_id)));
+//                    echo "</pre>";
+//                    if ($result != FALSE) {
+//                        if (!empty($result)) {
+//                            $info["user"]->id = $result->lecturer_id;
+//                            $info["user"]->firstname = $result->firstname;
+//                            $info["user"]->midname = $result->midname;
+//                            $info["user"]->lastname = $result->lastname;
+//                            $info["user"]->email = $result->lecturer_email;
+//                            $info["identifier"] = "student";
+//                            $data = array(
+//                                'title' => "Feedback",
+//                                'info' => $info
+//                            );
+//                            $this->load->view('feedback/feedback_main', $data);
+//                            include(APPPATH . 'views\feedback\custom1.php');
+//                        }
+//                    } else {
+//                        include(APPPATH . 'views\feedback\custom4.php');
+//                    }
+//                } else {                    //lecturer_id
+//                    include(APPPATH . 'views\feedback\custom3.php');
+//                }
+            } else {                        //Error: lecturer not fetched
                 include(APPPATH . 'views\feedback\custom2.php');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {

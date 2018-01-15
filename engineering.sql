@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2018 at 02:36 PM
+-- Generation Time: Jan 15, 2018 at 06:53 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -35,14 +35,14 @@ CREATE TABLE `activity` (
   `activity_status` tinyint(1) NOT NULL,
   `activity_description` varchar(500) NOT NULL,
   `activity_details_id` int(20) NOT NULL,
-  `topic_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `activity`
 --
 
-INSERT INTO `activity` (`activity_id`, `activity_date_time`, `activity_venue`, `activity_status`, `activity_description`, `activity_details_id`, `topic_id`) VALUES
+INSERT INTO `activity` (`activity_id`, `activity_date_time`, `activity_venue`, `activity_status`, `activity_description`, `activity_details_id`, `subject_id`) VALUES
 (1, 1515640639, 't501', 1, 'This will be our first quiz for the first semester, be prepared!', 1, 1),
 (2, 1515727219, 'f605', 1, 'First lecture of this semester, be sure to pack all your things and leave nothing behind! We\'re going to have an adventure!', 2, 2);
 
@@ -87,8 +87,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
-(202011111, 'Ange', 'Ecu', 'Gana', 'admin1', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'awdsawdsa');
+(202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'asd');
 
 -- --------------------------------------------------------
 
@@ -151,8 +151,8 @@ CREATE TABLE `courseware_question` (
   `courseware_question_id` int(20) NOT NULL,
   `courseware_question_question` varchar(800) NOT NULL,
   `courseware_question_reference` varchar(800) DEFAULT NULL,
-  `topic_id` int(20) NOT NULL,
-  `grade_assessment_id` int(20) NOT NULL
+  `grade_assessment_id` int(20) NOT NULL,
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -164,7 +164,7 @@ CREATE TABLE `courseware_question` (
 CREATE TABLE `course_modules` (
   `courseware_file_id` int(20) NOT NULL,
   `courseware_file_path` varchar(100) NOT NULL,
-  `topic_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -219,17 +219,16 @@ CREATE TABLE `lecturer` (
   `lecturer_status` tinyint(1) NOT NULL,
   `image_path` varchar(100) NOT NULL,
   `lecturer_is_confirm` tinyint(1) NOT NULL,
-  `topic_id` int(20) NOT NULL,
-  `schedule_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`, `topic_id`, `schedule_id`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 1, 1),
-(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 2, 1);
+INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`, `subject_id`) VALUES
+(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 1),
+(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -320,8 +319,10 @@ CREATE TABLE `offering` (
 --
 
 INSERT INTO `offering` (`offering_id`, `offering_course_code`, `offering_course_title`, `offering_program`, `offering_section`, `enrollment_id`, `professor_id`) VALUES
-(1, 'CORREL1', 'correl intro to solid mensuration', 'ECE', 'W31', 1, 201111112),
-(2, 'CORREL2', 'intro to physics', 'CE', 'X31', 1, 201122222);
+(1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 'V21', 1, 201111111),
+(2, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 'V22', 1, 201111111),
+(3, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 'M21', 1, 201122222),
+(4, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 'M22', 1, 201122222);
 
 -- --------------------------------------------------------
 
@@ -346,9 +347,10 @@ CREATE TABLE `professor` (
 --
 
 INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `professor_email`, `image_path`) VALUES
-(201111111, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(201111112, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg');
+(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
+(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
+(201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
+(201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg');
 
 -- --------------------------------------------------------
 
@@ -361,16 +363,20 @@ CREATE TABLE `schedule` (
   `schedule_start_time` int(20) NOT NULL,
   `schedule_end_time` int(20) NOT NULL,
   `schedule_venue` varchar(20) NOT NULL,
-  `offering_id` int(20) NOT NULL
+  `schedule_day` varchar(10) NOT NULL,
+  `offering_id` int(20) NOT NULL,
+  `lecturer_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `schedule`
 --
 
-INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `offering_id`) VALUES
-(1, 1515325531, 1515411939, 'T807', 1),
-(2, 1515629373, 1515640185, 'T706', 2);
+INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `schedule_day`, `offering_id`, `lecturer_id`) VALUES
+(1, 28800, 39600, 'T807', 'M', 1, 201011111),
+(2, 43200, 54000, 'T706', 'T', 2, 201011111),
+(3, 28800, 39600, 'T807', 'TH', 3, 201022222),
+(4, 43200, 54000, 'T706', 'F', 4, 201022222);
 
 -- --------------------------------------------------------
 
@@ -396,7 +402,46 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `student_email`, `student_program`, `image_path`, `offering_id`) VALUES
-(201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
+(201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201410679, 'NEHEMIAH', 'ONGTANGCO', 'BALUYUT', 'nobaluyut', 'nobaluyut', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201410881, 'ROMAR', 'SALERA', 'CONCEPCION', 'rsconcepcion', 'rsconcepcion', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201411823, 'AISLINN', 'TOQUERO', 'CASTRO', 'atcastro', 'atcastro', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201411851, 'RYAN CARLO', 'GUNIO', 'BETON', 'rgbeton', 'rgbeton', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201510186, 'MARK JOSEPH', 'GULTIANO', 'ASCAN', 'mgascan', 'mgascan', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201510573, 'LOUIS DAREL', 'VIDANES', 'ANIEVAS', 'lvanievas', 'lvanievas', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201510652, 'KEVIN', 'RAMOS', 'ACHACOSO', 'krachacoso', 'krachacoso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201511230, 'JULIUS RODNI', 'FESTIN', 'AHORRO', 'jfahorro', 'jfahorro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201511911, 'KASIAN PAUL', 'CALIXTRO', 'ALFONSO', 'kcalfonso', 'kcalfonso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201512068, 'KIMPEE COSUHING', 'MASAGCA', 'ABOROT', 'kmaborot', 'kmaborot', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201512491, 'JUNAID', 'TAGO', 'ABUBACAR', 'jtabubacar', 'jtabubacar', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201512532, 'RESHMA', 'VIDAL', 'AREVALO', 'rvarevalo', 'rvarevalo', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subject`
+--
+
+CREATE TABLE `subject` (
+  `subject_id` int(20) NOT NULL,
+  `subject_name` varchar(45) NOT NULL,
+  `subject_description` varchar(800) DEFAULT NULL,
+  `offering_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `subject`
+--
+
+INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `offering_id`) VALUES
+(1, 'Mathematics', 'not required', 1),
+(2, 'Hydraulics', 'not required', 1);
 
 -- --------------------------------------------------------
 
@@ -407,18 +452,20 @@ INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `userna
 CREATE TABLE `topic` (
   `topic_id` int(20) NOT NULL,
   `topic_name` varchar(100) NOT NULL,
-  `topic_description` varchar(800) NOT NULL,
+  `topic_description` varchar(800) DEFAULT NULL,
   `topic_done` int(11) NOT NULL,
-  `offering_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `topic`
 --
 
-INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`, `offering_id`) VALUES
-(1, 'Trigonometry', 'Introduction to trigonometry', 0, 1),
-(2, 'Solid Mensuration', 'I don\'t even know what are the topics that they\'re tackling in here', 1, 1);
+INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`, `subject_id`) VALUES
+(1, 'Algebra', 'qwe', 0, 1),
+(2, 'Trigonometry', 'qwe', 1, 1),
+(3, 'Intake Hydraulics', 'qwe', 1, 2),
+(4, 'physical modeling techniques', 'qwe', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -429,7 +476,7 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 CREATE TABLE `total_grade` (
   `total_grade_id` int(11) NOT NULL,
   `total_grade_total` varchar(45) NOT NULL,
-  `topic_topic_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -442,7 +489,7 @@ CREATE TABLE `total_grade` (
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`activity_id`),
   ADD KEY `fk_activity_activity_details1_idx` (`activity_details_id`),
-  ADD KEY `fk_activity_topic1_idx` (`topic_id`);
+  ADD KEY `fk_activity_subject1_idx` (`subject_id`);
 
 --
 -- Indexes for table `activity_details`
@@ -481,15 +528,15 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `courseware_question`
   ADD PRIMARY KEY (`courseware_question_id`),
-  ADD KEY `fk_courseware_question_topic1_idx` (`topic_id`),
-  ADD KEY `fk_courseware_question_grade_assessment1_idx` (`grade_assessment_id`);
+  ADD KEY `fk_courseware_question_grade_assessment1_idx` (`grade_assessment_id`),
+  ADD KEY `fk_courseware_question_subject1_idx` (`subject_id`);
 
 --
 -- Indexes for table `course_modules`
 --
 ALTER TABLE `course_modules`
   ADD PRIMARY KEY (`courseware_file_id`),
-  ADD KEY `fk_courseware_file_topic1_idx` (`topic_id`);
+  ADD KEY `fk_course_modules_subject1_idx` (`subject_id`);
 
 --
 -- Indexes for table `enrollment`
@@ -508,8 +555,7 @@ ALTER TABLE `grade_assessment`
 --
 ALTER TABLE `lecturer`
   ADD PRIMARY KEY (`lecturer_id`),
-  ADD KEY `fk_lecturer_topic1_idx` (`topic_id`),
-  ADD KEY `fk_lecturer_schedule1_idx` (`schedule_id`);
+  ADD KEY `fk_lecturer_subject1_idx` (`subject_id`);
 
 --
 -- Indexes for table `lecturer_attendance`
@@ -558,7 +604,8 @@ ALTER TABLE `professor`
 --
 ALTER TABLE `schedule`
   ADD PRIMARY KEY (`schedule_id`),
-  ADD KEY `fk_schedule_offering1_idx` (`offering_id`);
+  ADD KEY `fk_schedule_offering1_idx` (`offering_id`),
+  ADD KEY `fk_schedule_lecturer1_idx` (`lecturer_id`);
 
 --
 -- Indexes for table `student`
@@ -568,18 +615,25 @@ ALTER TABLE `student`
   ADD KEY `fk_student_offering1_idx` (`offering_id`);
 
 --
+-- Indexes for table `subject`
+--
+ALTER TABLE `subject`
+  ADD PRIMARY KEY (`subject_id`),
+  ADD KEY `fk_subject_offering1_idx` (`offering_id`);
+
+--
 -- Indexes for table `topic`
 --
 ALTER TABLE `topic`
   ADD PRIMARY KEY (`topic_id`),
-  ADD KEY `fk_topic_offering1_idx` (`offering_id`);
+  ADD KEY `fk_topic_subject1_idx` (`subject_id`);
 
 --
 -- Indexes for table `total_grade`
 --
 ALTER TABLE `total_grade`
   ADD PRIMARY KEY (`total_grade_id`),
-  ADD KEY `fk_total_grade_topic1_idx` (`topic_topic_id`);
+  ADD KEY `fk_total_grade_subject1_idx` (`subject_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -649,19 +703,19 @@ ALTER TABLE `log_content`
 -- AUTO_INCREMENT for table `offering`
 --
 ALTER TABLE `offering`
-  MODIFY `offering_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `offering_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `topic`
 --
 ALTER TABLE `topic`
-  MODIFY `topic_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `topic_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `total_grade`
@@ -678,7 +732,7 @@ ALTER TABLE `total_grade`
 --
 ALTER TABLE `activity`
   ADD CONSTRAINT `fk_activity_activity_details1` FOREIGN KEY (`activity_details_id`) REFERENCES `activity_details` (`activity_details_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_activity_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_activity_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `choice`
@@ -697,20 +751,19 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `courseware_question`
   ADD CONSTRAINT `fk_courseware_question_grade_assessment1` FOREIGN KEY (`grade_assessment_id`) REFERENCES `grade_assessment` (`grade_assessment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_courseware_question_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_courseware_question_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `course_modules`
 --
 ALTER TABLE `course_modules`
-  ADD CONSTRAINT `fk_courseware_file_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_course_modules_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  ADD CONSTRAINT `fk_lecturer_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_lecturer_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_lecturer_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_attendance`
@@ -742,6 +795,7 @@ ALTER TABLE `offering`
 -- Constraints for table `schedule`
 --
 ALTER TABLE `schedule`
+  ADD CONSTRAINT `fk_schedule_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_schedule_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -751,16 +805,22 @@ ALTER TABLE `student`
   ADD CONSTRAINT `fk_student_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `subject`
+--
+ALTER TABLE `subject`
+  ADD CONSTRAINT `fk_subject_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `topic`
 --
 ALTER TABLE `topic`
-  ADD CONSTRAINT `fk_topic_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_topic_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `total_grade`
 --
 ALTER TABLE `total_grade`
-  ADD CONSTRAINT `fk_total_grade_topic1` FOREIGN KEY (`topic_topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_total_grade_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
