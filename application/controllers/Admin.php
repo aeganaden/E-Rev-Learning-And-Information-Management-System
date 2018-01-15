@@ -23,6 +23,11 @@ class Admin extends CI_Controller {
 
         $this->session->unset_userdata('insertion_info');
 
+        /*==============================================
+        =            COSML REPORTS FETCHING            =
+        ==============================================*/
+        
+        
         // Fetch Schedule
         $report_cosml = $this->Crud_model->fetch("schedule");
 
@@ -42,20 +47,14 @@ class Admin extends CI_Controller {
                     $value->course_code = $offer->offering_course_code;
                     $value->course_title = $offer->offering_course_title;
                     $value->course_section = $offer->offering_section;
-                    $value->lecturer_id = $offer->offering_lecturer_id;
+                    $value->professor_id = $offer->professor_id;
                     $value->enrollment_id = $offer->enrollment_id;
                 }
-
-                // Fetch Lecturer's data
-                $value_lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $value->lecturer_id));
-                foreach ($value_lecturer as $key => $lecturer) {
-                    $value->lecturer_name = $lecturer->lecturer_firstname . " " . $lecturer->lecturer_lastname;
-                    $value->lecturer_firstname = $lecturer->lecturer_firstname;
-                    $value->lecturer_middlename = $lecturer->lecturer_midname;
-                    $value->lecturer_lastname = $lecturer->lecturer_lastname;
-                    $value->lecturer_expertise = $lecturer->lecturer_expertise;
-                    $value->lecturer_status = $lecturer->lecturer_status;
+                $professor = $this->Crud_model->fetch("professor",array("professor_id"=> $value->professor_id));
+                foreach ($professor as $key => $prof) {
+                    $value->professor_name = $prof->firstname . " " . $prof->lastname;
                 }
+
 
                 // Fetch Enrollment Data
                 $value_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_id" => $value->enrollment_id));
@@ -66,11 +65,59 @@ class Admin extends CI_Controller {
             }
         }
         $offering_data = $this->Crud_model->fetch("offering");
+        
+        /*=====  End of COSML REPORTS FETCHING  ======*/
+        
+        
+        /*==========================================
+        =            LECTURERS SCHEDULE            =
+        ==========================================*/
+        
+        // Fetch Active Enrollment Data
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
+        $active_enrollment = $active_enrollment[0];
+
+        // fetch lecturer
+        $lecturer = $this->Crud_model->fetch("lecturer");
+
+        foreach ($lecturer as $key => $value) {
+
+            // fetch topic
+            $topic = $this->Crud_model->fetch("topic",array("topic_id"=>$value->topic_id));
+            $topic = $topic[0];
+
+            // fetch active Offering 
+            $offering = $this->Crud_model->fetch("offering",array(
+                "offering_id"=>$topic->offering_id,
+                "enrollment_id"=>$active_enrollment->enrollment_id
+            ));
+            $offering = $offering[0];
+            
+            $schedule = $this->Crud_model->fetch("schedule",array("offering_id"=>$offering->offering_id));
+            $schedule = $schedule[0];
+
+            $value->schedule_id = $schedule->schedule_id;
+            $value->start_time = $schedule->schedule_start_time;
+            $value->end_time = $schedule->schedule_end_time;
+            $value->venue = $schedule->schedule_venue;
+
+            
+
+        }
+
+        echo "<pre>";
+        print_r($lecturer);
+        die();
+        
+        /*=====  End of LECTURERS SCHEDULE  ======*/
+        
+
 
         $data = array(
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
             "offering" => $offering_data,
+            "lecturer"=>$lecturer
         );
         $this->load->view('includes/header', $data);
         $this->load->view('admin');
@@ -121,21 +168,21 @@ class Admin extends CI_Controller {
         // die();
         switch ($info["identifier"]) {
             case 'administrator':
-                $column = "admin_id";
-                break;
+            $column = "admin_id";
+            break;
             case 'student':
-                $column = "student_id";
-                break;
+            $column = "student_id";
+            break;
             case 'lecturer':
-                $column = "lecturer_id";
-                break;
+            $column = "lecturer_id";
+            break;
             case 'professor':
-                $column = "professor_id";
-                break;
+            $column = "professor_id";
+            break;
 
             default:
                 # code...
-                break;
+            break;
         }
 
 

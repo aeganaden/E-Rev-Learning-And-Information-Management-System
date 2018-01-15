@@ -81,7 +81,7 @@
 							<th>Start Time</th>
 							<th>End Time</th>
 							<th>Venue</th>
-							<th>Assigned Lecturer</th>
+							<th>Assigned Professor</th>
 							<th>Term</th>
 							<th>School Year</th>
 						</tr>
@@ -99,7 +99,7 @@
 									<td><?= date("h:i A",$value->schedule_start_time) ?></td>
 									<td><?= date("h:i A",$value->schedule_end_time) ?></td>
 									<td><?= strtoupper($value->schedule_venue) ?></td>
-									<td><?= ucwords($value->lecturer_name) ?></td>
+									<td><?= ucwords($value->professor_name) ?></td>
 									<td><?= $value->term ?></td>
 									<td><?= $value->sy ?></td>
 								</tr>
@@ -130,7 +130,7 @@
 					</thead>
 
 					<tbody class="bg-color-white">
-						<?php if ($div_cosml_data): ?>
+						<?php if ($lecturer): ?>
 							<?php foreach ($div_cosml_data as $key => $value): ?>
 								<tr class="bg-color-white">
 									<td><?= $value->lecturer_id ?></td>
