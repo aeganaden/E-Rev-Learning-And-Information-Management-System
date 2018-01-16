@@ -127,5 +127,13 @@ a{
 	text-align: justify;
 }
 
+#register{
+	height: 70vh;
+	background: url('../img/background-user.jpg');
+	background-size: cover; background-repeat: no-repeat;
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
+}
+
 /*=====  End of Landing Page Css  ======*/
 

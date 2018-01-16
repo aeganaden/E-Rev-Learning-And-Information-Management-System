@@ -16,62 +16,6 @@ class Home extends CI_Controller {
         $this->session->unset_userdata('insertion_info');
         $info = $this->session->userdata('userInfo');
 
-
-        switch ($info["identifier"]) {
-            case 'student':
-                if (isset($info["user"]->student_id)) {
-
-                    $info["user"]->id = $info["user"]->student_id;
-                    $info["user"]->firstname = $info["user"]->firstname;
-                    $info["user"]->midname = $info["user"]->midname;
-                    $info["user"]->lastname = $info["user"]->lastname;
-                    $info["user"]->program = $info["user"]->student_program;
-                    $info["user"]->email = $info["user"]->student_email;
-                    unset($info["user"]->student_firstname);
-                    unset($info["user"]->student_midname);
-                    unset($info["user"]->student_lastname);
-                    unset($info["user"]->student_program);
-                    unset($info["user"]->student_email);
-                    unset($info["user"]->student_id);
-                }
-                break;
-
-            case 'professor':
-                if (isset($info["user"]->professor_id)) {
-                    $info["user"]->id = $info["user"]->professor_id;
-                    $info["user"]->midname = $info["user"]->midname;
-                    $info["user"]->lastname = $info["user"]->lastname;
-                    $info["user"]->department = $info["user"]->professor_department;
-                    $info["user"]->email = $info["user"]->professor_email;
-                    unset($info["user"]->professor_firstname);
-                    unset($info["user"]->professor_midname);
-                    unset($info["user"]->professor_lastname);
-                    unset($info["user"]->professor_department);
-                    unset($info["user"]->professor_email);
-                    unset($info["user"]->professor_id);
-                }
-                break;
-            case 'lecturer':
-                if (isset($info["user"]->lecturer_id)) {
-                    $info["user"]->id = $info["user"]->lecturer_id;
-                    $info["user"]->firstname = $info["user"]->firstname;
-                    $info["user"]->midname = $info["user"]->midname;
-                    $info["user"]->lastname = $info["user"]->lastname;
-                    $info["user"]->expertise = $info["user"]->lecturer_expertise;
-                    $info["user"]->email = $info["user"]->lecturer_email;
-                    unset($info["user"]->lecturer_firstname);
-                    unset($info["user"]->lecturer_midname);
-                    unset($info["user"]->lecturer_lastname);
-                    unset($info["user"]->lecturer_expertise);
-                    unset($info["user"]->lecturer_email);
-                    unset($info["user"]->lecturer_id);
-                }
-                break;
-
-            default:
-                break;
-        }
-
         // echo "<pre>";
         // print_r($info);
         // die();
@@ -97,7 +41,7 @@ class Home extends CI_Controller {
         $info = $this->session->userdata('userInfo');
         $activity = $this->Crud_model->fetch("activity");
         $id = $info['user']->id;
-        $offering = $this->Crud_model->fetch("offering", array("offering_lecturer_id" => $id));
+        // $offering = $this->Crud_model->fetch("offering", array("offering_lecturer_id" => $id));
 
 
         if ($info['logged_in'] && $info['identifier'] != "administrator") {
@@ -105,7 +49,7 @@ class Home extends CI_Controller {
                 "title" => "Activity - Learning Management System | FEU - Institute of Techonology",
                 "info" => $info,
                 "activity" => $activity_details,
-                "offering" => $offering
+                // "offering" => $offering
             );
             $this->load->view('includes/header', $data);
             $this->load->view('home-activity');
@@ -128,7 +72,7 @@ class Home extends CI_Controller {
       }
      */
 
-    public function updateActivity() {
+      public function updateActivity() {
         $this->session->unset_userdata('insertion_info');
         $id = $this->input->post("id");
         $time = $this->input->post("time");

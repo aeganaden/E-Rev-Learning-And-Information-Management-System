@@ -36,7 +36,7 @@
 					<label>Audience Selection</label>
 				</div>
 			</div>
-			<button class="btn waves-light waves-effect right">Post</button>
+			<button class="btn bg-primary-green waves-effect right">Post</button>
 		</form>
 
 	</div>
@@ -155,7 +155,7 @@
 	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-action modal-close waves-effect left waves-light red btn">Cancel</a>
-		<a href="#!" id="btn_modal_update" class="modal-action modal-close waves-effect right waves-light green btn">Update</a>
+		<a href="#!" id="btn_modal_update" class="modal-action modal-close right bg-primary-green waves-effect btn">Update</a>
 	</div>
 </div>
 

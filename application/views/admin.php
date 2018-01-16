@@ -48,7 +48,7 @@
 					<div class="collapsible-body valign-wrapper">
 						<p><i>This section provides some function that manages the course offering, function includes updating and deleting the course offerings</i></p>
 						<center>
-							<button class="btn valign-wrapper" id="btn_show_clof">Show List</button>
+							<button class="btn bg-primary-green waves-effect valign-wrapper" id="btn_show_clof">Show List</button>
 						</center>
 					</div>
 				</li>
@@ -57,7 +57,7 @@
 					<div class="collapsible-body">
 						<p><i>This section provides insertion functions using excel file</<i></p>
 							<center>
-								<a class="btn valign-wrapper" href="<?=base_url()?>importdata ">Insert Data</a>
+								<a class="btn bg-primary-green waves-effect valign-wrapper" href="<?=base_url()?>importdata ">Insert Data</a>
 							</center>
 						</div>
 					</li>
@@ -178,13 +178,13 @@
 					</thead>
 
 					<tbody class="bg-color-white">
-						<?php if ($div_cosml_data): ?>
-							<?php foreach ($div_cosml_data as $key => $value): ?>
+						<?php if ($lecturer): ?>
+							<?php foreach ($lecturer as $key => $value): ?>
 								<tr class="bg-color-white">
 									<td><?= $value->lecturer_id ?></td>
-									<td><?= ucwords($value->lecturer_firstname) ?></td>
-									<td><?= ucwords($value->lecturer_middlename) ?></td>
-									<td><?= ucwords($value->lecturer_lastname) ?></td>
+									<td><?= ucwords($value->firstname) ?></td>
+									<td><?= ucwords($value->midname) ?></td>
+									<td><?= ucwords($value->lastname) ?></td>
 									<td><?= ucwords($value->lecturer_expertise) ?></td>
 									<td>
 										<?php if ($value->lecturer_status == 1): ?>
@@ -194,9 +194,9 @@
 										<?php endif ?>
 									</td>
 									<td>
-										<a href="<?=base_url()?>Admin/viewAttendance/<?=$value->lecturer_id?>" target="_blank" class="btn waves-effect waves-light ">View</a>
+										<a href="<?=base_url()?>Admin/viewAttendance/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect ">View</a>
 									</td>
-									<td><button class="btn waves-effect waves-light">Download</button></td>
+									<td><button class="btn bg-primary-green waves-effect">Download</button></td>
 								</tr>
 							<?php endforeach ?>
 						<?php endif ?>
@@ -223,13 +223,13 @@
 					</thead>
 
 					<tbody class="bg-color-white">
-						<?php if ($div_cosml_data): ?>
-							<?php foreach ($div_cosml_data as $key => $value): ?>
+						<?php if ($lecturer): ?>
+							<?php foreach ($lecturer as $key => $value): ?>
 								<tr class="bg-color-white">
 									<td><?= $value->lecturer_id ?></td>
-									<td><?= ucwords($value->lecturer_firstname) ?></td>
-									<td><?= ucwords($value->lecturer_middlename) ?></td>
-									<td><?= ucwords($value->lecturer_lastname) ?></td>
+									<td><?= ucwords($value->firstname) ?></td>
+									<td><?= ucwords($value->midname) ?></td>
+									<td><?= ucwords($value->lastname) ?></td>
 									<td><?= ucwords($value->lecturer_expertise) ?></td>
 									<td>
 										<?php if ($value->lecturer_status == 1): ?>
@@ -239,9 +239,9 @@
 										<?php endif ?>
 									</td>
 									<td>
-										<a href="<?=base_url()?>Admin/viewClassList/<?=$value->lecturer_id?>" target="_blank" class="btn waves-effect waves-light ">View</a>
+										<a href="<?=base_url()?>Admin/viewClassList/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect">View</a>
 									</td>
-									<td><button class="btn waves-effect waves-light">Download</button></td>
+									<td><button class="btn bg-primary-green waves-effect">Download</button></td>
 								</tr>
 							<?php endforeach ?>
 						<?php endif ?>
@@ -324,7 +324,7 @@
 	</div>
 	<div class="modal-footer bg-color-white">
 		<a href="#!" class="modal-action modal-close waves-effect waves-light btn red left">Cancel</a>
-		<a href="#!" id="btn_modal_com_update"  class="waves-effect waves-light btn green right">Update</a>
+		<a href="#!" id="btn_modal_com_update"  class="bg-primary-green waves-effect btn right">Update</a>
 	</div>
 </div>
 

@@ -114,11 +114,13 @@ class Admin extends CI_Controller {
         
         /*=====  End of LECTURERS SCHEDULE  ======*/
 
+
         /*===========================================
         =            Lecturer Attendance            =
         ===========================================*/
         
-        
+        $lecturer = $this->Crud_model->fetch("lecturer");
+
         
         /*=====  End of Lecturer Attendance  ======*/
         
@@ -129,7 +131,8 @@ class Admin extends CI_Controller {
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
             "offering" => $offering_data,
-            "schedule"=>$schedule
+            "schedule"=>$schedule,
+            "lecturer"=>$lecturer
         );
         $this->load->view('includes/header', $data);
         $this->load->view('admin');
@@ -152,6 +155,7 @@ class Admin extends CI_Controller {
     public function fetchAnnouncement() {
         $announcement_id = $this->input->post("id");
         $data = $this->Crud_model->fetch("announcement", array("announcement_id" => $announcement_id));
+        
         echo json_encode($data);
     }
 

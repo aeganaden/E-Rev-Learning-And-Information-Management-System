@@ -8,7 +8,8 @@
 		<blockquote class="color-primary-green">
 
 			<h1 class="color-black">Activity
-				<a class="btn waves-effect waves-light bg-primary-green modal-trigger" data-id="<?=$info['user']->lecturer_offering_id?>" href="#modal_add_activity" id="btn_add_activity">Add Activity</a>
+				<a class="btn waves-effect waves-light bg-primary-green modal-trigger" 
+				data-id="<?=$info['user']->id?>" href="#modal_add_activity" id="btn_add_activity">Add Activity</a>
 			</h1>
 		</blockquote>
 
@@ -27,8 +28,8 @@
 		// Activity details
 			$details = $this->Crud_model->fetch("activity_details", array("activity_details_id"=>$value->activity_details_id));
 			$details = $details[0];
-			$topic = $this->Crud_model->fetch("topic", array("topic_id"=>$value->topic_id));
-			$topic = $topic[0];
+			$subject = $this->Crud_model->fetch("subject", array("subject_id"=>$value->subject_id));
+			$subject = $subject[0];
 			?>
 			<div class="col s4">
 				<div class="card bg-primary-green ">
@@ -37,25 +38,26 @@
 							<div class="col s8">
 								<blockquote class="color-primary-yellow">
 									<span class="card-title color-white"><?=$details->activity_details_name?></span>
-									<i><?=$topic->topic_name?></i>
+									<i><?=$subject->subject_name?></i>
 									<p> <?=date("M d, Y | h:i A", $value->activity_date_time)?></p>
 									<p><?=strtoupper($value->activity_venue)?></p>
 								</blockquote>
-								<div class="row div-edit" style="display: none">
+								<div class="row div-edit<?=$value->activity_id?>" style="display: none">
 									<input type="text"  class="timepicker time_data" value="Change Time">
 									<input type="text" class="datepicker date_data" value="Change Date">
 									<textarea id="txtarea" class="materialize-textarea desc_data"><?=$value->activity_description?></textarea>
 									<label for="txtarea">Description</label>
-									<button class="btn waves-effect waves-light right btn_update_activity" data-id="<?=$value->activity_id?>">Update</button>
+									<button class="btn bg-primary-green waves-effect right btn_update_activity" data-id="<?=$value->activity_id?>">Update</button>
 								</div>
 							</div>
 							<div class="col s4">
 
 								<i class="material-icons right color-white tooltipped btn_delete_activity" data-tooltip="Delete Activity" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
+
 								<i class="tooltipped btn_edit_activity material-icons right color-primary-yellow" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;" data-tooltip="Edit Activity">edit</i>
 							</div>
 						</div>
-						<h5 style="display: block;" class="activity_paragraph_desc"><?=$value->activity_description?></h5>
+						<h5 style="display: block;" class="activity_paragraph_desc<?=$value->activity_id?> a-roboto-cond"><?=$value->activity_description?></h5>
 					</div>
 
 				</div>
@@ -117,13 +119,14 @@
 
 
 		$(".btn_edit_activity").click(function(event) {
-			$(".div-edit").toggle("slow");
-			if ($(".activity_paragraph_desc").css("display")=="block") {
-				$(".activity_paragraph_desc").fadeOut();
-				$(".activity_paragraph_desc").css("display","none");
+			$id = $(this).attr("data-id");
+			$(".div-edit"+$id).toggle("slow");
+			if ($(".activity_paragraph_desc"+$id).css("display")=="block") {
+				$(".activity_paragraph_desc"+$id).fadeOut();
+				$(".activity_paragraph_desc"+$id).css("display","none");
 			}else{
-				$(".activity_paragraph_desc").fadeIn();
-				$(".activity_paragraph_desc").css("display","block");
+				$(".activity_paragraph_desc"+$id).fadeIn();
+				$(".activity_paragraph_desc"+$id).css("display","block");
 			}
 
 		});
