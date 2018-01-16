@@ -378,7 +378,7 @@
 
 <div class="row red" id="register">
 	<h4 class="center" style="text-transform: uppercase; padding-top: 4%;">sign up as a lecturer</h4>
-	<center><a href="<?=base_url()?>"></a></center>
+	<center><a href="<?=base_url()?>"><button class="btn bg-primary-green waves-effect large">register</button></a></center>
 </div>
 
 </div>
