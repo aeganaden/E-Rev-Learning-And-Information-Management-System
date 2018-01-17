@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 02:19 PM
+-- Generation Time: Jan 17, 2018 at 03:04 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -250,7 +250,7 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
-(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 0, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
 (2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
@@ -461,7 +461,8 @@ CREATE TABLE `subject` (
 
 INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `course_id`) VALUES
 (1, 'Mathematics', 'not required', 1, 1),
-(2, 'Hydraulics', 'not required', 2, 2);
+(2, 'Hydraulics', 'not required', 2, 1),
+(3, 'Hydraulics', 'not required', 2, 2);
 
 -- --------------------------------------------------------
 

@@ -29,14 +29,20 @@ class Feedback extends CI_Controller {
                 }
             } else {
                 $error = false;
-                include(APPPATH . 'views\feedback\custom1.php');
+                include(APPPATH . 'views\feedback\custom2.php');
             }
 
             if ($error) {
                 $course_id = $course_hold->course_id;
-                $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id))[0];
+                $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id));
+                echo "<pre>";
                 print_r($subject_hold);
-                if ($subject_hold) {
+                echo "</pre>";
+                if (empty($subject_hold) != 1) {
+                    foreach ($subject_hold as $subject) {           //get all subjs in a CORREL
+//                        print_r($subject) . "<br>test";
+                    }
+                } else {
 
                 }
             }
