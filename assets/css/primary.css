@@ -89,6 +89,7 @@ a{
 /*=====  End of COLORS  ======*/
 
 
+
 .a-navbar{
 	font-family: 'Source Sans Pro', sans-serif;
 }
@@ -97,6 +98,9 @@ a{
 }
 .a-nav-elements > li > a{
 	font-size: 2vh;
+}
+.swal-overlay {
+	background-color: rgba(95, 66, 0, 0.97);
 }
 
 
@@ -133,6 +137,10 @@ a{
 	background-size: cover; background-repeat: no-repeat;
 	padding-bottom: 0 !important;
 	margin-bottom: 0 !important;
+}
+
+#trigger_reg > a:hover{
+	color: #212121 !important;
 }
 
 /*=====  End of Landing Page Css  ======*/
