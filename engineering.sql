@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 07:26 AM
+-- Generation Time: Jan 17, 2018 at 01:47 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'awdsa');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adad');
 
 -- --------------------------------------------------------
 
@@ -264,16 +264,17 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_date` int(20) NOT NULL,
   `lecturer_attendance_in` int(20) DEFAULT NULL,
   `lecturer_attendance_out` int(20) DEFAULT NULL,
-  `course_id` int(20) NOT NULL
+  `course_id` int(20) NOT NULL,
+  `lecturer_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_attendance`
 --
 
-INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `course_id`) VALUES
-(1, 1515455338, 1515455338, 1515476979, 1),
-(2, 1515479755, 1515479755, 1515503216, 2);
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `course_id`, `lecturer_id`) VALUES
+(1, 1515455338, 1515455338, 1515476979, 1, 1),
+(2, 1515479755, 1515479755, 1515503216, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -588,7 +589,8 @@ ALTER TABLE `lecturer`
 --
 ALTER TABLE `lecturer_attendance`
   ADD PRIMARY KEY (`lecturer_attendance_id`),
-  ADD KEY `fk_lecturer_attendance_course1_idx` (`course_id`);
+  ADD KEY `fk_lecturer_attendance_course1_idx` (`course_id`),
+  ADD KEY `fk_lecturer_attendance_lecturer1_idx` (`lecturer_id`);
 
 --
 -- Indexes for table `lecturer_feedback`
@@ -802,7 +804,8 @@ ALTER TABLE `course_modules`
 -- Constraints for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
-  ADD CONSTRAINT `fk_lecturer_attendance_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_lecturer_attendance_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_attendance_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_feedback`
