@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = "You are in an unknown enrollment"</script>
+<script>document.getElementById("message_area").innerHTML = "You are in an unknown enrollment"</script>
