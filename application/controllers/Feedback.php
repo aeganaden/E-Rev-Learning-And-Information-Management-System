@@ -11,41 +11,46 @@ class Feedback extends CI_Controller {
     public function index() {
 
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
-            $error = true;          //error holder
-            $data = array(
-                'title' => "Feedback"
-            );
-            $info["user"] = new stdClass();
+            $student_temp = $this->session->userdata('userInfo')["user"]->student_program;
+            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
+            $feedback_status = $dept_temp[0]->professor_feedback_active;
             $this->load->view('includes/header', $data);
-            include(APPPATH . 'views\feedback\hold1.php');
-            $user_hold = $this->session->userdata('userInfo')['user'];
-            $user_id = $user_hold->course_id;
-            $course_hold = $this->Crud_model->fetch('course', array('course_id' => $user_id))[0];
-            $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
-            if (empty($enrollment_hold) != 1) {       //check the fetch table and if it is active
-                if ($enrollment_hold->enrollment_is_active == 0) {
-                    $error = false;
-                    include(APPPATH . 'views\feedback\custom1.php');
-                }
-            } else {
-                $error = false;
-                include(APPPATH . 'views\feedback\custom2.php');
-            }
+            if ($feedback_status == 1) {                //checks if feedback is open
+                $error = true;          //error holder
+                $data = array(
+                    'title' => "Feedback"
+                );
+                $info["user"] = new stdClass();
 
-            if ($error) {
-                $course_id = $course_hold->course_id;
-                $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id));
-                echo "<pre>";
-                print_r($subject_hold);
-                echo "</pre>";
-                if (empty($subject_hold) != 1) {
-                    foreach ($subject_hold as $subject) {           //get all subjs in a CORREL
-//                        print_r($subject) . "<br>test";
+                include(APPPATH . 'views\feedback\hold1.php');
+                $user_hold = $this->session->userdata('userInfo')['user'];
+                $user_id = $user_hold->course_id;
+                $course_hold = $this->Crud_model->fetch('course', array('course_id' => $user_id))[0];
+                $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
+                if (empty($enrollment_hold) != 1) {       //check the fetch table and if it is active
+                    if ($enrollment_hold->enrollment_is_active == 0) {
+                        $error = false;
+                        include(APPPATH . 'views\feedback\custom1.php');
                     }
                 } else {
-
+                    $error = false;
+                    include(APPPATH . 'views\feedback\custom2.php');
                 }
-            }
+
+                if ($error) {
+                    $course_id = $course_hold->course_id;
+                    $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id));
+                    echo "<pre>";
+                    print_r($subject_hold);
+                    echo "</pre>";
+                    if (empty($subject_hold) != 1) {
+                        foreach ($subject_hold as $subject) {           //get all subjs in a CORREL
+//                        print_r($subject) . "<br>test";
+                        }
+                    } else {
+
+                    }
+                }
 //            $offering_id = $offering_hold->offering_id;
 //            $data = array(
 //                'title' => "Feedback"
@@ -95,8 +100,11 @@ class Feedback extends CI_Controller {
 //            } else {                        //Error: lecturer not fetched
 //                include(APPPATH . 'views\feedback\custom2.php');
 //            }
+            } else {                    //shows the feedback is not yet activated
+                $this->load->view('feedback/feedback_main', $data);
+            }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-            echo "test";
+            echo "side of lecturer";
         } else {
             redirect("");
         }

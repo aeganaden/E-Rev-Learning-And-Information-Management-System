@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 03:04 PM
+-- Generation Time: Jan 17, 2018 at 03:37 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -264,15 +264,15 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_date` int(20) NOT NULL,
   `lecturer_attendance_in` int(20) DEFAULT NULL,
   `lecturer_attendance_out` int(20) DEFAULT NULL,
-  `course_id` int(20) NOT NULL,
-  `lecturer_id` int(20) NOT NULL
+  `lecturer_id` int(20) NOT NULL,
+  `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_attendance`
 --
 
-INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `course_id`, `lecturer_id`) VALUES
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `lecturer_id`, `offering_id`) VALUES
 (1, 1515455338, 1515455338, 1515476979, 1, 1),
 (2, 1515479755, 1515479755, 1515503216, 2, 2);
 
@@ -359,18 +359,19 @@ CREATE TABLE `professor` (
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `image_path` varchar(100) NOT NULL
+  `image_path` varchar(100) NOT NULL,
+  `professor_feedback_active` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `professor`
 --
 
-INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `email`, `image_path`) VALUES
-(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg');
+INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `email`, `image_path`, `professor_feedback_active`) VALUES
+(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
+(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
+(201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
+(201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -384,18 +385,18 @@ CREATE TABLE `schedule` (
   `schedule_end_time` int(20) NOT NULL,
   `schedule_venue` varchar(20) NOT NULL,
   `lecturer_id` int(20) NOT NULL,
-  `course_id` int(20) NOT NULL
+  `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `schedule`
 --
 
-INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `course_id`) VALUES
+INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `offering_id`) VALUES
 (1, 28800, 39600, 'T807', 1, 1),
-(2, 43200, 54000, 'T706', 1, 1),
-(3, 28800, 39600, 'T807', 2, 2),
-(4, 43200, 54000, 'T706', 2, 2);
+(2, 43200, 54000, 'T706', 1, 2),
+(3, 28800, 39600, 'T807', 2, 3),
+(4, 43200, 54000, 'T706', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -590,8 +591,8 @@ ALTER TABLE `lecturer`
 --
 ALTER TABLE `lecturer_attendance`
   ADD PRIMARY KEY (`lecturer_attendance_id`),
-  ADD KEY `fk_lecturer_attendance_course1_idx` (`course_id`),
-  ADD KEY `fk_lecturer_attendance_lecturer1_idx` (`lecturer_id`);
+  ADD KEY `fk_lecturer_attendance_lecturer1_idx` (`lecturer_id`),
+  ADD KEY `fk_lecturer_attendance_offering1_idx` (`offering_id`);
 
 --
 -- Indexes for table `lecturer_feedback`
@@ -633,7 +634,7 @@ ALTER TABLE `professor`
 ALTER TABLE `schedule`
   ADD PRIMARY KEY (`schedule_id`),
   ADD KEY `fk_schedule_lecturer1_idx` (`lecturer_id`),
-  ADD KEY `fk_schedule_course1_idx` (`course_id`);
+  ADD KEY `fk_schedule_offering1_idx` (`offering_id`);
 
 --
 -- Indexes for table `student`
@@ -747,6 +748,12 @@ ALTER TABLE `schedule`
   MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `subject`
+--
+ALTER TABLE `subject`
+  MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `topic`
 --
 ALTER TABLE `topic`
@@ -805,8 +812,8 @@ ALTER TABLE `course_modules`
 -- Constraints for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
-  ADD CONSTRAINT `fk_lecturer_attendance_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_lecturer_attendance_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_lecturer_attendance_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_attendance_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_feedback`
@@ -831,8 +838,8 @@ ALTER TABLE `offering`
 -- Constraints for table `schedule`
 --
 ALTER TABLE `schedule`
-  ADD CONSTRAINT `fk_schedule_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_schedule_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_schedule_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_schedule_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `student`
