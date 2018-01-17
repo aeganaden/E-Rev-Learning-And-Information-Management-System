@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 01:47 PM
+-- Generation Time: Jan 17, 2018 at 02:19 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -287,14 +287,14 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_timedate` int(20) NOT NULL,
   `lecturer_feedback_comment` varchar(500) NOT NULL,
   `student_id` int(20) NOT NULL,
-  `course_id` int(20) NOT NULL
+  `lecturer_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_feedback`
 --
 
-INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `student_id`, `course_id`) VALUES
+INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `student_id`, `lecturer_id`) VALUES
 (1, 1515455338, 'hey wassup this is comment', 201511281, 1);
 
 -- --------------------------------------------------------
@@ -598,7 +598,7 @@ ALTER TABLE `lecturer_attendance`
 ALTER TABLE `lecturer_feedback`
   ADD PRIMARY KEY (`lecturer_feedback_id`),
   ADD KEY `fk_lecturer_feedback_student1_idx` (`student_id`),
-  ADD KEY `fk_lecturer_feedback_course1_idx` (`course_id`);
+  ADD KEY `fk_lecturer_feedback_lecturer1_idx` (`lecturer_id`);
 
 --
 -- Indexes for table `log`
@@ -811,7 +811,7 @@ ALTER TABLE `lecturer_attendance`
 -- Constraints for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  ADD CONSTRAINT `fk_lecturer_feedback_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_feedback_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_lecturer_feedback_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
