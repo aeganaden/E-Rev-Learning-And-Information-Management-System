@@ -51,7 +51,6 @@
 								</div>
 							</div>
 							<div class="col s4">
-
 								<i class="material-icons right color-white tooltipped btn_delete_activity" data-tooltip="Delete Activity" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
 
 								<i class="tooltipped btn_edit_activity material-icons right color-primary-yellow" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;" data-tooltip="Edit Activity">edit</i>

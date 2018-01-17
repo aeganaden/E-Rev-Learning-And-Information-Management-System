@@ -378,12 +378,81 @@
 
 <div class="row red" id="register">
 	<h4 class="center" style="text-transform: uppercase; padding-top: 4%;">sign up as a lecturer</h4>
-	<center><a href="<?=base_url()?>"></a></center>
+	<center><a href="#"><button class="btn bg-primary-green waves-effect btn-large modal-trigger" data-target="modal-register">register</button></a></center>
 </div>
 
 </div>
 
 <!--====  End of Web Only Section  ====-->
+
+
+<!--========================================
+=            Modal Registration            =
+=========================================-->
+
+<div id="modal-register" class="modal modal-fixed-footer bg-color-white" >
+	<div class="modal-content">
+		<blockquote class="color-primary-green"><h4 class="color-black">REGISTRATION</h4></blockquote>
+		<div class="row">
+			<div class="col s12">
+				<!-- Name -->
+				<div class="row ">
+					<div class="col s4  input-field">
+						<i class="material-icons prefix">person</i>
+						<input type="text" placeholder=" " id="reg_firstname" name="reg_firstname" autofocus class="validate">
+						<label for="reg_firstname">FIRST NAME</label>
+					</div>
+					<div class="col s4  input-field">
+						<input type="text" placeholder=" " id="reg_midname" name="reg_midname" class="validate">
+						<label for="reg_midname">MIDDLE NAME</label>
+					</div>
+					<div class="col s4  input-field">
+						<input type="text" placeholder=" " id="reg_lastname" name="reg_lastname" class="validate">
+						<label for="reg_lastname">SURNAME</label>
+					</div>
+				</div>
+				
+				<!-- username -->
+				<div class="row">
+					<div class="input-field col s5">
+						<i class="material-icons prefix">supervisor_account</i>
+
+						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validata">
+						<label for="reg_username">USERNAME</label>
+					</div>
+				</div>
+				<!-- password -->
+				<div class="row">
+					<div class="input-field col s6">
+						<i class="material-icons prefix">lock</i>
+
+						<input type="text" placeholder=" " id="reg_password" name="reg_password" class="validata">
+						<label for="reg_password">PASSWORD</label>
+					</div>
+					<div class="input-field col s6">
+						<i class="material-icons prefix">lock</i>
+						<input type="text" placeholder=" " id="reg_conf_password" name="reg_conf_password" class="validata">
+						<label for="reg_conf_password">CONFIRM PASSWORD</label>
+					</div>
+				</div>
+
+				<!-- Expertise -->
+				<div class="row input-field">
+					<i class="material-icons prefix">assistant</i>
+					<textarea name="reg_expertise" id="reg_expertise" placeholder="Ex. Trigonometry, Geometry, Algebra" data-length="150" class="materialize-textarea"></textarea>
+					<label for="reg_expertise">What is your Expertise?</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer bg-color-white">
+		<a href="#!" class="modal-action modal-close waves-effect bg-color-red btn left">Cancel</a>
+		<a href="#!" id="btn_register" class=" waves-effect bg-primary-green btn right">Register</a>
+	</div>
+</div>
+
+<!--====  End of Modal Registration  ====-->
+
 
 
 
@@ -482,3 +551,43 @@
 <!--====  End of FOOTER  ====-->
 
 
+
+<!--============================
+=            Script            =
+=============================-->
+
+<script>
+	jQuery(document).ready(function($) {
+		$("#trigger_reg").click(function() {
+			$('html, body').animate({
+				scrollTop: $("#register").offset().top
+			}, 2000);
+		});
+
+		$("#btn_register").click(function() {
+			// Include first the ajax validation of data
+			// Then include this swal inside success function
+			swal({
+				title: "Submit Registration?",
+				text: "Your data will be stored in our system and will be subject for approval",
+				icon: "info",
+				buttons: true,
+				closeOnClickOutside: false,
+			})
+			.then((willRegister) => {
+				if (willRegister) {
+					// Another ajax call here to store the data
+					// If success another swal
+					// then refresh the reload
+
+
+				} 
+			});
+
+
+		});
+
+	});
+</script>
+
+<!--====  End of Script  ====-->

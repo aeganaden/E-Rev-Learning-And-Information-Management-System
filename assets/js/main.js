@@ -8,6 +8,8 @@ $(document).ready(function() {
 		indicators:false,
 		height: 500
 	});
+	$('input#input_text, textarea#reg_expertise').characterCounter();
+	
 	$('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -30,7 +32,6 @@ $(document).ready(function() {
     ampmclickable: true, // make AM PM clickable
     aftershow: function(){} //Function for after opening timepicker
 });
-
 	initiateOnClick();
 });
 
