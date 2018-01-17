@@ -11,24 +11,54 @@ class Feedback extends CI_Controller {
     public function index() {
 
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
+            $error = true;          //error holder
             $data = array(
                 'title' => "Feedback"
             );
             $info["user"] = new stdClass();
             $this->load->view('includes/header', $data);
-            include(APPPATH . 'views\feedback\hold1.php');      //<span>
-            $offering_hold = $this->session->userdata('userInfo')['user'];
-            $offering_id = $offering_hold->offering_id;
-            $enrollment_is_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $offering_id));
+            include(APPPATH . 'views\feedback\hold1.php');
+            $user_hold = $this->session->userdata('userInfo')['user'];
+            $user_id = $user_hold->course_id;
+            $course_hold = $this->Crud_model->fetch('course', array('course_id' => $user_id))[0];
+            $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
+            if (empty($enrollment_hold) != 1) {       //check the fetch table and if it is active
+                if ($enrollment_hold->enrollment_is_active == 0) {
+                    $error = false;
+                    include(APPPATH . 'views\feedback\custom1.php');
+                }
+            } else {
+                $error = false;
+                include(APPPATH . 'views\feedback\custom1.php');
+            }
+
+            if ($error) {
+                $course_id = $course_hold->course_id;
+                $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id))[0];
+                print_r($subject_hold);
+                if ($subject_hold) {
+
+                }
+            }
+//            $offering_id = $offering_hold->offering_id;
+//            $data = array(
+//                'title' => "Feedback"
+//            );
+//            $info["user"] = new stdClass();
+//            $this->load->view('includes/header', $data);
+//            include(APPPATH . 'views\feedback\hold1.php');      //<span>
+//            $offering_hold = $this->session->userdata('userInfo')['user'];
+//            $offering_id = $offering_hold->offering_id;
+//            $enrollment_is_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $offering_id));
 //            echo "<pre>";
 //            print_r($enrollment_is_active);
 //            echo "</pre>";
-            if ($offering_id != FALSE && $enrollment_is_active[0]->enrollment_is_active == 1) {
-                $topic_hold = $this->Crud_model->fetch('topic', array('offering_id' => $offering_id))[0];
-                $topic_id = $topic_hold->topic_id;
-                echo "<pre>";
-                print_r($topic_hold);
-                echo "</pre>";
+//            if ($offering_id != FALSE && $enrollment_is_active[0]->enrollment_is_active == 1) {
+//                $topic_hold = $this->Crud_model->fetch('topic', array('offering_id' => $offering_id))[0];
+//                $topic_id = $topic_hold->topic_id;
+//                echo "<pre>";
+//                print_r($topic_hold);
+//                echo "</pre>";
 //                if ($topic_id != FALSE) {
 //                    $info["user"]->topic = $topic_hold->topic_name;
 //                    $result = $this->Crud_model->fetch('lecturer', array('topic_id' => $topic_id))[0];
@@ -56,9 +86,9 @@ class Feedback extends CI_Controller {
 //                } else {                    //lecturer_id
 //                    include(APPPATH . 'views\feedback\custom3.php');
 //                }
-            } else {                        //Error: lecturer not fetched
-                include(APPPATH . 'views\feedback\custom2.php');
-            }
+//            } else {                        //Error: lecturer not fetched
+//                include(APPPATH . 'views\feedback\custom2.php');
+//            }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
             echo "test";
         } else {

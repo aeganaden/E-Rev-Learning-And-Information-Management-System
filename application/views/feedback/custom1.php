@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = ""</script>
+<script>document.getElementById("error").innerHTML = "You are in an inactive enrollment"</script>

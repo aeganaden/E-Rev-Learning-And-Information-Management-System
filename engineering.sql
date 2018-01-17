@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 05:00 AM
+-- Generation Time: Jan 17, 2018 at 07:26 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adasd');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'awdsa');
 
 -- --------------------------------------------------------
 
@@ -232,6 +232,7 @@ CREATE TABLE `grade_assessment` (
 
 CREATE TABLE `lecturer` (
   `lecturer_id` int(20) NOT NULL,
+  `id_number` int(20) DEFAULT NULL,
   `firstname` varchar(45) NOT NULL,
   `midname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
@@ -248,9 +249,9 @@ CREATE TABLE `lecturer` (
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 0, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
+INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
+(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 0, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -390,10 +391,10 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `course_id`) VALUES
-(1, 28800, 39600, 'T807', 201011111, 1),
-(2, 43200, 54000, 'T706', 201011111, 1),
-(3, 28800, 39600, 'T807', 201022222, 2),
-(4, 43200, 54000, 'T706', 201022222, 2);
+(1, 28800, 39600, 'T807', 1, 1),
+(2, 43200, 54000, 'T706', 1, 1),
+(3, 28800, 39600, 'T807', 2, 2),
+(4, 43200, 54000, 'T706', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -458,8 +459,8 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `course_id`) VALUES
-(1, 'Mathematics', 'not required', 201011111, 1),
-(2, 'Hydraulics', 'not required', 201022222, 2);
+(1, 'Mathematics', 'not required', 1, 1),
+(2, 'Hydraulics', 'not required', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -723,6 +724,12 @@ ALTER TABLE `enrollment`
 --
 ALTER TABLE `grade_assessment`
   MODIFY `grade_assessment_id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lecturer`
+--
+ALTER TABLE `lecturer`
+  MODIFY `lecturer_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `log_content`

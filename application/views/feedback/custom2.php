@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = "Not available. Cannot fetch lecturer."</script>
+<script>document.getElementById("error").innerHTML = "You are in an unknown enrollment"</script>
