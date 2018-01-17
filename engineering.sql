@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2018 at 03:00 PM
+-- Generation Time: Jan 17, 2018 at 05:00 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'ad');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adasd');
 
 -- --------------------------------------------------------
 
@@ -238,18 +238,18 @@ CREATE TABLE `lecturer` (
   `lecturer_expertise` varchar(300) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `lecturer_email` varchar(50) NOT NULL,
-  `lecturer_status` tinyint(1) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `lecturer_status` tinyint(1) NOT NULL DEFAULT '0',
   `image_path` varchar(100) NOT NULL,
-  `lecturer_is_confirm` tinyint(1) NOT NULL
+  `lecturer_is_confirm` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
+(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 0, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
 (201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
@@ -356,7 +356,7 @@ CREATE TABLE `professor` (
   `professor_department` varchar(30) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `professor_email` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `image_path` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -364,7 +364,7 @@ CREATE TABLE `professor` (
 -- Dumping data for table `professor`
 --
 
-INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `professor_email`, `image_path`) VALUES
+INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `email`, `image_path`) VALUES
 (201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
 (201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
 (201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
@@ -408,7 +408,7 @@ CREATE TABLE `student` (
   `lastname` varchar(45) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `student_email` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `student_program` varchar(10) NOT NULL,
   `image_path` varchar(100) NOT NULL,
   `course_id` int(20) NOT NULL
@@ -418,7 +418,7 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `student_email`, `student_program`, `image_path`, `course_id`) VALUES
+INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `student_program`, `image_path`, `course_id`) VALUES
 (201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
 (201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
 (201410679, 'NEHEMIAH', 'ONGTANGCO', 'BALUYUT', 'nobaluyut', 'nobaluyut', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
