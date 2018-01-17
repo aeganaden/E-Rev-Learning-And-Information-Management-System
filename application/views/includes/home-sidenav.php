@@ -36,10 +36,10 @@
         </li>
     <?php endif ?>
     <li>
-        <a href="<?= base_url() ?>Home"><i class="material-icons color-white">home</i>Home</a> <!--mark - naglagay-->
+        <a href="<?= base_url() ?>Home" class=" color-white"><i class="material-icons color-white">home</i>Home</a> <!--mark - naglagay-->
     </li>
     <li>
-        <a href="<?= base_url() ?>feedback"><i class="material-icons color-white">feedback</i>Feedback</a> <!--mark - naglagay-->
+        <a href="<?= base_url() ?>feedback" class=" color-white"><i class="material-icons color-white">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
     <li>
         <div class="divider"></div>

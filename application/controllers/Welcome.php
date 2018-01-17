@@ -24,5 +24,12 @@ class Welcome extends CI_Controller {
 	}
 
 
+	public function register_validation()
+	{
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('reg_firstname','First Name','required|trim|max_length[50]');
+	}
+
+
 
 }
