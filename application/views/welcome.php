@@ -416,11 +416,17 @@
 				<div class="row">
 					<div class="input-field col s5">
 						<i class="material-icons prefix">supervisor_account</i>
-
+						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validata">
+						<label for="reg_username">USERNAME</label>
+					</div>
+					<div class="input-field col s7">
+						<i class="material-icons prefix">supervisor_account</i>
 						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validata">
 						<label for="reg_username">USERNAME</label>
 					</div>
 				</div>
+
+
 				<!-- password -->
 				<div class="row">
 					<div class="input-field col s6">
@@ -566,6 +572,22 @@
 
 		$("#btn_register").click(function() {
 			// Include first the ajax validation of data
+			$.ajax({
+				url: '/path/to/file',
+				type: 'default GET (Other values: POST)',
+				dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+				data: {param1: 'value1'},
+				success: function(data){
+
+				},
+				error: function(data){
+
+				}
+			});
+			
+
+
+
 			// Then include this swal inside success function
 			swal({
 				title: "Submit Registration?",
