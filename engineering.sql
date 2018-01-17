@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2018 at 06:53 PM
+-- Generation Time: Jan 16, 2018 at 03:00 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -88,7 +88,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
 (202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'asd');
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'ad');
 
 -- --------------------------------------------------------
 
@@ -113,7 +113,7 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer_id`, `announcement_identifier`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 1, 202011111, 'admin');
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -140,6 +140,29 @@ CREATE TABLE `comment` (
   `comment_user_id` int(20) NOT NULL,
   `courseware_question_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course`
+--
+
+CREATE TABLE `course` (
+  `course_id` int(20) NOT NULL,
+  `course_course_code` varchar(20) NOT NULL,
+  `course_course_title` varchar(100) NOT NULL,
+  `course_department` varchar(10) NOT NULL,
+  `enrollment_id` int(20) NOT NULL,
+  `professor_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, `course_department`, `enrollment_id`, `professor_id`) VALUES
+(1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 1, 201111111),
+(2, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 1, 201122222);
 
 -- --------------------------------------------------------
 
@@ -218,17 +241,16 @@ CREATE TABLE `lecturer` (
   `lecturer_email` varchar(50) NOT NULL,
   `lecturer_status` tinyint(1) NOT NULL,
   `image_path` varchar(100) NOT NULL,
-  `lecturer_is_confirm` tinyint(1) NOT NULL,
-  `subject_id` int(20) NOT NULL
+  `lecturer_is_confirm` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`, `subject_id`) VALUES
-(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 1),
-(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1, 2);
+INSERT INTO `lecturer` (`lecturer_id`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `lecturer_email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
+(201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -241,14 +263,14 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_date` int(20) NOT NULL,
   `lecturer_attendance_in` int(20) DEFAULT NULL,
   `lecturer_attendance_out` int(20) DEFAULT NULL,
-  `offering_id` int(20) NOT NULL
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_attendance`
 --
 
-INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `offering_id`) VALUES
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `course_id`) VALUES
 (1, 1515455338, 1515455338, 1515476979, 1),
 (2, 1515479755, 1515479755, 1515503216, 2);
 
@@ -262,16 +284,16 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_id` int(20) NOT NULL,
   `lecturer_feedback_timedate` int(20) NOT NULL,
   `lecturer_feedback_comment` varchar(500) NOT NULL,
-  `offering_id` int(20) NOT NULL,
-  `student_id` int(20) NOT NULL
+  `student_id` int(20) NOT NULL,
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_feedback`
 --
 
-INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `offering_id`, `student_id`) VALUES
-(1, 1515455338, 'hey wassup this is comment', 1, 201511281);
+INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `student_id`, `course_id`) VALUES
+(1, 1515455338, 'hey wassup this is comment', 201511281, 1);
 
 -- --------------------------------------------------------
 
@@ -306,23 +328,19 @@ CREATE TABLE `log_content` (
 
 CREATE TABLE `offering` (
   `offering_id` int(20) NOT NULL,
-  `offering_course_code` varchar(20) NOT NULL,
-  `offering_course_title` varchar(100) NOT NULL,
-  `offering_program` varchar(10) NOT NULL,
-  `offering_section` varchar(10) NOT NULL,
-  `enrollment_id` int(20) NOT NULL,
-  `professor_id` int(20) NOT NULL
+  `offering_name` varchar(20) NOT NULL,
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `offering`
 --
 
-INSERT INTO `offering` (`offering_id`, `offering_course_code`, `offering_course_title`, `offering_program`, `offering_section`, `enrollment_id`, `professor_id`) VALUES
-(1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 'V21', 1, 201111111),
-(2, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 'V22', 1, 201111111),
-(3, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 'M21', 1, 201122222),
-(4, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 'M22', 1, 201122222);
+INSERT INTO `offering` (`offering_id`, `offering_name`, `course_id`) VALUES
+(1, 'V21', 1),
+(2, 'V22', 1),
+(3, 'K31', 2),
+(4, 'K32', 2);
 
 -- --------------------------------------------------------
 
@@ -363,20 +381,19 @@ CREATE TABLE `schedule` (
   `schedule_start_time` int(20) NOT NULL,
   `schedule_end_time` int(20) NOT NULL,
   `schedule_venue` varchar(20) NOT NULL,
-  `schedule_day` varchar(10) NOT NULL,
-  `offering_id` int(20) NOT NULL,
-  `lecturer_id` int(20) NOT NULL
+  `lecturer_id` int(20) NOT NULL,
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `schedule`
 --
 
-INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `schedule_day`, `offering_id`, `lecturer_id`) VALUES
-(1, 28800, 39600, 'T807', 'M', 1, 201011111),
-(2, 43200, 54000, 'T706', 'T', 2, 201011111),
-(3, 28800, 39600, 'T807', 'TH', 3, 201022222),
-(4, 43200, 54000, 'T706', 'F', 4, 201022222);
+INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `course_id`) VALUES
+(1, 28800, 39600, 'T807', 201011111, 1),
+(2, 43200, 54000, 'T706', 201011111, 1),
+(3, 28800, 39600, 'T807', 201022222, 2),
+(4, 43200, 54000, 'T706', 201022222, 2);
 
 -- --------------------------------------------------------
 
@@ -394,33 +411,33 @@ CREATE TABLE `student` (
   `student_email` varchar(50) NOT NULL,
   `student_program` varchar(10) NOT NULL,
   `image_path` varchar(100) NOT NULL,
-  `offering_id` int(20) NOT NULL
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `student_email`, `student_program`, `image_path`, `offering_id`) VALUES
-(201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `student_email`, `student_program`, `image_path`, `course_id`) VALUES
+(201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
 (201410679, 'NEHEMIAH', 'ONGTANGCO', 'BALUYUT', 'nobaluyut', 'nobaluyut', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201410881, 'ROMAR', 'SALERA', 'CONCEPCION', 'rsconcepcion', 'rsconcepcion', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
+(201410881, 'ROMAR', 'SALERA', 'CONCEPCION', 'rsconcepcion', 'rsconcepcion', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
 (201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201411823, 'AISLINN', 'TOQUERO', 'CASTRO', 'atcastro', 'atcastro', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201411851, 'RYAN CARLO', 'GUNIO', 'BETON', 'rgbeton', 'rgbeton', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201510186, 'MARK JOSEPH', 'GULTIANO', 'ASCAN', 'mgascan', 'mgascan', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201510573, 'LOUIS DAREL', 'VIDANES', 'ANIEVAS', 'lvanievas', 'lvanievas', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201510652, 'KEVIN', 'RAMOS', 'ACHACOSO', 'krachacoso', 'krachacoso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201511230, 'JULIUS RODNI', 'FESTIN', 'AHORRO', 'jfahorro', 'jfahorro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
+(201411823, 'AISLINN', 'TOQUERO', 'CASTRO', 'atcastro', 'atcastro', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201411851, 'RYAN CARLO', 'GUNIO', 'BETON', 'rgbeton', 'rgbeton', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(201510186, 'MARK JOSEPH', 'GULTIANO', 'ASCAN', 'mgascan', 'mgascan', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201510573, 'LOUIS DAREL', 'VIDANES', 'ANIEVAS', 'lvanievas', 'lvanievas', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201510652, 'KEVIN', 'RAMOS', 'ACHACOSO', 'krachacoso', 'krachacoso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201511230, 'JULIUS RODNI', 'FESTIN', 'AHORRO', 'jfahorro', 'jfahorro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
 (201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
 (201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201511911, 'KASIAN PAUL', 'CALIXTRO', 'ALFONSO', 'kcalfonso', 'kcalfonso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201512068, 'KIMPEE COSUHING', 'MASAGCA', 'ABOROT', 'kmaborot', 'kmaborot', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201512491, 'JUNAID', 'TAGO', 'ABUBACAR', 'jtabubacar', 'jtabubacar', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201512532, 'RESHMA', 'VIDAL', 'AREVALO', 'rvarevalo', 'rvarevalo', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2);
+(201511911, 'KASIAN PAUL', 'CALIXTRO', 'ALFONSO', 'kcalfonso', 'kcalfonso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201512068, 'KIMPEE COSUHING', 'MASAGCA', 'ABOROT', 'kmaborot', 'kmaborot', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201512491, 'JUNAID', 'TAGO', 'ABUBACAR', 'jtabubacar', 'jtabubacar', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201512532, 'RESHMA', 'VIDAL', 'AREVALO', 'rvarevalo', 'rvarevalo', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
+(201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -432,16 +449,17 @@ CREATE TABLE `subject` (
   `subject_id` int(20) NOT NULL,
   `subject_name` varchar(45) NOT NULL,
   `subject_description` varchar(800) DEFAULT NULL,
-  `offering_id` int(20) NOT NULL
+  `lecturer_id` int(20) NOT NULL,
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `subject`
 --
 
-INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `offering_id`) VALUES
-(1, 'Mathematics', 'not required', 1),
-(2, 'Hydraulics', 'not required', 1);
+INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `course_id`) VALUES
+(1, 'Mathematics', 'not required', 201011111, 1),
+(2, 'Hydraulics', 'not required', 201022222, 2);
 
 -- --------------------------------------------------------
 
@@ -524,6 +542,14 @@ ALTER TABLE `comment`
   ADD KEY `fk_comment_courseware_question1_idx` (`courseware_question_id`);
 
 --
+-- Indexes for table `course`
+--
+ALTER TABLE `course`
+  ADD PRIMARY KEY (`course_id`),
+  ADD KEY `fk_offering_enrollment1_idx` (`enrollment_id`),
+  ADD KEY `fk_offering_professor1_idx` (`professor_id`);
+
+--
 -- Indexes for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
@@ -554,23 +580,22 @@ ALTER TABLE `grade_assessment`
 -- Indexes for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  ADD PRIMARY KEY (`lecturer_id`),
-  ADD KEY `fk_lecturer_subject1_idx` (`subject_id`);
+  ADD PRIMARY KEY (`lecturer_id`);
 
 --
 -- Indexes for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
   ADD PRIMARY KEY (`lecturer_attendance_id`),
-  ADD KEY `fk_lecturer_attendance_offering_idx` (`offering_id`);
+  ADD KEY `fk_lecturer_attendance_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
   ADD PRIMARY KEY (`lecturer_feedback_id`),
-  ADD KEY `fk_lecturer_feedback_offering1_idx` (`offering_id`),
-  ADD KEY `fk_lecturer_feedback_student1_idx` (`student_id`);
+  ADD KEY `fk_lecturer_feedback_student1_idx` (`student_id`),
+  ADD KEY `fk_lecturer_feedback_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `log`
@@ -590,8 +615,7 @@ ALTER TABLE `log_content`
 --
 ALTER TABLE `offering`
   ADD PRIMARY KEY (`offering_id`),
-  ADD KEY `fk_offering_enrollment1_idx` (`enrollment_id`),
-  ADD KEY `fk_offering_professor1_idx` (`professor_id`);
+  ADD KEY `fk_offering_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `professor`
@@ -604,22 +628,23 @@ ALTER TABLE `professor`
 --
 ALTER TABLE `schedule`
   ADD PRIMARY KEY (`schedule_id`),
-  ADD KEY `fk_schedule_offering1_idx` (`offering_id`),
-  ADD KEY `fk_schedule_lecturer1_idx` (`lecturer_id`);
+  ADD KEY `fk_schedule_lecturer1_idx` (`lecturer_id`),
+  ADD KEY `fk_schedule_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
   ADD PRIMARY KEY (`student_id`),
-  ADD KEY `fk_student_offering1_idx` (`offering_id`);
+  ADD KEY `fk_student_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `subject`
 --
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`subject_id`),
-  ADD KEY `fk_subject_offering1_idx` (`offering_id`);
+  ADD KEY `fk_subject_lecturer1_idx` (`lecturer_id`),
+  ADD KEY `fk_subject_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `topic`
@@ -670,6 +695,12 @@ ALTER TABLE `comment`
   MODIFY `comment_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `course`
+--
+ALTER TABLE `course`
+  MODIFY `course_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
@@ -698,12 +729,6 @@ ALTER TABLE `grade_assessment`
 --
 ALTER TABLE `log_content`
   MODIFY `log_content_id` int(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `offering`
---
-ALTER TABLE `offering`
-  MODIFY `offering_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `schedule`
@@ -747,6 +772,13 @@ ALTER TABLE `comment`
   ADD CONSTRAINT `fk_comment_courseware_question1` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `course`
+--
+ALTER TABLE `course`
+  ADD CONSTRAINT `fk_offering_enrollment1` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_offering_professor1` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
@@ -760,22 +792,16 @@ ALTER TABLE `course_modules`
   ADD CONSTRAINT `fk_course_modules_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `lecturer`
---
-ALTER TABLE `lecturer`
-  ADD CONSTRAINT `fk_lecturer_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
 -- Constraints for table `lecturer_attendance`
 --
 ALTER TABLE `lecturer_attendance`
-  ADD CONSTRAINT `fk_lecturer_attendance_offering` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_lecturer_attendance_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  ADD CONSTRAINT `fk_lecturer_feedback_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_feedback_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_lecturer_feedback_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -788,27 +814,27 @@ ALTER TABLE `log`
 -- Constraints for table `offering`
 --
 ALTER TABLE `offering`
-  ADD CONSTRAINT `fk_offering_enrollment1` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_offering_professor1` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_offering_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `schedule`
 --
 ALTER TABLE `schedule`
-  ADD CONSTRAINT `fk_schedule_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_schedule_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_schedule_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_schedule_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `student`
 --
 ALTER TABLE `student`
-  ADD CONSTRAINT `fk_student_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_student_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `subject`
 --
 ALTER TABLE `subject`
-  ADD CONSTRAINT `fk_subject_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_subject_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_subject_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `topic`
