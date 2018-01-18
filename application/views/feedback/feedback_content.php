@@ -19,21 +19,20 @@ $this->load->view('includes/home-sidenav');
         </div>
         <div class="col s4">
             <span class='black-text'>
-                <?= $lect["firstname"] . " " . $lect["midname"] . " " . $lect["lastname"] ?>
+                <?= $lect->firstname ?> <?= $lect->midname ?> <?= $lect->lastname ?>
             </span>
             <br>
             <span class='grey-text'>
-                <?= $lect["expertise"] ?>
+                <?= $lect->lecturer_expertise ?>
             </span>
 
         </div>
         <div class="col s5"></div>
     </div>
-    <form method="post" action="<?= base_url() ?>feedback/submit">
+    <form method="post" action="<? = base_url() ?>feedback/submit">
         <div class="row" style="margin-top: -50px">
             <div class="col s3"></div>
             <div class="col s8">
-
                 <div class="input-field col s12">
                     <textarea name="feedback_content" class="materialize-textarea" data-length="500"  maxlength="500" required autofocus></textarea>
                     <label for="textarea1">Feedback Here</label>

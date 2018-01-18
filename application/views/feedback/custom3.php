@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = "Error: lecturer_id not fetched"</script>
+<script>document.getElementById("message_area").innerHTML = "No topics to show"</script>
