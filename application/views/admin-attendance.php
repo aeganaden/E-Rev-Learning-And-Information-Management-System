@@ -6,9 +6,9 @@
 	<div class="col s8">
 		<blockquote class="color-primary-green">
 			<h3 class="color-black">Lecturers' Attendance and Hours Rendered</h3>
-			<h4 class="color-black"><?=ucwords($lecturer->lecturer_firstname." ".$lecturer->lecturer_lastname)?></h4>
-			<h5>Rendered Hours: <u><?=$hours_rendered?>.<?=$minutes_rendered?> hours</u></h5>
-			<h6><i><?=$lecturer->lecturer_email?></i></h6>
+			<h4 class="color-black"><?=ucwords($lecturer->firstname." ".$lecturer->lastname)?></h4>
+			<h5>Rendered Hours: <u><?=$hours_rendered?></u></h5>
+			<h6><i><?=$lecturer->email?></i></h6>
 			<h6>Expertise: <?=ucwords($lecturer->lecturer_expertise)?></h6>
 			<h5  class="<?=$status_color?>"><?= $status?></h5>
 		</blockquote>

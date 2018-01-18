@@ -1,4 +1,4 @@
-\<?php $this->load->view('includes/navbar-admin'); ?>
+<?php $this->load->view('includes/navbar-admin'); ?>
 <?php  date_default_timezone_set("Asia/Manila")?>
 <!--===========================
 =            Cards            =
@@ -181,7 +181,7 @@
 						<?php if ($lecturer): ?>
 							<?php foreach ($lecturer as $key => $value): ?>
 								<tr class="bg-color-white">
-									<td><?= $value->lecturer_id ?></td>
+									<td><?= $value->id_number ?></td>
 									<td><?= ucwords($value->firstname) ?></td>
 									<td><?= ucwords($value->midname) ?></td>
 									<td><?= ucwords($value->lastname) ?></td>

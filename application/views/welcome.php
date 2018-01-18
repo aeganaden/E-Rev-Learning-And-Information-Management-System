@@ -377,7 +377,7 @@
 <!--====  End of ENGINEERS Section  ====-->
 
 <div class="row red" id="register">
-	<h4 class="center" style="text-transform: uppercase; padding-top: 4%;">sign up as a lecturer</h4>
+	<h4 class="center" style="text-transform: uppercase; padding-top: 4%; "> <span style="border-bottom: 3px solid #F2A900;"> sign up as a lecturer</span></h4>
 	<center><a href="#"><button class="btn bg-primary-green waves-effect btn-large modal-trigger" data-target="modal-register">register</button></a></center>
 </div>
 
@@ -399,54 +399,53 @@
 				<div class="row ">
 					<div class="col s4  input-field">
 						<i class="material-icons prefix">person</i>
-						<input type="text" placeholder=" " id="reg_firstname" name="reg_firstname" autofocus class="validate">
-						<label for="reg_firstname">FIRST NAME</label>
+						<input type="text" placeholder=" "  id="reg_firstname" name="reg_firstname" autofocus class="validate">
+						<label id="lbl_reg_firstname" for="reg_firstname"  data-error="error">FIRST NAME</label>
 					</div>
 					<div class="col s4  input-field">
 						<input type="text" placeholder=" " id="reg_midname" name="reg_midname" class="validate">
-						<label for="reg_midname">MIDDLE NAME</label>
+						<label id="lbl_reg_midname" for="reg_midname" data-error="error">MIDDLE NAME</label>
 					</div>
 					<div class="col s4  input-field">
 						<input type="text" placeholder=" " id="reg_lastname" name="reg_lastname" class="validate">
-						<label for="reg_lastname">SURNAME</label>
+						<label id="lbl_reg_lastname" for="reg_lastname" data-error="error">SURNAME</label>
 					</div>
 				</div>
 				
 				<!-- username -->
 				<div class="row">
-					<div class="input-field col s5">
+					<div class="input-field col s6">
 						<i class="material-icons prefix">supervisor_account</i>
-						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validata">
-						<label for="reg_username">USERNAME</label>
+						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validate">
+						<label id="lbl_reg_username" for="reg_username" data-error="error">USERNAME</label>
 					</div>
-					<div class="input-field col s7">
-						<i class="material-icons prefix">supervisor_account</i>
-						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validata">
-						<label for="reg_username">USERNAME</label>
+					<div class="input-field col s6">
+						<i class="material-icons prefix">email</i>
+						<input type="email" placeholder=" " id="reg_email" name="reg_email"  class="validate">
+						<label id="lbl_reg_email" for="reg_email" data-error="Invalid Email">EMAIL</label>
 					</div>
 				</div>
 
 
 				<!-- password -->
 				<div class="row">
-					<div class="input-field col s6">
-						<i class="material-icons prefix">lock</i>
+					<div class="input-field col s6" data-error="error">
+						<i class="material-icons prefix" data-error="error">lock</i>
 
-						<input type="text" placeholder=" " id="reg_password" name="reg_password" class="validata">
-						<label for="reg_password">PASSWORD</label>
+						<input type="password" placeholder=" " id="reg_password" name="reg_password" class="validate">
+						<label id="lbl_reg_password" for="reg_password" data-error="error">PASSWORD</label>
 					</div>
 					<div class="input-field col s6">
-						<i class="material-icons prefix">lock</i>
-						<input type="text" placeholder=" " id="reg_conf_password" name="reg_conf_password" class="validata">
-						<label for="reg_conf_password">CONFIRM PASSWORD</label>
+						<input type="password" placeholder=" " id="reg_conf_password" name="reg_conf_password" class="validate">
+						<label id="lbl_reg_conf_password" for="reg_conf_password" data-error="error">CONFIRM PASSWORD</label>
 					</div>
 				</div>
 
 				<!-- Expertise -->
 				<div class="row input-field">
 					<i class="material-icons prefix">assistant</i>
-					<textarea name="reg_expertise" id="reg_expertise" placeholder="Ex. Trigonometry, Geometry, Algebra" data-length="150" class="materialize-textarea"></textarea>
-					<label for="reg_expertise">What is your Expertise?</label>
+					<textarea name="reg_expertise" id="reg_expertise" placeholder="Ex. Hydraulics, Mathematics, Physics" data-length="150" class="materialize-textarea" validate></textarea>
+					<label id="lbl_reg_expertise" for="reg_expertise" data-error="error">What is your Expertise?</label>
 				</div>
 			</div>
 		</div>
@@ -570,15 +569,97 @@
 			}, 2000);
 		});
 
+
+
+		
+		// Submit Registration Button
 		$("#btn_register").click(function() {
+
+		// Registration Form Values
+		var form_data = {
+			reg_firstname: $('#reg_firstname').val(),
+			reg_midname: $('#reg_midname').val(),
+			reg_lastname: $('#reg_lastname').val(),
+			reg_username: $('#reg_username').val(),
+			reg_email: $('#reg_email').val(),
+			reg_password: $('#reg_password').val(),
+			reg_conf_password: $('#reg_conf_password').val(),
+			reg_expertise: $('#reg_expertise').val(),
+		};
+
 			// Include first the ajax validation of data
 			$.ajax({
-				url: '/path/to/file',
-				type: 'default GET (Other values: POST)',
-				dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-				data: {param1: 'value1'},
+				url: '<?=base_url()?>Welcome/register_validation',
+				type: 'post',
+				dataType: 'json',
+				data: form_data,
 				success: function(data){
+					console.log(data);
+					if (data != "true") {
+						if (data.reg_firstname) {
+							$('#lbl_reg_firstname').attr('data-error',data.reg_firstname);
+							$('#reg_firstname').addClass('invalid');
+						}
+						if (data.reg_midname) {
+							$('#reg_midname').addClass('invalid'); 
+							$('#lbl_reg_midname').attr('data-error',data.reg_midname);
+						}
+						if (data.reg_lastname) {
+							$('#reg_lastname').addClass('invalid');
+							$('#lbl_reg_lastname').attr('data-error',data.reg_lastname);
+						}
+						if (data.reg_username) {
+							$('#reg_username').addClass('invalid');
+							$('#lbl_reg_username').attr('data-error',data.reg_username);
+						}
+						if (data.reg_email) {
+							$('#reg_email').addClass('invalid');
+							$('#lbl_reg_email').attr('data-error',data.reg_email);
+						}
+						if (data.reg_password) {
+							$('#reg_password').addClass('invalid');
+							$('#lbl_reg_password').attr('data-error',data.reg_password);
+						}
+						if (data.reg_conf_password) {
+							$('#reg_conf_password').addClass('invalid');
+							$('#lbl_reg_conf_password').attr('data-error',data.reg_conf_password);
+						}
+						if (data.reg_expertise) {
+							$('#reg_expertise').addClass('invalid');
+							$('#lbl_reg_expertise').attr('data-error',data.reg_expertise);
+						}
+					}else{
 
+						swal({
+							title: "Data Validated",
+							text: "Proceed to store data, your request will be subject for approval",
+							icon: "success",
+							buttons: true,
+							closeOnClickOutside: false,
+						})
+						.then((willRegister) => {
+							if (willRegister) {
+								$.ajax({
+									url: '<?=base_url()?>Welcome/insertData',
+									type: 'post',
+									dataType: 'json',
+									data: form_data,
+									success:function(data){
+										if (data) {
+											swal("Successfully registered", {
+												icon: "success",
+												text: "Your request will be now subject for approval",
+											}).then(function(){
+												// console.log(data);
+												window.location.reload(true);
+											});
+										}
+									}
+								});
+								
+							} 
+						});
+					}
 				},
 				error: function(data){
 
@@ -588,23 +669,6 @@
 
 
 
-			// Then include this swal inside success function
-			swal({
-				title: "Submit Registration?",
-				text: "Your data will be stored in our system and will be subject for approval",
-				icon: "info",
-				buttons: true,
-				closeOnClickOutside: false,
-			})
-			.then((willRegister) => {
-				if (willRegister) {
-					// Another ajax call here to store the data
-					// If success another swal
-					// then refresh the reload
-
-
-				} 
-			});
 
 
 		});
