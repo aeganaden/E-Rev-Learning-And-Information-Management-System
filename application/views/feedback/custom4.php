@@ -1,1 +1,1 @@
-<script>document.getElementById("error").innerHTML = "Error: lecturer data not fetched"</script>
+<script>document.getElementById("error_message").innerHTML = "Inactive enrollment"</script>

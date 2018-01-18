@@ -7,6 +7,7 @@
 <!--====  End of Navigation Top  ====<--></-->
 <?php
 $this->load->view('includes/home-sidenav');
+print_r($lect);
 ?>
 <!--ABOVE IS PERMA-->
 
@@ -34,7 +35,7 @@ $this->load->view('includes/home-sidenav');
             <div class="col s3"></div>
             <div class="col s8">
                 <div class="input-field col s12">
-                    <textarea name="feedback_content" class="materialize-textarea" data-length="500"  maxlength="500" required autofocus></textarea>
+                    <textarea name="feedback_content" class="materialize-textarea" data-length="500"  maxlength="500" required></textarea>
                     <label for="textarea1">Feedback Here</label>
                 </div>
             </div>

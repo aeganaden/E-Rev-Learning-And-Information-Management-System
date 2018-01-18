@@ -47,7 +47,9 @@ class Feedback extends CI_Controller {
                             $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
                             $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
                             if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
-                                $lect_hold->sent_feedback = true;
+                                $lect_hold->sent_feedback = 1;
+                            } else {
+                                $lect_hold->sent_feedback = 0;
                             }
                             array_push($lect, $lect_hold);
                             $inner_counter++;
@@ -75,26 +77,48 @@ class Feedback extends CI_Controller {
     public function content() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $info = $this->session->userdata('userInfo');
-            $data = array(
-                'title' => "Feedback",
-                'info' => $info
-            );
+            $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course id from stud
+            $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id; //get enrollment id from course
+            $enrollment_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $enrollment_id))[0]->enrollment_is_active; //get enrollment id from course
             $this->load->view('includes/header');
-            $temp = $this->uri->segment(3);
-            $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $temp))[0];
-            $lect = array();
-            if (empty($offering_id) != 1) {
-                $lect = $offering_id;
+            if ($enrollment_active == 1) {
+                $stud_id = $this->session->userdata('userInfo')['user']->student_id;
                 $data = array(
                     'title' => "Feedback",
-                    'info' => $info,
-                    'lect' => $lect
+                    'info' => $info
                 );
-            } else {
-                echo "test1";
+                $segment = $this->uri->segment(3);
+                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {
+                    $offering_hold = $this->Crud_model->fetch('lecturer_feedback', array('student_id' => $stud_id, 'student_id' => $stud_id));
+//                print_r($offering_hold);
+                    $data = array(
+                        'title' => "Feedback",
+                        'info' => $info,
+                        'lect' => $offering_hold
+                    );
+                    echo "nagsubmit ka na!";
+                } else {
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+
+                    if (empty($offering_id) != 1) {
+                        $data = array(
+                            'title' => "Feedback",
+                            'info' => $info,
+                            'lect' => $offering_id
+                        );
+                    } else {
+                        echo "test1";
 //                redirect("feedback");
+                    }
+                }
+            } else {
+                $data = array(
+                    'title' => "Feedback",
+                    'info' => $info
+                );
+                $this->load->view('feedback/error', $data);
             }
-            $this->load->view('feedback/feedback_content', $data);
+            //$this->load->view('feedback/feedback_content', $data);
             $this->load->view('includes/footer');
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
             echo "lecturer view";
