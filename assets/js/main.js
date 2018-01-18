@@ -36,6 +36,26 @@ $(document).ready(function() {
 });
 
 
+/*==================================
+=            Class List            =
+==================================*/
+
+function showonlyone(thechosenone) {
+	$('.div_section').each(function(index) {
+		if ($(this).attr("id") == thechosenone) {
+			$(this).show(200);
+		}
+		else {
+			$(this).hide(600);
+		}
+	});
+}
+
+/*=====  End of Class List  ======*/
+
+
+
+
 function getDivHeightClass(x){	
 	var height = $("."+x).height();
 	return height;

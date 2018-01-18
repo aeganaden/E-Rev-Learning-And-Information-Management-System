@@ -260,27 +260,22 @@
 							<td>Course Code</td>
 							<td>Course Title</td>
 							<td>Program</td>
-							<td>Course Section</td>
 							<td>Actions</td>
 							<td></td>
 						</tr>
 					</thead>
 					<tbody>
-						<?php if ($offering): ?>
-							<?php foreach ($offering as $key => $value): ?>
+						<?php if ($course): ?>
+
+							<?php foreach ($course as $key => $value): ?>
 								<tr class="bg-color-white">
-									<script type="text/javascript">
-										jQuery(document).ready(function($) {
-											shorten_text("<?=$value->offering_course_title?>","<?=$value->offering_id?>");
-										});
-									</script>
-									<td><?=$value->offering_id?></td>
-									<td><?=strtoupper($value->offering_course_code)?></td>
-									<td class="title_trunc<?=$value->offering_id?>" style="text-transform: capitalize;"></td>
-									<td><?=strtoupper($value->offering_program)?></td>
-									<td><?=strtoupper($value->offering_section)?></td>
-									<td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?=$value->offering_id?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
-									<td><i class="material-icons color-red btn_delete_com" data-id="<?=$value->offering_id?>" style="cursor: pointer;">delete</i></td>
+
+									<td><?=$value->course_id?></td>
+									<td><?=strtoupper($value->course_course_code)?></td>
+									<td class="truncate" style="text-transform: capitalize;"><?=$value->course_course_title?></td>
+									<td><?=strtoupper($value->course_department)?></td>
+									<td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?=$value->course_id?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
+									<td><i class="material-icons color-red btn_delete_com" data-id="<?=$value->course_id?>" style="cursor: pointer;">delete</i></td>
 								</tr>
 							<?php endforeach ?>
 						<?php endif ?>
@@ -341,8 +336,9 @@
 				dataType: 'json',
 				data: {id: $(this).attr("data-id")},
 				success: function(data){
-					$(".correl-code").val(data[0].offering_course_code);
-					$(".correl-title").val(data[0].offering_course_title);
+					console.log(data);
+					$(".correl-code").val(data[0].course_course_code);
+					$(".correl-title").val(data[0].course_course_title);
 
 				},
 				error: function(data){
