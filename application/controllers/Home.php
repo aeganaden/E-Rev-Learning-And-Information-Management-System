@@ -40,7 +40,25 @@ class Home extends CI_Controller {
         $activity_details = $this->Crud_model->fetch("activity");
         $info = $this->session->userdata('userInfo');
         $activity = $this->Crud_model->fetch("activity");
-        $id = $info['user']->id;
+
+        switch ($info['identifier']) {
+            case 'lecturer':
+            $info['user']->id = $info['user']->lecturer_id;
+            break; 
+            case 'student':
+            $info['user']->id = $info['user']->student_id;
+                # code...
+            break;  
+            case 'professor':
+            $info['user']->id = $info['user']->professor_id;
+                # code...
+            break;
+            
+            default:
+                # code...
+            break;
+        }
+        // $id = $info['user']->id;
         // $offering = $this->Crud_model->fetch("offering", array("offering_lecturer_id" => $id));
 
 

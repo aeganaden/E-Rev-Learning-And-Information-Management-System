@@ -21,6 +21,3 @@
 
 
 <?php $this->load->view('includes/home-sidenav'); ?>
-
-<?php echo "<pre>" ?>
-  <?php print_r($info); ?>

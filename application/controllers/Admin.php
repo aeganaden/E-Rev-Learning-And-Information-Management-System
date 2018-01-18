@@ -83,8 +83,9 @@ class Admin extends CI_Controller {
                 }
             }
         }
-        $offering_data = $this->Crud_model->fetch("offering");
-        
+
+        $course_total = $this->Crud_model->fetch("course");
+
         /*=====  End of COSML REPORTS FETCHING  ======*/
         
         
@@ -143,7 +144,7 @@ class Admin extends CI_Controller {
         $data = array(
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
-            "offering" => $offering_data,
+            "course" => $course_total,
             "schedule"=>$schedule,
             "lecturer"=>$lecturer
         );
@@ -331,23 +332,34 @@ class Admin extends CI_Controller {
    }
 
    public function viewClassList() {
-    $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
-    foreach ($subject as $key => $value) {
-        // fetch course
-        $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id));
-        $course = $course[0];
-        $value->program = $course->course_department;
-        // fetch offering
-        $offering = $this->Crud_model->fetch("offering", array("course_id"=>$course->course_id));
+    // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
+    $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $this->uri->segment(3)));
+    foreach ($schedule as $key => $value) {
+        $offering = $this->Crud_model->fetch("offering", array("offering_id"=>$value->offering_id));
         $offering = $offering[0];
         $value->offering_section = $offering->offering_name;
 
-        $student = $this->Crud_model->fetch("student",array("offering_id"=>$offering->offering_id));
+
+        $course = $this->Crud_model->fetch("course",array("course_id"=>$offering->course_id));
+        $course = $course[0];
+        $value->program = $course->course_department;
+
+        // fetch course
+        // $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id));
+        // $course = $course[0];
+        // $value->program = $course->course_department;
+        // // fetch offering
+        // $offering = $this->Crud_model->fetch("offering", array("course_id"=>$course->course_id));
+        // $offering = $offering[0];
+        // $value->offering_section = $offering->offering_name;
+
     }
+    // echo "<pre>";
+    // print_r( $student);
+    // die();
     $data = array(
         "title" => "Class List - Learning Management System | FEU - Institute of Techonology",
-        "subject" => $subject,
-        "student" => $student,
+        "schedule" => $schedule,
     );
     $this->load->view('includes/header', $data);
     $this->load->view('admin-classlist');
@@ -357,10 +369,10 @@ class Admin extends CI_Controller {
 public function fetchOffering() {
     $id = $this->input->post("id");
     $where = array(
-        "offering_id" => $id
+        "course_id" => $id
     );
 
-    $data = $this->Crud_model->fetch("offering", $where);
+    $data = $this->Crud_model->fetch("course", $where);
     if ($data) {
         echo json_encode($data);
     }
@@ -371,17 +383,17 @@ public function updateOffering() {
     $title = $this->input->post("title");
     $code = $this->input->post("code");
     $data = array(
-        "offering_course_code" => $code,
-        "offering_course_title" => $title,
+        "course_course_code" => $code,
+        "course_course_title" => $title,
     );
-    if ($this->Crud_model->update("offering", $data, array("offering_id" => $id))) {
+    if ($this->Crud_model->update("course", $data, array("course_id" => $id))) {
         echo json_encode(true);
     }
 }
 
 public function deleteOffering() {
     $id = $this->input->post("id");
-    if ($this->Crud_model->delete("offering", array("offering_id" => $id))) {
+    if ($this->Crud_model->delete("course", array("course_id" => $id))) {
         echo json_encode(true);
     }
 }
