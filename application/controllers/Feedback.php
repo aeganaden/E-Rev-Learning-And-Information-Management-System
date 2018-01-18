@@ -117,6 +117,7 @@ class Feedback extends CI_Controller {
                     'info' => $info
                 );
                 $this->load->view('feedback/error', $data);
+                include(APPPATH . 'views\feedback\custom4.php');
             }
             //$this->load->view('feedback/feedback_content', $data);
             $this->load->view('includes/footer');
