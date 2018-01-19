@@ -90,15 +90,15 @@ class Feedback extends CI_Controller {
                     'info' => $info
                 );
                 $segment = $this->uri->segment(3);
-                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //submitted
+                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //there is already record
                     $subject_hold = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->course_id; //get course_id from lecturer
                     $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
 
                     $this->load->view('feedback/error', $data);
                     if ($subject_hold == $offering_hold) {                      //END OF VERIFYING, STUDENT ALREADY SUBMITTED
-                        include(APPPATH . 'views\feedback\submitted.php');
+                        $this->load->view('feedback\submitted.php');
                     } else {
-                        include(APPPATH . 'views\feedback\submitted2.php');
+                        $this->load->view('feedback\submitted2.php');
                     }
                 } else {                                            //didn't find anything on database
                     $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];

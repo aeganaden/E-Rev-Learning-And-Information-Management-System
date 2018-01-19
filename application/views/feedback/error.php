@@ -16,5 +16,3 @@
         </center>
     </div>
 </div>
-
-<script>document.getElementById("error_message").innerHTML = "It seems like you already sent feedback to<br>this professor in the past term/school year."</script>

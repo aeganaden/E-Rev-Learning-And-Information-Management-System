@@ -1,1 +1,1 @@
-<script>document.getElementById("error_message").innerHTML = "It seems like you already sent feedback to<br>this professor in the past term/school year."</script>
+<script>document.getElementById("error_message").innerHTML = "It seems like you already sent feedback to this<br>professor in the past term/school year."</script>
