@@ -66,7 +66,7 @@ class Feedback extends CI_Controller {
                 }
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-            echo "side of lecturer";
+            
         } else {
             redirect("");
         }
