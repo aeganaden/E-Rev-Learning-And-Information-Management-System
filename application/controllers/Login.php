@@ -74,61 +74,73 @@ class Login extends CI_Controller {
 
 	public function redirect()
 	{
-		switch ($this->uri->segment(3)) {
-			case '1dfbba5b5fa79b789c93cfc2911d846124153615':
+		/*=============================================================
+        =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
+        =============================================================*/
+        
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
+        $active_enrollment = $active_enrollment[0];
+        
+        /*=====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ======*/
+        switch ($this->uri->segment(3)) {
+        	case '1dfbba5b5fa79b789c93cfc2911d846124153615':
 				# lecturer
-			$info = $this->Crud_model->fetch("lecturer",array("username"=>$this->input->post("username")));
-			$info = $info[0];
-			$userData = array(
-				'user'=> $info,
-				'logged_in' => TRUE,
-				"identifier" => "lecturer"
-			);
-			$this->session->set_userdata('userInfo',$userData);
-			echo json_encode(base_url()."Login/redirect_page");
-			break;
-			case '68d5fef94c7754840730274cf4959183b4e4ec35':
+        	$info = $this->Crud_model->fetch("lecturer",array("username"=>$this->input->post("username")));
+        	$info = $info[0];
+        	$userData = array(
+        		'user'=> $info,
+        		'logged_in' => TRUE,
+        		"identifier" => "lecturer",
+        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        	);
+        	$this->session->set_userdata('userInfo',$userData);
+        	echo json_encode(base_url()."Login/redirect_page");
+        	break;
+        	case '68d5fef94c7754840730274cf4959183b4e4ec35':
 				# professor
-			$info = $this->Crud_model->fetch("professor",array("username"=>$this->input->post("username")));
-			$info = $info[0];
-			$userData = array(
-				'user'=> $info,
-				'logged_in' => TRUE,
-				"identifier" => "professor"
-			);
-			$this->session->set_userdata('userInfo',$userData);
-			echo json_encode(base_url()."Login/redirect_page");
-			break;
-			case 'b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3':
+        	$info = $this->Crud_model->fetch("professor",array("username"=>$this->input->post("username")));
+        	$info = $info[0];
+        	$userData = array(
+        		'user'=> $info,
+        		'logged_in' => TRUE,
+        		"identifier" => "professor",
+        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        	);
+        	$this->session->set_userdata('userInfo',$userData);
+        	echo json_encode(base_url()."Login/redirect_page");
+        	break;
+        	case 'b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3':
 				# administrator
-			$info = $this->Crud_model->fetch("admin",array("username"=>$this->input->post("username")));
-			$info = $info[0];
-			$userData = array(
-				'user'=> $info,
-				'logged_in' => TRUE,
-				"identifier" => "administrator"
-			);
-			$this->session->set_userdata('userInfo',$userData);
-			echo json_encode(base_url()."Login/redirect_page");
-			break;
-			case '204036a1ef6e7360e536300ea78c6aeb4a9333dd':
+        	$info = $this->Crud_model->fetch("admin",array("username"=>$this->input->post("username")));
+        	$info = $info[0];
+        	$userData = array(
+        		'user'=> $info,
+        		'logged_in' => TRUE,
+        		"identifier" => "administrator",
+        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        	);
+        	$this->session->set_userdata('userInfo',$userData);
+        	echo json_encode(base_url()."Login/redirect_page");
+        	break;
+        	case '204036a1ef6e7360e536300ea78c6aeb4a9333dd':
 				# student
-			$info = $this->Crud_model->fetch("student",array("username"=>$this->input->post("username")));
-			$info = $info[0];
-			$userData = array(
-				'user'=> $info,
-				'logged_in' => TRUE,
-				"identifier" => "student"
-			);
-			$this->session->set_userdata('userInfo',$userData);
-			echo json_encode(base_url()."Login/redirect_page");
-			break;
-			
-			default:
+        	$info = $this->Crud_model->fetch("student",array("username"=>$this->input->post("username")));
+        	$info = $info[0];
+        	$userData = array(
+        		'user'=> $info,
+        		'logged_in' => TRUE,
+        		"identifier" => "student",
+        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        	);
+        	$this->session->set_userdata('userInfo',$userData);
+        	echo json_encode(base_url()."Login/redirect_page");
+        	break;
+
+        	default:
 				# code...
-			break;
-		}
-	}
+        	break;
+        }
+    }
 
 }
 
