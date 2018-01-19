@@ -1,5 +1,7 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
 class Feedback extends CI_Controller {
 
     function __construct() {
@@ -26,14 +28,12 @@ class Feedback extends CI_Controller {
                 $user_id = $user_hold->offering_id;
                 $course_hold = $this->Crud_model->fetch('course', array('course_id' => $user_id))[0];
                 $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
-                if (empty($enrollment_hold) != 1) {       //check the fetch table and if it is active
+                if (empty($enrollment_hold) != 1) {       //check the fetched table and if it is active
                     if ($enrollment_hold->enrollment_is_active == 0) {
                         $error = false;
+                        $this->load->view('feedback/feedback_main', $data);
                         include(APPPATH . 'views\feedback\custom1.php');
                     }
-                } else {
-                    $error = false;
-                    include(APPPATH . 'views\feedback\custom2.php');
                 }
 
                 if ($error) {
@@ -60,17 +60,19 @@ class Feedback extends CI_Controller {
                             'info' => $info,
                             'lect' => $lect
                         );
+                        $this->load->view('feedback/feedback_main', $data);
                     } else {
+                        $this->load->view('feedback/feedback_main', $data);
                         include(APPPATH . 'views\feedback\custom3.php');
                     }
                 }
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-            
+
         } else {
             redirect("");
         }
-        $this->load->view('feedback/feedback_main', $data);
+
         $this->load->view('includes/footer');
     }
 
@@ -88,16 +90,17 @@ class Feedback extends CI_Controller {
                     'info' => $info
                 );
                 $segment = $this->uri->segment(3);
-                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {
-                    $offering_hold = $this->Crud_model->fetch('lecturer_feedback', array('student_id' => $stud_id, 'student_id' => $stud_id));
-//                print_r($offering_hold);
-                    $data = array(
-                        'title' => "Feedback",
-                        'info' => $info,
-                        'lect' => $offering_hold
-                    );
-                    echo "nagsubmit ka na!";
-                } else {
+                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //submitted
+                    $subject_hold = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->course_id; //get course_id from lecturer
+                    $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
+
+                    $this->load->view('feedback/error', $data);
+                    if ($subject_hold == $offering_hold) {                      //END OF VERIFYING, STUDENT ALREADY SUBMITTED
+                        include(APPPATH . 'views\feedback\submitted.php');
+                    } else {
+                        include(APPPATH . 'views\feedback\submitted2.php');
+                    }
+                } else {                                            //didn't find anything on database
                     $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {
