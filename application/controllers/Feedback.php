@@ -20,7 +20,6 @@ class Feedback extends CI_Controller {
                 'title' => "Feedback",
                 'info' => $info
             );
-
             $this->load->view('includes/header', $data);
             if ($feedback_status == 1) {                //checks if feedback is open
                 $error = true;          //error holder
@@ -66,6 +65,9 @@ class Feedback extends CI_Controller {
                         include(APPPATH . 'views\feedback\custom3.php');
                     }
                 }
+            } else {
+                $this->load->view('feedback/error', $data);
+                $this->load->view('feedback/custom4');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
 

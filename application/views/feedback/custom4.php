@@ -1,1 +1,1 @@
-<script>document.getElementById("error_message").innerHTML = "Inactive enrollment"</script>
+<script>document.getElementById("error_message").innerHTML = "Feedback is not yet activted"</script>
