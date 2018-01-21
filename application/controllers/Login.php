@@ -120,6 +120,7 @@ class Login extends CI_Controller {
         		"active_enrollment"=>  $active_enrollment->enrollment_id
         	);
         	$this->session->set_userdata('userInfo',$userData);
+        	
         	echo json_encode(base_url()."Login/redirect_page");
         	break;
         	case '204036a1ef6e7360e536300ea78c6aeb4a9333dd':
