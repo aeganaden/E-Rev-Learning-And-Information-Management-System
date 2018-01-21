@@ -85,9 +85,6 @@ class Login extends CI_Controller {
 
         switch ($this->uri->segment(3)) {
         	
-        	$this->session->set_userdata('userInfo',$userData);
-        	echo json_encode(base_url()."Login/redirect_page");
-        	break;
         	case '68d5fef94c7754840730274cf4959183b4e4ec35':
 				# professor
         	$info = $this->Crud_model->fetch("professor",array("username"=>$this->input->post("username")));
