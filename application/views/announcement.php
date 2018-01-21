@@ -24,21 +24,35 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="input-field">
-					<select name="ann_audience">
-						<option value="1" selected>General</option>
-						<option value="2">Civil Engineering</option>
-						<option value="3">Electronics and Communication Engineering</option>
-						<option value="4">Electrical Engineering</option>
-						<option value="5">Mechanical Engineering</option>
-
-					</select>
-					<label>Audience Selection</label>
-				</div>
+				<p>
+					<input type="checkbox" id="ce" name="audience[]" value="1"  />
+					<label for="ce">Civil Engineering</label>
+				</p>
+				<p>
+					<input type="checkbox" id="ece" name="audience[]" value="2" />
+					<label for="ece">Electronics and Communication Engineering</label>
+				</p>
+				<p>
+					<input type="checkbox" id="ee" name="audience[]" value="3" />
+					<label for="ee">Electrical Engineering</label>
+				</p>
+				<p>
+					<input type="checkbox" id="me" name="audience[]" value="4" />
+					<label for="me">Mechanical Engineering</label>
+				</p>
+				
 			</div>
 			<button class="btn bg-primary-green waves-effect right">Post</button>
 		</form>
-
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				var sList = "";
+				$("input[name='audience[]']").each( function () {
+					sList += "(" + $(this).val() + "-" + (this.checked ? "1" : "0") + ")";
+				});
+				console.log (sList);
+			});
+		</script>
 	</div>
 	<div class="col s4"></div>
 </div>
