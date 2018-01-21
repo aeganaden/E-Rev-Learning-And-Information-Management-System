@@ -82,17 +82,9 @@ class Login extends CI_Controller {
         $active_enrollment = $active_enrollment[0];
         
         /*=====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ======*/
+
         switch ($this->uri->segment(3)) {
-        	case '1dfbba5b5fa79b789c93cfc2911d846124153615':
-				# lecturer
-        	$info = $this->Crud_model->fetch("lecturer",array("username"=>$this->input->post("username")));
-        	$info = $info[0];
-        	$userData = array(
-        		'user'=> $info,
-        		'logged_in' => TRUE,
-        		"identifier" => "lecturer",
-        		"active_enrollment"=>  $active_enrollment->enrollment_id
-        	);
+        	
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");
         	break;
