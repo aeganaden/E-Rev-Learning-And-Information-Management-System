@@ -75,6 +75,11 @@ class Login extends CI_Controller {
         $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
         $active_enrollment = $active_enrollment[0];
         
+        // echo "<pre>";
+        // print_r($active_enrollment);
+
+        // die();
+
         /*=====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ======*/
 
         switch ($this->uri->segment(3)) {
@@ -92,6 +97,7 @@ class Login extends CI_Controller {
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");
         	break;
+
         	case 'b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3':
 				# administrator
         	$info = $this->Crud_model->fetch("admin",array("username"=>$this->input->post("username")));
@@ -106,6 +112,7 @@ class Login extends CI_Controller {
         	
         	echo json_encode(base_url()."Login/redirect_page");
         	break;
+
         	case '204036a1ef6e7360e536300ea78c6aeb4a9333dd':
 				# student
         	$info = $this->Crud_model->fetch("student",array("username"=>$this->input->post("username")));

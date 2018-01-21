@@ -72,7 +72,6 @@ function getDivHeightID(x){
 $(document).ready(function() {
 	$('#tbl-card-cosml').DataTable();
 	$('#tbl-card-ls').DataTable();
-	$('#tbl-card-lcl').DataTable();
 	$('#tbl-att-lec').DataTable();
 	$('#tbl-com').DataTable();
 } );
@@ -108,23 +107,6 @@ function login_verify() {
 				$("#login-username").addClass('invalid');
 				$("#login-password").addClass('invalid');
 				$("#login-message").css('display', 'block');
-			}else if(data == "1dfbba5b5fa79b789c93cfc2911d846124153615"){
-				$.ajax({
-						// lecturer
-						url: base_url+"Login/redirect/1dfbba5b5fa79b789c93cfc2911d846124153615",
-						type: "post",
-						dataType: "json",
-						data:{
-							username: $username,
-						},
-						success: function(data){
-							window.location.href = data;	
-						},
-						error: function(data){
-							console.log(data);	
-						}
-
-					});
 			}else if(data == "68d5fef94c7754840730274cf4959183b4e4ec35"){
 				$.ajax({
 						// professor
