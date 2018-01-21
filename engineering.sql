@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2018 at 03:47 PM
+-- Generation Time: Jan 21, 2018 at 12:14 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -103,17 +103,18 @@ CREATE TABLE `announcement` (
   `announcement_created_at` int(20) NOT NULL,
   `announcement_edited_at` int(20) NOT NULL,
   `announcement_is_active` tinyint(1) NOT NULL,
-  `announcement_audience` tinyint(1) NOT NULL,
-  `announcement_announcer_id` int(20) NOT NULL,
-  `announcement_identifier` varchar(20) NOT NULL
+  `announcement_audience` varchar(50) NOT NULL,
+  `announcement_announcer` varchar(100) NOT NULL,
+  `announcement_start_datetime` int(15) NOT NULL,
+  `announcement_end_datetime` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `announcement`
 --
 
-INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer_id`, `announcement_identifier`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 1, 0, '');
+INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 'CE', 'Juan Carlo Valencia', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -162,7 +163,9 @@ CREATE TABLE `course` (
 
 INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, `course_department`, `enrollment_id`, `professor_id`) VALUES
 (1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 1, 201111111),
-(2, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 1, 201122222);
+(2, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 1, 201122222),
+(3, 'ECECORREL1', 'ECE CORRELATION COURSE 1', 'ECE', 1, 201133333),
+(4, 'EECORREL1', 'EE CORRELATION COURSE 1', 'EE', 1, 201144444);
 
 -- --------------------------------------------------------
 
@@ -214,6 +217,34 @@ INSERT INTO `enrollment` (`enrollment_id`, `enrollment_sy`, `enrollment_term`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fic`
+--
+
+CREATE TABLE `fic` (
+  `fic_id` int(20) NOT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `mdname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `image_path` varchar(100) NOT NULL,
+  `fic_department` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `fic`
+--
+
+INSERT INTO `fic` (`fic_id`, `firstname`, `mdname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`) VALUES
+(1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'CE'),
+(2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ME'),
+(3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ECE'),
+(4, 'Riza3', 'Blossom', 'Malaya', 'riza3', 'riza3', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'EE');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `grade_assessment`
 --
 
@@ -237,8 +268,6 @@ CREATE TABLE `lecturer` (
   `midname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `lecturer_expertise` varchar(300) NOT NULL,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `lecturer_status` tinyint(1) NOT NULL DEFAULT '0',
   `image_path` varchar(100) NOT NULL,
@@ -249,9 +278,11 @@ CREATE TABLE `lecturer` (
 -- Dumping data for table `lecturer`
 --
 
-INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `username`, `password`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
-(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'ME graduate', 'rbbabaran', 'ronald', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'Accountancy', 'mggatan', 'marivic', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
+INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
+(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'CE graduate', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'ME graduate', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(3, 201033333, 'Rona Mae', 'Gatan', 'Babaran', 'ECE graduate', 'rgbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
+(4, 201044444, 'Ralph Denver', 'Babaran', 'Gatan', 'EE graduate', 'rbgatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -331,18 +362,24 @@ CREATE TABLE `log_content` (
 CREATE TABLE `offering` (
   `offering_id` int(20) NOT NULL,
   `offering_name` varchar(20) NOT NULL,
-  `course_id` int(20) NOT NULL
+  `offering_department` varchar(5) NOT NULL,
+  `course_id` int(20) NOT NULL,
+  `fic_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `offering`
 --
 
-INSERT INTO `offering` (`offering_id`, `offering_name`, `course_id`) VALUES
-(1, 'V21', 1),
-(2, 'V22', 1),
-(3, 'K31', 2),
-(4, 'K32', 2);
+INSERT INTO `offering` (`offering_id`, `offering_name`, `offering_department`, `course_id`, `fic_id`) VALUES
+(1, 'V21', 'CE', 1, 1),
+(2, 'V22', 'CE', 1, 1),
+(3, 'K31', 'ME', 2, 2),
+(4, 'K32', 'ME', 2, 2),
+(5, 'F31', 'ECE', 3, 3),
+(6, 'F32', 'ECE', 3, 3),
+(7, 'G31', 'EE', 4, 4),
+(8, 'G32', 'EE', 4, 4);
 
 -- --------------------------------------------------------
 
@@ -461,9 +498,14 @@ CREATE TABLE `subject` (
 --
 
 INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `course_id`) VALUES
-(1, 'Mathematics', 'not required', 1, 1),
-(2, 'Hydraulics', 'not required', 2, 1),
-(3, 'Hydraulics', 'not required', 2, 2);
+(1, 'Mathematics CE', 'not required', 1, 1),
+(2, 'Mathematics ME', 'not required', 1, 2),
+(3, 'Mathematics ECE', 'not required', 1, 3),
+(4, 'Mathematics EE', 'not required', 1, 4),
+(5, 'Hydraulics CE', 'not required', 2, 1),
+(6, 'Hydraulics ME', 'not required', 2, 2),
+(7, 'Hydraulics ECE', 'not required', 2, 3),
+(8, 'Hydraulics EE', 'not required', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -575,6 +617,12 @@ ALTER TABLE `enrollment`
   ADD PRIMARY KEY (`enrollment_id`);
 
 --
+-- Indexes for table `fic`
+--
+ALTER TABLE `fic`
+  ADD PRIMARY KEY (`fic_id`);
+
+--
 -- Indexes for table `grade_assessment`
 --
 ALTER TABLE `grade_assessment`
@@ -620,7 +668,8 @@ ALTER TABLE `log_content`
 --
 ALTER TABLE `offering`
   ADD PRIMARY KEY (`offering_id`),
-  ADD KEY `fk_offering_course1_idx` (`course_id`);
+  ADD KEY `fk_offering_course1_idx` (`course_id`),
+  ADD KEY `fk_offering_fic1_idx` (`fic_id`);
 
 --
 -- Indexes for table `professor`
@@ -703,7 +752,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `course_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `course_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `courseware_question`
@@ -733,7 +782,7 @@ ALTER TABLE `grade_assessment`
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `lecturer_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `lecturer_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `log_content`
@@ -751,7 +800,7 @@ ALTER TABLE `schedule`
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `topic`
@@ -832,7 +881,8 @@ ALTER TABLE `log`
 -- Constraints for table `offering`
 --
 ALTER TABLE `offering`
-  ADD CONSTRAINT `fk_offering_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_offering_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_offering_fic1` FOREIGN KEY (`fic_id`) REFERENCES `fic` (`fic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `schedule`
