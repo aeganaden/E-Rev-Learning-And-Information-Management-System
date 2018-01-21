@@ -20,7 +20,6 @@ class Login extends CI_Controller {
 		session_destroy();
 		redirect('Welcome','refresh');
 	}
-	//lecturer = 1dfbba5b5fa79b789c93cfc2911d846124153615
 	//professor = 68d5fef94c7754840730274cf4959183b4e4ec35
 	//administrator = b3aca92c793ee0e9b1a9b0a5f5fc044e05140df3
 	public function verify(){
@@ -30,9 +29,7 @@ class Login extends CI_Controller {
 			"password"=>$this->input->post("password")
 		);
 
-		if ($this->Crud_model->fetch("lecturer",$where)) {
-			$bool = sha1("lecturer");
-		}elseif ($this->Crud_model->fetch("professor",$where)) {
+		if ($this->Crud_model->fetch("professor",$where)) {
 			$bool = sha1("professor");
 		}elseif ($this->Crud_model->fetch("admin",$where)) {
 			$bool = sha1("administrator");
@@ -52,9 +49,6 @@ class Login extends CI_Controller {
 		$data = $this->session->userdata('userInfo');
 		echo $data["identifier"];
 		switch ( $data["identifier"]) {
-			case 'lecturer':
-			redirect('Home');
-			break;
 			case 'professor':
 			redirect('Home');
 			break;
