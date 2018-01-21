@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-        $_POST['username'] = "mgbabaran";
-        $_POST['pass'] = "mark";
+//        $_POST['username'] = "mgbabaran";
+//        $_POST['pass'] = "mark";
         $where = array(
             "username" => $this->input->post("username"),
             "password" => $this->input->post("pass")
@@ -24,11 +24,9 @@ class Mobile extends CI_Controller {
         } else if ($result = $this->Crud_model->fetch("admin", $where)) {
 
         }
-//        } else if ($result = $this->Crud_model->fetch("fic", $where)) {
-//
-//        }
-        print_r(json_encode($result));
-        return (json_encode($result));
+        $hold['user_details'] = array();
+        $hold['user_details'] = $result;
+        print_r(json_encode($hold));
     }
 
 }
