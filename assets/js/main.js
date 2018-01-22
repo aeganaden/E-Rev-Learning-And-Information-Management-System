@@ -33,7 +33,61 @@ $(document).ready(function() {
     aftershow: function(){} //Function for after opening timepicker
 });
 	initiateOnClick();
+	schedule();
+
 });
+
+/*=================================
+=            Schedule             =
+===================================*/
+
+function schedule() {
+	
+
+	$("#sections").change(function(){
+		$.ajax({
+			url: base_url+"Welcome/fetchSchedule",
+			type: 'post',
+			dataType: 'json',
+			data: {id: $(this).val()},
+			success: function(data){
+				var calendar = new Timetable();
+				calendar.setScope(7, 21);
+				calendar.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
+				for(var i =0; i < data.length ; i++){
+					
+					// console.log(data[i]);	
+					calendar.addEvent(data[i].schedule_venue, 	data[i].day, new Date(2015,7,data[i].s_d,data[i].s_h,data[i].s_min), new Date(2015,7,data[i].e_d,data[i].e_h,data[i].e_min));
+					var renderer = new Timetable.Renderer(calendar);
+					renderer.draw('.timetable'); 
+					
+				}
+			}
+		});
+
+
+	});
+}
+/*=====  End of Schedule   ======*/
+
+
+/*=========================================
+=            Navigation jQuery            =
+=========================================*/
+
+function navigations() {
+	//Navigation Button
+	$("#trigger_reg").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#register").offset().top
+		}, 2000);
+	});
+
+}
+
+/*=====  End of Navigation jQuery  ======*/
+
+
 
 
 /*==================================

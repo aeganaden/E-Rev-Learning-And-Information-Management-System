@@ -1,4 +1,7 @@
-<?php $this->load->view('includes/navbar'); ?>
+<?php $this->load->view('includes/navbar'); 
+date_default_timezone_set('Asia/Manila');
+
+?>
 
 <!--=========================================
 =            Mobile Only Section            =
@@ -219,6 +222,50 @@
 
 <!--====  End of Banner Slideshow  ====-->
 
+<!--===============================
+=            Schedules            =
+================================-->
+
+
+<div class="row">
+
+	<div class="row">
+		<center><i class="material-icons small color-primary-green">clear_all</i></center>
+		<div class="col s12">
+			<h4 class="center a-roboto-cond center">Correl Class Schedules</h4>
+
+			<div class="col s4"></div>
+			<div class="col s4">
+				
+				<select id="sections">
+					<option value="" disabled selected>Choose Section</option>
+					<?php 
+					$sections = $this->Crud_model->fetch("offering");
+					?>
+					<?php foreach ($sections as $key => $value): ?>
+						<option value="<?=$value->offering_id?>"><?=$value->offering_name?></option>
+
+					<?php endforeach ?>
+				</select>
+				<label>Materialize Select</label>
+
+			</div>
+			<div class="col s4"></div>
+		</div>
+		
+	</div>
+	<div class="row">
+
+		<div class="col s12">
+			<div class="timetable"></div>
+		</div>
+	</div>
+	
+</div>
+
+
+<!--====  End of Schedules  ====-->
+
 <!--==============================
 =            Features            =
 ===============================-->
@@ -377,86 +424,14 @@
 <!--====  End of ENGINEERS Section  ====-->
 
 <div class="row red" id="register">
-	<h4 class="center" style="text-transform: uppercase; padding-top: 4%; "> <span style="border-bottom: 3px solid #F2A900;"> sign up as a lecturer</span></h4>
-	<center><a href="#"><button class="btn bg-primary-green waves-effect btn-large modal-trigger" data-target="modal-register">register</button></a></center>
-</div>
+	<h4 class="center" style="text-transform: uppercase; padding-top: 4%; "> <span style="border-bottom: 3px solid #F2A900;"> Start enhancing your skills</span></h4>
+	<center><a href="#"><button class="btn bg-primary-green waves-effect btn-large modal-trigger"
+		data-target="a-login-modal">login</button></a></center>
+	</div>
 
 </div>
 
 <!--====  End of Web Only Section  ====-->
-
-
-<!--========================================
-=            Modal Registration            =
-=========================================-->
-
-<div id="modal-register" class="modal modal-fixed-footer bg-color-white" >
-	<div class="modal-content">
-		<blockquote class="color-primary-green"><h4 class="color-black">REGISTRATION</h4></blockquote>
-		<div class="row">
-			<div class="col s12">
-				<!-- Name -->
-				<div class="row ">
-					<div class="col s4  input-field">
-						<i class="material-icons prefix">person</i>
-						<input type="text" placeholder=" "  id="reg_firstname" name="reg_firstname" autofocus class="validate">
-						<label id="lbl_reg_firstname" for="reg_firstname"  data-error="error">FIRST NAME</label>
-					</div>
-					<div class="col s4  input-field">
-						<input type="text" placeholder=" " id="reg_midname" name="reg_midname" class="validate">
-						<label id="lbl_reg_midname" for="reg_midname" data-error="error">MIDDLE NAME</label>
-					</div>
-					<div class="col s4  input-field">
-						<input type="text" placeholder=" " id="reg_lastname" name="reg_lastname" class="validate">
-						<label id="lbl_reg_lastname" for="reg_lastname" data-error="error">SURNAME</label>
-					</div>
-				</div>
-				
-				<!-- username -->
-				<div class="row">
-					<div class="input-field col s6">
-						<i class="material-icons prefix">supervisor_account</i>
-						<input type="text" placeholder=" " id="reg_username" name="reg_username"  class="validate">
-						<label id="lbl_reg_username" for="reg_username" data-error="error">USERNAME</label>
-					</div>
-					<div class="input-field col s6">
-						<i class="material-icons prefix">email</i>
-						<input type="email" placeholder=" " id="reg_email" name="reg_email"  class="validate">
-						<label id="lbl_reg_email" for="reg_email" data-error="Invalid Email">EMAIL</label>
-					</div>
-				</div>
-
-
-				<!-- password -->
-				<div class="row">
-					<div class="input-field col s6" data-error="error">
-						<i class="material-icons prefix" data-error="error">lock</i>
-
-						<input type="password" placeholder=" " id="reg_password" name="reg_password" class="validate">
-						<label id="lbl_reg_password" for="reg_password" data-error="error">PASSWORD</label>
-					</div>
-					<div class="input-field col s6">
-						<input type="password" placeholder=" " id="reg_conf_password" name="reg_conf_password" class="validate">
-						<label id="lbl_reg_conf_password" for="reg_conf_password" data-error="error">CONFIRM PASSWORD</label>
-					</div>
-				</div>
-
-				<!-- Expertise -->
-				<div class="row input-field">
-					<i class="material-icons prefix">assistant</i>
-					<textarea name="reg_expertise" id="reg_expertise" placeholder="Ex. Hydraulics, Mathematics, Physics" data-length="150" class="materialize-textarea" validate></textarea>
-					<label id="lbl_reg_expertise" for="reg_expertise" data-error="error">What is your Expertise?</label>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer bg-color-white">
-		<a href="#!" class="modal-action modal-close waves-effect bg-color-red btn left">Cancel</a>
-		<a href="#!" id="btn_register" class=" waves-effect bg-primary-green btn right">Register</a>
-	</div>
-</div>
-
-<!--====  End of Modal Registration  ====-->
 
 
 
@@ -560,15 +535,9 @@
 <!--============================
 =            Script            =
 =============================-->
-
 <script>
 	jQuery(document).ready(function($) {
-		$("#trigger_reg").click(function() {
-			$('html, body').animate({
-				scrollTop: $("#register").offset().top
-			}, 2000);
-		});
-
+		
 
 
 		
