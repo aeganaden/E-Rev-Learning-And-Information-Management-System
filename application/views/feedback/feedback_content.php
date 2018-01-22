@@ -7,7 +7,6 @@
 <!--====  End of Navigation Top  ====<--></-->
 <?php
 $this->load->view('includes/home-sidenav');
-print_r($lect);
 ?>
 <!--ABOVE IS PERMA-->
 
@@ -30,7 +29,7 @@ print_r($lect);
         </div>
         <div class="col s5"></div>
     </div>
-    <form method="post" action="<? = base_url() ?>feedback/submit">
+    <form method="post" action="<?= base_url() ?>feedback/submit">
         <div class="row" style="margin-top: -50px">
             <div class="col s3"></div>
             <div class="col s8">

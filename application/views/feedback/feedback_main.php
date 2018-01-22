@@ -9,7 +9,7 @@
 <!--ABOVE IS PERMA-->
 <div class="container">
     <?php if (empty($lect)): ?>
-        <h4 id="message_area" class="center-align" style="margin-top: 20vh;">No list of lecturers to be show<br>(Feedback is not activated)</h4>
+        <h4 id="message_area" class="center-align" style="margin-top: 20vh;">No list of lecturers to be show<br>(Feedback is not activated or inactive enrollment)</h4>
     <?php else: ?>
         <table class="striped">
             <thead>

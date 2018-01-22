@@ -8,6 +8,7 @@ class Feedback extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->helper('date');
+        $this->load->library('user_agent'); //for previous page
     }
 
     public function index() {
@@ -84,7 +85,10 @@ class Feedback extends CI_Controller {
             $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course id from stud
             $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id; //get enrollment id from course
             $enrollment_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $enrollment_id))[0]->enrollment_is_active; //get enrollment id from course
-            $this->load->view('includes/header');
+            $data = array(//gonna need to put this for header
+                'title' => "Feedback"
+            );
+            $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
                 $stud_id = $this->session->userdata('userInfo')['user']->student_id;
                 $data = array(
@@ -105,15 +109,16 @@ class Feedback extends CI_Controller {
                 } else {                                            //didn't find anything on database
                     $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
-                    if (empty($offering_id) != 1) {
+                    if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
                             'title' => "Feedback",
                             'info' => $info,
                             'lect' => $offering_id
                         );
-                    } else {
-                        echo "test1";
-//                redirect("feedback");
+                        $this->load->view('feedback/feedback_content', $data);
+                    } else {                                //unknown section
+                        $this->load->view('feedback/error', $data);
+                        include(APPPATH . 'views\feedback\custom5.php');
                     }
                 }
             } else {
@@ -122,9 +127,8 @@ class Feedback extends CI_Controller {
                     'info' => $info
                 );
                 $this->load->view('feedback/error', $data);
-                include(APPPATH . 'views\feedback\custom4.php');
+                include(APPPATH . 'views\feedback\custom1.php');
             }
-            //$this->load->view('feedback/feedback_content', $data);
             $this->load->view('includes/footer');
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
             echo "lecturer view";
@@ -135,39 +139,45 @@ class Feedback extends CI_Controller {
     }
 
     public function submit() {
-
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
+            /*  CHECKS THE CONNECTION TO THE ENROLLMEN  */
             $offering_id = $this->session->userdata('userInfo')['user']->offering_id;
-            if ($offering_id != FALSE) {
-                $lecturer_id = $this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]->offering_lecturer_id;
-                if ($lecturer_id != FALSE) {
-                    $result = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lecturer_id))[0];
-//                    $datestring = 'Year: %Y Month: %m Day: %d - %h:%i %a';
-                    date_default_timezone_set('Asia/Manila');
-                    if ($result != FALSE) {
-                        $feedback = $this->input->post('feedback_content');
-                        $data = array(
-                            'lecturer_feedback_timedate' => time(),
-                            'lecturer_feedback_comment' => $feedback,
-                            'offering_id' => $this->session->userdata('userInfo')['user']->offering_id,
-                            'student_id' => $this->session->userdata('userInfo')['user']->id
-                        );
-                        if ($this->Crud_model->insert('lecturer_feedback', $data)) {
-                            redirect("");
-                        } else {
-
-                        }                                   //LAST
-                    } else {
-                        reidrect("");
-                    }
-                } else {
-                    reidrect("");
-                }
-            } else {
-                reidrect("");
+            $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]->course_id;
+            $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id;
+//            echo"<pre>";
+//            print_r($this->Crud_model->fetch('course', array('course_id' => $course_id))[0]);
+//            echo"</pre>";
+            $hold = $this->session->userdata('userInfo')["active_enrollment"];      //stored the enrollment_id of active
+            /*  END */
+            $data = array('title' => 'Feedback');
+            $this->load->view('includes/header', $data);
+            if ($this->session->userdata('userInfo')["active_enrollment"] == $enrollment_id) {   //checks if enrollment active is equals to involve student
+                /*  student is qualified to submit  */
+                date_default_timezone_set('Asia/Manila');
+                $feedback = $this->input->post('feedback_content');
+                /*  end     */
+                /*  gets lecturer_id from url previous page */
+                $url = $_SERVER['HTTP_REFERER'];
+                $hold = array();
+                $hold = explode("/", $url);
+                $temp = $hold[count($hold) - 1];
+                /*  end     */
+                $data = array(
+                    'lecturer_feedback_timedate' => time(),
+                    'lecturer_feedback_comment' => $feedback,
+                    'student_id' => $this->session->userdata('userInfo')['user']->student_id,
+                    'lecturer_id' => $temp
+                );
+                $this->Crud_model->insert('lecturer_feedback', $data);
+                redirect('feedback');
+            } else {    //the student is in an inactive enrollment; theoretically should work; not yet tested
+                $this->load->view('feedback/error', $data);
+                include(APPPATH . 'views\feedback\custom1.php');
             }
+            $this->load->view('includes/footer');
+//
         } else {
-            redirect("");
+            redirect("home");
         }
     }
 
