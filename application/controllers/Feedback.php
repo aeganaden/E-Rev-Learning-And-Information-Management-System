@@ -8,7 +8,6 @@ class Feedback extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->helper('date');
-        $this->load->library('user_agent'); //for previous page
     }
 
     public function index() {
@@ -70,8 +69,9 @@ class Feedback extends CI_Controller {
                 $this->load->view('feedback/error', $data);
                 $this->load->view('feedback/custom4');
             }
-        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-
+        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //LAST show to fic
+            $this->load->view('includes/header', $data);
+            $this->load->view('includes/footer');
         } else {
             redirect("");
         }
@@ -165,8 +165,11 @@ class Feedback extends CI_Controller {
                 $data = array(
                     'lecturer_feedback_timedate' => time(),
                     'lecturer_feedback_comment' => $feedback,
+                    'lecturer_feedback_department' => $this->session->userdata('userInfo')['user']->student_program,
                     'student_id' => $this->session->userdata('userInfo')['user']->student_id,
-                    'lecturer_id' => $temp
+                    'lecturer_id' => $temp,
+                    'enrollment_id' => $enrollment_id,
+                    'offering_id' => $this->session->userdata('userInfo')['user']->offering_id
                 );
                 $this->Crud_model->insert('lecturer_feedback', $data);
                 redirect('feedback');
