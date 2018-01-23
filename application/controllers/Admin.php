@@ -17,11 +17,11 @@ class Admin extends CI_Controller {
     }
 
     public function dateDiffMinutes($value1, $value2) {
-       $dateDiff = intval((strtotime($value1)-strtotime($value2))/60);
-       return $dateDiff%60;
-   }
+     $dateDiff = intval((strtotime($value1)-strtotime($value2))/60);
+     return $dateDiff%60;
+ }
 
-   public function index() {
+ public function index() {
     $this->session->unset_userdata('insertion_info');
 
         // echo strtotime("+3 day 9 hours");
@@ -194,38 +194,29 @@ class Admin extends CI_Controller {
     public function addAnnouncement() {
         $column = "";
         $info = $this->session->userdata('userInfo');
-        // echo "<pre>";
-        // print_r($info);
-        // die();
-        switch ($info["identifier"]) {
-            case 'administrator':
-            $column = "admin_id";
-            break;
-            case 'student':
-            $column = "student_id";
-            break;
-            case 'lecturer':
-            $column = "lecturer_id";
-            break;
-            case 'professor':
-            $column = "professor_id";
-            break;
-
-            default:
-                # code...
-            break;
-        }
-
 
         $title = $this->input->post("title");
         $content = $this->input->post("content");
-        $audience = $this->input->post("ann_audience");
+        $audience = "";
+
+        $i = 0;
+        $len = count($_POST['audience']);
+        foreach($_POST['audience'] as $aud){
+            $c = ",";
+            if ($i == $len - 1) {
+                $c = "";
+            }
+
+            $audience.=$aud.$c;
+            $i++;
+        }
+
         $data = array(
             "announcement_title" => $title,
             "announcement_content" => $content,
             "announcement_created_at" => time(),
             "announcement_edited_at" => time(),
-            "announcement_is_active" => time(),
+            "announcement_is_active" => 0,
             "announcement_audience" => $audience,
             "announcement_announcer" => ucwords($info["user"]->firstname . " " . $info["user"]->lastname)
         );
@@ -303,35 +294,35 @@ class Admin extends CI_Controller {
         foreach ($lec_attendance as $key => $value) {
 
            // fetch schedule 
-         $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
-         $sched = $sched[0];
-         $sched_in  = $sched->schedule_start_time;
-         $sched_out  = $sched->schedule_end_time;
+           $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
+           $sched = $sched[0];
+           $sched_in  = $sched->schedule_start_time;
+           $sched_out  = $sched->schedule_end_time;
 
            // $diff_sched_in = $this->dateDiffMinutes($sched_in,$lec_in);
            // $diff_sched_out = $this->dateDiffMinutes($sched_out,$lec_out);
-         $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
-         $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
-         $interval =$this->diff( $lec_in, $lec_out );
-         $sum =  $interval['h'].":".$interval['i'];
-         array_push($total_time,$sum);
-     }
+           $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
+           $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
+           $interval =$this->diff( $lec_in, $lec_out );
+           $sum =  $interval['h'].":".$interval['i'];
+           array_push($total_time,$sum);
+       }
 
 
 
-     $data = array(
+       $data = array(
         "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
         "lecturer" => $lec_data,
         "attendance" => $lec_attendance,
         "hours_rendered" => $this->AddPlayTime($total_time),
 
     );
-     $this->load->view('includes/header', $data);
-     $this->load->view('admin-attendance');
-     $this->load->view('includes/footer');
- }
+       $this->load->view('includes/header', $data);
+       $this->load->view('admin-attendance');
+       $this->load->view('includes/footer');
+   }
 
- public function viewClassList() {
+   public function viewClassList() {
     // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
     $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $this->uri->segment(3)));
     foreach ($schedule as $key => $value) {

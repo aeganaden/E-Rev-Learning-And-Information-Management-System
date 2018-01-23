@@ -137,6 +137,7 @@ $(document).ready(function() {
 /*======================================
 =            Login Modal JS            =
 ======================================*/
+
 document.getElementById('login-password').onkeydown = function(event) {
 	if (event.keyCode == 13) {
 		login_verify();
@@ -199,6 +200,23 @@ function login_verify() {
 				$.ajax({
 						// student
 						url: base_url+"Login/redirect/204036a1ef6e7360e536300ea78c6aeb4a9333dd",
+						type: "post",
+						dataType: "json",
+						data:{
+							username: $username,
+						},
+						success: function(data){
+							window.location.href = data;	
+						},
+						error: function(data){
+							console.log(data);	
+						}
+
+					});
+			}else if(data == "ea1462c1fe6251c885dce5002ad73edb0f613628"){
+				$.ajax({
+						// student
+						url: base_url+"Login/redirect/ea1462c1fe6251c885dce5002ad73edb0f613628",
 						type: "post",
 						dataType: "json",
 						data:{

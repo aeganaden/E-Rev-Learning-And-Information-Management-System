@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {
@@ -13,7 +14,7 @@ class Login extends CI_Controller {
 	public function index()
 	{
 
-
+		redirect('Home');
 	}
 	public function logout()
 	{
@@ -35,6 +36,8 @@ class Login extends CI_Controller {
 			$bool = sha1("administrator");
 		}elseif ($this->Crud_model->fetch("student",$where)) {
 			$bool = sha1("student");
+		}elseif ($this->Crud_model->fetch("fic",$where)) {
+			$bool = sha1("fic");
 		}else{
 			$bool = false;
 		}
@@ -56,6 +59,9 @@ class Login extends CI_Controller {
 			redirect('Admin');
 			break;
 			case 'student':
+			redirect('Home');
+			break;
+			case 'fic':
 			redirect('Home');
 			break;
 			
@@ -121,6 +127,20 @@ class Login extends CI_Controller {
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "student",
+        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        	);
+        	$this->session->set_userdata('userInfo',$userData);
+        	echo json_encode(base_url()."Login/redirect_page");
+        	break;
+
+        	case 'ea1462c1fe6251c885dce5002ad73edb0f613628':
+				# student
+        	$info = $this->Crud_model->fetch("fic",array("username"=>$this->input->post("username")));
+        	$info = $info[0];
+        	$userData = array(
+        		'user'=> $info,
+        		'logged_in' => TRUE,
+        		"identifier" => "fic",
         		"active_enrollment"=>  $active_enrollment->enrollment_id
         	);
         	$this->session->set_userdata('userInfo',$userData);

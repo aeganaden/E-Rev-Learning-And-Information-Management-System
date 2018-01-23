@@ -44,15 +44,7 @@
 			</div>
 			<button class="btn bg-primary-green waves-effect right">Post</button>
 		</form>
-		<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				var sList = "";
-				$("input[name='audience[]']").each( function () {
-					sList += "(" + $(this).val() + "-" + (this.checked ? "1" : "0") + ")";
-				});
-				console.log (sList);
-			});
-		</script>
+		
 	</div>
 	<div class="col s4"></div>
 </div>
@@ -78,27 +70,35 @@
 					<?php 
 					$is_active = $value->announcement_is_active == 1 ? "ACTIVE"  : "INACTIVE";
 					$is_active_color = $value->announcement_is_active == 1 ? "color-green"  : "color-red";
-					$audience = "";
-					switch ($value->announcement_audience) {
-						case '1':
-						$audience = "General";
-						break;
-						case '2':
-						$audience = "Civil Engineering";
-						break;
-						case '3':
-						$audience = "Electrical and Electronics Engineering";
-						break;
-						case '4':
-						$audience = "Electrical Engineering";
-						break;
-						case '5':
-						$audience = "Mechanical Engineering";
-						break;
+					$str_aud = "";
+					$audience = explode( ',', $value->announcement_audience );
+					$i = 0;
+					$len = count($audience);
+					foreach ($audience as $key => $aud) {
+						$c = " | ";
+						if ($i == $len - 1) {
+							$c = "";
+						}
 
-						default:
+						switch ($aud) {
+							case '1':
+							$str_aud .= "CE".$c;
+							break;
+							case '2':
+							$str_aud .= "ECE".$c;
+							break;
+							case '3':
+							$str_aud .= "EE".$c;
+							break;
+							case '4':
+							$str_aud .= "ME".$c;
+							break;
+
+							default:
 						# code...
-						break;
+							break;
+						}
+						$i++;
 					}
 					?>
 					<tr>
@@ -114,7 +114,7 @@
 						<td><?=date("M d, Y - h:i A",$value->announcement_created_at)?></td>
 						<td><?=date("M d, Y - h:i A",$value->announcement_edited_at)?></td>
 						<td class="<?=$is_active_color?>"><?=$is_active?></td>
-						<td><?=$audience?></td>
+						<td><?=$str_aud?></td>
 						<td><?=$value->announcement_announcer?></td>
 						<td><i data-id="<?=$value->announcement_id?>" class="ann-modal-btn material-icons color-primary-green modal-trigger waves-effect waves-light" href="#ann_modal" style="cursor: pointer;">edit</i></td>
 						<td><i class="material-icons color-red btn_modal_delete" data-id="<?=$value->announcement_id?>" style="cursor: pointer;">delete</i></td>
@@ -134,7 +134,8 @@
 
 <div id="ann_modal" class="modal">
 	<div class="modal-content">
-		<h4>Edit Announcement</h4>
+		<h4  class="color-black center"><span style="border-bottom: 3px solid #F2A900;">Edit Announcement</span></h4>
+		<br>
 		<div class="row">
 			<div class="input-field">
 				<input type="text" value="" placeholder="" id="ann_modal_title" class="validate" name="">
@@ -150,21 +151,27 @@
 			</div>
 		</div>	
 		<div class="row">
-			<div class="col s4"></div>
-			<div class="col s4">
-				<center>
-					<div class="switch">
-						<p class="color-green">STATUS</p>
-						<label>
-							Deactivated
-							<input type="checkbox" id="ann_modal_status">
-							<span class="lever"></span>
-							Activated
-						</label>
-					</div>
-				</center>
+			<h5 class="center color-black"><span style="border-bottom: 3px solid #F2A900;">Audience</span></h5>
+			<div class="col s3"></div>
+			<div class="col s9">
+				<p>
+					<input id="aud_1" type="checkbox" id="ce" name="audience[]" value="1"  />
+					<label for="ce">Civil Engineering</label>
+				</p>
+				<p>
+					<input id="aud_2" type="checkbox" id="ece" name="audience[]" value="2" />
+					<label for="ece">Electronics and Communication Engineering</label>
+				</p>
+				<p>
+					<input id="aud_3" type="checkbox" id="ee" name="audience[]" value="3" />
+					<label for="ee">Electrical Engineering</label>
+				</p>
+				<p>
+					<input id="aud_4" type="checkbox" id="me" name="audience[]" value="4" />
+					<label for="me">Mechanical Engineering</label>
+				</p>
+
 			</div>
-			<div class="col s4"></div>
 		</div>
 	</div>
 	<div class="modal-footer">
@@ -196,15 +203,14 @@
 						id: $(this).attr("data-id"),
 					},
 					success: function(data){
-					// console.log(data[0].announcement_id);	
-					$("#ann_modal_title").val(data[0].announcement_title);
-					$("#ann_modal_content").val(data[0].announcement_content);
-					if (data[0].announcement_is_active == 1) {
-						$("#ann_modal_status").attr( "checked", true );
-					}else{
-						$("#ann_modal_status").attr( "checked", false );
-
+					// console.log(data[0].announcement_id);
+					var aud = data[0].announcement_audience;	
+					var result = aud.split(',');
+					for (i = 0; i < result.length; i++) {
+						$("#aud_"+result[i]).attr("checked");
+						// console.log($("#aud_"+result[i]).attr());	
 					}
+					// console.log(result);	
 				},
 				error: function(data){
 
