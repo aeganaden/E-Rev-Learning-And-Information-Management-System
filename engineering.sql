@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2018 at 05:28 AM
+-- Generation Time: Jan 24, 2018 at 10:06 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -493,14 +493,14 @@ CREATE TABLE `subject` (
   `subject_name` varchar(45) NOT NULL,
   `subject_description` varchar(800) DEFAULT NULL,
   `lecturer_id` int(20) NOT NULL,
-  `course_id` int(20) NOT NULL
+  `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `subject`
 --
 
-INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `course_id`) VALUES
+INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lecturer_id`, `offering_id`) VALUES
 (1, 'Mathematics CE', 'not required', 1, 1),
 (2, 'Mathematics ME', 'not required', 1, 2),
 (3, 'Mathematics ECE', 'not required', 1, 3),
@@ -703,7 +703,7 @@ ALTER TABLE `student`
 ALTER TABLE `subject`
   ADD PRIMARY KEY (`subject_id`),
   ADD KEY `fk_subject_lecturer1_idx` (`lecturer_id`),
-  ADD KEY `fk_subject_course1_idx` (`course_id`);
+  ADD KEY `fk_subject_offering1_idx` (`offering_id`);
 
 --
 -- Indexes for table `topic`
@@ -914,8 +914,8 @@ ALTER TABLE `student`
 -- Constraints for table `subject`
 --
 ALTER TABLE `subject`
-  ADD CONSTRAINT `fk_subject_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_subject_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_subject_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_subject_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `topic`
