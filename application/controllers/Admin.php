@@ -11,18 +11,10 @@ class Admin extends CI_Controller {
         $this->load->model('Crud_model');
     }
 
-    public function dateDiffHours($value1, $value2) {
 
-        return intval($dateDiff/60);
-    }
 
-    public function dateDiffMinutes($value1, $value2) {
-     $dateDiff = intval((strtotime($value1)-strtotime($value2))/60);
-     return $dateDiff%60;
- }
-
- public function index() {
-    $this->session->unset_userdata('insertion_info');
+    public function index() {
+        $this->session->unset_userdata('insertion_info');
 
         // echo strtotime("+3 day 9 hours");
         // die();
@@ -155,8 +147,9 @@ class Admin extends CI_Controller {
     }
 
     public function Announcements() {
+
         $this->verify_login();
-        $announcement = $this->Crud_model->fetch("announcement");
+        $announcement = $this->Crud_model->fetch("announcement",array("announcement_is_active"=>1));
         $data = array(
             "title" => "Announcements - Learning Management System | FEU - Institute of Techonology",
             "announcement" => $announcement
@@ -169,20 +162,23 @@ class Admin extends CI_Controller {
     public function fetchAnnouncement() {
         $announcement_id = $this->input->post("id");
         $data = $this->Crud_model->fetch("announcement", array("announcement_id" => $announcement_id));
-        
+        $data = $data[0];
+        $data->end_time = date("M d, Y", $data->announcement_end_datetime);        
         echo json_encode($data);
     }
 
     public function updateAnnouncement() {
         $title = $this->input->post("title");
         $content = $this->input->post("content");
-        $status = $this->input->post("status");
+        $audience = $this->input->post("audience");
         $edited_at = time();
         $id = $this->input->post("id");
         $data = array(
             "announcement_title" => $title,
             "announcement_content" => $content,
-            "announcement_is_active" => $status,
+            "announcement_end_datetime"=>strtotime($this->input->post("date")),
+            "announcement_start_datetime"=>time(),
+            "announcement_audience" => $audience,
             "announcement_edited_at" => $edited_at
         );
 
@@ -192,6 +188,7 @@ class Admin extends CI_Controller {
     }
 
     public function addAnnouncement() {
+
         $column = "";
         $info = $this->session->userdata('userInfo');
 
@@ -212,22 +209,26 @@ class Admin extends CI_Controller {
         }
 
         $data = array(
-            "announcement_title" => $title,
-            "announcement_content" => $content,
+            "announcement_title" => strip_tags($title),
+            "announcement_content" => strip_tags($content),
             "announcement_created_at" => time(),
             "announcement_edited_at" => time(),
-            "announcement_is_active" => 0,
-            "announcement_audience" => $audience,
-            "announcement_announcer" => ucwords($info["user"]->firstname . " " . $info["user"]->lastname)
+            "announcement_is_active" => 1,
+            "announcement_audience" => strip_tags($audience),
+            "announcement_start_datetime"=>time(),
+            "announcement_end_datetime"=>strtotime($this->input->post("end_time")),
+            "announcement_announcer" => strip_tags(ucwords($info["user"]->firstname . " " . $info["user"]->lastname))
         );
         if ($this->Crud_model->insert("announcement", $data)) {
             redirect('Admin/announcements', 'refresh');
+            // echo "<pre>";
+            // print_r( $data);
         }
     }
 
     public function deleteAnnouncement() {
         $id = $this->input->post("id");
-        if ($this->Crud_model->delete("announcement", array("announcement_id" => $id))) {
+        if ($this->Crud_model->update("announcement", array("announcement_is_active" => 0), array("announcement_id" => $id))) {
             echo json_encode(true);
         }
     }
@@ -294,35 +295,35 @@ class Admin extends CI_Controller {
         foreach ($lec_attendance as $key => $value) {
 
            // fetch schedule 
-           $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
-           $sched = $sched[0];
-           $sched_in  = $sched->schedule_start_time;
-           $sched_out  = $sched->schedule_end_time;
+         $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
+         $sched = $sched[0];
+         $sched_in  = $sched->schedule_start_time;
+         $sched_out  = $sched->schedule_end_time;
 
            // $diff_sched_in = $this->dateDiffMinutes($sched_in,$lec_in);
            // $diff_sched_out = $this->dateDiffMinutes($sched_out,$lec_out);
-           $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
-           $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
-           $interval =$this->diff( $lec_in, $lec_out );
-           $sum =  $interval['h'].":".$interval['i'];
-           array_push($total_time,$sum);
-       }
+         $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
+         $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
+         $interval =$this->diff( $lec_in, $lec_out );
+         $sum =  $interval['h'].":".$interval['i'];
+         array_push($total_time,$sum);
+     }
 
 
 
-       $data = array(
+     $data = array(
         "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
         "lecturer" => $lec_data,
         "attendance" => $lec_attendance,
         "hours_rendered" => $this->AddPlayTime($total_time),
 
     );
-       $this->load->view('includes/header', $data);
-       $this->load->view('admin-attendance');
-       $this->load->view('includes/footer');
-   }
+     $this->load->view('includes/header', $data);
+     $this->load->view('admin-attendance');
+     $this->load->view('includes/footer');
+ }
 
-   public function viewClassList() {
+ public function viewClassList() {
     // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
     $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $this->uri->segment(3)));
     foreach ($schedule as $key => $value) {

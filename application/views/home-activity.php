@@ -43,8 +43,8 @@
 									<p><?=strtoupper($value->activity_venue)?></p>
 								</blockquote>
 								<div class="row div-edit<?=$value->activity_id?>" style="display: none">
-									<input type="text"  class="timepicker time_data" value="Change Time">
-									<input type="text" class="datepicker date_data" value="Change Date">
+									<input type="text"  class="timepicker time_data time<?=$value->activity_id?>" value="Change Time">
+									<input type="text" class="datepicker date_data date<?=$value->activity_id?>" value="Change Date">
 									<textarea id="txtarea" class="materialize-textarea desc_data"><?=$value->activity_description?></textarea>
 									<label for="txtarea">Description</label>
 									<button class="btn bg-primary-green waves-effect right btn_update_activity" data-id="<?=$value->activity_id?>">Update</button>
@@ -61,6 +61,8 @@
 
 				</div>
 			</div>
+			<!-- SCRIPT FOR SETTING THE TIME -->
+			
 		<?php endforeach ?>
 	<?php else: ?>
 		<h3 class="center">No Data Yet</h3>
@@ -191,4 +193,8 @@
 
 
 	});
+
+	function set_date_time(class_name,date_time) {
+		$('.'+class_name).val(date_time).pickadate();	
+	}
 </script>

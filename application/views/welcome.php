@@ -227,7 +227,7 @@ date_default_timezone_set('Asia/Manila');
 ================================-->
 
 
-<div class="row">
+<div class="row" id="nav_schedule_sec">
 
 	<div class="row">
 		<center><i class="material-icons small color-primary-green">clear_all</i></center>
@@ -254,12 +254,20 @@ date_default_timezone_set('Asia/Manila');
 		</div>
 		
 	</div>
+	
+	<!--======================================
+	=            SCHEDULE SECTION            =
+	=======================================-->
+	
 	<div class="row">
 
 		<div class="col s12">
 			<div class="timetable"></div>
 		</div>
 	</div>
+	
+	<!--====  End of SCHEDULE SECTION  ====-->
+	
 	
 </div>
 
@@ -270,7 +278,7 @@ date_default_timezone_set('Asia/Manila');
 =            Features            =
 ===============================-->
 
-<div class="row">
+<div class="row" id="nav_features_sec">
 	<div class="row">
 		<center><i class="material-icons small color-primary-green">clear_all</i></center>
 		<h4 class="center a-roboto-cond">Features</h4>
@@ -323,7 +331,7 @@ date_default_timezone_set('Asia/Manila');
 =            What you'll get section            =
 ==============================================-->
 
-<div class="row">
+<div class="row" id="nav_benefits_sec">
 	<center><i class="material-icons small color-primary-green">clear_all</i></center>
 	<h4 class="center a-roboto-cond" style="text-transform: uppercase;">What you'll get as a student</h4>
 	<div class="row valign-wrapper">
@@ -370,7 +378,7 @@ date_default_timezone_set('Asia/Manila');
 ========================================-->
 
 
-<div class="row">
+<div class="row" id="nav_statements_sec">
 	<div class="col s2"></div>
 	<div class="col s8 ">
 		<h4>
@@ -424,7 +432,7 @@ date_default_timezone_set('Asia/Manila');
 <!--====  End of ENGINEERS Section  ====-->
 
 <div class="row red" id="register">
-	<h4 class="center" style="text-transform: uppercase; padding-top: 4%; "> <span style="border-bottom: 3px solid #F2A900;"> Start enhancing your skills</span></h4>
+	<h4 id="nav_login_sec" class="center" style="text-transform: uppercase; padding-top: 4%; "> <span style="border-bottom: 3px solid #F2A900;"> Start enhancing your skills</span></h4>
 	<center><a href="#"><button class="btn bg-primary-green waves-effect btn-large modal-trigger"
 		data-target="a-login-modal">login</button></a></center>
 	</div>
@@ -535,114 +543,6 @@ date_default_timezone_set('Asia/Manila');
 <!--============================
 =            Script            =
 =============================-->
-<script>
-	jQuery(document).ready(function($) {
-		
 
-
-		
-		// Submit Registration Button
-		$("#btn_register").click(function() {
-
-		// Registration Form Values
-		var form_data = {
-			reg_firstname: $('#reg_firstname').val(),
-			reg_midname: $('#reg_midname').val(),
-			reg_lastname: $('#reg_lastname').val(),
-			reg_username: $('#reg_username').val(),
-			reg_email: $('#reg_email').val(),
-			reg_password: $('#reg_password').val(),
-			reg_conf_password: $('#reg_conf_password').val(),
-			reg_expertise: $('#reg_expertise').val(),
-		};
-
-			// Include first the ajax validation of data
-			$.ajax({
-				url: '<?=base_url()?>Welcome/register_validation',
-				type: 'post',
-				dataType: 'json',
-				data: form_data,
-				success: function(data){
-					console.log(data);
-					if (data != "true") {
-						if (data.reg_firstname) {
-							$('#lbl_reg_firstname').attr('data-error',data.reg_firstname);
-							$('#reg_firstname').addClass('invalid');
-						}
-						if (data.reg_midname) {
-							$('#reg_midname').addClass('invalid'); 
-							$('#lbl_reg_midname').attr('data-error',data.reg_midname);
-						}
-						if (data.reg_lastname) {
-							$('#reg_lastname').addClass('invalid');
-							$('#lbl_reg_lastname').attr('data-error',data.reg_lastname);
-						}
-						if (data.reg_username) {
-							$('#reg_username').addClass('invalid');
-							$('#lbl_reg_username').attr('data-error',data.reg_username);
-						}
-						if (data.reg_email) {
-							$('#reg_email').addClass('invalid');
-							$('#lbl_reg_email').attr('data-error',data.reg_email);
-						}
-						if (data.reg_password) {
-							$('#reg_password').addClass('invalid');
-							$('#lbl_reg_password').attr('data-error',data.reg_password);
-						}
-						if (data.reg_conf_password) {
-							$('#reg_conf_password').addClass('invalid');
-							$('#lbl_reg_conf_password').attr('data-error',data.reg_conf_password);
-						}
-						if (data.reg_expertise) {
-							$('#reg_expertise').addClass('invalid');
-							$('#lbl_reg_expertise').attr('data-error',data.reg_expertise);
-						}
-					}else{
-
-						swal({
-							title: "Data Validated",
-							text: "Proceed to store data, your request will be subject for approval",
-							icon: "success",
-							buttons: true,
-							closeOnClickOutside: false,
-						})
-						.then((willRegister) => {
-							if (willRegister) {
-								$.ajax({
-									url: '<?=base_url()?>Welcome/insertData',
-									type: 'post',
-									dataType: 'json',
-									data: form_data,
-									success:function(data){
-										if (data) {
-											swal("Successfully registered", {
-												icon: "success",
-												text: "Your request will be now subject for approval",
-											}).then(function(){
-												// console.log(data);
-												window.location.reload(true);
-											});
-										}
-									}
-								});
-								
-							} 
-						});
-					}
-				},
-				error: function(data){
-
-				}
-			});
-			
-
-
-
-
-
-		});
-
-	});
-</script>
 
 <!--====  End of Script  ====-->

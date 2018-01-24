@@ -42,8 +42,8 @@ class Home extends CI_Controller {
         $activity = $this->Crud_model->fetch("activity");
 
         switch ($info['identifier']) {
-            case 'lecturer':
-            $info['user']->id = $info['user']->lecturer_id;
+            case 'fic':
+            $info['user']->id = $info['user']->fic_id;
             break; 
             case 'student':
             $info['user']->id = $info['user']->student_id;

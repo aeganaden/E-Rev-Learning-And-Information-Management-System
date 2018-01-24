@@ -13,7 +13,7 @@ $(document).ready(function() {
 	$('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 15, // Creates a dropdown of 15 years to control year,
-    today: 'Today',
+    today: false,
     clear: 'Clear',
     close: 'Ok',
     hiddenName: true,
@@ -34,6 +34,7 @@ $(document).ready(function() {
 });
 	initiateOnClick();
 	schedule();
+	navigations() ;
 
 });
 
@@ -77,10 +78,36 @@ function schedule() {
 
 function navigations() {
 	//Navigation Button
-	$("#trigger_reg").click(function() {
+	$("#nav_schedule").click(function() {
 		$('html, body').animate({
-			scrollTop: $("#register").offset().top
-		}, 2000);
+			scrollTop: $("#nav_schedule_sec").offset().top
+		}, 500);
+	});
+	$("#nav_features").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#nav_features_sec").offset().top
+		}, 500);
+	});
+	$("#nav_benefits").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#nav_benefits_sec").offset().top
+		}, 500);
+	});
+	$("#nav_statements").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#nav_statements_sec").offset().top
+		}, 500);
+	});
+	$("#nav_login").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#nav_login_sec").offset().top
+		}, 500);
+	});
+
+	$("#nav_top").click(function() {
+		$('html, body').animate({
+			scrollTop: $("#top").offset().top
+		}, 500);
 	});
 
 }
