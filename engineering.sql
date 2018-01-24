@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2018 at 12:14 PM
+-- Generation Time: Jan 24, 2018 at 05:28 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -103,7 +103,7 @@ CREATE TABLE `announcement` (
   `announcement_created_at` int(20) NOT NULL,
   `announcement_edited_at` int(20) NOT NULL,
   `announcement_is_active` tinyint(1) NOT NULL,
-  `announcement_audience` varchar(50) NOT NULL,
+  `announcement_audience` tinyint(1) NOT NULL,
   `announcement_announcer` varchar(100) NOT NULL,
   `announcement_start_datetime` int(15) NOT NULL,
   `announcement_end_datetime` int(15) NOT NULL
@@ -114,7 +114,7 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 'CE', 'Juan Carlo Valencia', 0, 0);
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 1, 'Juan Carlo Valencia', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -317,16 +317,19 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_feedback_id` int(20) NOT NULL,
   `lecturer_feedback_timedate` int(20) NOT NULL,
   `lecturer_feedback_comment` varchar(500) NOT NULL,
+  `lecturer_feedback_department` varchar(5) NOT NULL,
   `student_id` int(20) NOT NULL,
-  `lecturer_id` int(20) NOT NULL
+  `lecturer_id` int(20) NOT NULL,
+  `enrollment_id` int(20) NOT NULL,
+  `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer_feedback`
 --
 
-INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `student_id`, `lecturer_id`) VALUES
-(1, 1515455338, 'hey wassup this is comment', 201511281, 1);
+INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `lecturer_feedback_department`, `student_id`, `lecturer_id`, `enrollment_id`, `offering_id`) VALUES
+(1, 1515455338, 'hey wassup this is comment', 'CE', 201511281, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -648,7 +651,9 @@ ALTER TABLE `lecturer_attendance`
 ALTER TABLE `lecturer_feedback`
   ADD PRIMARY KEY (`lecturer_feedback_id`),
   ADD KEY `fk_lecturer_feedback_student1_idx` (`student_id`),
-  ADD KEY `fk_lecturer_feedback_lecturer1_idx` (`lecturer_id`);
+  ADD KEY `fk_lecturer_feedback_lecturer1_idx` (`lecturer_id`),
+  ADD KEY `fk_lecturer_feedback_enrollment1_idx` (`enrollment_id`),
+  ADD KEY `fk_lecturer_feedback_offering1_idx` (`offering_id`);
 
 --
 -- Indexes for table `log`
@@ -785,6 +790,12 @@ ALTER TABLE `lecturer`
   MODIFY `lecturer_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `lecturer_feedback`
+--
+ALTER TABLE `lecturer_feedback`
+  MODIFY `lecturer_feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `log_content`
 --
 ALTER TABLE `log_content`
@@ -868,7 +879,9 @@ ALTER TABLE `lecturer_attendance`
 -- Constraints for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
+  ADD CONSTRAINT `fk_lecturer_feedback_enrollment1` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`enrollment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_lecturer_feedback_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_feedback_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_lecturer_feedback_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
