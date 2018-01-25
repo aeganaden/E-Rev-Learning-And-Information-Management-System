@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 24, 2018 at 10:06 AM
+-- Generation Time: Jan 25, 2018 at 05:13 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -229,18 +229,19 @@ CREATE TABLE `fic` (
   `password` varchar(50) NOT NULL,
   `email` varchar(45) NOT NULL,
   `image_path` varchar(100) NOT NULL,
-  `fic_department` varchar(5) NOT NULL
+  `fic_department` varchar(5) NOT NULL,
+  `fic_status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `fic`
 --
 
-INSERT INTO `fic` (`fic_id`, `firstname`, `mdname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`) VALUES
-(1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'CE'),
-(2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ME'),
-(3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ECE'),
-(4, 'Riza3', 'Blossom', 'Malaya', 'riza3', 'riza3', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'EE');
+INSERT INTO `fic` (`fic_id`, `firstname`, `mdname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`, `fic_status`) VALUES
+(1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'CE', 1),
+(2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ME', 1),
+(3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ECE', 1),
+(4, 'Riza3', 'Blossom', 'Malaya', 'riza3', 'riza3', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'EE', 1);
 
 -- --------------------------------------------------------
 
