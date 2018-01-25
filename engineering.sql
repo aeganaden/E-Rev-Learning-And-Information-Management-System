@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2018 at 05:13 AM
+-- Generation Time: Jan 25, 2018 at 05:26 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -223,7 +223,7 @@ INSERT INTO `enrollment` (`enrollment_id`, `enrollment_sy`, `enrollment_term`, `
 CREATE TABLE `fic` (
   `fic_id` int(20) NOT NULL,
   `firstname` varchar(45) NOT NULL,
-  `mdname` varchar(45) NOT NULL,
+  `midname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
@@ -237,7 +237,7 @@ CREATE TABLE `fic` (
 -- Dumping data for table `fic`
 --
 
-INSERT INTO `fic` (`fic_id`, `firstname`, `mdname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`, `fic_status`) VALUES
+INSERT INTO `fic` (`fic_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`, `fic_status`) VALUES
 (1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'CE', 1),
 (2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ME', 1),
 (3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ECE', 1),
