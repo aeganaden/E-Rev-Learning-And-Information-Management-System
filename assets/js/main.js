@@ -155,6 +155,7 @@ $(document).ready(function() {
 	$('#tbl-card-ls').DataTable();
 	$('#tbl-att-lec').DataTable();
 	$('#tbl-com').DataTable();
+	$('#tbl-fic').DataTable();
 } );
 
 /*=====  End of Datatables JS  ======*/
@@ -274,14 +275,16 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
-	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic");
+	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic");
+	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
+
 }
 
-function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4){
+function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5){
 	$("#"+id).click(function(event) {
 		$("#"+div_id).fadeIn();
 		$("#"+div_id).css("display","block");
@@ -289,6 +292,7 @@ function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4
 		$("#"+div_hide_2).css("display","none");
 		$("#"+div_hide_3).css("display","none");
 		$("#"+div_hide_4).css("display","none");
+		$("#"+div_hide_5).css("display","none");
 
 	});
 }

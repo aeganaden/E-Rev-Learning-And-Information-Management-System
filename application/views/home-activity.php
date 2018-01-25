@@ -30,6 +30,8 @@
 			$details = $details[0];
 			$subject = $this->Crud_model->fetch("subject", array("subject_id"=>$value->subject_id));
 			$subject = $subject[0];
+			$section = $this->Crud_model->fetch("offering", array("offering_id"=>$subject->offering_id));
+			$section = $section[0];
 			?>
 			<div class="col s4">
 				<div class="card bg-primary-green ">
@@ -37,8 +39,8 @@
 						<div class="row" style="margin-bottom: 0 !important;">
 							<div class="col s8">
 								<blockquote class="color-primary-yellow">
-									<span class="card-title color-white"><?=$details->activity_details_name?></span>
-									<i><?=$subject->subject_name?></i>
+									<span class="card-title color-white"><?=$details->activity_details_name?> </span>
+									<b><?=$section->offering_name." | "?></b><i><?=$subject->subject_name?></i>
 									<p> <?=date("M d, Y | h:i A", $value->activity_date_time)?></p>
 									<p><?=strtoupper($value->activity_venue)?></p>
 								</blockquote>
@@ -62,7 +64,7 @@
 				</div>
 			</div>
 			<!-- SCRIPT FOR SETTING THE TIME -->
-			
+
 		<?php endforeach ?>
 	<?php else: ?>
 		<h3 class="center">No Data Yet</h3>

@@ -54,238 +54,288 @@
 				</li>
 				<li>
 					<div class="collapsible-header bg-primary-green color-white"><i class="material-icons">input</i>Data Insertion</div>
-					<div class="collapsible-body">
-						<p><i>This section provides insertion functions using excel file</<i></p>
-							<center>
-								<a class="btn bg-primary-green waves-effect valign-wrapper" href="<?=base_url()?>importdata ">Insert Data</a>
-							</center>
-						</div>
-					</li>
-				</ul>
-			</div>
+					<div class="collapsible-body"><p><i>This section provides insertion functions using excel file </i></p>
+						<center>
+							<a class="btn bg-primary-green waves-effect valign-wrapper" href="<?=base_url()?>importdata ">Insert Data</a>
+						</center>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header bg-primary-green color-white"><i class="material-icons">group</i>Manage FICs Account</div>
+					<div class="collapsible-body"><p><i>This section provides the updating and managing Faculties in Charge account</i></p>
+						<center>
+							<a class="btn bg-primary-green waves-effect valign-wrapper" id="btn_div-card-fic" href="#">View Accounts</a>
+						</center>
+					</div>
+				</li>
+			</ul>
 		</div>
-		<div class="col s9">
+	</div>
+	<div class="col s9">
+
+		<!-- Manage FIC's Account -->
+		<div class="row" id="div-card-fic" style="display: none; ">
+			<?php 
+			$fic = $this->Crud_model->fetch("fic");
 			
-			<div class="row" id="div-card-cosml" style="display: none;">
-				<blockquote class="color-primary-green">
-					<h2>Course Offering Schedule Master List</h2>
-				</blockquote>
-				<table id="tbl-card-cosml" >
-					<thead >
-						<tr>
-							<th>ID</th>
-							<th>Course Code</th>
-							<th>Course Title</th>
-							<th>Section</th>
-							<th>Day</th>
-							<th>Start Time</th>
-							<th>End Time</th>
-							<th>Venue</th>
-							<th>Assigned Professor</th>
-							<th>Term</th>
-							<th>School Year</th>
+			?>
+			<blockquote class="color-primary-green">
+				<h2>Faculties in Charge</h2>
+			</blockquote>
+			<table id="tbl-fic">
+				<thead>
+					<th>ID</th>
+					<th>Last Name</th>
+					<th>First Name</th>
+					<th>Middle Name</th>
+					<th>Department</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</thead>
+				<tbody >
+					<?php foreach ($fic as $key => $value): ?>
+						<?php 
+						$status =  $value->fic_status == 1 ? "Active" : "Not Active";
+						$status_color = $value->fic_status == 1 ? "color-green" : "color-red";
+						?>
+						<tr class="bg-color-white">
+							<td><?=$value->fic_id?></td>
+							<td><?=$value->lastname?></td>
+							<td><?=$value->firstname?></td>
+							<td><?=$value->midname?></td>
+							<td><?=$value->fic_department?></td>
+							<td><span class="<?=$status_color?>"><?=$status?></span></td>
+							<td><button>asd</button></td>
 						</tr>
-					</thead>
-					<tbody class="bg-color-white">
-
-						<?php if ($div_cosml_data): ?>
-							<?php foreach ($div_cosml_data as $key => $value): ?>
-								<tr class="bg-color-white">
-									<td><?= $value->schedule_id ?></td>
-									<td><?= strtoupper($value->course_code) ?></td>
-									<td><?= ucwords($value->course_title) ?></td>
-									<td><?= strtoupper($value->course_section) ?></td>
-									<td><?= date("l",$value->schedule_start_time) ?></td>
-									<td><?= date("h:i A",$value->schedule_start_time) ?></td>
-									<td><?= date("h:i A",$value->schedule_end_time) ?></td>
-									<td><?= strtoupper($value->schedule_venue) ?></td>
-									<td><?= ucwords($value->professor_name) ?></td>
-									<td><?= $value->term ?></td>
-									<td><?= $value->sy ?></td>
-								</tr>
-							<?php endforeach ?>
-						<?php endif ?>
-					</tbody>
-				</table>
-			</div>
-			<div class="row " id="div-card-ls" style="display: none;">
-				<blockquote class="color-primary-green">
-					<h2>Lecturers' Schedule</h2>
-				</blockquote>
-				<table id="tbl-card-ls" >
-					<thead >
-						<tr>
-							<th>ID</th>
-							<th>Offering</th>
-							<th>Subject</th>
-							<th>Day</th>
-							<th>Start Time</th>
-							<th>End Time</th>
-							<th>Venue</th>
-							<th>Last Name</th>
-							<th>First Name</th>
-							<th>Middle Name</th>
-							<th>Expertise</th>
-							<th>Status</th>
-							
-
-						</tr>
-					</thead>
-
-					<tbody class="bg-color-white">
-						<?php if ($schedule): ?>
-							<?php foreach ($schedule as $key => $value): ?>
-								<tr class="bg-color-white">
-									<td><?= $value->lecturer_id ?></td>
-									<td><?= $value->offering ?></td>
-									<td><?= $value->subject ?></td>
-									<td><?=date("l", $value->schedule_start_time)?></td>
-									<td><?=date("h:i A", $value->schedule_start_time)?></td>
-									<td><?=date("h:i A", $value->schedule_end_time)?></td>
-									<td><?=$value->schedule_venue?></td>
-									<td><?= ucwords($value->lastname) ?></td>
-									<td><?= ucwords($value->firstname) ?></td>
-									<td><?= ucwords($value->midname) ?></td>
-									<td><?= ucwords($value->expertise) ?></td>
-									<td>
-										<?php if ($value->status == 1): ?>
-											<p class="color-green">Active</p>
-										<?php else: ?>
-											<p class="color-red">Inactive</p>
-										<?php endif ?>
-									</td>
-								</tr>
-							<?php endforeach ?>
-						<?php endif ?>
-					</tbody>
-				</table>
-			</div>
-			<div class="row" id="div-card-lahr" style="display: none;">
-				<blockquote class="color-primary-green">
-					<h2>Lecturers' Attendance and Hours Rendered</h2>
-				</blockquote>
-				<table id="tbl-card-lahr" >
-					<thead >
-						<tr>
-							<th>ID</th>
-							<th>Last Name</th>
-							<th>First Name</th>
-							<th>Middle Name</th>
-							<th>Expertise</th>
-							<th>Status</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-
-					<tbody class="bg-color-white">
-						<?php if ($lecturer): ?>
-							<?php foreach ($lecturer as $key => $value): ?>
-								<tr class="bg-color-white">
-									<td><?= $value->id_number ?></td>
-									<td><?= ucwords($value->firstname) ?></td>
-									<td><?= ucwords($value->midname) ?></td>
-									<td><?= ucwords($value->lastname) ?></td>
-									<td><?= ucwords($value->lecturer_expertise) ?></td>
-									<td>
-										<?php if ($value->lecturer_status == 1): ?>
-											<p class="color-green">Active</p>
-										<?php else: ?>
-											<p class="color-red">Inactive</p>
-										<?php endif ?>
-									</td>
-									<td>
-										<a href="<?=base_url()?>Admin/viewAttendance/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect ">View</a>
-									</td>
-									<td><button class="btn bg-primary-green waves-effect">Download</button></td>
-								</tr>
-							<?php endforeach ?>
-						<?php endif ?>
-					</tbody>
-				</table>
-				
-			</div>
-
-			<div class="row" id="div-card-lcl" style="display: none;">
-				<blockquote class="color-primary-green">
-					<h2>Lecturers' Class List</h2>
-				</blockquote>
-				<table id="tbl-card-lahr" >
-					<thead >
-						<tr>
-							<th>ID</th>
-							<th>Last Name</th>
-							<th>First Name</th>
-							<th>Middle Name</th>
-							<th>Expertise</th>
-							<th>Status</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-
-					<tbody class="bg-color-white">
-						<?php if ($lecturer): ?>
-							<?php foreach ($lecturer as $key => $value): ?>
-								<tr class="bg-color-white">
-									<td><?= $value->lecturer_id ?></td>
-									<td><?= ucwords($value->firstname) ?></td>
-									<td><?= ucwords($value->midname) ?></td>
-									<td><?= ucwords($value->lastname) ?></td>
-									<td><?= ucwords($value->lecturer_expertise) ?></td>
-									<td>
-										<?php if ($value->lecturer_status == 1): ?>
-											<p class="color-green">Active</p>
-										<?php else: ?>
-											<p class="color-red">Inactive</p>
-										<?php endif ?>
-									</td>
-									<td>
-										<a href="<?=base_url()?>Admin/viewClassList/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect">View</a>
-									</td>
-									<td><button class="btn bg-primary-green waves-effect">Download</button></td>
-								</tr>
-							<?php endforeach ?>
-						<?php endif ?>
-					</tbody>
-				</table>
-			</div>
-
-			<div class="row" id="div-card-clof" style="display: none;">
-				<blockquote class="color-primary-green">
-					<h2>Class Offering</h2>
-				</blockquote>
-				<table id="tbl-com">
-					<thead>
-						<tr>
-							<td>ID</td>
-							<td>Course Code</td>
-							<td>Course Title</td>
-							<td>Program</td>
-							<td>Actions</td>
-							<td></td>
-						</tr>
-					</thead>
-					<tbody>
-						<?php if ($course): ?>
-
-							<?php foreach ($course as $key => $value): ?>
-								<tr class="bg-color-white">
-
-									<td><?=$value->course_id?></td>
-									<td><?=strtoupper($value->course_course_code)?></td>
-									<td class="truncate" style="text-transform: capitalize;"><?=$value->course_course_title?></td>
-									<td><?=strtoupper($value->course_department)?></td>
-									<td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?=$value->course_id?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
-									<td><i class="material-icons color-red btn_delete_com" data-id="<?=$value->course_id?>" style="cursor: pointer;">delete</i></td>
-								</tr>
-							<?php endforeach ?>
-						<?php endif ?>
-					</tbody>
-				</table>
-			</div>
+					<?php endforeach ?>
+				</tbody>
+			</table>
 		</div>
-	</div>	
 
-	<!--====  End of Cards  ====-->
+		<!-- Class Offering Schedule Master List -->
+		<div class="row" id="div-card-cosml" style="display: none;">
+			<blockquote class="color-primary-green">
+				<h2>Course Offering Schedule Master List</h2>
+			</blockquote>
+			<table id="tbl-card-cosml" >
+				<thead >
+					<tr>
+						<th>ID</th>
+						<th>Course Code</th>
+						<th>Course Title</th>
+						<th>Section</th>
+						<th>Day</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th>Venue</th>
+						<th>Assigned Professor</th>
+						<th>Term</th>
+						<th>School Year</th>
+					</tr>
+				</thead>
+				<tbody class="bg-color-white">
+
+					<?php if ($div_cosml_data): ?>
+						<?php foreach ($div_cosml_data as $key => $value): ?>
+							<tr class="bg-color-white">
+								<td><?= $value->schedule_id ?></td>
+								<td><?= strtoupper($value->course_code) ?></td>
+								<td><?= ucwords($value->course_title) ?></td>
+								<td><?= strtoupper($value->course_section) ?></td>
+								<td><?= date("l",$value->schedule_start_time) ?></td>
+								<td><?= date("h:i A",$value->schedule_start_time) ?></td>
+								<td><?= date("h:i A",$value->schedule_end_time) ?></td>
+								<td><?= strtoupper($value->schedule_venue) ?></td>
+								<td><?= ucwords($value->professor_name) ?></td>
+								<td><?= $value->term ?></td>
+								<td><?= $value->sy ?></td>
+							</tr>
+						<?php endforeach ?>
+					<?php endif ?>
+				</tbody>
+			</table>
+		</div>
+		
+		<!-- Lecturer's Schedule -->
+		<div class="row " id="div-card-ls" style="display: none;">
+			<blockquote class="color-primary-green">
+				<h2>Lecturers' Schedule</h2>
+			</blockquote>
+			<table id="tbl-card-ls" >
+				<thead >
+					<tr>
+						<th>ID</th>
+						<th>Last Name</th>
+						<th>First Name</th>
+						<th>Middle Name</th>
+						<th>Offering</th>
+						<th>Subject</th>
+						<th>Day</th>
+						<th>Start Time</th>
+						<th>End Time</th>
+						<th>Venue</th>
+						<th>Expertise</th>
+						<th>Status</th>
+
+
+					</tr>
+				</thead>
+
+				<tbody class="bg-color-white">
+					<?php if ($schedule): ?>
+						<?php foreach ($schedule as $key => $value): ?>
+							<tr class="bg-color-white">
+								<td><?= $value->lecturer_id ?></td>
+								<td><?= ucwords($value->lastname) ?></td>
+								<td><?= ucwords($value->firstname) ?></td>
+								<td><?= ucwords($value->midname) ?></td>
+								<td><?= $value->offering ?></td>
+								<td><?= $value->subject ?></td>
+								<td><?=date("l", $value->schedule_start_time)?></td>
+								<td><?=date("h:i A", $value->schedule_start_time)?></td>
+								<td><?=date("h:i A", $value->schedule_end_time)?></td>
+								<td><?=$value->schedule_venue?></td>
+								<td><?= ucwords($value->expertise) ?></td>
+								<td>
+									<?php if ($value->status == 1): ?>
+										<p class="color-green">Active</p>
+									<?php else: ?>
+										<p class="color-red">Inactive</p>
+									<?php endif ?>
+								</td>
+							</tr>
+						<?php endforeach ?>
+					<?php endif ?>
+				</tbody>
+			</table>
+		</div>
+		<!-- Lecturers' Attendance and Hours Rendered -->
+		<div class="row" id="div-card-lahr" style="display: none;">
+			<blockquote class="color-primary-green">
+				<h2>Lecturers' Attendance and Hours Rendered</h2>
+			</blockquote>
+			<table id="tbl-card-lahr" >
+				<thead >
+					<tr>
+						<th>ID</th>
+						<th>Last Name</th>
+						<th>First Name</th>
+						<th>Middle Name</th>
+						<th>Expertise</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+
+				<tbody class="bg-color-white">
+					<?php if ($lecturer): ?>
+						<?php foreach ($lecturer as $key => $value): ?>
+							<tr class="bg-color-white">
+								<td><?= $value->id_number ?></td>
+								<td><?= ucwords($value->firstname) ?></td>
+								<td><?= ucwords($value->midname) ?></td>
+								<td><?= ucwords($value->lastname) ?></td>
+								<td><?= ucwords($value->lecturer_expertise) ?></td>
+								<td>
+									<?php if ($value->lecturer_status == 1): ?>
+										<p class="color-green">Active</p>
+									<?php else: ?>
+										<p class="color-red">Inactive</p>
+									<?php endif ?>
+								</td>
+								<td>
+									<a href="<?=base_url()?>Admin/viewAttendance/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect ">View</a>
+								</td>
+								<td><button class="btn bg-primary-green waves-effect">Download</button></td>
+							</tr>
+						<?php endforeach ?>
+					<?php endif ?>
+				</tbody>
+			</table>
+
+		</div>
+		<!-- Lecturers' Class List -->
+		<div class="row" id="div-card-lcl" style="display: none;">
+			<blockquote class="color-primary-green">
+				<h2>Lecturers' Class List</h2>
+			</blockquote>
+			<table id="tbl-card-lahr" >
+				<thead >
+					<tr>
+						<th>ID</th>
+						<th>Last Name</th>
+						<th>First Name</th>
+						<th>Middle Name</th>
+						<th>Expertise</th>
+						<th>Status</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+
+				<tbody class="bg-color-white">
+					<?php if ($lecturer): ?>
+						<?php foreach ($lecturer as $key => $value): ?>
+							<tr class="bg-color-white">
+								<td><?= $value->lecturer_id ?></td>
+								<td><?= ucwords($value->firstname) ?></td>
+								<td><?= ucwords($value->midname) ?></td>
+								<td><?= ucwords($value->lastname) ?></td>
+								<td><?= ucwords($value->lecturer_expertise) ?></td>
+								<td>
+									<?php if ($value->lecturer_status == 1): ?>
+										<p class="color-green">Active</p>
+									<?php else: ?>
+										<p class="color-red">Inactive</p>
+									<?php endif ?>
+								</td>
+								<td>
+									<a href="<?=base_url()?>Admin/viewClassList/<?=$value->lecturer_id?>" target="_blank" class="btn bg-primary-green waves-effect">View</a>
+								</td>
+								<td><button class="btn bg-primary-green waves-effect">Download</button></td>
+							</tr>
+						<?php endforeach ?>
+					<?php endif ?>
+				</tbody>
+			</table>
+		</div>
+		<!-- Class Offering -->
+		<div class="row" id="div-card-clof" style="display: none;">
+			<blockquote class="color-primary-green">
+				<h2>Class Offering</h2>
+			</blockquote>
+			<table id="tbl-com">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>Course Code</td>
+						<td>Course Title</td>
+						<td>Program</td>
+						<td>Actions</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if ($course): ?>
+
+						<?php foreach ($course as $key => $value): ?>
+							<tr class="bg-color-white">
+
+								<td><?=$value->course_id?></td>
+								<td><?=strtoupper($value->course_course_code)?></td>
+								<td class="truncate" style="text-transform: capitalize;"><?=$value->course_course_title?></td>
+								<td><?=strtoupper($value->course_department)?></td>
+								<td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?=$value->course_id?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
+								<td><i class="material-icons color-red btn_delete_com" data-id="<?=$value->course_id?>" style="cursor: pointer;">delete</i></td>
+							</tr>
+						<?php endforeach ?>
+					<?php endif ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>	
+
+<!--====  End of Cards  ====-->
 
 <!--===========================================
 =            Modal Course Offering            =
