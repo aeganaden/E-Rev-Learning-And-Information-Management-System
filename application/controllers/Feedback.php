@@ -37,7 +37,7 @@ class Feedback extends CI_Controller {
 
                 if ($error) {
                     $course_id = $course_hold->course_id;
-                    $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id));
+                    $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_id)); //error
                     $lect = array();
                     $inner_counter = 0;
                     if (empty($subject_hold) != 1) {
@@ -70,7 +70,17 @@ class Feedback extends CI_Controller {
                 $this->load->view('feedback/custom4');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //LAST show to fic
+            $data = array(
+                'title' => "Feedback"
+            );
             $this->load->view('includes/header', $data);
+            $info = $this->session->userdata('userInfo');
+            $active_enrol = $info['active_enrollment'];
+            $dept = $info['user']->fic_department;
+            $result = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol))[0];
+            echo"<pre>";
+            print_r($result);
+            echo"</pre>";
             $this->load->view('includes/footer');
         } else {
             redirect("");
@@ -131,8 +141,7 @@ class Feedback extends CI_Controller {
             }
             $this->load->view('includes/footer');
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "lecturer") {
-            echo "lecturer view";
-//            redirect("");
+            redirect("home");
         } else {
             redirect("");
         }
