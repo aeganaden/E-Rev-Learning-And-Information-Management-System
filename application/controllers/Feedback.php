@@ -69,7 +69,7 @@ class Feedback extends CI_Controller {
                 $this->load->view('feedback/error', $data);
                 $this->load->view('feedback/custom4');
             }
-        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //LAST show to fic
+        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
             $data = array(
                 'title' => "Feedback"
             );
@@ -77,8 +77,8 @@ class Feedback extends CI_Controller {
             $info = $this->session->userdata('userInfo');
             $active_enrol = $info['active_enrollment'];
             $dept = $info['user']->fic_department;
-            $feedbacks = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol));
-            $section = $this->Crud_model->fetch('offering', array('fic_id' => $info["user"]->fic_id));
+            $feedbacks = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol));   //fetch feedbacks
+            $section = $this->Crud_model->fetch('offering', array('fic_id' => $info["user"]->fic_id));  //get section from fic
             echo"<pre>";
             print_r($section);
             echo"</pre>";
