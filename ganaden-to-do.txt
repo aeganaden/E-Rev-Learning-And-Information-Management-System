@@ -1,0 +1,19 @@
+<!--===========================
+=            TO DO            =
+============================-->
+
+1. Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
+2. Include Charts.JS on admin side
+3. Create dashboard on user UI
+
+<!--====  End of TO DO  ====-->
+
+
+<!--==============================
+=            BOOKMARK            =
+===============================-->
+
+1. Admin - Managemeng of FIC
+
+<!--====  End of BOOKMARK  ====-->
+
