@@ -71,6 +71,24 @@ class Crud_model extends CI_Model {
         return $this->db->field_data($table);
     }
 
+    public function data_distinct($table, $col, $where = NULL) {          //returns single data instead of duplicated ones
+        $this->db->distinct();
+        $this->db->select($col);
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        return $this->db->get($table)->result();
+    }
+
+    public function fetch_select($table, $col, $where = NULL) {
+        $this->db->select($col);
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        $query = $this->db->get($table);
+        return ($query->num_rows() > 0) ? $query->result() : FALSE;
+    }
+
 }
 
 ?>

@@ -77,11 +77,26 @@ class Feedback extends CI_Controller {
             $info = $this->session->userdata('userInfo');
             $active_enrol = $info['active_enrollment'];
             $dept = $info['user']->fic_department;
-            $feedbacks = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol));   //fetch feedbacks
-            $section = $this->Crud_model->fetch('offering', array('fic_id' => $info["user"]->fic_id));  //get section from fic
+            $feedbacks = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol));   //fetch feedbacks (distinct by lecturer_id)
+            $section = $this->Crud_model->fetch_select('offering', array('offering_id', 'offering_name'), array('fic_id' => $info["user"]->fic_id));  //get section from fic
             echo"<pre>";
-            print_r($section);
+            print_r($feedbacks);
             echo"</pre>";
+            //store lecturer_id in DISTINCT
+            $lecturers = array();
+            foreach ($feedbacks as $feedback) {             //LAST, gagawa na lang ako if-else
+                array_push($lecturers, $feedback->lecturer_id);
+            }
+            $lecturers = array_unique($lecturers);
+            //end DISTINCT
+//            $separate = array();
+//            foreach ($lecturers as $lecturer) {
+//                $result = $this->Crud_model->fetch('lecturer_feedback', array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol, 'lecturer_id' => $lecturer));
+//                array_push($separate, $result);
+//            }
+//            echo"<pre>";
+//            print_r($separate);
+//            echo"</pre>";
             $this->load->view('feedback/fic_view');
         } else {
             redirect("");
