@@ -129,7 +129,7 @@
 					</tr>
 				<?php endforeach ?>
 			<?php else: ?>
-				
+				<td colspan="10"><h4 class="center">No data, add some.</h4></td>
 			<?php endif ?>
 		</tbody>
 	</table>

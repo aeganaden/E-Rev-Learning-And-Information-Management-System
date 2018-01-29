@@ -12,8 +12,6 @@
 				data-id="<?=$info['user']->id?>" href="#modal_add_activity" id="btn_add_activity">Add Activity</a>
 			</h1>
 		</blockquote>
-
-
 	</div>
 	<div class="col s4"></div>
 	<div class="col s4"></div>
@@ -32,6 +30,16 @@
 			$subject = $subject[0];
 			$section = $this->Crud_model->fetch("offering", array("offering_id"=>$subject->offering_id));
 			$section = $section[0];
+
+			$is_overdue = "";
+			$date = $value->activity_date_time;
+			$now = time();
+
+			if($date < $now) {
+				$is_overdue = "Overdue";
+			}else{
+				$is_overdue = "";
+			}
 			?>
 			<div class="col s4">
 				<div class="card bg-primary-green ">
@@ -39,7 +47,9 @@
 						<div class="row" style="margin-bottom: 0 !important;">
 							<div class="col s8">
 								<blockquote class="color-primary-yellow">
-									<span class="card-title color-white"><?=$details->activity_details_name?> </span>
+									<span class="card-title color-white"><?=$details->activity_details_name?> 
+										- <span class="color-red bg-primary-yellow"><?=$is_overdue?></span>
+									</span>
 									<b><?=$section->offering_name." | "?></b><i><?=$subject->subject_name?></i>
 									<p> <?=date("M d, Y | h:i A", $value->activity_date_time)?></p>
 									<p><?=strtoupper($value->activity_venue)?></p>

@@ -149,6 +149,14 @@ class Admin extends CI_Controller {
     public function Announcements() {
 
         $this->verify_login();
+        $ann_full = $this->Crud_model->fetch("announcement");
+        foreach ($ann_full as $key => $value) {
+            $start = $value->announcement_start_datetime;
+            $end = $value->announcement_end_datetime;
+            if (date("M d y",$start)==date("M d y",$end)) {
+                $this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
+            }
+        }
         $announcement = $this->Crud_model->fetch("announcement",array("announcement_is_active"=>1));
         $data = array(
             "title" => "Announcements - Learning Management System | FEU - Institute of Techonology",
@@ -235,6 +243,7 @@ class Admin extends CI_Controller {
 
     public function verify_login() {
         $info = $this->session->userdata('userInfo');
+
         if (!$info['logged_in'] && $info['identifier'] == "administrator") {
             redirect('Welcome', 'refresh');
         } elseif ($info['identifier'] == "lecturer" || $info['identifier'] == "student" || $info['identifier'] == "professor") {
@@ -346,9 +355,9 @@ class Admin extends CI_Controller {
         // $value->offering_section = $offering->offering_name;
 
     }
-    // echo "<pre>";
-    // print_r( $student);
-    // die();
+        // echo "<pre>";
+        // print_r( $student);
+        // die();
     $data = array(
         "title" => "Class List - Learning Management System | FEU - Institute of Techonology",
         "schedule" => $schedule,
@@ -389,6 +398,39 @@ public function deleteOffering() {
         echo json_encode(true);
     }
 }
+
+public function charts_student()
+{
+    $students = $this->Crud_model->fetch("student");
+    $data = array();
+    $me = $ce = $ee = $ece = 0;
+    if ($students) {
+        foreach ($students as $key => $value) {
+            switch ($value->student_program) {
+                case 'CE':
+                $ce++;
+                break;
+                case 'ME':
+                $me++;
+                break;
+                case 'ECE':
+                $ece++;
+                break;
+                case 'EE':
+                $ee++;
+                break;
+
+                default:
+                # code...
+                break;
+            }
+        }
+    }
+    array_push($data,$me,$ce,$ee,$ece);
+
+    echo json_encode($data);
+}
+
 
 }
 

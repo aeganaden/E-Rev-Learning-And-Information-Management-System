@@ -53,15 +53,43 @@ class Login extends CI_Controller {
 		echo $data["identifier"];
 		switch ( $data["identifier"]) {
 			case 'professor':
+			$log_data = array(
+				"log_user_id"=>$data['user']->professor_id,
+				"log_timedate"=>time(),
+				"log_platform"=>1,
+				"log_content_id"=>1
+			);
+			$this->Crud_model->insert("log",$log_data);
 			redirect('Home');
 			break;
 			case 'administrator':
+			$log_data = array(
+				"log_user_id"=>$data['user']->admin_id,
+				"log_timedate"=>time(),
+				"log_platform"=>1,
+				"log_content_id"=>1
+			);
+			$this->Crud_model->insert("log",$log_data);
 			redirect('Admin');
 			break;
 			case 'student':
+			$log_data = array(
+				"log_user_id"=>$data['user']->student_id,
+				"log_timedate"=>time(),
+				"log_platform"=>1,
+				"log_content_id"=>1
+			);
+			$this->Crud_model->insert("log",$log_data);
 			redirect('Home');
 			break;
 			case 'fic':
+			$log_data = array(
+				"log_user_id"=>$data['user']->fic_id,
+				"log_timedate"=>time(),
+				"log_platform"=>1,
+				"log_content_id"=>1
+			);
+			$this->Crud_model->insert("log",$log_data);
 			redirect('Home');
 			break;
 			

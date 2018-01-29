@@ -1,17 +1,25 @@
 <?php $this->load->view('includes/navbar-admin'); ?>
-<?php  date_default_timezone_set("Asia/Manila")?>
+<?php  date_default_timezone_set("Asia/Manila")
+?>
 <!--===========================
 =            Cards            =
 ============================-->
 
 <div class="row">
 	<div class="col s3">
-		<div class="row">
+		<div class="row" id="btn_home" style="cursor: pointer;">
 			<div class="card">
 				<div class="card-content bg-primary-yellow">
 					<p class="a-oswald flow-text">Good Day, Admin!</p>
 					<p class="a-oswald flow-text">TODAY IS</p>
+					<?php 
+					$active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
+					$active_enrollment = $active_enrollment[0];
+					$t = $active_enrollment->enrollment_term;
+					$sy = $active_enrollment->enrollment_sy;
+					?>
 					<h4 class="a-oswald color-white center"><?=date("M d, Y", time())?></h4>
+					<h4 class="center" style="margin: 0 !important;"><u><?=$t?>T <?=$sy?></u></h4>
 				</div>
 			</div>
 		</div>
@@ -71,13 +79,30 @@
 			</ul>
 		</div>
 	</div>
+	<!--============================
+	=            CHARTS            =
+	=============================-->
+	<div class="col s9 valign-wrapper" id="chart_login_freq">
+		<div class="col s6">
+			<br>
+			<canvas id="myChart"></canvas>
+		</div>
+		<div class="col s6 ">
+			<h4 >
+				<span style="text-transform: uppercase; border-bottom: 2px solid #F2A900" >Total Number Of Students</span>
+			</h4>
+		</div>
+	</div>
+
+	<!--====  End of CHARTS  ====-->
+
 	<div class="col s9">
 
 		<!-- Manage FIC's Account -->
 		<div class="row" id="div-card-fic" style="display: none; ">
 			<?php 
 			$fic = $this->Crud_model->fetch("fic");
-			
+
 			?>
 			<blockquote class="color-primary-green">
 				<h2>Faculties in Charge</h2>
@@ -155,7 +180,7 @@
 				</tbody>
 			</table>
 		</div>
-		
+
 		<!-- Lecturer's Schedule -->
 		<div class="row " id="div-card-ls" style="display: none;">
 			<blockquote class="color-primary-green">

@@ -34,9 +34,48 @@ $(document).ready(function() {
 });
 	initiateOnClick();
 	schedule();
-	navigations() ;
-
+	navigations();
+	charts();
 });
+
+/*==============================
+=            CHARTS            =
+==============================*/
+
+function charts() {
+	var ctx = document.getElementById('myChart').getContext('2d');
+	$.ajax({
+		url: base_url + 'Admin/charts_student',
+		type: 'post',
+		dataType: 'json',
+		success: function(res){
+			console.log(res);	
+			var myChart = new Chart(ctx, {
+				type: 'pie',
+				data: {
+					labels: ["Mechanical Engineering", "Civil Engineering", "Electrical Engineering", "Electronics and Communication Engineering"],
+					datasets: [{
+						backgroundColor: [
+						"#5A87FF",
+						"#f44336",
+						"#F2A900",
+						"#007A33",
+
+						],
+						data: [res[0], res[1],res[2],res[3]]
+					}]
+				}
+			});
+		}
+
+	});
+
+
+	
+}
+
+/*=====  End of CHARTS  ======*/
+
 
 /*=================================
 =            Schedule             =
@@ -275,16 +314,17 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic");
-	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic");
-	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","chart_login_freq");
+	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","chart_login_freq");
+	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq");
+	showReportonClick("btn_home","chart_login_freq","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
 
 }
 
-function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5){
+function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5,div_hide_6){
 	$("#"+id).click(function(event) {
 		$("#"+div_id).fadeIn();
 		$("#"+div_id).css("display","block");
@@ -293,6 +333,7 @@ function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4
 		$("#"+div_hide_3).css("display","none");
 		$("#"+div_hide_4).css("display","none");
 		$("#"+div_hide_5).css("display","none");
+		$("#"+div_hide_6).css("display","none");
 
 	});
 }
