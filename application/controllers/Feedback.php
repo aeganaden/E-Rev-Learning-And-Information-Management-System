@@ -90,34 +90,31 @@ class Feedback extends CI_Controller {
                 $lecturers = array_unique($lecturers);
                 $counter = 0;
                 $inner_counter = array();
-                foreach ($sections as $section => $val) {
+                foreach ($sections as $section => $val) {           //loop section
                     $section_hold[] = array();
                     $cols = array('lecturer_feedback_id', 'lecturer_feedback_timedate', 'lecturer_feedback_comment', 'lecturer_id', 'offering_id');
-                    $temp = $this->Crud_model->fetch_select('lecturer_feedback', $cols, array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol, 'offering_id' => $val->offering_id));
-
-                    foreach ($temp as $temp2) {
-                        if (!in_array($temp2->lecturer_id, $inner_counter)) {
-                            $cols = array('firstname', 'midname', 'lastname');
-                            $res = $this->Crud_model->fetch_select('lecturer', $cols, array('lecturer_id' => $temp2->lecturer_id));
-                            $inner_counter[] = $temp2->lecturer_id;
-                            $cols = array('subject_name');
-                            $subject = $this->Crud_model->fetch_select('subject', $cols, array('lecturer_id' => $temp2->lecturer_id, 'offering_id' => $val->offering_id));
-                            $separate_lecturer[$temp2->lecturer_id][] = ucwords(implode(" ", (array) $res[0]));
-                            $separate_lecturer[$temp2->lecturer_id][] = $subject[0]->subject_name;
+                    foreach ($lecturers as $lecturer) {
+                        $temp = $this->Crud_model->fetch_select('lecturer_feedback', $cols, array('lecturer_feedback_department' => $dept, 'enrollment_id' => $active_enrol, 'offering_id' => $val->offering_id));
+                        foreach ($temp as $key => $temp2) {         //loop $temp
+//                        echo"<pre>";
+//                        print_r($temp2);
+//                        echo"</pre>";
+                            if (!in_array($temp2->lecturer_id, $inner_counter)) {
+                                $cols = array('firstname', 'midname', 'lastname');
+                                $res = $this->Crud_model->fetch_select('lecturer', $cols, array('lecturer_id' => $temp2->lecturer_id));
+                                $inner_counter[] = $temp2->lecturer_id;
+                                $cols = array('subject_name');
+                                $subject = $this->Crud_model->fetch_select('subject', $cols, array('lecturer_id' => $temp2->lecturer_id, 'offering_id' => $val->offering_id));
+                                $separate_lecturer[$temp2->lecturer_id][] = ucwords(implode(" ", (array) $res[0])); //name
+                                $separate_lecturer[$temp2->lecturer_id][] = $subject[0]->subject_name;              //subject
+                            }
+                            $separate_lecturer[$temp2->lecturer_id][] = $temp2;         //stored values of lecturers
                         }
-                        $separate_lecturer[$temp2->lecturer_id][] = $temp2;         //stored values of lecturers
                     }
-//                    echo"<pre>";
-//                    print_r($separate_lecturer);
-//                    echo"</pre>";
-
                     $section_hold[$counter][] = $val;
                     $section_hold[$counter][] = $separate_lecturer;
                     $counter++;
                 }
-//                echo"<pre>";
-//                print_r($section_hold);
-//                echo"</pre>";
                 $data = array(
                     'title' => "Feedback",
                     'data' => $section_hold
