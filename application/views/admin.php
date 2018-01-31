@@ -417,12 +417,14 @@
 		// oncheck fic status
 		$(".chk_fic_status").change(function(event) {
 			$.ajax({
-				url: '/path/to/file',
-				type: 'default GET (Other values: POST)',
-				dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
-				data: {param1: 'value1'},
+				url: '<?=base_url()?>Admin/updateStatus',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					id : $(this).data('id') 
+				},
 				success: function(data){
-					
+					console.log(data);	
 				}
 			});
 			
