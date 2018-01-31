@@ -23,7 +23,11 @@ class Home extends CI_Controller {
         if ($info['logged_in'] && $info['identifier'] != "administrator") {
             $data = array(
                 "title" => "Home - Learning Management System | FEU - Institute of Techonology",
-                "info" => $info
+                "info" => $info,
+                "s_h"=> "selected-nav",
+                "s_a"=> "",
+                "s_f"=> "",
+
             );
             $this->load->view('includes/header', $data);
             $this->load->view('home');
@@ -67,6 +71,9 @@ class Home extends CI_Controller {
                 "title" => "Activity - Learning Management System | FEU - Institute of Techonology",
                 "info" => $info,
                 "activity" => $activity_details,
+                "s_h"=> "",
+                "s_a"=> "selected-nav",
+                "s_f"=> ""
                 // "offering" => $offering
             );
             $this->load->view('includes/header', $data);

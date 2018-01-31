@@ -43,7 +43,7 @@ a{
 ==============================*/
 
 /*Text Colors*/
-.color-black {color: #212121  !important; border-color: #212121;} /* Black */
+.color-black {color: rgba(0,0,0,0.87)  !important; border-color: rgba(0,0,0,0.87);} /* Black */
 .color-white {color: #F5F5DC !important; border-color: #F5F5DC;} /* White */
 .color-primary-yellow {	color: #F2A900 !important; border-color: #F2A900;} /*Yellow*/
 .color-primary-green{	color: #007A33 !important; border-color: #007A33;} /*Green*/
@@ -70,7 +70,7 @@ a{
 .bg-primary-yellow {	background-color: #F2A900 !important; } /*Yellow*/
 .bg-primary-green{	background-color: #007A33 !important;} /*Green*/
 .bg-color-white {background-color: #F5F5DC !important;} /* White */
-.bg-color-black {background-color: #212121  !important;} /* Black */
+.bg-color-black {background-color: rgba(0,0,0,0.87)  !important;} /* Black */
 .bg-transparent{ background-color: transparent; }
 .bg-color-grey { background-color: #616161 !important; }
 .bg-color-red { background-color: #f44336  !important; } /* Red */
@@ -102,6 +102,16 @@ a{
 .swal-overlay {
 	background-color: rgba(33, 33, 33, 0.97);
 }
+
+/*================================
+=            Home CSS            =
+================================*/
+
+.selected-nav {
+	background: #007A33;
+}
+
+/*=====  End of Home CSS  ======*/
 
 
 /*======================================

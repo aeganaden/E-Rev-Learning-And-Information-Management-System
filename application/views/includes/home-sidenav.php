@@ -3,7 +3,7 @@
 =            Side-Nav Section            =
 =======================================-->
 
-<ul id="slide-out" class="side-nav bg-primary-green">
+<ul id="slide-out" class="side-nav bg-color-white">
     <li><div class="user-view">
         <div class="background bg-primary-yellow">
 
@@ -30,25 +30,22 @@
             <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a>
         </div>
     </div></li>
+    <li class="<?=$s_h?>">
+        <a clas href="<?= base_url() ?>Home" class="color-black"><i class="material-icons color-black">home</i>Home</a> <!--mark - naglagay-->
+    </li>
     <?php if ($info["identifier"] == "fic"): ?>
-        <li class="color-white">
-            <a href="<?= base_url() ?>Home/Activity" class="color-white"><i class="material-icons color-white">remove_from_queue</i>Activity</a>
+        <li class="color-black <?=$s_a?>">
+            <a href="<?= base_url() ?>Home/Activity" class="color-black"><i class="material-icons color-black">remove_from_queue</i>Activity</a>
         </li>
     <?php endif ?>
-    <li>
-        <a href="<?= base_url() ?>Home" class=" color-white"><i class="material-icons color-white">home</i>Home</a> <!--mark - naglagay-->
-    </li>
-    <li>
-        <a href="<?= base_url() ?>feedback" class=" color-white"><i class="material-icons color-white">feedback</i>Feedback</a> <!--mark - naglagay-->
+    <li class="<?=$s_f?>">
+        <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
     <li>
         <div class="divider"></div>
     </li>
     <li>
-        <a class="subheader">Subheader</a>
-    </li>
-    <li>
-        <a class="waves-effect color-white" href="<?= base_url() ?>Login/logout ">Log Out</a>
+        <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
     </li>
 </ul>
 

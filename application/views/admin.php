@@ -122,6 +122,7 @@
 						<?php 
 						$status =  $value->fic_status == 1 ? "Active" : "Not Active";
 						$status_color = $value->fic_status == 1 ? "color-green" : "color-red";
+						$status_chk = $value->fic_status == 1 ? "checked" : "color-red";
 						?>
 						<tr class="bg-color-white">
 							<td><?=$value->fic_id?></td>
@@ -130,7 +131,16 @@
 							<td><?=$value->midname?></td>
 							<td><?=$value->fic_department?></td>
 							<td><span class="<?=$status_color?>"><?=$status?></span></td>
-							<td><button>asd</button></td>
+							<td>
+								<div class="switch">
+									<label>
+										Deactivated
+										<input <?=$status_chk?> type="checkbox" class="chk_fic_status">
+										<span class="lever" ></span>
+										Activated
+									</label>
+								</div>
+							</td>
 						</tr>
 					<?php endforeach ?>
 				</tbody>
@@ -403,6 +413,22 @@
 <script type="text/javascript">
 
 	jQuery(document).ready(function($) {
+
+		// oncheck fic status
+		$(".chk_fic_status").change(function(event) {
+			$.ajax({
+				url: '/path/to/file',
+				type: 'default GET (Other values: POST)',
+				dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+				data: {param1: 'value1'},
+				success: function(data){
+					
+				}
+			});
+			
+		});
+
+
 		$(".btn_modal_com").click(function(event) {
 			$("#btn_modal_com_update").attr("data-id", $(this).attr("data-id"));
 			$.ajax({

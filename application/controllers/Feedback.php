@@ -18,7 +18,11 @@ class Feedback extends CI_Controller {
             $feedback_status = $dept_temp[0]->professor_feedback_active;
             $data = array(
                 'title' => "Feedback",
-                'info' => $info
+                'info' => $info,
+                // Ako nag add neto - ganaden
+                "s_h"=> "",
+                "s_a"=> "",
+                "s_f"=> "selected-nav"
             );
             $this->load->view('includes/header', $data);
             if ($feedback_status == 1) {                //checks if feedback is open
@@ -71,7 +75,8 @@ class Feedback extends CI_Controller {
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
             $data = array(
-                'title' => "Feedback"
+                
+                'title' => "Feedback",
             );
             $this->load->view('includes/header', $data);
             $info = $this->session->userdata('userInfo');
@@ -136,7 +141,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(

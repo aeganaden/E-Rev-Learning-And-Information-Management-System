@@ -3,9 +3,12 @@
 ============================-->
 
 1. Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
-2. Include Charts.JS on admin side
+2. Include Charts.JS on admin side - done
 3. Create dashboard on user UI
-
+4. Change color side-bar
+4.1 change background to white
+4.2 change text to white
+4.3 change selected to green
 <!--====  End of TO DO  ====-->
 
 
