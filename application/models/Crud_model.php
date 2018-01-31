@@ -80,8 +80,11 @@ class Crud_model extends CI_Model {
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col, $where = NULL) {
-        $this->db->select($col);
+    public function fetch_select($table, $col = NULL, $where = NULL) {
+
+        if (!empty($where)) {
+            $this->db->select($col);
+        }
         if (!empty($where)) {
             $this->db->where($where);
         }
