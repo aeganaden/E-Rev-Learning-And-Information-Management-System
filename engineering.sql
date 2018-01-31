@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2018 at 05:26 AM
+-- Generation Time: Jan 31, 2018 at 11:41 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -36,7 +36,7 @@ CREATE TABLE `activity` (
   `activity_description` varchar(500) NOT NULL,
   `activity_details_id` int(20) NOT NULL,
   `subject_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `activity`
@@ -55,7 +55,7 @@ INSERT INTO `activity` (`activity_id`, `activity_date_time`, `activity_venue`, `
 CREATE TABLE `activity_details` (
   `activity_details_id` int(20) NOT NULL,
   `activity_details_name` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `activity_details`
@@ -80,7 +80,7 @@ CREATE TABLE `admin` (
   `midname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `image_path` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `admin`
@@ -103,18 +103,18 @@ CREATE TABLE `announcement` (
   `announcement_created_at` int(20) NOT NULL,
   `announcement_edited_at` int(20) NOT NULL,
   `announcement_is_active` tinyint(1) NOT NULL,
-  `announcement_audience` tinyint(1) NOT NULL,
+  `announcement_audience` varchar(10) NOT NULL,
   `announcement_announcer` varchar(100) NOT NULL,
   `announcement_start_datetime` int(15) NOT NULL,
   `announcement_end_datetime` int(15) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `announcement`
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, 1, 'Juan Carlo Valencia', 0, 0);
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, '1,2', 'admin admin admin', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -127,7 +127,7 @@ CREATE TABLE `choice` (
   `choice_content` varchar(500) NOT NULL,
   `choice_is_correct` int(1) NOT NULL,
   `courseware_question_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE `comment` (
   `comment_content` varchar(500) NOT NULL,
   `comment_user_id` int(20) NOT NULL,
   `courseware_question_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -155,7 +155,7 @@ CREATE TABLE `course` (
   `course_department` varchar(10) NOT NULL,
   `enrollment_id` int(20) NOT NULL,
   `professor_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `course`
@@ -179,7 +179,7 @@ CREATE TABLE `courseware_question` (
   `courseware_question_reference` varchar(800) DEFAULT NULL,
   `grade_assessment_id` int(20) NOT NULL,
   `subject_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -191,7 +191,7 @@ CREATE TABLE `course_modules` (
   `courseware_file_id` int(20) NOT NULL,
   `courseware_file_path` varchar(100) NOT NULL,
   `subject_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE `enrollment` (
   `enrollment_sy` varchar(20) NOT NULL,
   `enrollment_term` tinyint(1) NOT NULL,
   `enrollment_is_active` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `enrollment`
@@ -231,7 +231,7 @@ CREATE TABLE `fic` (
   `image_path` varchar(100) NOT NULL,
   `fic_department` varchar(5) NOT NULL,
   `fic_status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `fic`
@@ -254,7 +254,7 @@ CREATE TABLE `grade_assessment` (
   `grade_assessment_score` int(10) NOT NULL,
   `grade_assessment_total` int(10) NOT NULL,
   `grade_assessment_percentage` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -273,7 +273,7 @@ CREATE TABLE `lecturer` (
   `lecturer_status` tinyint(1) NOT NULL DEFAULT '0',
   `image_path` varchar(100) NOT NULL,
   `lecturer_is_confirm` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `lecturer`
@@ -298,7 +298,7 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_out` int(20) DEFAULT NULL,
   `lecturer_id` int(20) NOT NULL,
   `offering_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `lecturer_attendance`
@@ -323,14 +323,19 @@ CREATE TABLE `lecturer_feedback` (
   `lecturer_id` int(20) NOT NULL,
   `enrollment_id` int(20) NOT NULL,
   `offering_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `lecturer_feedback`
 --
 
 INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `lecturer_feedback_department`, `student_id`, `lecturer_id`, `enrollment_id`, `offering_id`) VALUES
-(1, 1515455338, 'hey wassup this is comment', 'CE', 201511281, 1, 1, 1);
+(1, 1515455338, 'hey wassup this is comment', 'CE', 201511281, 1, 1, 1),
+(2, 1517149393, 'testting ang', 'CE', 201511281, 2, 1, 1),
+(3, 1517152407, 'gefefawef', 'CE', 201411491, 1, 1, 1),
+(4, 1517152410, 'faefaefaewfdfsd', 'CE', 201411491, 2, 1, 1),
+(5, 1517152981, 'grfgdfrg', 'CE', 201410215, 1, 1, 2),
+(6, 1517152985, 'dsrgserge', 'CE', 201410215, 2, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -344,7 +349,14 @@ CREATE TABLE `log` (
   `log_timedate` int(20) NOT NULL,
   `log_platform` tinyint(1) NOT NULL,
   `log_content_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `log`
+--
+
+INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log_content_id`) VALUES
+(1, 1, 1517395263, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -355,7 +367,14 @@ CREATE TABLE `log` (
 CREATE TABLE `log_content` (
   `log_content_id` int(20) NOT NULL,
   `log_content_name` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `log_content`
+--
+
+INSERT INTO `log_content` (`log_content_id`, `log_content_name`) VALUES
+(1, 'Login');
 
 -- --------------------------------------------------------
 
@@ -369,7 +388,7 @@ CREATE TABLE `offering` (
   `offering_department` varchar(5) NOT NULL,
   `course_id` int(20) NOT NULL,
   `fic_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `offering`
@@ -402,7 +421,7 @@ CREATE TABLE `professor` (
   `email` varchar(50) NOT NULL,
   `image_path` varchar(100) NOT NULL,
   `professor_feedback_active` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `professor`
@@ -427,7 +446,7 @@ CREATE TABLE `schedule` (
   `schedule_venue` varchar(20) NOT NULL,
   `lecturer_id` int(20) NOT NULL,
   `offering_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `schedule`
@@ -456,7 +475,7 @@ CREATE TABLE `student` (
   `student_program` varchar(10) NOT NULL,
   `image_path` varchar(100) NOT NULL,
   `offering_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `student`
@@ -495,7 +514,7 @@ CREATE TABLE `subject` (
   `subject_description` varchar(800) DEFAULT NULL,
   `lecturer_id` int(20) NOT NULL,
   `offering_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `subject`
@@ -523,7 +542,7 @@ CREATE TABLE `topic` (
   `topic_description` varchar(800) DEFAULT NULL,
   `topic_done` int(11) NOT NULL,
   `subject_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `topic`
@@ -545,7 +564,7 @@ CREATE TABLE `total_grade` (
   `total_grade_id` int(11) NOT NULL,
   `total_grade_total` varchar(45) NOT NULL,
   `subject_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -794,13 +813,19 @@ ALTER TABLE `lecturer`
 -- AUTO_INCREMENT for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  MODIFY `lecturer_feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `lecturer_feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `log`
+--
+ALTER TABLE `log`
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `log_content`
 --
 ALTER TABLE `log_content`
-  MODIFY `log_content_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `log_content_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `schedule`

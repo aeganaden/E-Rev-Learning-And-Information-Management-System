@@ -70,12 +70,19 @@ class Feedback extends CI_Controller {
                     }
                 }
             } else {
-                           $this->load->view('feedback/error', $data);
+                $this->load->view('feedback/error', $data);
                 $this->load->view('feedback/custom4');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
+            $info = $this->session->userdata('userInfo');
+            $col = array('offering_name');
+            $section = $this->Crud_model->fetch_select('offering');
             $data = array(
-                'title' => "Feedback"
+                'title' => "Feedback",
+                'info' => $info,
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "selected-nav"
             );
             $this->load->view('includes/header', $data);
             $this->load->view('feedback/fic_view2');
@@ -209,6 +216,8 @@ class Feedback extends CI_Controller {
                 include(APPPATH . 'views\feedback\custom1.php');
             }
             $this->load->view('includes/footer');
+        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+
         } else {
             redirect();
         }
