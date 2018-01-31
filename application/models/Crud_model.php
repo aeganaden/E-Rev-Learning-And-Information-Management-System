@@ -89,6 +89,17 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
+    public function fetch_array($table, $col = NULL, $where = NULL) {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        if (!empty($col)) {
+            $this->db->select($col);
+        }
+        $query = $this->db->get($table);
+        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+    }
+
 }
 
 ?>
