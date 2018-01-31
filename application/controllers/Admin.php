@@ -304,35 +304,35 @@ class Admin extends CI_Controller {
         foreach ($lec_attendance as $key => $value) {
 
            // fetch schedule 
-           $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
-           $sched = $sched[0];
-           $sched_in  = $sched->schedule_start_time;
-           $sched_out  = $sched->schedule_end_time;
+         $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
+         $sched = $sched[0];
+         $sched_in  = $sched->schedule_start_time;
+         $sched_out  = $sched->schedule_end_time;
 
            // $diff_sched_in = $this->dateDiffMinutes($sched_in,$lec_in);
            // $diff_sched_out = $this->dateDiffMinutes($sched_out,$lec_out);
-           $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
-           $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
-           $interval =$this->diff( $lec_in, $lec_out );
-           $sum =  $interval['h'].":".$interval['i'];
-           array_push($total_time,$sum);
-       }
+         $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
+         $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
+         $interval =$this->diff( $lec_in, $lec_out );
+         $sum =  $interval['h'].":".$interval['i'];
+         array_push($total_time,$sum);
+     }
 
 
 
-       $data = array(
+     $data = array(
         "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
         "lecturer" => $lec_data,
         "attendance" => $lec_attendance,
         "hours_rendered" => $this->AddPlayTime($total_time),
 
     );
-       $this->load->view('includes/header', $data);
-       $this->load->view('admin-attendance');
-       $this->load->view('includes/footer');
-   }
+     $this->load->view('includes/header', $data);
+     $this->load->view('admin-attendance');
+     $this->load->view('includes/footer');
+ }
 
-   public function viewClassList() {
+ public function viewClassList() {
     // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
     $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $this->uri->segment(3)));
     foreach ($schedule as $key => $value) {
@@ -429,6 +429,13 @@ public function charts_student()
     array_push($data,$me,$ce,$ee,$ece);
 
     echo json_encode($data);
+}
+    // fic
+public function updateStatus()
+{
+ $id = $this->input->post("id");
+ 
+
 }
 
 

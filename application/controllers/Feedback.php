@@ -70,7 +70,7 @@ class Feedback extends CI_Controller {
                     }
                 }
             } else {
-                $this->load->view('feedback/error', $data);
+                           $this->load->view('feedback/error', $data);
                 $this->load->view('feedback/custom4');
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
