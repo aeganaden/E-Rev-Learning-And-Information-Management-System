@@ -15,14 +15,10 @@ class Home extends CI_Controller {
     public function index() {
         $this->session->unset_userdata('insertion_info');
         $info = $this->session->userdata('userInfo');
-
-        // echo "<pre>";
-        // print_r($info);
-
-        // die();
+        
         $program = 0;
-        if ($info['user']->student_program) {
-           switch ($info['user']->student_program) {
+        if ($info['user']->student_department) {
+           switch ($info['user']->student_department) {
             case 'CE':
             $program = 1;
             break;

@@ -3,6 +3,34 @@
 =            Side-Nav Section            =
 =======================================-->
 
+<?php 
+
+$ident = $info['identifier'];
+$ident.="_department";
+$program = "";
+switch ($info['user']->$ident) {
+    case 'CE':
+    $program = "Civil Engineering";
+    break;
+    case 'EE':
+    $program = "Electrical Engineering";
+    break;
+    case 'ECE':
+    $program = "Electronics and Computer Engineering";
+    break;
+    case 'ME':
+    $program = "Mechanical Engineering";
+    break;
+    
+    default:
+        # code...
+    break;
+}
+// echo "<pre>";
+// print_r($info);
+
+?>
+
 <ul id="slide-out" class="side-nav bg-color-white">
     <li><div class="user-view">
         <div class="background bg-primary-yellow">

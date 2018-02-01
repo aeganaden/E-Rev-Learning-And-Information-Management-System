@@ -10,11 +10,18 @@
 				</div>
 				<div class="card-content bg-primary-yellow">
 					<span class="card-title activator  grey-text text-darken-4">Physics<i class="material-icons right">more_vert</i></span>
-					<p><a href="#" class="color-black">Go to coursewares</a></p>
+					<p><a href="#" class="color-black"></a></p>
 				</div>
 				<div class="card-reveal bg-primary-green">
 					<span class="card-title color-white">Card Title<i class="material-icons right ">close</i></span>
 					<p class="">Here is some more information about this product that is only revealed once clicked on.</p>
+				</div>
+
+				<div class="card-action">
+					<div class="row">
+						<div class="col s6"></div>
+						<div class="col s6"></div>
+					</div>
 				</div>
 			</div>
 
