@@ -109,7 +109,7 @@ class Feedback extends CI_Controller {
             $counter = 0;
             foreach ($this->session->userdata('feedback') as $hold) {
                 $inner_counter = 1;
-                $str = "inlist(";
+                $str = "in_list(";
                 $size = count($hold);
                 foreach ($hold as $hold2) {
                     if ($size == $inner_counter) {        //last na to
@@ -122,8 +122,10 @@ class Feedback extends CI_Controller {
                 }
                 if ($counter == 0) {
                     $this->form_validation->set_rules('section', $str);
+                    print_r($str);
                 } else if ($counter == 1) {
                     $this->form_validation->set_rules('lecturer', $str);
+                    print_r($str);
                 }
                 $counter++;
             }
