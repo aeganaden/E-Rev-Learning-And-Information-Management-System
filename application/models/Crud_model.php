@@ -71,19 +71,31 @@ class Crud_model extends CI_Model {
         return $this->db->field_data($table);
     }
 
-    public function data_distinct($table, $col, $where = NULL) {          //returns single data instead of duplicated ones
+    public function data_distinct($table, $col, $where = NULL, $orwhere = NULL) {          //returns single data instead of duplicated ones
         $this->db->distinct();
         $this->db->select($col);
         if (!empty($where)) {
             $this->db->where($where);
         }
+//        if (!empty($orwhere)) {
+//            $this->db->or_where($orwhere);
+//        }
+
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col, $where = NULL) {
-        $this->db->select($col);
+    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL) {
+        if ($distinct == TRUE) {
+            $this->db->distinct();
+        }
+        if (!empty($col)) {
+            $this->db->select($col);
+        }
         if (!empty($where)) {
             $this->db->where($where);
+        }
+        if (!empty($orwherein)) {
+            $this->db->or_where_in($orwherein[0], $orwherein[1]);
         }
         $query = $this->db->get($table);
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
