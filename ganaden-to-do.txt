@@ -3,12 +3,9 @@
 ============================-->
 
 1. Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
-2. Include Charts.JS on admin side - done
-3. Create dashboard on user UI
-4. Change color side-bar
-4.1 change background to white
-4.2 change text to white
-4.3 change selected to green
+2. Create dashboard on user UI
+3. Create courseware cards showing different subjects that are avaiable to the student
+3.1 Then it must navigate to another level in which coursewares will be made visible
 <!--====  End of TO DO  ====-->
 
 

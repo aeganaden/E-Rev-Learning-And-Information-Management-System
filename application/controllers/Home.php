@@ -18,15 +18,36 @@ class Home extends CI_Controller {
 
         // echo "<pre>";
         // print_r($info);
+
         // die();
+        $program = 0;
+        switch ($info['user']->student_program) {
+            case 'CE':
+            $program = 1;
+            break;
+            case 'ECE':
+            $program = 2;
+            break;
+            case 'EE':
+            $program = 3;
+            break;
+            case 'ME':
+            $program = 4;
+            break;
+
+            default:
+            break;
+        }
 
         if ($info['logged_in'] && $info['identifier'] != "administrator") {
             $data = array(
                 "title" => "Home - Learning Management System | FEU - Institute of Techonology",
                 "info" => $info,
+                "program"=>$program,
                 "s_h"=> "selected-nav",
                 "s_a"=> "",
                 "s_f"=> "",
+                "s_c"=> ""
 
             );
             $this->load->view('includes/header', $data);
@@ -40,6 +61,15 @@ class Home extends CI_Controller {
     }
 
     public function Activity() {
+        $info = $this->session->userdata('userInfo');
+        if ($info['identifier'] == "administrator" ) {
+            redirect('Admin', 'refresh');
+        } elseif ($info['identifier'] != "fic" ) {
+            redirect('Home', 'refresh');
+        }elseif (!$info['logged_in']) {
+            redirect('Welcome', 'refresh');
+        }
+
         $this->session->unset_userdata('insertion_info');
         $activity_details = $this->Crud_model->fetch("activity");
         $info = $this->session->userdata('userInfo');
@@ -73,7 +103,8 @@ class Home extends CI_Controller {
                 "activity" => $activity_details,
                 "s_h"=> "",
                 "s_a"=> "selected-nav",
-                "s_f"=> ""
+                "s_f"=> "",
+                "s_c"=> ""
                 // "offering" => $offering
             );
             $this->load->view('includes/header', $data);

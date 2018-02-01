@@ -16,6 +16,7 @@ class Admin extends CI_Controller {
     public function index() {
         $this->session->unset_userdata('insertion_info');
 
+
         // echo strtotime("+3 day 9 hours");
         // die();
 
@@ -147,142 +148,143 @@ class Admin extends CI_Controller {
     }
 
     public function Announcements() {
-
-        $this->verify_login();
+        // update date
         $ann_full = $this->Crud_model->fetch("announcement");
-        foreach ($ann_full as $key => $value) {
-            $start = $value->announcement_start_datetime;
-            $end = $value->announcement_end_datetime;
-            if (date("M d y",$start)==date("M d y",$end)) {
-                $this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
-            }
+        if ($ann_full) {
+            foreach ($ann_full as $key => $value) {
+                $seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
+                $days = ceil($seconds/(3600*24));
+                if ($days < 0) {
+                 $this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
+             }
+         }
+     }
+     $this->verify_login();
+
+     $announcement = $this->Crud_model->fetch("announcement",array("announcement_is_active"=>1));
+     $data = array(
+        "title" => "Announcements - Learning Management System | FEU - Institute of Techonology",
+        "announcement" => $announcement
+    );
+     $this->load->view('includes/header', $data);
+     $this->load->view('announcement');
+     $this->load->view('includes/footer');
+ }
+
+ public function fetchAnnouncement() {
+    $announcement_id = $this->input->post("id");
+    $data = $this->Crud_model->fetch("announcement", array("announcement_id" => $announcement_id));
+    $data = $data[0];
+    $data->end_time = date("M d, Y", $data->announcement_end_datetime);        
+    echo json_encode($data);
+}
+
+public function updateAnnouncement() {
+    $title = $this->input->post("title");
+    $content = $this->input->post("content");
+    $audience = $this->input->post("audience");
+    $edited_at = time();
+    $id = $this->input->post("id");
+    $data = array(
+        "announcement_title" => $title,
+        "announcement_content" => $content,
+        "announcement_end_datetime"=>strtotime($this->input->post("date")),
+        "announcement_start_datetime"=>time(),
+        "announcement_audience" => $audience,
+        "announcement_edited_at" => $edited_at
+    );
+
+    if ($this->Crud_model->update("announcement", $data, array("announcement_id" => $id))) {
+        echo json_encode("success");
+    }
+}
+
+public function addAnnouncement() {
+
+    $column = "";
+    $info = $this->session->userdata('userInfo');
+
+    $title = $this->input->post("title");
+    $content = $this->input->post("content");
+    $audience = "";
+
+    $i = 0;
+    $len = count($_POST['audience']);
+    foreach($_POST['audience'] as $aud){
+        $c = ",";
+        if ($i == $len - 1) {
+            $c = "";
         }
-        $announcement = $this->Crud_model->fetch("announcement",array("announcement_is_active"=>1));
-        $data = array(
-            "title" => "Announcements - Learning Management System | FEU - Institute of Techonology",
-            "announcement" => $announcement
-        );
-        $this->load->view('includes/header', $data);
-        $this->load->view('announcement');
-        $this->load->view('includes/footer');
+
+        $audience.=$aud.$c;
+        $i++;
     }
 
-    public function fetchAnnouncement() {
-        $announcement_id = $this->input->post("id");
-        $data = $this->Crud_model->fetch("announcement", array("announcement_id" => $announcement_id));
-        $data = $data[0];
-        $data->end_time = date("M d, Y", $data->announcement_end_datetime);        
-        echo json_encode($data);
-    }
-
-    public function updateAnnouncement() {
-        $title = $this->input->post("title");
-        $content = $this->input->post("content");
-        $audience = $this->input->post("audience");
-        $edited_at = time();
-        $id = $this->input->post("id");
-        $data = array(
-            "announcement_title" => $title,
-            "announcement_content" => $content,
-            "announcement_end_datetime"=>strtotime($this->input->post("date")),
-            "announcement_start_datetime"=>time(),
-            "announcement_audience" => $audience,
-            "announcement_edited_at" => $edited_at
-        );
-
-        if ($this->Crud_model->update("announcement", $data, array("announcement_id" => $id))) {
-            echo json_encode("success");
-        }
-    }
-
-    public function addAnnouncement() {
-
-        $column = "";
-        $info = $this->session->userdata('userInfo');
-
-        $title = $this->input->post("title");
-        $content = $this->input->post("content");
-        $audience = "";
-
-        $i = 0;
-        $len = count($_POST['audience']);
-        foreach($_POST['audience'] as $aud){
-            $c = ",";
-            if ($i == $len - 1) {
-                $c = "";
-            }
-
-            $audience.=$aud.$c;
-            $i++;
-        }
-
-        $data = array(
-            "announcement_title" => strip_tags($title),
-            "announcement_content" => strip_tags($content),
-            "announcement_created_at" => time(),
-            "announcement_edited_at" => time(),
-            "announcement_is_active" => 1,
-            "announcement_audience" => strip_tags($audience),
-            "announcement_start_datetime"=>time(),
-            "announcement_end_datetime"=>strtotime($this->input->post("end_time")),
-            "announcement_announcer" => strip_tags(ucwords($info["user"]->firstname . " " . $info["user"]->lastname))
-        );
-        if ($this->Crud_model->insert("announcement", $data)) {
-            redirect('Admin/announcements', 'refresh');
+    $data = array(
+        "announcement_title" => strip_tags($title),
+        "announcement_content" => strip_tags($content),
+        "announcement_created_at" => time(),
+        "announcement_edited_at" => time(),
+        "announcement_is_active" => 1,
+        "announcement_audience" => strip_tags($audience),
+        "announcement_start_datetime"=>time(),
+        "announcement_end_datetime"=>strtotime($this->input->post("end_time")),
+        "announcement_announcer" => strip_tags(ucwords($info["user"]->firstname . " " . $info["user"]->lastname))
+    );
+    if ($this->Crud_model->insert("announcement", $data)) {
+        redirect('Admin/announcements', 'refresh');
             // echo "<pre>";
             // print_r( $data);
-        }
     }
+}
 
-    public function deleteAnnouncement() {
-        $id = $this->input->post("id");
-        if ($this->Crud_model->update("announcement", array("announcement_is_active" => 0), array("announcement_id" => $id))) {
-            echo json_encode(true);
-        }
+public function deleteAnnouncement() {
+    $id = $this->input->post("id");
+    if ($this->Crud_model->update("announcement", array("announcement_is_active" => 0), array("announcement_id" => $id))) {
+        echo json_encode(true);
     }
+}
 
-    public function verify_login() {
-        $info = $this->session->userdata('userInfo');
+public function verify_login() {
+    $info = $this->session->userdata('userInfo');
 
-        if (!$info['logged_in'] && $info['identifier'] == "administrator") {
-            redirect('Welcome', 'refresh');
-        } elseif ($info['identifier'] == "lecturer" || $info['identifier'] == "student" || $info['identifier'] == "professor") {
-            redirect('Home', 'refresh');
-        } elseif (!$info['logged_in']) {
-            redirect('Welcome', 'refresh');
-        }
+    if ($info['identifier'] != "administrator" ) {
+        redirect('Home', 'refresh');
+    } elseif (!$info['logged_in']) {
+        redirect('Welcome', 'refresh');
     }
+}
 
-    function diff($date1, $date2, $format = false) 
-    {
-        $diff = date_diff( date_create($date1), date_create($date2) );
-        if ($format)
-            return $diff->format($format);
+function diff($date1, $date2, $format = false) 
+{
+    $diff = date_diff( date_create($date1), date_create($date2) );
+    if ($format)
+        return $diff->format($format);
 
-        return array('y' => $diff->y,
-            'm' => $diff->m,
-            'd' => $diff->d,
-            'h' => $diff->h,
-            'i' => $diff->i,
-            's' => $diff->s
-        );
-    }
-    function AddPlayTime($times) {
-        $minutes = 0;
+    return array('y' => $diff->y,
+        'm' => $diff->m,
+        'd' => $diff->d,
+        'h' => $diff->h,
+        'i' => $diff->i,
+        's' => $diff->s
+    );
+}
+function AddPlayTime($times) {
+    $minutes = 0;
     // loop throught all the times
-        foreach ($times as $time) {
-            list($hour, $minute) = explode(':', $time);
-            $minutes += $hour * 60;
-            $minutes += $minute;
-        }
+    foreach ($times as $time) {
+        list($hour, $minute) = explode(':', $time);
+        $minutes += $hour * 60;
+        $minutes += $minute;
+    }
 
-        $hours = floor($minutes / 60);
-        $minutes -= $hours * 60;
+    $hours = floor($minutes / 60);
+    $minutes -= $hours * 60;
 
     // returns the time already formatted
-        return sprintf('%02d Hours %02d Minutes', $hours, $minutes);
-    }
-    public function viewAttendance() {
+    return sprintf('%02d Hours %02d Minutes', $hours, $minutes);
+}
+public function viewAttendance() {
 
         /*=============================================================
         =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
@@ -304,35 +306,35 @@ class Admin extends CI_Controller {
         foreach ($lec_attendance as $key => $value) {
 
            // fetch schedule 
-         $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
-         $sched = $sched[0];
-         $sched_in  = $sched->schedule_start_time;
-         $sched_out  = $sched->schedule_end_time;
+           $sched = $this->Crud_model->fetch("schedule",array("offering_id"=>$value->offering_id));
+           $sched = $sched[0];
+           $sched_in  = $sched->schedule_start_time;
+           $sched_out  = $sched->schedule_end_time;
 
            // $diff_sched_in = $this->dateDiffMinutes($sched_in,$lec_in);
            // $diff_sched_out = $this->dateDiffMinutes($sched_out,$lec_out);
-         $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
-         $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
-         $interval =$this->diff( $lec_in, $lec_out );
-         $sum =  $interval['h'].":".$interval['i'];
-         array_push($total_time,$sum);
-     }
+           $lec_in = date("o-m-d h:i",$value->lecturer_attendance_in);
+           $lec_out = date("o-m-d h:i",$value->lecturer_attendance_out);
+           $interval =$this->diff( $lec_in, $lec_out );
+           $sum =  $interval['h'].":".$interval['i'];
+           array_push($total_time,$sum);
+       }
 
 
 
-     $data = array(
+       $data = array(
         "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
         "lecturer" => $lec_data,
         "attendance" => $lec_attendance,
         "hours_rendered" => $this->AddPlayTime($total_time),
 
     );
-     $this->load->view('includes/header', $data);
-     $this->load->view('admin-attendance');
-     $this->load->view('includes/footer');
- }
+       $this->load->view('includes/header', $data);
+       $this->load->view('admin-attendance');
+       $this->load->view('includes/footer');
+   }
 
- public function viewClassList() {
+   public function viewClassList() {
     // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
     $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $this->uri->segment(3)));
     foreach ($schedule as $key => $value) {
@@ -433,8 +435,11 @@ public function charts_student()
     // fic
 public function updateStatus()
 {
- $id = $this->input->post("id");
- 
+   $id = $this->input->post("id");
+   $val = $this->input->post("val");
+   if ($this->Crud_model->update("fic",array("fic_status"=>$val),array("fic_id"=>$id))) {
+       echo json_encode("true");
+   }
 
 }
 

@@ -108,7 +108,7 @@ a{
 ================================*/
 
 .selected-nav {
-	background: #007A33;
+	background: rgba(0,48,20,0.4);
 }
 
 /*=====  End of Home CSS  ======*/

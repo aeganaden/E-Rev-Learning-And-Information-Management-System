@@ -13,6 +13,17 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 		$info = $this->session->userdata('userInfo');
+		// update date
+		$ann_full = $this->Crud_model->fetch("announcement");
+		if ($ann_full) {
+			foreach ($ann_full as $key => $value) {
+				$seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
+				$days = ceil($seconds/(3600*24));
+				if ($days < 0) {
+					$this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
+				}
+			}
+		}
 		
 		if ($info['logged_in'] && $info['identifier']!="administrator"){
 			redirect('Home','refresh');

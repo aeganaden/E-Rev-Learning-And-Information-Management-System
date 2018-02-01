@@ -130,12 +130,12 @@
 							<td><?=$value->firstname?></td>
 							<td><?=$value->midname?></td>
 							<td><?=$value->fic_department?></td>
-							<td><span class="<?=$status_color?>"><?=$status?></span></td>
+							<td class="stat<?=$value->fic_id?> <?=$status_color?>"><?=$status?></td>
 							<td>
 								<div class="switch">
 									<label>
 										Deactivated
-										<input <?=$status_chk?> type="checkbox" class="chk_fic_status">
+										<input <?=$status_chk?> type="checkbox" data-id="<?=$value->fic_id?>"  class="chk_fic_status">
 										<span class="lever" ></span>
 										Activated
 									</label>
@@ -416,15 +416,29 @@
 
 		// oncheck fic status
 		$(".chk_fic_status").change(function(event) {
+			var value = $(this).prop("checked") ? 1 :  0;                     
+			var str_val = $(this).prop("checked") ? "Active" :  "Not Active";     
+			var id = $(this).data('id');                
+			// alert(value);
 			$.ajax({
 				url: '<?=base_url()?>Admin/updateStatus',
 				type: 'post',
 				dataType: 'json',
 				data: {
-					id : $(this).data('id') 
+					id :id,
+					val: value
 				},
 				success: function(data){
-					console.log(data);	
+					// console.log(id);	
+					$(".stat"+id).html(str_val);
+					if (value == 0) {
+						$(".stat"+id).removeClass('color-green');
+						$(".stat"+id).addClass('color-red');
+					}else{
+						$(".stat"+id).removeClass('color-red');
+						$(".stat"+id).addClass('color-green');
+					}
+
 				}
 			});
 			
@@ -513,13 +527,13 @@
 
 
 	function shorten_text(text,id) {
-		var ret = text;
-		if (ret.length > 20) {
-			ret = ret.substr(0,20-3) + "...";
-		}
-
-		$(".title_trunc"+id).html(ret);
+	var ret = text;
+	if (ret.length > 20) {
+		ret = ret.substr(0,20-3) + "...";
 	}
+
+	$(".title_trunc"+id).html(ret);
+}
 
 </script>
 
