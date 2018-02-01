@@ -21,7 +21,8 @@ class Home extends CI_Controller {
 
         // die();
         $program = 0;
-        switch ($info['user']->student_program) {
+        if ($info['user']->student_program) {
+           switch ($info['user']->student_program) {
             case 'CE':
             $program = 1;
             break;
@@ -39,83 +40,85 @@ class Home extends CI_Controller {
             break;
         }
 
-        if ($info['logged_in'] && $info['identifier'] != "administrator") {
-            $data = array(
-                "title" => "Home - Learning Management System | FEU - Institute of Techonology",
-                "info" => $info,
-                "program"=>$program,
-                "s_h"=> "selected-nav",
-                "s_a"=> "",
-                "s_f"=> "",
-                "s_c"=> ""
+    }
+    
+    if ($info['logged_in'] && $info['identifier'] != "administrator") {
+        $data = array(
+            "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+            "info" => $info,
+            "program"=>$program,
+            "s_h"=> "selected-nav",
+            "s_a"=> "",
+            "s_f"=> "",
+            "s_c"=> ""
 
-            );
-            $this->load->view('includes/header', $data);
-            $this->load->view('home');
-            $this->load->view('includes/footer');
-        } elseif ($info['identifier'] == "administrator") {
-            redirect('Admin');
-        } else {
-            redirect('Welcome', 'refresh');
-        }
+        );
+        $this->load->view('includes/header', $data);
+        $this->load->view('home');
+        $this->load->view('includes/footer');
+    } elseif ($info['identifier'] == "administrator") {
+        redirect('Admin');
+    } else {
+        redirect('Welcome', 'refresh');
+    }
+}
+
+public function Activity() {
+    $info = $this->session->userdata('userInfo');
+    if ($info['identifier'] == "administrator" ) {
+        redirect('Admin', 'refresh');
+    } elseif ($info['identifier'] != "fic" ) {
+        redirect('Home', 'refresh');
+    }elseif (!$info['logged_in']) {
+        redirect('Welcome', 'refresh');
     }
 
-    public function Activity() {
-        $info = $this->session->userdata('userInfo');
-        if ($info['identifier'] == "administrator" ) {
-            redirect('Admin', 'refresh');
-        } elseif ($info['identifier'] != "fic" ) {
-            redirect('Home', 'refresh');
-        }elseif (!$info['logged_in']) {
-            redirect('Welcome', 'refresh');
-        }
+    $this->session->unset_userdata('insertion_info');
+    $activity_details = $this->Crud_model->fetch("activity");
+    $info = $this->session->userdata('userInfo');
+    $activity = $this->Crud_model->fetch("activity");
 
-        $this->session->unset_userdata('insertion_info');
-        $activity_details = $this->Crud_model->fetch("activity");
-        $info = $this->session->userdata('userInfo');
-        $activity = $this->Crud_model->fetch("activity");
-
-        switch ($info['identifier']) {
-            case 'fic':
-            $info['user']->id = $info['user']->fic_id;
-            break; 
-            case 'student':
-            $info['user']->id = $info['user']->student_id;
+    switch ($info['identifier']) {
+        case 'fic':
+        $info['user']->id = $info['user']->fic_id;
+        break; 
+        case 'student':
+        $info['user']->id = $info['user']->student_id;
                 # code...
-            break;  
-            case 'professor':
-            $info['user']->id = $info['user']->professor_id;
+        break;  
+        case 'professor':
+        $info['user']->id = $info['user']->professor_id;
                 # code...
-            break;
-            
-            default:
+        break;
+        
+        default:
                 # code...
-            break;
-        }
+        break;
+    }
         // $id = $info['user']->id;
         // $offering = $this->Crud_model->fetch("offering", array("offering_lecturer_id" => $id));
 
 
-        if ($info['logged_in'] && $info['identifier'] != "administrator") {
-            $data = array(
-                "title" => "Activity - Learning Management System | FEU - Institute of Techonology",
-                "info" => $info,
-                "activity" => $activity_details,
-                "s_h"=> "",
-                "s_a"=> "selected-nav",
-                "s_f"=> "",
-                "s_c"=> ""
+    if ($info['logged_in'] && $info['identifier'] != "administrator") {
+        $data = array(
+            "title" => "Activity - Learning Management System | FEU - Institute of Techonology",
+            "info" => $info,
+            "activity" => $activity_details,
+            "s_h"=> "",
+            "s_a"=> "selected-nav",
+            "s_f"=> "",
+            "s_c"=> ""
                 // "offering" => $offering
-            );
-            $this->load->view('includes/header', $data);
-            $this->load->view('home-activity');
-            $this->load->view('includes/footer');
-        } elseif ($info['identifier'] == "administrator") {
-            redirect('Admin');
-        } else {
-            redirect('Welcome', 'refresh');
-        }
+        );
+        $this->load->view('includes/header', $data);
+        $this->load->view('home-activity');
+        $this->load->view('includes/footer');
+    } elseif ($info['identifier'] == "administrator") {
+        redirect('Admin');
+    } else {
+        redirect('Welcome', 'refresh');
     }
+}
 
     /* COMMENT DAHIL ERROR SA SIDE KO - MARK
       public function fetchSchedule()
