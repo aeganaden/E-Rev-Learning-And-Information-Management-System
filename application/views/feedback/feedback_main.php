@@ -7,6 +7,15 @@
 <!--====  End of Navigation Top  ====<--></-->
 <?php $this->load->view('includes/home-sidenav'); ?>
 <!--ABOVE IS PERMA-->
+<div class="row">
+    <div class="col s4">
+        <blockquote class="color-primary-green">
+            <h1 class="color-black">Feedback</h1>
+        </blockquote>
+    </div>
+    <div class="col s4"></div>
+    <div class="col s4"></div>
+</div>
 <div class="container">
     <?php if (empty($lect)): ?>
         <h4 id="message_area" class="center-align" style="margin-top: 20vh;">No list of lecturers to be show<br>(Feedback is not activated or inactive enrollment)</h4>

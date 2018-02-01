@@ -10,12 +10,20 @@ $this->load->view('includes/home-sidenav');
 ?>
 <!--ABOVE IS PERMA-->
 
-<br><br>
-<div class="container">
+<div class="row">
+    <div class="col s4">
+        <blockquote class="color-primary-green">
+            <h1 class="color-black">Feedback</h1>
+        </blockquote>
+    </div>
+    <div class="col s4"></div>
+    <div class="col s4"></div>
+</div>
+<div class="container" style="height:80vh;">
     <div class="row" style="margin-top: 50px">
         <div class="col s1"></div>
         <div class="col s2">
-            <img class="circle responsive-img" src="http://www.bu.edu/com/files/2015/08/Guo_Lei.jpg">
+            <img style="height:120px;width:120px;object-fit: cover;" class="circle responsive-img" src="<?= base_url() . $lect->image_path ?>">
         </div>
         <div class="col s4">
             <span class='black-text'>

@@ -112,6 +112,30 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
     }
 
+    public function fetch_join($table, $col = NULL, $join1 = NULL, $jointype = NULL, $join2 = NULL) {
+        if (!empty($col)) {
+            $this->db->select($col);
+        } else {
+            $this->db->select('*');
+        }
+        if (!empty($table)) {
+            $this->db->from($table);
+        }
+        if (!empty($join1) && !empty($jointype)) {
+            $this->db->join($join1[0], $join1[1], $jointype);
+        } else if (!empty($join1) && empty($jointype)) {
+            $this->db->join($join1[0], $join1[1]);
+        }
+        if (!empty($join2) && !empty($jointype)) {
+            $this->db->join($join2[0], $join2[1], $jointype);
+        } else if (!empty($join2) && empty($jointype)) {
+            $this->db->join($join2[0], $join2[1]);
+        }
+
+        $query = $this->db->get();
+        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+    }
+
 }
 
 ?>

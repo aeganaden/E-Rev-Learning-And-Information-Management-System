@@ -61,6 +61,9 @@ class Feedback extends CI_Controller {
 
                         $data = array(
                             'title' => "Feedback",
+                            "s_h" => "",
+                            "s_a" => "",
+                            "s_f" => "selected-nav",
                             'info' => $info,
                             'lect' => $lect,
                         );
@@ -126,6 +129,7 @@ class Feedback extends CI_Controller {
                 if (in_array($_POST['section'], $temp[0]) && in_array($_POST['lecturer'], $temp[1])) {
                     $sel_section = $_POST['section'];
                     $sel_lecturer = $_POST['lecturer'];
+//                    $result = array();
                     if (strcasecmp("all", $sel_section) == 0 && strcasecmp("all", $sel_lecturer) == 0) {
                         $where = array('lecturer_feedback_department' => $info["user"]->fic_department);
                     } else if (strcasecmp("all", $sel_section) == 0) {
@@ -137,9 +141,24 @@ class Feedback extends CI_Controller {
                     }
                     $col = array('lecturer_feedback_timedate', 'lecturer_feedback_comment', 'lecturer_id', 'offering_id');
                     $result = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where);
-//                    echo "<pre>";
-//                    print_r($result);
-//                    echo "</pre>";
+
+                    $result_hold = array();
+                    foreach ($result as $res) {
+                        foreach ($sections as $section) {
+                            if ($section->offering_id == $res->offering_id) {
+                                $res->offering_id = $section->offering_name;
+                                foreach ($lect as $lect2) {
+                                    if ($lect2->lecturer_id == $res->lecturer_id) {
+                                        $res->lecturer_id = $lect2->firstname . " " . $lect2->midname . " " . $lect2->lastname;
+                                        $res->image_path = $lect2->image_path;
+                                    }
+                                }
+                                $result_hold[] = $res;
+                                break;              //just for faster iteration
+                            }
+                        }
+                    }
+
                     $data = array(
                         'title' => "Feedback",
                         'info' => $info,
@@ -150,15 +169,6 @@ class Feedback extends CI_Controller {
                         'lecturers' => $lect,
                         'feedback' => $result
                     );
-                    if (strcasecmp("all", $sel_section) == 0 && strcasecmp("all", $sel_lecturer) == 0) {        //dito last
-                        $where = array('lecturer_feedback_department' => $info["user"]->fic_department);
-                    } else if (strcasecmp("all", $sel_section) == 0) {
-                        $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'lecturer_id' => $sel_lecturer);
-                    } else if (strcasecmp("all", $sel_lecturer) == 0) {
-                        $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section);
-                    } else {
-                        $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section, 'lecturer_id' => $sel_lecturer);
-                    }
                     $this->load->view('feedback/fic_view2', $data);
                 } else {
                     $data = array(
@@ -176,6 +186,16 @@ class Feedback extends CI_Controller {
             } else {
                 redirect("feedback");
             }
+        } else if (true) { //show to ADMIN LAST
+            echo "HEY ADMIN!";
+            $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+            $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+            $jointype = "INNER";
+            $result = $this->Crud_model->fetch_join('lecturer_feedback', NULL, $join1, $jointype, $join2);
+            echo "<pre>";
+            print_r($result);
+            echo "</pre>";
+//
         } else {
             redirect("");
         }
@@ -190,13 +210,19 @@ class Feedback extends CI_Controller {
             $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id; //get enrollment id from course
             $enrollment_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $enrollment_id))[0]->enrollment_is_active; //get enrollment id from course
             $data = array(//gonna need to put this for header
-                'title' => "Feedback"
+                'title' => "Feedback",
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "selected-nav"
             );
             $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
                 $stud_id = $this->session->userdata('userInfo')['user']->student_id;
                 $data = array(
                     'title' => "Feedback",
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "selected-nav",
                     'info' => $info
                 );
                 $segment = $this->uri->segment(3);
@@ -219,6 +245,9 @@ class Feedback extends CI_Controller {
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
                             'title' => "Feedback",
+                            "s_h" => "",
+                            "s_a" => "",
+                            "s_f" => "selected-nav",
                             'info' => $info,
                             'lect' => $offering_id
                         );
@@ -233,6 +262,9 @@ class Feedback extends CI_Controller {
             } else {
                 $data = array(
                     'title' => "Feedback",
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "selected-nav",
                     'info' => $info
                 );
                 $this->load->view('feedback/error', $data);
