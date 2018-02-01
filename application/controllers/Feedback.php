@@ -8,12 +8,13 @@ class Feedback extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->helper('date');
+        $this->load->library('form_validation');
     }
 
     public function index() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $info = $this->session->userdata('userInfo');
-            $student_temp = $this->session->userdata('userInfo')["user"]->student_program;
+            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
             $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
             $feedback_status = $dept_temp[0]->professor_feedback_active;
             $data = array(
@@ -82,11 +83,12 @@ class Feedback extends CI_Controller {
 
             //******GET THE LECT ID**********
             foreach ($sections as $section) {
-                $hold[] = $section->offering_id;
+                $hold[0][] = $section->offering_id;     //old: $hold[] = ...
             }
+            $validation[] = $hold[0];      //offering_id
             $col = 'lecturer_id';
             $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
-            $lect_id = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where, $hold, TRUE);
+            $lect_id = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where, $hold[0], TRUE);
 
             //******FETCH THE LECTS USING ID**********
             unset($hold);       //erase the data fetched from above
@@ -98,17 +100,59 @@ class Feedback extends CI_Controller {
             $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
             $lect = $this->Crud_model->fetch_select('lecturer', $col, NULL, $hold);
 
-            $data = array(
-                'title' => "Feedback",
-                'info' => $info,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "selected-nav",
-                'sections' => $sections,
-                'lecturers' => $lect
-            );
+            $validation[] = $hold[1];   //lecturer_id
+
+            $this->session->set_userdata('feedback', $validation);
+            $data = array('title' => "Feedback");
             $this->load->view('includes/header', $data);
-            $this->load->view('feedback/fic_view2');
+
+            $counter = 0;
+            foreach ($this->session->userdata('feedback') as $hold) {
+                $inner_counter = 1;
+                $str = "inlist(";
+                $size = count($hold);
+                foreach ($hold as $hold2) {
+                    if ($size == $inner_counter) {        //last na to
+                        $str = $str . $hold2 . ")";
+                        break;
+                    } else {
+                        $str = $str . $hold2 . ",";
+                        $inner_counter++;
+                    }
+                }
+                if ($counter == 0) {
+                    $this->form_validation->set_rules('section', $str);
+                } else if ($counter == 1) {
+                    $this->form_validation->set_rules('lecturer', $str);
+                }
+                $counter++;
+            }
+            echo "<pre>";
+            print_r($str);
+            echo "</pre>";
+
+            if (!isset($_POST['lecturer']) && !isset($_POST['section'])) {
+                $data = array(
+                    'title' => "Feedback",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "selected-nav",
+                    'sections' => $sections,
+                    'lecturers' => $lect
+                );
+                $this->load->view('feedback/fic_view2', $data);
+            } else if ($this->form_validation->run() == TRUE) {         //kung nakaselect na
+                $lecturer_id = $_POST['lecturer'];
+                $offering_name = $_POST['section'];
+                if ($lecturer_id == 'none' && $lecturer_id == 'none') {      //default select which is wrong
+                    echo "pumili ka!";
+                } else {                //naka select na ng maayos
+                    echo "nice choice";
+                }
+            } else {
+                echo "error daw";
+            }
         } else {
             redirect("");
         }
@@ -203,7 +247,7 @@ class Feedback extends CI_Controller {
                 $data = array(
                     'lecturer_feedback_timedate' => time(),
                     'lecturer_feedback_comment' => $feedback,
-                    'lecturer_feedback_department' => $this->session->userdata('userInfo')['user']->student_program,
+                    'lecturer_feedback_department' => $this->session->userdata('userInfo')['user']->student_department,
                     'student_id' => $this->session->userdata('userInfo')['user']->student_id,
                     'lecturer_id' => $temp,
                     'enrollment_id' => $enrollment_id,
