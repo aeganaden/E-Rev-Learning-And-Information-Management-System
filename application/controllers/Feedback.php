@@ -8,6 +8,7 @@ class Feedback extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->helper('date');
+        $this->load->library('form_validation');
     }
 
     public function index() {
@@ -84,6 +85,7 @@ class Feedback extends CI_Controller {
             foreach ($sections as $section) {
                 $hold[] = $section->offering_id;
             }
+            $validation[] = $hold;      //offering_id
             $col = 'lecturer_id';
             $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
             $lect_id = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where, $hold, TRUE);
@@ -98,17 +100,40 @@ class Feedback extends CI_Controller {
             $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
             $lect = $this->Crud_model->fetch_select('lecturer', $col, NULL, $hold);
 
-            $data = array(
-                'title' => "Feedback",
-                'info' => $info,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "selected-nav",
-                'sections' => $sections,
-                'lecturers' => $lect
-            );
+            $validation[] = $hold[1];   //lecturer_id
+
+            $this->session->set_userdata('feedback', $validation);
+//            echo "<pre>";
+//            print_r($this->session->userdata('feedback'));
+//            echo "</pre>";
+            $data = array('title' => "Feedback");
             $this->load->view('includes/header', $data);
-            $this->load->view('feedback/fic_view2');
+            $this->form_validation->set_rules('section', 'inlist($validation[0])');
+            $this->form_validation->set_rules('lecturer', 'inlist($validation[1])');
+            echo $_POST['section'];
+
+            if (!isset($_POST['lecturer']) && !isset($_POST['section'])) {
+                $data = array(
+                    'title' => "Feedback",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "selected-nav",
+                    'sections' => $sections,
+                    'lecturers' => $lect
+                );
+                $this->load->view('feedback/fic_view2', $data);
+            } else if ($this->form_validation->run() == TRUE) {         //kung nakaselect na
+                $lecturer_id = $_POST['lecturer'];
+                $offering_name = $_POST['section'];
+                if ($lecturer_id == 'none' && $lecturer_id == 'none') {      //default select which is wrong
+                    echo "pumili ka!";
+                } else {                //naka select na ng maayos
+                    echo "nice choice";
+                }
+            } else {
+                echo "error daw";
+            }
         } else {
             redirect("");
         }
