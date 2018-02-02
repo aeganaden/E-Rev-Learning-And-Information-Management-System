@@ -448,14 +448,31 @@ class Admin extends CI_Controller {
     {
         $id = $this->input->post("id");
 
-        $col = array('lecturer_feedback_timedate,lecturer_id, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+        $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
         $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
         $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
         $jointype = "INNER";
         $where = array('lecturer_feedback.lecturer_id' => $id);
-        $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2,$where);
-        echo json_encode($feedback);
+        
+        if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
+           for ($i=0; $i < sizeof($feedback); $i++) { 
+
+            $feedback[$i]["date"] = date("M d, Y",$feedback[$i]["lecturer_feedback_timedate"]);
+        }
+    }else{
+        $feedback = "false";
     }
+    echo json_encode($feedback);
+}
+
+public function fetchLecturer()
+{
+    $id = $this->input->post("id");
+    $data = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$id));
+    $data = $data[0];
+    echo json_encode($data);
+
+}
 
 }
 

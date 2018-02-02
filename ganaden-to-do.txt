@@ -1,12 +1,14 @@
 <!--===========================
 =            TO DO            =
 ============================-->
+IMPORTANT = Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
 
-1. Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
-2. Create dashboard on user UI
-3. Create courseware cards showing different subjects that are avaiable to the student
-3.1 Then it must navigate to another level in which coursewares will be made visible
-4. Search for text editor / fix wiris text editor
+1. Sort fetched feedbacks by date
+2. Finish student subjects UI
+3. Search for text editor / fix wiris text editor
+
+
+
 <!--====  End of TO DO  ====-->
 
 

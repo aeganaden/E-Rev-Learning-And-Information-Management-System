@@ -113,7 +113,6 @@
                 <table class="" id="tbl-feedback" style="table-layout:auto;">
                     <thead>
                         <tr>
-                            <th></th>
                             <th>Lecturer</th>
                             <th>School ID</th>
                             <th>Action</th>
@@ -122,10 +121,12 @@
                     <tbody>
                         <?php foreach ($feedback as $res): ?>
                             <tr class="bg-color-white">
-                                <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res['image_path'] ?>"></td>
-                                <td><?= $res['full_name'] ?></td>
+                                <td class="valign-wrapper"><img style="object-fit: cover;height:50px;width:50px; margin-right: 2%;" class="circle " src="<?= base_url() . $res['image_path'] ?>"><?= $res['full_name'] ?></td>
                                 <td><?= $res['id_number'] ?></td>
-                                <td>  <button class="btn bg-primary-green btn_mdl_feedback waves-effect waves-light" data-id="<?= $res['lecturer_id'] ?>"><i class="material-icons right">remove_red_eye</i>View</button></td>
+                                <td> 
+                                    <a href="#modal_feedback" class="btn bg-primary-green btn_mdl_feedback waves-effect waves-light modal-trigger" data-id="<?= $res['lecturer_id'] ?>"> <i class="material-icons right">remove_red_eye</i>View 
+                                    </a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -447,21 +448,102 @@
 
 <!--====  End of Modal Course Offering  ====-->
 
+<!--==============================================
+=            Modal Lecturers Feedback            =
+===============================================-->
+
+
+<div id="modal_feedback" class="modal modal-fixed-footer bg-color-white">
+    <div class="modal-content">
+        <div class="row valign-wrapper">
+            <div class="col s1 ">
+                <blockquote class="color-green " style="border-radius: 5px;">
+                    <img id="mdl_lec_img"  src="<?=base_url()?>assets/img/profiles/profile-2.jpg" style="width: 60px;height: 60px; object-fit: cover;" class="circle ">
+                </blockquote>
+            </div>
+            <div class="col s6" style="margin-left: 5%;">
+                <h5 id="mdl_lec_name" style="margin: 0">Angelo Ganaden Jr</h5>
+                <h6 id="mdl_lec_id" style="margin: 0">201512103</h6>
+                <h6 id="mdl_lec_email" style="margin: 0">rbbabaran@gmail.com</h6>
+            </div>
+            <div class="col s5">
+                <span style="border-bottom: 3px solid #007A33; font-size:1.5rem">Expertise: </span>
+                <p id="mdl_lec_expertise">  CE graduate
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks</h4>
+            <table id="tbl-mdl-feedback">
+                <thead>
+                    <th>Date</th>
+                    <th>Message</th>
+                </thead>
+                <tbody id="mdl_lec_content">
+
+                </tbody>
+            </table>
+            <div id="msg_error_feedback"></div>
+        </div>
+    </div>
+    <div class="modal-footer bg-primary-yellow">
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Done</a>
+  </div>
+</div>
+
+
+<!--====  End of Modal Lecturers Feedback  ====-->
+
+
 <script type="text/javascript">
 
     jQuery(document).ready(function ($) {
         // show feedbacks
         $(".btn_mdl_feedback").click(function(event) {
             // alert($(this).data('id'));
+            $id =  $(this).data('id');
+            var html_content ="";
             $.ajax({
-                url: '<?=base_url()?>Admin/more_feedback',
+                url: '<?=base_url()?>Admin/fetchLecturer',
                 type: 'post',
                 dataType: 'json',
-                data: {id: $(this).data('id')},
+                data: {id:$id},
                 success: function(data){
-                    console.log(data);    
+                  $("#mdl_lec_name").html(data.firstname + " " + data.midname + " " + data.lastname );
+                  $("#mdl_lec_id").html(data.id_number);
+                  $("#mdl_lec_email").html(data.email);
+                  $("#mdl_lec_expertise").html(data.lecturer_expertise);
+                  $('#mdl_lec_img').attr('src', base_url+data.image_path);
+
+                  // second ajax
+                  $.ajax({
+                    url: '<?=base_url()?>Admin/more_feedback',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {id:$id},
+                    success: function(data){
+                        console.log(data);    
+                        if (data!="false") {
+                         $("#msg_error_feedback").html(" ");
+
+                         for(var i = 0; i < data.length; i++){
+                            html_content += ' <tr>'+
+                            '<td>'+data[i].date+'</td>'+
+                            '<td><blockquote>'+data[i].lecturer_feedback_comment+'</blockquote></td>'+
+                            '</tr>';   
+                        }
+                        $("#mdl_lec_content").html(html_content);
+                    }else{
+                        $("#mdl_lec_content").html(" ");
+
+                        $("#msg_error_feedback").html("<h3 class='center'>No Feedback Recorded Yet</h3>");
+                    }
                 }
             });
+              }
+          });
+            
+
         });
 
         // oncheck fic status
