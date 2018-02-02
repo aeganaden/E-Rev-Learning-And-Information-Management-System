@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2018 at 11:41 AM
+-- Generation Time: Feb 02, 2018 at 07:56 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -87,8 +87,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
-(202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg'),
-(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'adad');
+(202011111, 'Ange', 'Ecu', 'Gana', 'admin', 'admin', 'assets/img/profiles/profile.jpg'),
+(999999999, 'admin2', 'admin', 'admin', 'admin', 'admin', 'assets/img/profiles/profile.jpg\r\n');
 
 -- --------------------------------------------------------
 
@@ -238,10 +238,10 @@ CREATE TABLE `fic` (
 --
 
 INSERT INTO `fic` (`fic_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`, `fic_status`) VALUES
-(1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'CE', 1),
-(2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ME', 1),
-(3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'ECE', 1),
-(4, 'Riza3', 'Blossom', 'Malaya', 'riza3', 'riza3', 'rbmalaya@fit.edu.ph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 'EE', 1);
+(1, 'Riza', 'Blossom', 'Malaya', 'riza', 'riza', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'CE', 1),
+(2, 'Riza1', 'Blossom', 'Malaya', 'riza1', 'riza1', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ME', 1),
+(3, 'Riza2', 'Blossom', 'Malaya', 'riza2', 'riza2', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ECE', 1),
+(4, 'Riza3', 'Blossom', 'Malaya', 'riza3', 'riza3', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'EE', 1);
 
 -- --------------------------------------------------------
 
@@ -280,10 +280,10 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `lastname`, `lecturer_expertise`, `email`, `lecturer_status`, `image_path`, `lecturer_is_confirm`) VALUES
-(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'CE graduate', 'rbbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'ME graduate', 'mggatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(3, 201033333, 'Rona Mae', 'Gatan', 'Babaran', 'ECE graduate', 'rgbabaran@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(4, 201044444, 'Ralph Denver', 'Babaran', 'Gatan', 'EE graduate', 'rbgatan@gmail.com', 1, 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1);
+(1, 201011111, 'Ronald', 'Gatan', 'Babaran', 'CE graduate', 'rbbabaran@gmail.com', 1, 'assets/img/profiles/profile.jpg', 1),
+(2, 201022222, 'Marivic', 'Gannaban', 'Gatan', 'ME graduate', 'mggatan@gmail.com', 1, 'assets/img/profiles/profile.jpg', 1),
+(3, 201033333, 'Rona Mae', 'Gatan', 'Babaran', 'ECE graduate', 'rgbabaran@gmail.com', 1, 'assets/img/profiles/profile.jpg', 1),
+(4, 201044444, 'Ralph Denver', 'Babaran', 'Gatan', 'EE graduate', 'rbgatan@gmail.com', 1, 'assets/img/profiles/profile.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -356,7 +356,15 @@ CREATE TABLE `log` (
 --
 
 INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log_content_id`) VALUES
-(1, 1, 1517395263, 1, 1);
+(1, 1, 1517494668, 1, 1),
+(2, 999999999, 1517497556, 1, 1),
+(3, 201511281, 1517497650, 1, 1),
+(4, 201411823, 1517497848, 1, 1),
+(5, 999999999, 1517502046, 1, 1),
+(6, 999999999, 1517545428, 1, 1),
+(7, 1, 1517547870, 1, 1),
+(8, 999999999, 1517549029, 1, 1),
+(9, 999999999, 1517551991, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -428,10 +436,10 @@ CREATE TABLE `professor` (
 --
 
 INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `username`, `password`, `email`, `image_path`, `professor_feedback_active`) VALUES
-(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
-(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
-(201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0),
-(201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 0);
+(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'assets/img/profiles/profile.jpg', 1),
+(201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'assets/img/profiles/profile.jpg', 0),
+(201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'assets/img/profiles/profile.jpg', 0),
+(201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'assets/img/profiles/profile.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -472,7 +480,7 @@ CREATE TABLE `student` (
   `username` varchar(45) NOT NULL,
   `password` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `student_program` varchar(10) NOT NULL,
+  `student_department` varchar(10) NOT NULL,
   `image_path` varchar(100) NOT NULL,
   `offering_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -481,26 +489,26 @@ CREATE TABLE `student` (
 -- Dumping data for table `student`
 --
 
-INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `student_program`, `image_path`, `offering_id`) VALUES
-(201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201410679, 'NEHEMIAH', 'ONGTANGCO', 'BALUYUT', 'nobaluyut', 'nobaluyut', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201410881, 'ROMAR', 'SALERA', 'CONCEPCION', 'rsconcepcion', 'rsconcepcion', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201411823, 'AISLINN', 'TOQUERO', 'CASTRO', 'atcastro', 'atcastro', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201411851, 'RYAN CARLO', 'GUNIO', 'BETON', 'rgbeton', 'rgbeton', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2),
-(201510186, 'MARK JOSEPH', 'GULTIANO', 'ASCAN', 'mgascan', 'mgascan', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201510573, 'LOUIS DAREL', 'VIDANES', 'ANIEVAS', 'lvanievas', 'lvanievas', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201510652, 'KEVIN', 'RAMOS', 'ACHACOSO', 'krachacoso', 'krachacoso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201511230, 'JULIUS RODNI', 'FESTIN', 'AHORRO', 'jfahorro', 'jfahorro', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 1),
-(201511911, 'KASIAN PAUL', 'CALIXTRO', 'ALFONSO', 'kcalfonso', 'kcalfonso', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201512068, 'KIMPEE COSUHING', 'MASAGCA', 'ABOROT', 'kmaborot', 'kmaborot', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201512491, 'JUNAID', 'TAGO', 'ABUBACAR', 'jtabubacar', 'jtabubacar', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 3),
-(201512532, 'RESHMA', 'VIDAL', 'AREVALO', 'rvarevalo', 'rvarevalo', 'adre@fit.edu.ph', 'ME', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 4),
-(201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'D:/XAMPP/htdocs/Engineering/assets/img/profiles/profile.jpg', 2);
+INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `student_department`, `image_path`, `offering_id`) VALUES
+(201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 2),
+(201410617, 'CARL', 'MAGNAYON', 'CASTRO', 'cmcastro', 'cmcastro', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 3),
+(201410679, 'NEHEMIAH', 'ONGTANGCO', 'BALUYUT', 'nobaluyut', 'nobaluyut', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 1),
+(201410881, 'ROMAR', 'SALERA', 'CONCEPCION', 'rsconcepcion', 'rsconcepcion', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 3),
+(201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 1),
+(201411823, 'AISLINN', 'TOQUERO', 'CASTRO', 'atcastro', 'atcastro', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 2),
+(201411851, 'RYAN CARLO', 'GUNIO', 'BETON', 'rgbeton', 'rgbeton', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 2),
+(201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 2),
+(201510186, 'MARK JOSEPH', 'GULTIANO', 'ASCAN', 'mgascan', 'mgascan', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 4),
+(201510573, 'LOUIS DAREL', 'VIDANES', 'ANIEVAS', 'lvanievas', 'lvanievas', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 4),
+(201510652, 'KEVIN', 'RAMOS', 'ACHACOSO', 'krachacoso', 'krachacoso', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 3),
+(201511230, 'JULIUS RODNI', 'FESTIN', 'AHORRO', 'jfahorro', 'jfahorro', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 4),
+(201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 1),
+(201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 1),
+(201511911, 'KASIAN PAUL', 'CALIXTRO', 'ALFONSO', 'kcalfonso', 'kcalfonso', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 4),
+(201512068, 'KIMPEE COSUHING', 'MASAGCA', 'ABOROT', 'kmaborot', 'kmaborot', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 3),
+(201512491, 'JUNAID', 'TAGO', 'ABUBACAR', 'jtabubacar', 'jtabubacar', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 3),
+(201512532, 'RESHMA', 'VIDAL', 'AREVALO', 'rvarevalo', 'rvarevalo', 'adre@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 4),
+(201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 2);
 
 -- --------------------------------------------------------
 
@@ -819,7 +827,7 @@ ALTER TABLE `lecturer_feedback`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `log_content`
