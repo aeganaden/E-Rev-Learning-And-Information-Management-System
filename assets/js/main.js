@@ -327,14 +327,14 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
-	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","chart_login_freq","div-card-lf");
-	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq","div-card-lf");
-	showReportonClick("btn_home","chart_login_freq","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-lf");
-	showReportonClick("card-lf","div-card-lf","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
+	showReportonClick("card-clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","div-card-chart","div-card-lf");
+	showReportonClick("card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart","div-card-lf");
+	showReportonClick("card-chart","div-card-chart","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-lf");
+	showReportonClick("card-lf","div-card-lf","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart");
 
 }
 

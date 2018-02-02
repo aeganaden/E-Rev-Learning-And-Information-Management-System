@@ -11,7 +11,11 @@ class Coursewares extends CI_Controller {
 	public function index()
 	{
 		$info = $this->session->userdata('userInfo');
-
+		if (!$info) {
+			redirect('Welcome','refresh');
+		}elseif ($info['identifier']!='student') {
+			redirect('Home','refresh');
+		}
 		$data = array(
 			"title" => "Coursewares - Learning Management System | FEU - Institute of Techonology",
 			"info"=>$info,

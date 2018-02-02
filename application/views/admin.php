@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col s3">
-        <div class="row" id="btn_home" style="cursor: pointer;">
+        <div class="row" id="card-chart" onclick="store(this.id)" style="cursor: pointer;">
             <div class="card">
                 <div class="card-content bg-primary-yellow">
                     <p class="a-oswald flow-text">Good Day, Admin!</p>
@@ -23,39 +23,35 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            function store(id) {
-                alert(id);
-            }
-        </script>
+        
         <div class="row">
             <h4>Actions</h4>
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
-                    <div class="collapsible-header bg-primary-green color-white"><i class="material-icons ">chrome_reader_mode</i>Reports</div>
+                    <div class="collapsible-header bg-primary-green color-white" ><i class="material-icons ">chrome_reader_mode</i>Reports</div>
                     <div class="collapsible-body">
                         <div class="card" id="card-cosml" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Course Offering Schedule Master List <i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
                         </div>
-                        <div class="card" id="card-ls">
+                        <div class="card" id="card-ls" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Lecturers' Schedule <i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
                         </div>
-                        <div class="card" id="card-lahr">
+                        <div class="card" id="card-lahr" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Lecturers' Attendance and Hours Rendered <i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
                         </div>
-                        <div class="card" id="card-lcl">
+                        <div class="card" id="card-lcl" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Lecturers' Class List <i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
                         </div>
                         <!-- FEEDBACK ADDED BY MARK -->
-                        <div class="card" id="card-lf">
+                        <div class="card" id="card-lf" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Lecturers' Feedback<i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
@@ -68,7 +64,7 @@
                     <div class="collapsible-body valign-wrapper">
                         <p><i>This section provides some function that manages the course offering, function includes updating and deleting the course offerings</i></p>
                         <center>
-                            <button class="btn bg-primary-green waves-effect valign-wrapper" id="btn_show_clof">Show List</button>
+                            <button class="btn bg-primary-green waves-effect valign-wrapper" id="card-clof" onclick="store(this.id)">Show List</button>
                         </center>
                     </div>
                 </li>
@@ -84,7 +80,7 @@
                     <div class="collapsible-header bg-primary-green color-white"><i class="material-icons">group</i>Manage FICs Account</div>
                     <div class="collapsible-body"><p><i>This section provides the updating and managing Faculties in Charge account</i></p>
                         <center>
-                            <a class="btn bg-primary-green waves-effect valign-wrapper" id="btn_div-card-fic" href="#">View Accounts</a>
+                            <a class="btn bg-primary-green waves-effect valign-wrapper" id="card-fic"  onclick="store(this.id)" href="#">View Accounts</a>
                         </center>
                     </div>
                 </li>
@@ -94,7 +90,7 @@
     <!--============================
     =            CHARTS            =
     =============================-->
-    <div class="col s9 valign-wrapper" id="chart_login_freq">
+    <div class="col s9 valign-wrapper" id="div-card-chart" style="display: none;">
         <div class="col s6">
             <br>
             <canvas id="myChart"></canvas>
@@ -150,13 +146,13 @@
             </blockquote>
             <table id="tbl-fic">
                 <thead>
-                <th>ID</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Actions</th>
+                    <th>ID</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody >
                     <?php foreach ($fic as $key => $value): ?>
@@ -523,45 +519,45 @@
         $(".btn_delete_com").click(function (event) {
 
             swal({
-            title: "Are you sure?",
-                    text: "This may cause inconsistency of data in the system!",
-                    icon: "error",
-                    buttons: true,
-                    dangerMode: true,
+                title: "Are you sure?",
+                text: "This may cause inconsistency of data in the system!",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
             })
-                    .then((willDelete) = > {
-                    if (willDelete) {
-                        $.ajax({
-                            url: "<?= base_url() ?>Admin/deleteOffering ",
-                            type: "post",
-                            dataType: "json",
-                            data: {
-                                id: $(this).attr("data-id")
-                            },
-                            success: function (data) {
-                                swal("Poof! Offering has been deleted!", {
-                                    icon: "success",
-                                }).then(function () {
-                                    window.location.reload(true);
-                                });
-                            },
-                            error: function (data) {
+            .then((willDelete) = > {
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url() ?>Admin/deleteOffering ",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $(this).attr("data-id")
+                        },
+                        success: function (data) {
+                            swal("Poof! Offering has been deleted!", {
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        },
+                        error: function (data) {
 
-                            }
+                        }
 
-                        });
-                    }
-                });
-    });
-    });
-            function shorten_text(text, id) {
-                var ret = text;
-                if (ret.length > 20) {
-                    ret = ret.substr(0, 20 - 3) + "...";
+                    });
                 }
+            });
+        });
+    });
+    function shorten_text(text, id) {
+        var ret = text;
+        if (ret.length > 20) {
+            ret = ret.substr(0, 20 - 3) + "...";
+        }
 
-                $(".title_trunc" + id).html(ret);
-            }
+        $(".title_trunc" + id).html(ret);
+    }
 
 </script>
 
