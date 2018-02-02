@@ -20,9 +20,10 @@ class Feedback extends CI_Controller {
             $data = array(
                 'title' => "Feedback",
                 'info' => $info,
-                // Ako nag add neto - ganaden
                 "s_h" => "",
                 "s_a" => "",
+                "s_c" => "",
+                "s_f" => "selected-nav",
                 "s_f" => "selected-nav"
             );
             $this->load->view('includes/header', $data);
@@ -63,6 +64,7 @@ class Feedback extends CI_Controller {
                             'title' => "Feedback",
                             "s_h" => "",
                             "s_a" => "",
+                            "s_c" => "",
                             "s_f" => "selected-nav",
                             'info' => $info,
                             'lect' => $lect,
@@ -120,6 +122,7 @@ class Feedback extends CI_Controller {
                     'info' => $info,
                     "s_h" => "",
                     "s_a" => "",
+                    "s_c" => "",
                     "s_f" => "selected-nav",
                     'sections' => $sections,
                     'lecturers' => $lect
@@ -164,6 +167,7 @@ class Feedback extends CI_Controller {
                         'info' => $info,
                         "s_h" => "",
                         "s_a" => "",
+                        "s_c" => "",
                         "s_f" => "selected-nav",
                         'sections' => $sections,
                         'lecturers' => $lect,
@@ -176,6 +180,7 @@ class Feedback extends CI_Controller {
                         'info' => $info,
                         "s_h" => "",
                         "s_a" => "",
+                        "s_c" => "",
                         "s_f" => "selected-nav",
                         'sections' => $sections,
                         'lecturers' => $lect,
@@ -213,7 +218,8 @@ class Feedback extends CI_Controller {
                 'title' => "Feedback",
                 "s_h" => "",
                 "s_a" => "",
-                "s_f" => "selected-nav"
+                "s_c" => "",
+                "s_f" => "selected-nav",
             );
             $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
@@ -222,6 +228,7 @@ class Feedback extends CI_Controller {
                     'title' => "Feedback",
                     "s_h" => "",
                     "s_a" => "",
+                    "s_c" => "",
                     "s_f" => "selected-nav",
                     'info' => $info
                 );
@@ -240,13 +247,14 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
                             'title' => "Feedback",
                             "s_h" => "",
                             "s_a" => "",
+                            "s_c" => "",
                             "s_f" => "selected-nav",
                             'info' => $info,
                             'lect' => $offering_id
@@ -264,6 +272,7 @@ class Feedback extends CI_Controller {
                     'title' => "Feedback",
                     "s_h" => "",
                     "s_a" => "",
+                    "s_c" => "",
                     "s_f" => "selected-nav",
                     'info' => $info
                 );

@@ -59,7 +59,7 @@
                   <td><?= ucwords($value_inner->firstname) ?></td>
                   <td><?= ucwords($value_inner->midname) ?></td>
                   <td><?= ucwords($value_inner->lastname) ?></td>
-                  <td><?= strtoupper($value_inner->student_program) ?></td>
+                  <td><?= strtoupper($value_inner->student_department) ?></td>
                   <td><?=$value_inner->email?></td>
                 </tr>
               <?php endforeach ?>
