@@ -195,6 +195,9 @@ $(document).ready(function() {
 	$('#tbl-att-lec').DataTable();
 	$('#tbl-com').DataTable();
 	$('#tbl-fic').DataTable();
+        $('#tbl-feedback').DataTable({
+                responsive: true
+        });
 } );
 
 /*=====  End of Datatables JS  ======*/
