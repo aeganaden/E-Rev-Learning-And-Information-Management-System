@@ -48,7 +48,7 @@
     </form>
 
     <?php if (isset($feedback) && !empty($feedback)): ?>
-        <table class="striped" id="tbl-feedback" style="table-layout:auto;">
+        <table class="" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
                     <th></th>
@@ -60,7 +60,7 @@
             </thead>
             <tbody>
                 <?php foreach ($feedback as $res): ?>
-                    <tr>
+                    <tr class="bg-color-white">
                         <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res->image_path ?>"></td>
                         <td><?= $res->lecturer_id ?></td>
                         <td><?= $res->offering_id ?></td>
