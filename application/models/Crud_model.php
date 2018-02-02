@@ -125,6 +125,9 @@ class Crud_model extends CI_Model {
         if (!empty($table)) {
             $this->db->from($table);
         }
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
         if (!empty($join1) && !empty($jointype)) {
             $this->db->join($join1[0], $join1[1], $jointype);
         } else if (!empty($join1) && empty($jointype)) {

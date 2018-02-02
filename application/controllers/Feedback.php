@@ -191,6 +191,16 @@ class Feedback extends CI_Controller {
             } else {
                 redirect("feedback");
             }
+        } else if (false) {
+            $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+            $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+            $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+            $jointype = "INNER";
+            $where = array('lecturer_feedback.lecturer_id' => 1);
+            $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
+//            echo "<pre>";
+//            print_r($feedback);
+//            echo "</pre>";
         } else {
             redirect("");
         }
