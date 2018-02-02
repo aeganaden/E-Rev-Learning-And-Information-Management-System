@@ -190,14 +190,24 @@ function getDivHeightID(x){
 =====================================*/
 
 $(document).ready(function() {
-	$('#tbl-card-cosml').DataTable();
-	$('#tbl-card-ls').DataTable();
-	$('#tbl-att-lec').DataTable();
-	$('#tbl-com').DataTable();
-	$('#tbl-fic').DataTable();
-        $('#tbl-feedback').DataTable({
-                responsive: true
-        });
+	$('#tbl-card-cosml').DataTable({
+		responsive: true
+	});
+	$('#tbl-card-ls').DataTable({
+		responsive: true
+	});
+	$('#tbl-att-lec').DataTable({
+		responsive: true
+	});
+	$('#tbl-com').DataTable({
+		responsive: true
+	});
+	$('#tbl-fic').DataTable({
+		responsive: true
+	});
+	$('#tbl-feedback').DataTable({
+		responsive: true
+	});
 } );
 
 /*=====  End of Datatables JS  ======*/
@@ -317,17 +327,18 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","chart_login_freq");
-	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","chart_login_freq");
-	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq");
-	showReportonClick("btn_home","chart_login_freq","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","chart_login_freq","div-card-lf");
+	showReportonClick("btn_show_clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","chart_login_freq","div-card-lf");
+	showReportonClick("btn_div-card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq","div-card-lf");
+	showReportonClick("btn_home","chart_login_freq","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-lf");
+	showReportonClick("card-lf","div-card-lf","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","chart_login_freq");
 
 }
 
-function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5,div_hide_6){
+function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5,div_hide_6,div_hide_7){
 	$("#"+id).click(function(event) {
 		$("#"+div_id).fadeIn();
 		$("#"+div_id).css("display","block");
@@ -337,6 +348,7 @@ function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4
 		$("#"+div_hide_4).css("display","none");
 		$("#"+div_hide_5).css("display","none");
 		$("#"+div_hide_6).css("display","none");
+		$("#"+div_hide_7).css("display","none");
 
 	});
 }
