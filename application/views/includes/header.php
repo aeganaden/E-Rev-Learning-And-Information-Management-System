@@ -39,5 +39,10 @@
 
     <!-- SweetAlert2 -->
     <script src="<?= base_url(); ?>assets/js/sweetalert2.all.js"></script>
+    <!-- ckeditor -->
+    <!-- <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>'> -->
+    <script src="<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/plugin.js"></script>
+    <script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js"></script>
 </head>
 <body>

@@ -8,6 +8,7 @@
 $ident = $info['identifier'];
 $ident.="_department";
 $program = "";
+
 switch ($info['user']->$ident) {
     case 'CE':
     $program = "Civil Engineering";
@@ -54,8 +55,13 @@ switch ($info['user']->$ident) {
                 <h5><?= $info["identifier"] != 'fic' ? strtoupper($info["identifier"]) : "FACULTY IN CHARGE"?></h5>
             </blockquote>
         </div>
+        <div class="row" style="margin-top: 0px !important">
+            <p style="margin: 0 !important; font-size: 1.5vw" class="center" style="text-transform: capitalize;">
+                <span ><?=$program?></span>
+            </p>
+        </div>
         <div class="row">
-            <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a>
+            <!-- <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a> -->
         </div>
     </div></li>
     <li class="<?=$s_h?>">
