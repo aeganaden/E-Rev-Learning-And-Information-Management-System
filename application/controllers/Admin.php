@@ -31,11 +31,17 @@ class Admin extends CI_Controller {
         /* ==============================================
           =         LECTURER'S FEEDBACK BY MARK          =
           ============================================== */
-        $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
-        $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
-        $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
-        $jointype = "INNER";
-        $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2);
+        //***************          DO NOT DELETE!!!!!!!! - MARK                   *********************
+//        $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+//        $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+//        $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+//        $jointype = "INNER";
+//        $where = array('' => $smaple);
+//        $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
+
+        $col = array('lecturer_id,id_number,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+        $feedback = $this->Crud_model->fetch_join('lecturer', $col);
+
         /* ==============================================
           =            COSML REPORTS FETCHING            =
           ============================================== */

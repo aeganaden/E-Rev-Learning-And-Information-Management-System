@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <h4>Actions</h4>
             <ul class="collapsible" data-collapsible="accordion">
@@ -105,6 +105,8 @@
     <!--====  End of CHARTS  ====-->
 
     <div class="col s9">
+
+
         <!-- Lecturers' Feedback Account -->
         <div class="row" id="div-card-lf" style="display: none; ">
             <?php if (isset($feedback) && !empty($feedback)): ?>
@@ -113,8 +115,8 @@
                         <tr>
                             <th></th>
                             <th>Lecturer</th>
-                            <th>Time/Date</th>
-                            <th>Feedback</th>
+                            <th>School ID</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -122,8 +124,8 @@
                             <tr class="bg-color-white">
                                 <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res['image_path'] ?>"></td>
                                 <td><?= $res['full_name'] ?></td>
-                                <td><?= date("M d, Y | h:i A", $res['lecturer_feedback_timedate']) ?></td>
-                                <td><?= $res['lecturer_feedback_comment'] ?></td>
+                                <td><?= $res['id_number'] ?></td>
+                                <td><?= $res['lecturer_id'] ?> - BUTTON HERE</td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -146,13 +148,13 @@
             </blockquote>
             <table id="tbl-fic">
                 <thead>
-                    <th>ID</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                <th>ID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
                 </thead>
                 <tbody >
                     <?php foreach ($fic as $key => $value): ?>
@@ -519,45 +521,45 @@
         $(".btn_delete_com").click(function (event) {
 
             swal({
-                title: "Are you sure?",
-                text: "This may cause inconsistency of data in the system!",
-                icon: "error",
-                buttons: true,
-                dangerMode: true,
+            title: "Are you sure?",
+                    text: "This may cause inconsistency of data in the system!",
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
             })
-            .then((willDelete) = > {
-                if (willDelete) {
-                    $.ajax({
-                        url: "<?= base_url() ?>Admin/deleteOffering ",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            id: $(this).attr("data-id")
-                        },
-                        success: function (data) {
-                            swal("Poof! Offering has been deleted!", {
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        },
-                        error: function (data) {
+                    .then((willDelete) = > {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "<?= base_url() ?>Admin/deleteOffering ",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: $(this).attr("data-id")
+                            },
+                            success: function (data) {
+                                swal("Poof! Offering has been deleted!", {
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload(true);
+                                });
+                            },
+                            error: function (data) {
 
-                        }
+                            }
 
-                    });
-                }
-            });
-        });
+                        });
+                    }
+                });
     });
-    function shorten_text(text, id) {
-        var ret = text;
-        if (ret.length > 20) {
-            ret = ret.substr(0, 20 - 3) + "...";
-        }
+    });
+            function shorten_text(text, id) {
+                var ret = text;
+                if (ret.length > 20) {
+                    ret = ret.substr(0, 20 - 3) + "...";
+                }
 
-        $(".title_trunc" + id).html(ret);
-    }
+                $(".title_trunc" + id).html(ret);
+            }
 
 </script>
 
