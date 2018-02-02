@@ -23,24 +23,17 @@ class Admin extends CI_Controller {
           =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
           ============================================================= */
 
-        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-        $active_enrollment = $active_enrollment[0];
+          $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+          $active_enrollment = $active_enrollment[0];
 
-        /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+          /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
 
         /* ==============================================
           =         LECTURER'S FEEDBACK BY MARK          =
           ============================================== */
-        //***************          DO NOT DELETE!!!!!!!! - MARK                   *********************
-//        $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
-//        $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
-//        $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
-//        $jointype = "INNER";
-//        $where = array('' => $smaple);
-//        $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
 
-        $col = array('lecturer_id,id_number,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
-        $feedback = $this->Crud_model->fetch_join('lecturer', $col);
+          $col = array('lecturer_id,id_number,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+          $feedback = $this->Crud_model->fetch_join('lecturer', $col);
 
         /* ==============================================
           =            COSML REPORTS FETCHING            =
@@ -48,14 +41,14 @@ class Admin extends CI_Controller {
 
 
         // Fetch Schedule
-        $report_cosml = $this->Crud_model->fetch("schedule");
+          $report_cosml = $this->Crud_model->fetch("schedule");
 
         // Count Schedule
-        $count_res = $this->Crud_model->countResult("schedule");
+          $count_res = $this->Crud_model->countResult("schedule");
 
-        $this->verify_login();
+          $this->verify_login();
 
-        if ($report_cosml) {
+          if ($report_cosml) {
             foreach ($report_cosml as $key => $value) {
                 // Fetch Offering Data
                 $offering_data = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
@@ -99,13 +92,13 @@ class Admin extends CI_Controller {
           ========================================== */
 
 
-        $schedule = $this->Crud_model->fetch("schedule");
+          $schedule = $this->Crud_model->fetch("schedule");
 
-        foreach ($schedule as $key => $sched) {
+          foreach ($schedule as $key => $sched) {
             // fetch lecturer
             $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $sched->lecturer_id));
             $lecturer = $lecturer[0];
-            $sched->lecturer_id = $lecturer->lecturer_id;
+            $sched->id_number = $lecturer->id_number;
             $sched->firstname = $lecturer->firstname;
             $sched->midname = $lecturer->midname;
             $sched->lastname = $lecturer->lastname;
@@ -138,14 +131,14 @@ class Admin extends CI_Controller {
           =            Lecturer Attendance            =
           =========================================== */
 
-        $lecturer = $this->Crud_model->fetch("lecturer");
+          $lecturer = $this->Crud_model->fetch("lecturer");
 
 
-        /* =====  End of Lecturer Attendance  ====== */
+          /* =====  End of Lecturer Attendance  ====== */
 
 
 
-        $data = array(
+          $data = array(
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
             "course" => $course_total,
@@ -153,12 +146,12 @@ class Admin extends CI_Controller {
             "lecturer" => $lecturer,
             "feedback" => $feedback
         );
-        $this->load->view('includes/header', $data);
-        $this->load->view('admin');
-        $this->load->view('includes/footer');
-    }
+          $this->load->view('includes/header', $data);
+          $this->load->view('admin');
+          $this->load->view('includes/footer');
+      }
 
-    public function Announcements() {
+      public function Announcements() {
         // update date
         $ann_full = $this->Crud_model->fetch("announcement");
         if ($ann_full) {
@@ -302,20 +295,20 @@ class Admin extends CI_Controller {
           =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
           ============================================================= */
 
-        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-        $active_enrollment = $active_enrollment[0];
+          $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+          $active_enrollment = $active_enrollment[0];
 
-        /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
-        $sum = 0;
-        $total_hours = 0;
-        $lec_id = $this->uri->segment(3);
-        $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
-        $lec_data = $lec_data[0];
-        $interval = "";
-        $total_time = array();
+          /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+          $sum = 0;
+          $total_hours = 0;
+          $lec_id = $this->uri->segment(3);
+          $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
+          $lec_data = $lec_data[0];
+          $interval = "";
+          $total_time = array();
 
-        $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id));
-        foreach ($lec_attendance as $key => $value) {
+          $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id));
+          foreach ($lec_attendance as $key => $value) {
 
             // fetch schedule
             $sched = $this->Crud_model->fetch("schedule", array("offering_id" => $value->offering_id));
@@ -419,21 +412,21 @@ class Admin extends CI_Controller {
             foreach ($students as $key => $value) {
                 switch ($value->student_department) {
                     case 'CE':
-                        $ce++;
-                        break;
+                    $ce++;
+                    break;
                     case 'ME':
-                        $me++;
-                        break;
+                    $me++;
+                    break;
                     case 'ECE':
-                        $ece++;
-                        break;
+                    $ece++;
+                    break;
                     case 'EE':
-                        $ee++;
-                        break;
+                    $ee++;
+                    break;
 
                     default:
                         # code...
-                        break;
+                    break;
                 }
             }
         }
@@ -449,6 +442,19 @@ class Admin extends CI_Controller {
         if ($this->Crud_model->update("fic", array("fic_status" => $val), array("fic_id" => $id))) {
             echo json_encode("true");
         }
+    }
+
+    public function more_feedback()
+    {
+        $id = $this->input->post("id");
+
+        $col = array('lecturer_feedback_timedate,lecturer_id, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+        $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+        $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+        $jointype = "INNER";
+        $where = array('lecturer_feedback.lecturer_id' => $id);
+        $feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2,$where);
+        echo json_encode($feedback);
     }
 
 }

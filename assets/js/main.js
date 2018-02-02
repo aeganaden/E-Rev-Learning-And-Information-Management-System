@@ -218,11 +218,17 @@ $(document).ready(function() {
 =            Login Modal JS            =
 ======================================*/
 
-document.getElementById('login-password').onkeydown = function(event) {
+$("#login-password").keydown(function(event) {
 	if (event.keyCode == 13) {
 		login_verify();
 	}
-}
+});
+
+// document.getElementById('login-password').onkeydown = function(event) {
+// 	if (event.keyCode == 13) {
+// 		login_verify();
+// 	}
+// }
 
 
 function login_verify() {

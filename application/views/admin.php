@@ -125,7 +125,7 @@
                                 <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res['image_path'] ?>"></td>
                                 <td><?= $res['full_name'] ?></td>
                                 <td><?= $res['id_number'] ?></td>
-                                <td><?= $res['lecturer_id'] ?> - BUTTON HERE</td>
+                                <td>  <button class="btn bg-primary-green btn_mdl_feedback waves-effect waves-light" data-id="<?= $res['lecturer_id'] ?>"><i class="material-icons right">remove_red_eye</i>View</button></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -148,13 +148,13 @@
             </blockquote>
             <table id="tbl-fic">
                 <thead>
-                <th>ID</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Actions</th>
+                    <th>ID</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </thead>
                 <tbody >
                     <?php foreach ($fic as $key => $value): ?>
@@ -236,7 +236,7 @@
             <table id="tbl-card-ls" >
                 <thead >
                     <tr>
-                        <th>ID</th>
+                        <th>School ID</th>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Middle Name</th>
@@ -257,7 +257,7 @@
                     <?php if ($schedule): ?>
                         <?php foreach ($schedule as $key => $value): ?>
                             <tr class="bg-color-white">
-                                <td><?= $value->lecturer_id ?></td>
+                                <td><?= $value->id_number ?></td>
                                 <td><?= ucwords($value->lastname) ?></td>
                                 <td><?= ucwords($value->firstname) ?></td>
                                 <td><?= ucwords($value->midname) ?></td>
@@ -334,7 +334,7 @@
             <table id="tbl-card-lahr" >
                 <thead >
                     <tr>
-                        <th>ID</th>
+                        <th>School ID</th>
                         <th>Last Name</th>
                         <th>First Name</th>
                         <th>Middle Name</th>
@@ -348,7 +348,7 @@
                     <?php if ($lecturer): ?>
                         <?php foreach ($lecturer as $key => $value): ?>
                             <tr class="bg-color-white">
-                                <td><?= $value->lecturer_id ?></td>
+                                <td><?= $value->id_number ?></td>
                                 <td><?= ucwords($value->firstname) ?></td>
                                 <td><?= ucwords($value->midname) ?></td>
                                 <td><?= ucwords($value->lastname) ?></td>
@@ -450,6 +450,19 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function ($) {
+        // show feedbacks
+        $(".btn_mdl_feedback").click(function(event) {
+            // alert($(this).data('id'));
+            $.ajax({
+                url: '<?=base_url()?>Admin/more_feedback',
+                type: 'post',
+                dataType: 'json',
+                data: {id: $(this).data('id')},
+                success: function(data){
+                    console.log(data);    
+                }
+            });
+        });
 
         // oncheck fic status
         $(".chk_fic_status").change(function (event) {
@@ -521,45 +534,45 @@
         $(".btn_delete_com").click(function (event) {
 
             swal({
-            title: "Are you sure?",
-                    text: "This may cause inconsistency of data in the system!",
-                    icon: "error",
-                    buttons: true,
-                    dangerMode: true,
+                title: "Are you sure?",
+                text: "This may cause inconsistency of data in the system!",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
             })
-                    .then((willDelete) = > {
-                    if (willDelete) {
-                        $.ajax({
-                            url: "<?= base_url() ?>Admin/deleteOffering ",
-                            type: "post",
-                            dataType: "json",
-                            data: {
-                                id: $(this).attr("data-id")
-                            },
-                            success: function (data) {
-                                swal("Poof! Offering has been deleted!", {
-                                    icon: "success",
-                                }).then(function () {
-                                    window.location.reload(true);
-                                });
-                            },
-                            error: function (data) {
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url() ?>Admin/deleteOffering ",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $(this).attr("data-id")
+                        },
+                        success: function (data) {
+                            swal("Poof! Offering has been deleted!", {
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        },
+                        error: function (data) {
 
-                            }
+                        }
 
-                        });
-                    }
-                });
-    });
-    });
-            function shorten_text(text, id) {
-                var ret = text;
-                if (ret.length > 20) {
-                    ret = ret.substr(0, 20 - 3) + "...";
+                    });
                 }
+            });
+        });
+    });
+function shorten_text(text, id) {
+    var ret = text;
+    if (ret.length > 20) {
+        ret = ret.substr(0, 20 - 3) + "...";
+    }
 
-                $(".title_trunc" + id).html(ret);
-            }
+    $(".title_trunc" + id).html(ret);
+}
 
 </script>
 
