@@ -1,4 +1,4 @@
-
+<?php $this->load->view('includes/navbar-admin'); ?>
 <div class="row">
     <div class="col s3"></div>
     <div class="col s6" style='padding-top:50px;'>
