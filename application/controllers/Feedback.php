@@ -191,16 +191,6 @@ class Feedback extends CI_Controller {
             } else {
                 redirect("feedback");
             }
-        } else if (true) { //show to ADMIN LAST
-            echo "HEY ADMIN!";
-            $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
-            $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
-            $jointype = "INNER";
-            $result = $this->Crud_model->fetch_join('lecturer_feedback', NULL, $join1, $jointype, $join2);
-            echo "<pre>";
-            print_r($result);
-            echo "</pre>";
-//
         } else {
             redirect("");
         }
@@ -247,7 +237,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(

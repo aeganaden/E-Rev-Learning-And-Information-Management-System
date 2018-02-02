@@ -23,13 +23,18 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            function store(id) {
+                alert(id);
+            }
+        </script>
         <div class="row">
             <h4>Actions</h4>
             <ul class="collapsible" data-collapsible="accordion">
                 <li>
                     <div class="collapsible-header bg-primary-green color-white"><i class="material-icons ">chrome_reader_mode</i>Reports</div>
                     <div class="collapsible-body">
-                        <div class="card" id="card-cosml">
+                        <div class="card" id="card-cosml" onclick="store(this.id)">
                             <div class="card-content bg-primary-green">
                                 <h6 class="a-oswald color-white  valign-wrapper">Course Offering Schedule Master List <i class="material-icons">keyboard_arrow_right</i></h6>
                             </div>
@@ -106,10 +111,33 @@
     <div class="col s9">
         <!-- Lecturers' Feedback Account -->
         <div class="row" id="div-card-lf" style="display: none; ">
-            <h1 class="color-red">Ex mollit minim minim elit sunt mollit cupidatat ut mollit cillum ut consequat pariatur nulla tempor minim cupidatat ullamco reprehenderit exercitation pariatur dolore tempor in ea labore cupidatat ut ex nostrud aute aliquip laborum cillum excepteur aute incididunt sunt nostrud est ut in ea consequat in amet anim aute pariatur ut consectetur irure esse labore do est labore ad id non amet laborum culpa eu in ex sed ullamco incididunt minim incididunt commodo do mollit qui quis sed aliqua amet commodo adipisicing ut ullamco ut consequat laborum eiusmod quis in pariatur quis cillum in duis incididunt ex duis laborum officia culpa in dolore do dolore enim laboris in proident laborum aute sint minim minim laboris nisi dolore officia dolore in magna reprehenderit ullamco dolor aute id elit dolore dolor eu irure in amet laborum nulla voluptate culpa ex nisi cupidatat nostrud labore ex ut nulla culpa cillum ea aliquip nisi eiusmod excepteur irure veniam id consectetur duis id minim id eu nulla culpa sit ullamco officia in ullamco do reprehenderit quis irure sed commodo in duis reprehenderit nisi in aliqua esse in do minim officia ex incididunt tempor aliquip qui nisi in enim.</h1>
-            <!-- codes here -->
+            <?php if (isset($feedback) && !empty($feedback)): ?>
+                <table class="" id="tbl-feedback" style="table-layout:auto;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Lecturer</th>
+                            <th>Time/Date</th>
+                            <th>Feedback</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($feedback as $res): ?>
+                            <tr class="bg-color-white">
+                                <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res['image_path'] ?>"></td>
+                                <td><?= $res['full_name'] ?></td>
+                                <td><?= date("M d, Y | h:i A", $res['lecturer_feedback_timedate']) ?></td>
+                                <td><?= $res['lecturer_feedback_comment'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <center style="margin-top:20vh;">
+                    <h3>No data to show</h3>
+                </center>
+            <?php endif; ?>
         </div>
-
 
 
         <!-- Manage FIC's Account -->
@@ -122,13 +150,13 @@
             </blockquote>
             <table id="tbl-fic">
                 <thead>
-                    <th>ID</th>
-                    <th>Last Name</th>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Department</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                <th>ID</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Middle Name</th>
+                <th>Department</th>
+                <th>Status</th>
+                <th>Actions</th>
                 </thead>
                 <tbody >
                     <?php foreach ($fic as $key => $value): ?>
@@ -495,45 +523,45 @@
         $(".btn_delete_com").click(function (event) {
 
             swal({
-                title: "Are you sure?",
-                text: "This may cause inconsistency of data in the system!",
-                icon: "error",
-                buttons: true,
-                dangerMode: true,
+            title: "Are you sure?",
+                    text: "This may cause inconsistency of data in the system!",
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
             })
-            .then((willDelete) = > {
-                if (willDelete) {
-                    $.ajax({
-                        url: "<?= base_url() ?>Admin/deleteOffering ",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            id: $(this).attr("data-id")
-                        },
-                        success: function (data) {
-                            swal("Poof! Offering has been deleted!", {
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        },
-                        error: function (data) {
+                    .then((willDelete) = > {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "<?= base_url() ?>Admin/deleteOffering ",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: $(this).attr("data-id")
+                            },
+                            success: function (data) {
+                                swal("Poof! Offering has been deleted!", {
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload(true);
+                                });
+                            },
+                            error: function (data) {
 
-                        }
+                            }
 
-                    });
-                }
-            });
-        });
+                        });
+                    }
+                });
     });
-    function shorten_text(text, id) {
-        var ret = text;
-        if (ret.length > 20) {
-            ret = ret.substr(0, 20 - 3) + "...";
-        }
+    });
+            function shorten_text(text, id) {
+                var ret = text;
+                if (ret.length > 20) {
+                    ret = ret.substr(0, 20 - 3) + "...";
+                }
 
-        $(".title_trunc" + id).html(ret);
-    }
+                $(".title_trunc" + id).html(ret);
+            }
 
 </script>
 
