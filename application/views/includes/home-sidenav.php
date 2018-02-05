@@ -30,9 +30,9 @@ switch ($info['user']->$ident) {
 // print_r($info);
 ?>
 
-<ul id="slide-out" class="side-nav bg-color-white">
+<ul id="slide-out" class="side-nav bg-color-white fixed">
     <li><div class="user-view">
-        <div class="background bg-primary-yellow">
+        <div class="background" style="background-color: #F2A900">
 
         </div>
         <div class="row valign-wrapper" style="margin-bottom: 0px !important">
@@ -50,14 +50,28 @@ switch ($info['user']->$ident) {
         </div>
         <div class="row" style="margin-bottom: 0px !important">
             <blockquote class="color-primary-green">
-                <h5><?= $info["identifier"] != 'fic' ? strtoupper($info["identifier"]) : "FACULTY IN CHARGE" ?></h5>
+                <h5 class="color-black"><?= $info["identifier"] != 'fic' ? strtoupper($info["identifier"]) : "FACULTY IN CHARGE" ?></h5>
             </blockquote>
         </div>
         
-        <div class="row" style="margin-top: 0px !important">
-            <p style="margin: 0 !important; font-size: 1.5vw" class="center" style="text-transform: capitalize;">
-                <span ><?=$program?></span>
-            </p>
+        <div class="row" style="margin-top: 0px !important; border-bottom: 2px solid #007A33;">
+
+        </div>
+        <div class="row">
+            <?php   
+            if ($info['identifier']!="professor") {
+                $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
+                $section = $section[0];
+            }
+            ?>
+            <blockquote class="color-primary-green" style="margin: 0">
+                <h5 class="color-black" >ABOUT</h5>
+            </blockquote>
+            <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$program?></h6>
+            <?php if ($info['identifier']!="professor"): ?>
+                <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$section->offering_name?></h6>
+            <?php endif ?>
+
         </div>
         <div class="row">
             <!-- <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a> -->

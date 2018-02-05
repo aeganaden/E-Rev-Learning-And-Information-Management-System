@@ -49,8 +49,8 @@ $this->load->view('includes/home-sidenav');
             <div class="col s1"></div>
         </div>
         <center>
-            <button class="btn waves-effect waves-light green" type="submit" style="margin-top:50px;">
-                <i class="material-icons right">send</i>
+            <button class="btn waves-effect waves-light bg-primary-green" type="submit" style="margin-top:50px;">
+                <i class="material-icons right ">send</i>
                 Submit
             </button>
         </center>

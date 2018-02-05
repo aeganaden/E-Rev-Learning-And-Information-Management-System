@@ -3,20 +3,23 @@
 ============================-->
 IMPORTANT = Analyze the system, determine which controllers or CRUD process are needed to revise and apply "Active Enrollment" Flag
 
-1. Sort fetched feedbacks by date
-2. Finish student subjects UI
-3. Search for text editor / fix wiris text editor
+1. Search for text editor / fix wiris text editor
 
+
+DOCUMENT
+1. REMOVE DELETE COURSE OFFERING MODULE
 
 
 <!--====  End of TO DO  ====-->
 
 
-<!--==============================
-=            BOOKMARK            =
-===============================-->
+<!--=====================================
+=            SOON FEATURES            =
+=========================================-->
 
-1. Admin - Managemeng of FIC
+1. Content Management
+1.1 Management of welcome page carousel images
+1.2 Management of Subject Dashboard Photos
 
-<!--====  End of BOOKMARK  ====-->
+<!--====  End of  SOON FEATURES  ====-->
 
