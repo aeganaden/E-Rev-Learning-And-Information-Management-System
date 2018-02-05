@@ -262,7 +262,7 @@ date_default_timezone_set('Asia/Manila');
 	<div class="row">
 
 		<div class="col s12">
-			<div class="timetable"></div>
+			<div class="timetable" id="schedule_section"></div>
 		</div>
 	</div>
 	

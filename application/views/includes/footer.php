@@ -6,6 +6,8 @@
 <script src="<?=base_url()?>assets/js/timetable.min.js"></script>
 <!-- charts.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<!-- fittext.js -->
+<script src="<?=base_url()?>assets/js/jquery.fittext.js"></script>
 
 </body>
 </html>

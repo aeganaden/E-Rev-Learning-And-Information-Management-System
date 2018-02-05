@@ -34,6 +34,9 @@
     <!-- MARK'S CSS!!! -->
     <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/css/mark_css.css?v=<?= time(); ?>'>
 
+    <!-- Animate Css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
     <!-- Global base_url for js files -->
     <script>var base_url = '<?php echo base_url() ?>';</script>
 
@@ -50,9 +53,16 @@
         ident = "div-" + id;
         document.cookie = ident;
     }
-    var x = document.cookie;
+    
     jQuery(document).ready(function($) {
-        $("#"+x).css('display', 'block');
+        var x = document.cookie;
+        if (!x) {
+            $("#div-card-chart").css('display', 'block');
+        }else{
+            $("#div-card-chart").css('display', 'none');
+            $("#"+x).css('display', 'block');
+        }
+        
     });
 
 </script>

@@ -103,6 +103,15 @@ a{
 	background-color: rgba(33, 33, 33, 0.97);
 }
 
+#subject-section {
+	-webkit-animation-duration: 1s;
+	-webkit-animation-delay: 0s;
+}	
+#topics-section {
+	-webkit-animation-duration: 1s;
+	-webkit-animation-delay: 0s;
+}	
+
 /*================================
 =            Home CSS            =
 ================================*/

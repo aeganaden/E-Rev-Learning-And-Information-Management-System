@@ -12,8 +12,15 @@ class Admin extends CI_Controller {
         $this->load->model('Crud_model');
     }
 
-    public function index() {
-        $this->session->unset_userdata('insertion_info');
+    public function active_enrollment()
+    {
+     $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+     $active_enrollment = $active_enrollment[0];
+     return $active_enrollment->enrollment_id;
+ }
+
+ public function index() {
+    $this->session->unset_userdata('insertion_info');
 
 
         // echo strtotime("+3 day 9 hours");
@@ -158,7 +165,7 @@ class Admin extends CI_Controller {
             foreach ($ann_full as $key => $value) {
                 $seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
                 $days = ceil($seconds / (3600 * 24));
-                if ($days < 0) {
+                if ($days <= 0) {
                     $this->Crud_model->update("announcement", array("announcement_is_active" => 0), array("announcement_id" => $value->announcement_id));
                 }
             }
@@ -397,12 +404,12 @@ class Admin extends CI_Controller {
         }
     }
 
-    public function deleteOffering() {
-        $id = $this->input->post("id");
-        if ($this->Crud_model->delete("course", array("course_id" => $id))) {
-            echo json_encode(true);
-        }
-    }
+    // public function deleteOffering() {
+    //     $id = $this->input->post("id");
+    //     if ($this->Crud_model->delete("course", array("course_id" => $id))) {
+    //         echo json_encode(true);
+    //     }
+    // }
 
     public function charts_student() {
         $students = $this->Crud_model->fetch("student");
@@ -446,16 +453,17 @@ class Admin extends CI_Controller {
 
     public function more_feedback()
     {
+
         $id = $this->input->post("id");
 
         $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
         $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
         $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
         $jointype = "INNER";
-        $where = array('lecturer_feedback.lecturer_id' => $id);
-        
+        $where = array('lecturer_feedback.lecturer_id' => $id, "enrollment_id"=>$this->active_enrollment());
+        $this->db->order_by('lecturer_feedback_timedate', 'ASC');
         if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
-           for ($i=0; $i < sizeof($feedback); $i++) { 
+         for ($i=0; $i < sizeof($feedback); $i++) { 
 
             $feedback[$i]["date"] = date("M d, Y",$feedback[$i]["lecturer_feedback_timedate"]);
         }

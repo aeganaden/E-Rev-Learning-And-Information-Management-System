@@ -25,15 +25,19 @@
 <?php echo "<pre>" ?>
   <?php print_r($info) ?> -->
   <div class="row">
-    <div class="row">
-       <!--==========================================
+    <div class="row container">
+      <div class="col s1"></div>
+      <div class="col s11">
+         <!--==========================================
         =            Announcement Section            =
         ===========================================-->
 
-        <div class="col s3">
+        <div class="col s4">
           <h4>Announcements</h4>
           <div class="row s12">
+
             <?php 
+            
             $where = array(
               "announcement_is_active"=>1
             );
@@ -72,3 +76,4 @@
         <!--====  End of Announcement Section  ====-->
       </div>
     </div>
+  </div>

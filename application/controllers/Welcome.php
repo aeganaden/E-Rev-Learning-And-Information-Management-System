@@ -19,7 +19,7 @@ class Welcome extends CI_Controller {
 			foreach ($ann_full as $key => $value) {
 				$seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
 				$days = ceil($seconds/(3600*24));
-				if ($days < 0) {
+				if ($days <= 0) {
 					$this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
 				}
 			}
@@ -43,21 +43,24 @@ class Welcome extends CI_Controller {
 	public function fetchSchedule()
 	{
 		$offering_id = $this->input->post("id");
-		$data = $this->Crud_model->fetch("schedule",array("offering_id"=>$offering_id));
-		foreach ($data as $key => $value) {
-			$value->day = date("l",$value->schedule_start_time);
+		if ($data = $this->Crud_model->fetch("schedule",array("offering_id"=>$offering_id))) {
+			foreach ($data as $key => $value) {
+				$value->day = date("l",$value->schedule_start_time);
 
-			$value->s_h = date("G",$value->schedule_start_time);
-			$value->s_min = date("i",$value->schedule_start_time);
-			$value->s_d= date("d",$value->schedule_start_time);
-			$value->s_m= date("m",$value->schedule_start_time);
+				$value->s_h = date("G",$value->schedule_start_time);
+				$value->s_min = date("i",$value->schedule_start_time);
+				$value->s_d= date("d",$value->schedule_start_time);
+				$value->s_m= date("m",$value->schedule_start_time);
 
-			$value->e_h = date("G",$value->schedule_end_time);
-			$value->e_min = date("i",$value->schedule_end_time);
-			$value->e_d= date("d",$value->schedule_start_time);
-			$value->e_m= date("m",$value->schedule_start_time);
+				$value->e_h = date("G",$value->schedule_end_time);
+				$value->e_min = date("i",$value->schedule_end_time);
+				$value->e_d= date("d",$value->schedule_start_time);
+				$value->e_m= date("m",$value->schedule_start_time);
+			}
+			echo json_encode($data);
+		}else{
+			echo json_encode(false);
 		}
-		echo json_encode($data);
 	}
 
 }

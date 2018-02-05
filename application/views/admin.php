@@ -5,8 +5,8 @@
 =            Cards            =
 ============================-->
 
-<div class="row">
-    <div class="col s3">
+<div class="row" >
+    <div class="col s3" >
         <div class="row" id="card-chart" onclick="store(this.id)" style="cursor: pointer;">
             <div class="card">
                 <div class="card-content bg-primary-yellow">
@@ -91,14 +91,16 @@
     =            CHARTS            =
     =============================-->
     <div class="col s9 valign-wrapper" id="div-card-chart" style="display: none;">
+        <h4 class="center">
+            <span style="text-transform: uppercase; border-bottom: 2px solid #F2A900" >Total Number Of Students</span>
+        </h4>
+        <div class="col s3"></div>
         <div class="col s6">
             <br>
             <canvas id="myChart"></canvas>
         </div>
-        <div class="col s6 ">
-            <h4 >
-                <span style="text-transform: uppercase; border-bottom: 2px solid #F2A900" >Total Number Of Students</span>
-            </h4>
+        <div class="col s3 ">
+
         </div>
     </div>
 
@@ -384,7 +386,6 @@
                         <td>Course Title</td>
                         <td>Program</td>
                         <td>Actions</td>
-                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -398,7 +399,7 @@
                                 <td class="truncate" style="text-transform: capitalize;"><?= $value->course_course_title ?></td>
                                 <td><?= strtoupper($value->course_department) ?></td>
                                 <td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?= $value->course_id ?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
-                                <td><i class="material-icons color-red btn_delete_com" data-id="<?= $value->course_id ?>" style="cursor: pointer;">delete</i></td>
+                                
                             </tr>
                         <?php endforeach ?>
                     <?php endif ?>
@@ -473,7 +474,7 @@
             </div>
         </div>
         <div class="row">
-            <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks</h4>
+            <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks - <span><?= $t ?>T <?= $sy ?></span></h4>
             <table id="tbl-mdl-feedback">
                 <thead>
                     <th>Date</th>
@@ -498,8 +499,8 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function ($) {
-        // show feedbacks
-        $(".btn_mdl_feedback").click(function(event) {
+         // show feedbacks
+         $(".btn_mdl_feedback").click(function(event) {
             // alert($(this).data('id'));
             $id =  $(this).data('id');
             var html_content ="";

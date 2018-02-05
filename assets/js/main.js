@@ -91,11 +91,14 @@ function schedule() {
 			dataType: 'json',
 			data: {id: $(this).val()},
 			success: function(data){
-				var calendar = new Timetable();
-				calendar.setScope(7, 21);
-				calendar.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
-				for(var i =0; i < data.length ; i++){
-					
+				if (data==false) {
+					$("#schedule_section").html("<div class='col s4'></div><div class='col s4'><h4>No Attendance Encoded Yet</h4></div><div class='col s4'></div>");
+				}else{
+					var calendar = new Timetable();
+					calendar.setScope(7, 21);
+					calendar.addLocations(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
+					for(var i =0; i < data.length ; i++){
+
 					// console.log(data[i]);	
 					calendar.addEvent(data[i].schedule_venue, 	data[i].day, new Date(2015,7,data[i].s_d,data[i].s_h,data[i].s_min), new Date(2015,7,data[i].e_d,data[i].e_h,data[i].e_min));
 					var renderer = new Timetable.Renderer(calendar);
@@ -103,7 +106,9 @@ function schedule() {
 					
 				}
 			}
-		});
+
+		}
+	});
 
 
 	});
