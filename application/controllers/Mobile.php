@@ -21,11 +21,9 @@ class Mobile extends CI_Controller {
 
         } else if ($result = $this->Crud_model->fetch_array("fic", NULL, $where)[0]) {
 
-        } else if ($result = $this->Crud_model->fetch("admin", $where)) {
+        } else if ($result = $this->Crud_model->fetch("admin", $where)[0]) {
 
         }
-//        $hold['user_details'] = array();
-//        $hold['user_details'] = $result;
         print_r(json_encode($result));
     }
 
