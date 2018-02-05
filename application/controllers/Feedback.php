@@ -81,10 +81,19 @@ class Feedback extends CI_Controller {
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
             $info = $this->session->userdata('userInfo');
+            // GET THE ACTIVE ENROLLMENT
+            $col = array('course_id');
+            $temp = $this->Crud_model->fetch_select('course', $col, array('enrollment_id' => $info["active_enrollment"], 'course_department' => $info["user"]->fic_department));
+
+            $wherein[0] = 'course_id';
+            foreach ($temp as $temp2) {
+                $wherein[1][] = $temp2->course_id;
+            }
+
             //******GET THE SECTION**********
             $col = array('offering_id', 'offering_name');
             $where = array('fic_id' => $info["user"]->fic_id);
-            $sections = $this->Crud_model->data_distinct('offering', $col, $where);
+            $sections = $this->Crud_model->fetch_select('offering', $col, $where, NULL, NULL, $wherein);
 
             //******GET THE LECT ID**********
             foreach ($sections as $section) {
@@ -109,12 +118,11 @@ class Feedback extends CI_Controller {
             $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
             $lect = $this->Crud_model->fetch_select('lecturer', $col, NULL, $hold);
 
-            $this->session->set_userdata('feedback', $validation);
             $data = array('title' => "Feedback");
             $this->load->view('includes/header', $data);
 
             $counter = 0;
-            $temp = $this->session->userdata('feedback');
+            $temp = $validation;
 
             if (!isset($_POST['section']) && !isset($_POST['lecturer'])) {
                 $data = array(
@@ -193,6 +201,108 @@ class Feedback extends CI_Controller {
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") { //show to prof
             $info = $this->session->userdata('userInfo');
+            //******GET THE SECTION**********
+            $col = array('course_id');
+            $temp = $this->Crud_model->fetch_select('course', $col, array('enrollment_id' => $info["active_enrollment"], 'course_department' => $info["user"]->professor_department));
+
+            $col = array('offering_id', 'offering_name');
+            $where = array('offering_department' => $info["user"]->professor_department);
+            $wherein[0] = 'course_id';
+            foreach ($temp as $temp2) {
+                $wherein[1][] = $temp2->course_id;
+            }
+            $sections = $this->Crud_model->fetch_select('OFFERING', $col, $where, NULL, NULL, $wherein);
+            unset($temp);
+//            echo "<pre>";
+//            print_r($sections);
+//            echo "</pre>";
+            //******GET THE SECTION - END**********
+            //******GET THE LECT ID**********
+            $col = array('lecturer.lecturer_id, lecturer.image_path, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name', FALSE);
+            $join2 = array('lecturer', 'lecturer.lecturer_id = subject.lecturer_id');
+            $join1 = array('subject', 'subject.offering_id = offering.offering_id');
+            $jointype = "INNER";
+            $where = array('offering.offering_department' => $info["user"]->professor_department);
+            $lecturers = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where, TRUE);
+            //******GET THE LECT ID - END**********
+
+            foreach ($sections as $sec) {
+                $temp[0][] = $sec->offering_id;
+            }
+            foreach ($lecturers as $lect) {
+                $temp[1][] = $lect->lecturer_id;
+            }
+            $temp[0][] = 'all';
+            $temp[1][] = 'all';
+            $data = array('title' => "Feedback");
+            $this->load->view('includes/header', $data);
+
+//            echo "<pre>";
+//            print_r($temp);
+//            echo "</pre>";
+
+            if (!isset($_POST['section']) && !isset($_POST['lecturer'])) {
+                $data = array(
+                    'title' => "Feedback",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_c" => "",
+                    "s_f" => "selected-nav",
+                    'sections' => $sections,
+                    'lecturers' => $lecturers
+                );
+                $this->load->view('feedback/prof_view', $data);
+            } else if (isset($_POST['section']) && isset($_POST['lecturer'])) {         //kung nakaselect na
+                if (in_array($_POST['section'], $temp[0]) && in_array($_POST['lecturer'], $temp[1])) {
+                    $sel_section = $_POST['section'];
+                    $sel_lecturer = $_POST['lecturer'];
+//                    $result = array();
+                    if (strcasecmp("all", $sel_section) == 0 && strcasecmp("all", $sel_lecturer) == 0) {
+                        $where = array('lecturer_feedback_department' => $info["user"]->professor_department, 'enrollment_id' => $info["active_enrollment"]);
+                    } else if (strcasecmp("all", $sel_section) == 0) {
+                        $where = array('lecturer_feedback_department' => $info["user"]->professor_department, 'lecturer.lecturer_id' => $sel_lecturer, 'enrollment_id' => $info["active_enrollment"]);
+                    } else if (strcasecmp("all", $sel_lecturer) == 0) {
+                        $where = array('lecturer_feedback_department' => $info["user"]->professor_department, 'offering.offering_id' => $sel_section, 'enrollment_id' => $info["active_enrollment"]);
+                    } else {
+                        $where = array('lecturer_feedback_department' => $info["user"]->professor_department, 'offering.offering_id' => $sel_section, 'lecturer.lecturer_id' => $sel_lecturer, 'enrollment_id' => $info["active_enrollment"]);
+                    }
+                    $col = array('lecturer_feedback.lecturer_feedback_timedate, lecturer_feedback.lecturer_feedback_comment, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name, offering.offering_name, lecturer.image_path', FALSE);
+
+                    $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+                    $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+                    $jointype = "INNER";
+                    $result = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
+
+                    $data = array(
+                        'title' => "Feedback",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_c" => "",
+                        "s_f" => "selected-nav",
+                        'sections' => $sections,
+                        'lecturers' => $lecturers,
+                        'feedback' => $result
+                    );
+                    $this->load->view('feedback/prof_view', $data);
+                } else {
+                    $data = array(
+                        'title' => "Feedback",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_c" => "",
+                        "s_f" => "selected-nav",
+                        'sections' => $sections,
+                        'lecturers' => $lecturers,
+                        'error' => "Invalid Input"
+                    );
+                    $this->load->view('feedback/prof_view', $data);
+                }
+            } else {
+                redirect("feedback");
+            }
         } else {
             redirect("");
         }
@@ -239,7 +349,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -272,8 +382,6 @@ class Feedback extends CI_Controller {
                 include(APPPATH . 'views\feedback\custom1.php');
             }
             $this->load->view('includes/footer');
-        } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
-
         } else {
             redirect();
         }
