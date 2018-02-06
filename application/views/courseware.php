@@ -1,10 +1,6 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <?php $this->load->view('includes/home-sidenav'); ?>
-<!-- <textarea name="editor1"></textarea>
-<script>
 
-	CKEDITOR.replace( 'editor1');
-</script> -->
 
 <div class="row container">
 	<div class="col s1"></div>

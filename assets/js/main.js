@@ -1,5 +1,9 @@
 $(document).ready(function() {
-	$(".button-collapse").sideNav();
+	$(".button-collapse").sideNav({
+		onOpen: function(el) { 
+			$("#slide-out").css("display","block");
+		},
+	});
 	$('.modal').modal();
 	$('.collapsible').collapsible();
 	$('select').material_select();
