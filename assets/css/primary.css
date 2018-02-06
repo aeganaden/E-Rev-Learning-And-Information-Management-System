@@ -164,3 +164,16 @@ a{
 
 /*=====  End of Landing Page Css  ======*/
 
+
+/*===================================
+=            Media Query            =
+===================================*/
+
+@media only screen and (max-width:1271px) {
+	#slide-out{
+		display: none;
+	}
+}
+
+/*=====  End of Media Query  ======*/
+

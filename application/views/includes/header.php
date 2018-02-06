@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
     <!-- Global base_url for js files -->
-    <script>var base_url = '<?php echo base_url() ?>';</script>
+    <script>var base_url = '<?php echo base_url() ?>'; </script>
 
     <!-- SweetAlert2 -->
     <script src="<?= base_url(); ?>assets/js/sweetalert2.all.js"></script>
@@ -49,12 +49,13 @@
     <script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js"></script>
 
     <script type="text/javascript">
-       function store(id) {
+     function store(id) {
         ident = "div-" + id;
         document.cookie = ident;
     }
     
     jQuery(document).ready(function($) {
+
         var x = document.cookie;
         if (!x) {
             $("#div-card-chart").css('display', 'block');
@@ -62,7 +63,7 @@
             $("#div-card-chart").css('display', 'none');
             $("#"+x).css('display', 'block');
         }
-        
+
     });
 
 </script>

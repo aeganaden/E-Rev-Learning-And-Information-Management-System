@@ -4,7 +4,7 @@
 
 <div class="row valign-wrapper">
 	<div class="col s4 ">
-
+		
 	</div>
 	<div class="col s4">
 		<center>

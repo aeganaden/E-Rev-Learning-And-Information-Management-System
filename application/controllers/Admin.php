@@ -465,7 +465,7 @@ class Admin extends CI_Controller {
         if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
          for ($i=0; $i < sizeof($feedback); $i++) { 
 
-            $feedback[$i]["date"] = date("M d, Y",$feedback[$i]["lecturer_feedback_timedate"]);
+            $feedback[$i]->date = date("M d, Y",$feedback[$i]->lecturer_feedback_timedate);
         }
     }else{
         $feedback = "false";

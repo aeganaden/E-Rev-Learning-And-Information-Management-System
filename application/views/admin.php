@@ -123,10 +123,10 @@
                     <tbody>
                         <?php foreach ($feedback as $res): ?>
                             <tr class="bg-color-white">
-                                <td class="valign-wrapper"><img style="object-fit: cover;height:50px;width:50px; margin-right: 2%;" class="circle " src="<?= base_url() . $res['image_path'] ?>"><?= $res['full_name'] ?></td>
-                                <td><?= $res['id_number'] ?></td>
+                                <td class="valign-wrapper"><img style="object-fit: cover;height:50px;width:50px; margin-right: 2%;" class="circle " src="<?= base_url().$res->image_path ?>"><?= $res->full_name?></td>
+                                <td><?= $res->id_number?></td>
                                 <td> 
-                                    <a href="#modal_feedback" class="btn bg-primary-green btn_mdl_feedback waves-effect waves-light modal-trigger" data-id="<?= $res['lecturer_id'] ?>"> <i class="material-icons right">remove_red_eye</i>View 
+                                    <a href="#modal_feedback" class="btn bg-primary-green btn_mdl_feedback waves-effect waves-light modal-trigger" data-id="<?= $res->lecturer_id?>"> <i class="material-icons right">remove_red_eye</i>View 
                                     </a>
                                 </td>
                             </tr>
@@ -463,33 +463,35 @@
                 </blockquote>
             </div>
             <div class="col s6" style="margin-left: 5%;">
-                <h5 id="mdl_lec_name" style="margin: 0">Angelo Ganaden Jr</h5>
-                <h6 id="mdl_lec_id" style="margin: 0">201512103</h6>
-                <h6 id="mdl_lec_email" style="margin: 0">rbbabaran@gmail.com</h6>
-            </div>
-            <div class="col s5">
-                <span style="border-bottom: 3px solid #007A33; font-size:1.5rem">Expertise: </span>
-                <p id="mdl_lec_expertise">  CE graduate
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks - <span><?= $t ?>T <?= $sy ?></span></h4>
-            <table id="tbl-mdl-feedback">
-                <thead>
-                    <th>Date</th>
-                    <th>Message</th>
-                </thead>
-                <tbody id="mdl_lec_content">
-
-                </tbody>
-            </table>
-            <div id="msg_error_feedback"></div>
+                <div class="col s12" id="mdl_lec_div">
+                  <h5 id="mdl_lec_name" style="margin: 0">Angelo Ganaden Jr</h5>
+                  <h6 id="mdl_lec_id" style="margin: 0">201512103</h6>
+                  <h6 id="mdl_lec_email" style="margin: 0">rbbabaran@gmail.com</h6>
+              </div>
+          </div>
+          <div class="col s5">
+            <span style="border-bottom: 3px solid #007A33; font-size:1.5rem">Expertise: </span>
+            <p id="mdl_lec_expertise">  CE graduate
+            </p>
         </div>
     </div>
-    <div class="modal-footer bg-primary-yellow">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Done</a>
-  </div>
+    <div class="row">
+        <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks - <span><?= $t ?>T <?= $sy ?></span></h4>
+        <table id="tbl-mdl-feedback">
+            <thead>
+                <th>Date</th>
+                <th>Message</th>
+            </thead>
+            <tbody id="mdl_lec_content">
+
+            </tbody>
+        </table>
+        <div id="msg_error_feedback"></div>
+    </div>
+</div>
+<div class="modal-footer bg-primary-yellow">
+  <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Done</a>
+</div>
 </div>
 
 
@@ -499,6 +501,11 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function ($) {
+            // fittext
+            jQuery("#mdl_lec_div").fitText();
+
+
+
          // show feedbacks
          $(".btn_mdl_feedback").click(function(event) {
             // alert($(this).data('id'));

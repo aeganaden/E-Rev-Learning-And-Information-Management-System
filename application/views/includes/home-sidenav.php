@@ -85,6 +85,11 @@ switch ($info['user']->$ident) {
             <a href="<?= base_url() ?>Home/Activity" class="color-black"><i class="material-icons color-black">remove_from_queue</i>Activity</a>
         </li>
     <?php endif ?>
+    <?php if ($info["identifier"] == "fic"): ?>
+        <li class="color-black <?= $s_c ?>">
+            <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
+        </li>
+    <?php endif ?>
 
     <?php if ($info["identifier"] == "student"): ?>
         <li class="color-black <?= $s_c ?>">

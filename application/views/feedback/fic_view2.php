@@ -9,8 +9,8 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-   <div class="col s1"></div>
-   <div class="col s11">
+ <div class="col s1"></div>
+ <div class="col s11">
     <div class="col s4">
         <blockquote class="color-primary-green">
             <h1 class="color-black">Feedback</h1>
