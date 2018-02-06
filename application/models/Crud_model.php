@@ -84,7 +84,7 @@ class Crud_model extends CI_Model {
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL) {
+    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL) { //wherein used only to replace orwherein if it is not used
         if ($distinct == TRUE) {
             $this->db->distinct();
         }
@@ -96,6 +96,9 @@ class Crud_model extends CI_Model {
         }
         if (!empty($orwherein)) {
             $this->db->or_where_in($orwherein[0], $orwherein[1]);
+        }
+        if (!empty($wherein)) {
+            $this->db->where_in($wherein[0], $wherein[1]);
         }
         $query = $this->db->get($table);
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
@@ -112,11 +115,13 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
     }
 
-    public function fetch_join($table, $col = NULL, $join1 = NULL, $jointype = NULL, $join2 = NULL, $where = NULL) {
+    public function fetch_join($table, $col = NULL, $join1 = NULL, $jointype = NULL, $join2 = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL) {
         if (!empty($where)) {
             $this->db->where($where);
         }
-
+        if ($distinct == TRUE) {
+            $this->db->distinct();
+        }
         if (!empty($col)) {
             $this->db->select($col);
         } else {
@@ -140,7 +145,12 @@ class Crud_model extends CI_Model {
         }
 
         $query = $this->db->get();
-        return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+
+        if (!empty($resultinarray) && $resultinarray == TRUE) {             //changed to if-else for compatibility issues - mark
+            return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+        } else {
+            return ($query->num_rows() > 0) ? $query->result() : FALSE;
+        }
     }
 
 }

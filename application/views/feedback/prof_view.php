@@ -8,16 +8,17 @@
 <?php $this->load->view('includes/home-sidenav'); ?>
 <!--ABOVE IS PERMA-->
 
-<div class="row">
-    <div class="col s4">
-        <blockquote class="color-primary-green">
-            <h1 class="color-black">Feedback</h1>
-        </blockquote>
+
+<div class="container" style="margin-bottom: 50px;">
+    <div class="row">
+        <div class="col s4">
+            <blockquote class="color-primary-green">
+                <h1 class="color-black">Feedback</h1>
+            </blockquote>
+        </div>
+        <div class="col s4"></div>
+        <div class="col s4"></div>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
-</div>
-<div class="container" style="height:100vh;">
     <form method="post" action="<?= base_url() ?>feedback/">
         <div class="row">
             <div class="input-field col s6">
@@ -34,7 +35,7 @@
                 <select name="lecturer">
                     <option value="all" selected>ALL</option>
                     <?php foreach ($lecturers as $lecturer): ?>
-                        <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->firstname . ' ' . $lecturer->midname . ' ' . $lecturer->lastname) ?></option>
+                        <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->full_name) ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
@@ -62,8 +63,8 @@
                 <?php foreach ($feedback as $res): ?>
                     <tr class="bg-color-white">
                         <td><img style="object-fit: cover;height:50px;width:50px;" class="circle" src="<?= base_url() . $res->image_path ?>"></td>
-                        <td><?= $res->lecturer_id ?></td>
-                        <td><?= $res->offering_id ?></td>
+                        <td><?= $res->full_name ?></td>
+                        <td><?= $res->offering_name ?></td>
                         <td><?= $res->lecturer_feedback_comment ?></td>
                         <td><?= date("M d, Y | h:i A", $res->lecturer_feedback_timedate) ?></td>
                     </tr>
