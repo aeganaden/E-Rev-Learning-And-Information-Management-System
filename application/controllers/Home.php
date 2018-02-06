@@ -27,9 +27,9 @@ class Home extends CI_Controller {
           }
       }
   }
-        // echo "<pre>";
-        // print_r($info);
-        // die();
+  // echo "<pre>";
+  // print_r($info);
+  // die();
   $program = 0;
   if (isset($info['user']->student_department)) {
     switch ($info['user']->student_department) {

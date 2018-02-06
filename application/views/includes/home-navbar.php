@@ -5,9 +5,6 @@
 <div class="row valign-wrapper">
 	<div class="col s4 ">
 
-		<a href="#" style="padding-left: 2%" data-activates="slide-out" class="color-black button-collapse valign-wrapper">
-			<i class="material-icons small">menu</i> MENU
-		</a>
 	</div>
 	<div class="col s4">
 		<center>

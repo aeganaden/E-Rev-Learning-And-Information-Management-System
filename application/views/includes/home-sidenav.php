@@ -59,7 +59,7 @@ switch ($info['user']->$ident) {
         </div>
         <div class="row">
             <?php   
-            if ($info['identifier']!="professor") {
+            if ($info['identifier']!="professor" && $info['identifier']!="fic") {
                 $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
                 $section = $section[0];
             }
@@ -68,7 +68,7 @@ switch ($info['user']->$ident) {
                 <h5 class="color-black" >ABOUT</h5>
             </blockquote>
             <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$program?></h6>
-            <?php if ($info['identifier']!="professor"): ?>
+            <?php if ($info['identifier']!="professor"&& $info['identifier']!="fic"): ?>
                 <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$section->offering_name?></h6>
             <?php endif ?>
 
