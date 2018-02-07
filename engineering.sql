@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 05, 2018 at 11:01 AM
+-- Generation Time: Feb 07, 2018 at 08:52 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -297,16 +297,18 @@ CREATE TABLE `lecturer_attendance` (
   `lecturer_attendance_in` int(20) DEFAULT NULL,
   `lecturer_attendance_out` int(20) DEFAULT NULL,
   `lecturer_id` int(20) NOT NULL,
-  `offering_id` int(20) NOT NULL
+  `offering_id` int(20) NOT NULL,
+  `schedule_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `lecturer_attendance`
 --
 
-INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `lecturer_id`, `offering_id`) VALUES
-(1, 1515455338, 1515455338, 1515476979, 1, 1),
-(2, 1515479755, 1515479755, 1515503216, 2, 2);
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `lecturer_id`, `offering_id`, `schedule_id`) VALUES
+(1, 1515455338, 1515455338, 1515476979, 1, 1, 1),
+(2, 1515479755, 1515479755, 1515503216, 2, 2, 2),
+(3, 1518166800, 1518166800, 1518174000, 1, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -446,10 +448,10 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `offering_id`) VALUES
-(1, 28800, 39600, 'T807', 1, 1),
-(2, 43200, 54000, 'T706', 1, 2),
-(3, 28800, 39600, 'T807', 2, 3),
-(4, 43200, 54000, 'T706', 2, 4);
+(1, 1517958000, 1517968200, 'T807', 1, 1),
+(2, 1518066000, 1518073200, 'T706', 1, 2),
+(3, 1518166800, 1518174000, 'T807', 2, 3),
+(4, 1518231600, 1518238800, 'T706', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -656,7 +658,8 @@ ALTER TABLE `lecturer`
 ALTER TABLE `lecturer_attendance`
   ADD PRIMARY KEY (`lecturer_attendance_id`),
   ADD KEY `fk_lecturer_attendance_lecturer1_idx` (`lecturer_id`),
-  ADD KEY `fk_lecturer_attendance_offering1_idx` (`offering_id`);
+  ADD KEY `fk_lecturer_attendance_offering1_idx` (`offering_id`),
+  ADD KEY `fk_lecturer_attendance_schedule1_idx` (`schedule_id`);
 
 --
 -- Indexes for table `lecturer_feedback`
@@ -892,7 +895,8 @@ ALTER TABLE `course_modules`
 --
 ALTER TABLE `lecturer_attendance`
   ADD CONSTRAINT `fk_lecturer_attendance_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_lecturer_attendance_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_lecturer_attendance_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_lecturer_attendance_schedule1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_feedback`
