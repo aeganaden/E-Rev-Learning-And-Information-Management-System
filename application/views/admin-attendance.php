@@ -1,7 +1,6 @@
 <?php  date_default_timezone_set("Asia/Manila")?>
 <?php $status = $lecturer->lecturer_status == 1 ? "ACTIVE" : "INACTIVE" ?>
 <?php $status_color = $lecturer->lecturer_status == 1 ? "color-green" : "color-red" ?>
-
 <div class="row">
 	<div class="col s8">
 		<blockquote class="color-primary-green">
@@ -20,25 +19,33 @@
 <div class="row">
 	<div class="col s12">
 
-		<table id="tbl-att-lec">
-			<thead>
-				<tr>
-					<td>ID</td>
-					<td>Date</td>
-					<td>Time In</td>
-					<td>Time Out</td>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($attendance as $key => $value): ?>
-					<tr class="bg-color-white">
-						<td><?=$value->lecturer_attendance_id?></td>	
-						<td><?=date("M d, Y - l", $value->lecturer_attendance_date)?></td>	
-						<td><?=date("h:i A", $value->lecturer_attendance_in)?></td>	
-						<td><?=date("h:i A", $value->lecturer_attendance_out)?></td>	
+
+		<?php if ($attendance == false): ?>
+
+			<h1 class="center">No Attendance Recorded Yet</h1>
+		<?php else: ?>
+			<table id="tbl-att-lec">
+				<thead>
+					<tr>
+						<td>ID</td>
+						<td>Date</td>
+						<td>Time In</td>
+						<td>Time Out</td>
 					</tr>
-				<?php endforeach ?>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<?php //print_r($attendance); ?>
+					<?php foreach ($attendance as $key => $value): ?>
+						<tr class="bg-color-white">
+							<td><?=$value->lecturer_attendance_id?></td>	
+							<td><?=date("M d, Y - l", $value->lecturer_attendance_date)?></td>	
+							<td><?=date("h:i A", $value->lecturer_attendance_in)?></td>	
+							<td><?=date("h:i A", $value->lecturer_attendance_out)?></td>	
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		<?php endif ?>
+		
 	</div>
 </div>

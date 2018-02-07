@@ -14,12 +14,12 @@ class Admin extends CI_Controller {
 
     public function active_enrollment()
     {
-     $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-     $active_enrollment = $active_enrollment[0];
-     return $active_enrollment->enrollment_id;
- }
+       $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+       $active_enrollment = $active_enrollment[0];
+       return $active_enrollment->enrollment_id;
+   }
 
- public function index() {
+   public function index() {
     $this->session->unset_userdata('insertion_info');
 
 
@@ -280,7 +280,7 @@ class Admin extends CI_Controller {
         );
     }
 
-    function AddPlayTime($times) {
+    function totalRenderedHours($times) {
         $minutes = 0;
         // loop throught all the times
         foreach ($times as $time) {
@@ -306,57 +306,94 @@ class Admin extends CI_Controller {
           $active_enrollment = $active_enrollment[0];
 
           /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+
+
+          // necessary initialization
+
           $sum = 0;
           $total_hours = 0;
-          $lec_id = $this->uri->segment(3);
+          $lec_id = $this->uri->segment(3); //lec id
           $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
           $lec_data = $lec_data[0];
           $interval = "";
           $total_time = array();
+          // create new object
+          $attendance_data = new \stdClass;
+          $x = 0;
+          // create array of object
+          $attendance[] = array();
+         // fetch active
 
-          $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id));
-          foreach ($lec_attendance as $key => $value) {
+          // fetch course
+          $course = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
+          foreach ($course as $key => $value) {
+              // fetch offering with course id that is active
+            $offering = $this->Crud_model->fetch("offering",array("course_id"=>$value->course_id));
+            foreach ($offering as $key => $inner_value) {
+                // fetch schedule
+                $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $lec_id,"offering_id"=>$inner_value->offering_id));
+                foreach ($schedule as $key => $sched) {
+                    // fetch lecturer
+                    $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id,"offering_id"=>$sched->offering_id));
+                
+                    // if ($lec_attendance) {
+                    //     foreach ($lec_attendance as $key => $lec) {
+                    //         $attendance_data->lecturer_attendance_id = $lec->lecturer_attendance_in;
+                    //         $attendance_data->lecturer_attendance_date = $lec->lecturer_attendance_date;
+                    //         $attendance_data->lecturer_attendance_in = $lec->lecturer_attendance_in;
+                    //         $attendance_data->lecturer_attendance_out = $lec->lecturer_attendance_out;
+                    //         $attendance[$x] =$attendance_data;
 
-            // fetch schedule
-            $sched = $this->Crud_model->fetch("schedule", array("offering_id" => $value->offering_id));
-            $sched = $sched[0];
-            $sched_in = $sched->schedule_start_time;
-            $sched_out = $sched->schedule_end_time;
+                    //         $lec_in = date("o-m-d h:i", $lec->lecturer_attendance_in);
+                    //         $lec_out = date("o-m-d h:i", $lec->lecturer_attendance_out);
+                    //         $interval = $this->diff($lec_in, $lec_out);
+                    //         $sum = $interval['h'] . ":" . $interval['i'];
+                    //         array_push($total_time, $sum);
+                    //         $x++;
+                    //     }
+                    // }
+                }
 
-            // $diff_sched_in = $this->dateDiffMinutes($sched_in,$lec_in);
-            // $diff_sched_out = $this->dateDiffMinutes($sched_out,$lec_out);
-            $lec_in = date("o-m-d h:i", $value->lecturer_attendance_in);
-            $lec_out = date("o-m-d h:i", $value->lecturer_attendance_out);
-            $interval = $this->diff($lec_in, $lec_out);
-            $sum = $interval['h'] . ":" . $interval['i'];
-            array_push($total_time, $sum);
+            }
         }
 
 
+        if (empty($attendance[0])) {
+           $attendance = false;
+       }
 
-        $data = array(
-            "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
-            "lecturer" => $lec_data,
-            "attendance" => $lec_attendance,
-            "hours_rendered" => $this->AddPlayTime($total_time),
-        );
-        $this->load->view('includes/header', $data);
-        $this->load->view('admin-attendance');
-        $this->load->view('includes/footer');
-    }
+         // end fetch active
 
-    public function viewClassList() {
+
+
+
+
+
+
+
+       $data = array(
+        "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
+        "lecturer" => $lec_data,
+        "attendance" => $attendance,
+        "hours_rendered" => $this->totalRenderedHours($total_time),
+    );
+       $this->load->view('includes/header', $data);
+       $this->load->view('admin-attendance');
+       $this->load->view('includes/footer');
+   }
+
+   public function viewClassList() {
         // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
-        $schedule = $this->Crud_model->fetch("schedule", array("lecturer_id" => $this->uri->segment(3)));
-        foreach ($schedule as $key => $value) {
-            $offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
-            $offering = $offering[0];
-            $value->offering_section = $offering->offering_name;
+    $schedule = $this->Crud_model->fetch("schedule", array("lecturer_id" => $this->uri->segment(3)));
+    foreach ($schedule as $key => $value) {
+        $offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
+        $offering = $offering[0];
+        $value->offering_section = $offering->offering_name;
 
 
-            $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
-            $course = $course[0];
-            $value->program = $course->course_department;
+        $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
+        $course = $course[0];
+        $value->program = $course->course_department;
 
             // fetch course
             // $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id));
@@ -366,43 +403,43 @@ class Admin extends CI_Controller {
             // $offering = $this->Crud_model->fetch("offering", array("course_id"=>$course->course_id));
             // $offering = $offering[0];
             // $value->offering_section = $offering->offering_name;
-        }
+    }
         // echo "<pre>";
         // print_r( $student);
         // die();
-        $data = array(
-            "title" => "Class List - Learning Management System | FEU - Institute of Techonology",
-            "schedule" => $schedule,
-        );
-        $this->load->view('includes/header', $data);
-        $this->load->view('admin-classlist');
-        $this->load->view('includes/footer');
-    }
+    $data = array(
+        "title" => "Class List - Learning Management System | FEU - Institute of Techonology",
+        "schedule" => $schedule,
+    );
+    $this->load->view('includes/header', $data);
+    $this->load->view('admin-classlist');
+    $this->load->view('includes/footer');
+}
 
-    public function fetchOffering() {
-        $id = $this->input->post("id");
-        $where = array(
-            "course_id" => $id
-        );
+public function fetchOffering() {
+    $id = $this->input->post("id");
+    $where = array(
+        "course_id" => $id
+    );
 
-        $data = $this->Crud_model->fetch("course", $where);
-        if ($data) {
-            echo json_encode($data);
-        }
+    $data = $this->Crud_model->fetch("course", $where);
+    if ($data) {
+        echo json_encode($data);
     }
+}
 
-    public function updateOffering() {
-        $id = $this->input->post("id");
-        $title = $this->input->post("title");
-        $code = $this->input->post("code");
-        $data = array(
-            "course_course_code" => $code,
-            "course_course_title" => $title,
-        );
-        if ($this->Crud_model->update("course", $data, array("course_id" => $id))) {
-            echo json_encode(true);
-        }
+public function updateOffering() {
+    $id = $this->input->post("id");
+    $title = $this->input->post("title");
+    $code = $this->input->post("code");
+    $data = array(
+        "course_course_code" => $code,
+        "course_course_title" => $title,
+    );
+    if ($this->Crud_model->update("course", $data, array("course_id" => $id))) {
+        echo json_encode(true);
     }
+}
 
     // public function deleteOffering() {
     //     $id = $this->input->post("id");
@@ -411,66 +448,66 @@ class Admin extends CI_Controller {
     //     }
     // }
 
-    public function charts_student() {
-        $students = $this->Crud_model->fetch("student");
-        $data = array();
-        $me = $ce = $ee = $ece = 0;
-        if ($students) {
-            foreach ($students as $key => $value) {
-                switch ($value->student_department) {
-                    case 'CE':
-                    $ce++;
-                    break;
-                    case 'ME':
-                    $me++;
-                    break;
-                    case 'ECE':
-                    $ece++;
-                    break;
-                    case 'EE':
-                    $ee++;
-                    break;
+public function charts_student() {
+    $students = $this->Crud_model->fetch("student");
+    $data = array();
+    $me = $ce = $ee = $ece = 0;
+    if ($students) {
+        foreach ($students as $key => $value) {
+            switch ($value->student_department) {
+                case 'CE':
+                $ce++;
+                break;
+                case 'ME':
+                $me++;
+                break;
+                case 'ECE':
+                $ece++;
+                break;
+                case 'EE':
+                $ee++;
+                break;
 
-                    default:
+                default:
                         # code...
-                    break;
-                }
+                break;
             }
         }
-        array_push($data, $me, $ce, $ee, $ece);
-
-        echo json_encode($data);
     }
+    array_push($data, $me, $ce, $ee, $ece);
+
+    echo json_encode($data);
+}
 
     // fic
-    public function updateStatus() {
-        $id = $this->input->post("id");
-        $val = $this->input->post("val");
-        if ($this->Crud_model->update("fic", array("fic_status" => $val), array("fic_id" => $id))) {
-            echo json_encode("true");
-        }
+public function updateStatus() {
+    $id = $this->input->post("id");
+    $val = $this->input->post("val");
+    if ($this->Crud_model->update("fic", array("fic_status" => $val), array("fic_id" => $id))) {
+        echo json_encode("true");
     }
+}
 
-    public function more_feedback()
-    {
+public function more_feedback()
+{
 
-        $id = $this->input->post("id");
+    $id = $this->input->post("id");
 
-        $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
-        $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
-        $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
-        $jointype = "INNER";
-        $where = array('lecturer_feedback.lecturer_id' => $id, "enrollment_id"=>$this->active_enrollment());
-        $this->db->order_by('lecturer_feedback_timedate', 'ASC');
-        if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
-         for ($i=0; $i < sizeof($feedback); $i++) { 
+    $col = array('lecturer_feedback_timedate, lecturer_feedback_comment,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+    $join1 = array('lecturer', 'lecturer.lecturer_id = lecturer_feedback.lecturer_id');
+    $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
+    $jointype = "INNER";
+    $where = array('lecturer_feedback.lecturer_id' => $id, "enrollment_id"=>$this->active_enrollment());
+    $this->db->order_by('lecturer_feedback_timedate', 'ASC');
+    if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
+       for ($i=0; $i < sizeof($feedback); $i++) { 
 
-            $feedback[$i]->date = date("M d, Y",$feedback[$i]->lecturer_feedback_timedate);
-        }
-    }else{
-        $feedback = "false";
+        $feedback[$i]->date = date("M d, Y",$feedback[$i]->lecturer_feedback_timedate);
     }
-    echo json_encode($feedback);
+}else{
+    $feedback = "false";
+}
+echo json_encode($feedback);
 }
 
 public function fetchLecturer()
