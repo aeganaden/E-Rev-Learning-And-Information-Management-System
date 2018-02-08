@@ -53,86 +53,93 @@
 	<div class="col s4"></div>
 </div>
 <div class="row">
-	
-	<table>
-		<thead>
-			<tr>
-				<td>ID</td>
-				<td>Title</td>
-				<td>Content</td>
-				<td>Active Until</td>
-				<td>Created at</td>
-				<td>Edited At</td>
-				<td>Status</td>
-				<td>Audience</td>
-				<td>Announced by</td>
-				<td>Actions</td>
-			</tr>
-		</thead>
-		<tbody>
-			<?php if ($announcement): ?>
-				<?php foreach ($announcement as $key => $value): ?>
-					<?php 
-					$is_active = $value->announcement_is_active == 1 ? "ACTIVE"  : "INACTIVE";
-					$is_active_color = $value->announcement_is_active == 1 ? "color-green"  : "color-red";
-					$str_aud = "";
-					$audience = explode( ',', $value->announcement_audience );
-					$seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
-					$days = ceil($seconds/(3600*24));
-					$i = 0;
-					$len = count($audience);
-					foreach ($audience as $key => $aud) {
-						$c = " | ";
-						if ($i == $len - 1) {
-							$c = "";
-						}
-
-						switch ($aud) {
-							case '1':
-							$str_aud .= "CE".$c;
-							break;
-							case '2':
-							$str_aud .= "ECE".$c;
-							break;
-							case '3':
-							$str_aud .= "EE".$c;
-							break;
-							case '4':
-							$str_aud .= "ME".$c;
-							break;
-
-							default:
-						# code...
-							break;
-						}
-						$i++;
-					}
-					?>
+	<div class="col s1"></div>
+	<div class="col s10">
+		<div class="row">
+			
+			<table class="data-table">
+				<thead>
 					<tr>
-						<script type="text/javascript">
-							jQuery(document).ready(function($) {
-								
-								shorten_text("<?=$value->announcement_content?>","<?=$value->announcement_id?>");
-							});
-						</script>
-						<td><?=$value->announcement_id?></td>
-						<td><?=$value->announcement_title?></td>
-						<td ><h6 class="ann_content_truncate<?=$value->announcement_id?>"></h6></td>
-						<td><?=date("M d, Y",$value->announcement_end_datetime)?> - (<?=$days?>) Days Left</td>
-						<td><?=date("M d, Y - h:i A",$value->announcement_created_at)?></td>
-						<td><?=date("M d, Y - h:i A",$value->announcement_edited_at)?></td>
-						<td class="<?=$is_active_color?>"><?=$is_active?></td>
-						<td><?=$str_aud?></td>
-						<td><?=$value->announcement_announcer?></td>
-						<td><i data-id="<?=$value->announcement_id?>" class="ann-modal-btn material-icons color-primary-green modal-trigger waves-effect waves-light" href="#ann_modal" style="cursor: pointer;">edit</i></td>
-						<td><i class="material-icons color-red btn_modal_delete" data-id="<?=$value->announcement_id?>" style="cursor: pointer;">delete</i></td>
+						<th>ID</th>
+						<th>Title</th>
+						<th>Content</th>
+						<th>Active Until</th>
+						<th>Created at</th>
+						<th>Edited At</th>
+						<th>Status</th>
+						<th>Audience</th>
+						<th>Announced by</th>
+						<th>Actions</th>
+						<th></th>
 					</tr>
-				<?php endforeach ?>
-			<?php else: ?>
-				<td colspan="10"><h4 class="center">No data, add some.</h4></td>
-			<?php endif ?>
-		</tbody>
-	</table>
+				</thead>
+				<tbody>
+					<?php if ($announcement): ?>
+						<?php foreach ($announcement as $key => $value): ?>
+							<?php 
+							$is_active = $value->announcement_is_active == 1 ? "ACTIVE"  : "INACTIVE";
+							$is_active_color = $value->announcement_is_active == 1 ? "color-green"  : "color-red";
+							$str_aud = "";
+							$audience = explode( ',', $value->announcement_audience );
+							$seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
+							$days = ceil($seconds/(3600*24));
+							$i = 0;
+							$len = count($audience);
+							foreach ($audience as $key => $aud) {
+								$c = " | ";
+								if ($i == $len - 1) {
+									$c = "";
+								}
+
+								switch ($aud) {
+									case '1':
+									$str_aud .= "CE".$c;
+									break;
+									case '2':
+									$str_aud .= "ECE".$c;
+									break;
+									case '3':
+									$str_aud .= "EE".$c;
+									break;
+									case '4':
+									$str_aud .= "ME".$c;
+									break;
+
+									default:
+						# code...
+									break;
+								}
+								$i++;
+							}
+							?>
+							<tr>
+								<script type="text/javascript">
+									jQuery(document).ready(function($) {
+										
+										shorten_text("<?=$value->announcement_content?>","<?=$value->announcement_id?>");
+									});
+								</script>
+								<td><?=$value->announcement_id?></td>
+								<td><?=$value->announcement_title?></td>
+								<td ><h6 class="ann_content_truncate<?=$value->announcement_id?>"></h6></td>
+								<td><?=date("M d, Y",$value->announcement_end_datetime)?> - (<?=$days?>) Days Left</td>
+								<td><?=date("M d, Y - h:i A",$value->announcement_created_at)?></td>
+								<td><?=date("M d, Y - h:i A",$value->announcement_edited_at)?></td>
+								<td class="<?=$is_active_color?>"><?=$is_active?></td>
+								<td><?=$str_aud?></td>
+								<td><?=$value->announcement_announcer?></td>
+								<td><i data-id="<?=$value->announcement_id?>" class="ann-modal-btn material-icons color-primary-green modal-trigger waves-effect waves-light" href="#ann_modal" style="cursor: pointer;">edit</i></td>
+								<td><i class="material-icons color-red btn_modal_delete" data-id="<?=$value->announcement_id?>" style="cursor: pointer;">delete</i></td>
+							</tr>
+						<?php endforeach ?>
+					<?php else: ?>
+						<td colspan="10"><h4 class="center">No data, add some.</h4></td>
+					<?php endif ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col s1"></div>
 </div>
 
 

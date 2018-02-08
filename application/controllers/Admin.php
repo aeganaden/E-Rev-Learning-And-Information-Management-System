@@ -14,12 +14,12 @@ class Admin extends CI_Controller {
 
     public function active_enrollment()
     {
-       $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-       $active_enrollment = $active_enrollment[0];
-       return $active_enrollment->enrollment_id;
-   }
+     $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+     $active_enrollment = $active_enrollment[0];
+     return $active_enrollment->enrollment_id;
+ }
 
-   public function index() {
+ public function index() {
     $this->session->unset_userdata('insertion_info');
 
 
@@ -316,51 +316,94 @@ class Admin extends CI_Controller {
           $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
           $lec_data = $lec_data[0];
           $interval = "";
+          $test = array();
           $total_time = array();
           // create new object
-          $attendance_data = new \stdClass;
-          $x = 0;
+          $attendance_data =array();
+          
           // create array of object
-          $attendance[] = array();
+          $attendance = array();
          // fetch active
-
           // fetch course
           $course = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
           foreach ($course as $key => $value) {
               // fetch offering with course id that is active
             $offering = $this->Crud_model->fetch("offering",array("course_id"=>$value->course_id));
             foreach ($offering as $key => $inner_value) {
-                // fetch schedule
-                $schedule = $this->Crud_model->fetch("schedule",array("lecturer_id" => $lec_id,"offering_id"=>$inner_value->offering_id));
-                foreach ($schedule as $key => $sched) {
+
                     // fetch lecturer
-                    $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id,"offering_id"=>$sched->offering_id));
+                $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id,"offering_id"=>$inner_value->offering_id));
                 
-                    // if ($lec_attendance) {
-                    //     foreach ($lec_attendance as $key => $lec) {
-                    //         $attendance_data->lecturer_attendance_id = $lec->lecturer_attendance_in;
-                    //         $attendance_data->lecturer_attendance_date = $lec->lecturer_attendance_date;
-                    //         $attendance_data->lecturer_attendance_in = $lec->lecturer_attendance_in;
-                    //         $attendance_data->lecturer_attendance_out = $lec->lecturer_attendance_out;
-                    //         $attendance[$x] =$attendance_data;
+                if ($lec_attendance) {
+                   foreach ($lec_attendance as $key => $lec) {
+                        // fetch here then enclose the insertion data to foreach of schedule
+                        // fetch schedule
+                       $schedule = $this->Crud_model->fetch("schedule",array("schedule_id"=>$lec->schedule_id));
+                       $schedule = $schedule[0];
 
-                    //         $lec_in = date("o-m-d h:i", $lec->lecturer_attendance_in);
-                    //         $lec_out = date("o-m-d h:i", $lec->lecturer_attendance_out);
-                    //         $interval = $this->diff($lec_in, $lec_out);
-                    //         $sum = $interval['h'] . ":" . $interval['i'];
-                    //         array_push($total_time, $sum);
-                    //         $x++;
-                    //     }
-                    // }
-                }
+                     // Schedule start and time_in difference
+                       $s_t_start  = date_create(date("o-m-d h:i", $schedule->schedule_start_time));
+                       $l_a_in    = date_create(date("o-m-d h:i", $lec->lecturer_attendance_in)); 
+                       $d_in   = date_diff( $s_t_start, $l_a_in );
 
-            }
-        }
+                       $s_t_end  = date_create(date("o-m-d h:i", $schedule->schedule_end_time));
+                       $l_a_out    = date_create(date("o-m-d h:i", $lec->lecturer_attendance_out)); 
+                       $d_out   = date_diff( $s_t_end, $l_a_out );
+                       // echo $d_out->format('%r%i');
+                       // echo "<br>";
+
+                      // Remarks Section
+                       $padding_start = 20;
+                       $padding_start_late = 20;
+                       $padding_end_late = 20;
+                       $remarks_s = "";
+                       $remarks_e = "";
+                       if ($d_in->format('%r%i') == 0) { $remarks_s = "Exact Time In";  }
+                       elseif ($d_in->format('%r%i')<0 && $d_in->format('%r%i')>($padding_start*-1)) { $remarks_s = "Early Time In"; }
+                       elseif ($d_in->format('%r%i')>0 && $d_in->format('%r%i')<$padding_start_late) {$remarks_s = "Late Time In";}
+                       else{$remarks_s = "Absent";}
+                     // echo $remarks_s." | ".$d_in->format('%r%i')." Time In <br>";
 
 
-        if (empty($attendance[0])) {
-           $attendance = false;
+                       if ($d_out->format('%r%i') == 0) { $remarks_e = "Exact Time Out";  }
+                       elseif ($d_out->format('%r%i')<0) { $remarks_e = "Early Dismissal"; }
+                       elseif ($d_out->format('%r%i')>0 && $d_out->format('%r%i')<$padding_end_late) {$remarks_e = "Late Dismissal";}
+                       else{$remarks_e = "Absent";}
+                     // echo $remarks_e." | ".$d_out->format('%r%i')."Time Out <br>";
+
+                       $attendance_data['lecturer_attendance_id'] = $lec->lecturer_attendance_id;
+
+                       $attendance_data['lecturer_attendance_date'] = $lec->lecturer_attendance_date;
+                       $attendance_data['lecturer_attendance_in'] = $lec->lecturer_attendance_in;
+                       $attendance_data['lecturer_attendance_out'] = $lec->lecturer_attendance_out;
+                       $attendance_data['sched_start'] = $schedule->schedule_start_time;
+                       $attendance_data['sched_end'] = $schedule->schedule_end_time;
+                       $attendance_data['remarks_s'] = $remarks_s;
+                       $attendance_data['remarks_e'] = $remarks_e;
+                       $attendance[] = $attendance_data;
+                     // echo "<pre>";
+                     // print_r($attendance);
+
+                       $lec_in = date("o-m-d h:i", $lec->lecturer_attendance_in);
+                       $lec_out = date("o-m-d h:i", $lec->lecturer_attendance_out);
+                       $interval = $this->diff($lec_in, $lec_out);
+                       $sum = $interval['h'] . ":" . $interval['i'];
+                       array_push($total_time, $sum);
+
+
+                   }
+               }
+
+           }
        }
+
+
+     // echo "<pre>";
+     // print_r($attendance);
+
+       if (empty($attendance[0])) {
+         $attendance = false;
+     }
 
          // end fetch active
 
@@ -371,18 +414,18 @@ class Admin extends CI_Controller {
 
 
 
-       $data = array(
+     $data = array(
         "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
         "lecturer" => $lec_data,
         "attendance" => $attendance,
         "hours_rendered" => $this->totalRenderedHours($total_time),
     );
-       $this->load->view('includes/header', $data);
-       $this->load->view('admin-attendance');
-       $this->load->view('includes/footer');
-   }
+     $this->load->view('includes/header', $data);
+     $this->load->view('admin-attendance');
+     $this->load->view('includes/footer');
+ }
 
-   public function viewClassList() {
+ public function viewClassList() {
         // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
     $schedule = $this->Crud_model->fetch("schedule", array("lecturer_id" => $this->uri->segment(3)));
     foreach ($schedule as $key => $value) {
@@ -500,7 +543,7 @@ public function more_feedback()
     $where = array('lecturer_feedback.lecturer_id' => $id, "enrollment_id"=>$this->active_enrollment());
     $this->db->order_by('lecturer_feedback_timedate', 'ASC');
     if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
-       for ($i=0; $i < sizeof($feedback); $i++) { 
+     for ($i=0; $i < sizeof($feedback); $i++) { 
 
         $feedback[$i]->date = date("M d, Y",$feedback[$i]->lecturer_feedback_timedate);
     }

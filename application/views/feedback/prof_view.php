@@ -22,8 +22,8 @@
     </div>
 </div>
 <div class="row container">
-   <div class="col s1"></div>
-   <div class="col s11">
+ <div class="col s1"></div>
+ <div class="col s11">
     <form method="post" action="<?= base_url() ?>feedback/">
         <div class="row">
             <div class="input-field col s6">
@@ -54,7 +54,7 @@
     </form>
 
     <?php if (isset($feedback) && !empty($feedback)): ?>
-        <table class="" id="tbl-feedback" style="table-layout:auto;">
+        <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
                     <th></th>

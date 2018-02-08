@@ -9,8 +9,8 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
- <div class="col s1"></div>
- <div class="col s11">
+   <div class="col s1"></div>
+   <div class="col s11">
     <div class="col s4">
         <blockquote class="color-primary-green">
             <h1 class="color-black">Feedback</h1>
@@ -54,7 +54,7 @@
         </form>
 
         <?php if (isset($feedback) && !empty($feedback)): ?>
-            <table class="" id="tbl-feedback" style="table-layout:auto;">
+            <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
                 <thead>
                     <tr>
                         <th></th>

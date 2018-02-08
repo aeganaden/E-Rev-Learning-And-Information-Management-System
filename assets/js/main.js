@@ -39,46 +39,9 @@ $(document).ready(function() {
 	initiateOnClick();
 	schedule();
 	navigations();
-	charts();
 });
 
-/*==============================
-=            CHARTS            =
-==============================*/
 
-function charts() {
-	var ctx = document.getElementById('myChart').getContext('2d');
-	$.ajax({
-		url: base_url + 'Admin/charts_student',
-		type: 'post',
-		dataType: 'json',
-		success: function(res){
-			console.log(res);	
-			var myChart = new Chart(ctx, {
-				type: 'pie',
-				data: {
-					labels: ["Mechanical Engineering", "Civil Engineering", "Electrical Engineering", "Electronics and Communication Engineering"],
-					datasets: [{
-						backgroundColor: [
-						"#5A87FF",
-						"#f44336",
-						"#F2A900",
-						"#007A33",
-
-						],
-						data: [res[0], res[1],res[2],res[3]]
-					}]
-				}
-			});
-		}
-
-	});
-
-
-	
-}
-
-/*=====  End of CHARTS  ======*/
 
 
 /*=================================
@@ -199,24 +162,7 @@ function getDivHeightID(x){
 =====================================*/
 
 $(document).ready(function() {
-	$('#tbl-card-cosml').DataTable({
-		responsive: true
-	});
-	$('#tbl-card-ls').DataTable({
-		responsive: true
-	});
-	$('#tbl-att-lec').DataTable({
-		responsive: true
-	});
-	$('#tbl-com').DataTable({
-		responsive: true
-	});
-	$('#tbl-fic').DataTable({
-		responsive: true
-	});
-	$('#tbl-feedback').DataTable({
-		responsive: true
-	});
+	$('.data-table').DataTable();
 } );
 
 /*=====  End of Datatables JS  ======*/
