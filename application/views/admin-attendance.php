@@ -24,28 +24,40 @@
 
 			<h1 class="center">No Attendance Recorded Yet</h1>
 		<?php else: ?>
-			<table id="tbl-att-lec">
+			<table class="data-table">
 				<thead>
 					<tr>
 						<td>ID</td>
 						<td>Date</td>
+						<td>Schedule Start</td>
+						<td>Schedule End</td>
 						<td>Time In</td>
 						<td>Time Out</td>
-					</tr>
-				</thead>
-				<tbody>
-					<?php //print_r($attendance); ?>
-					<?php foreach ($attendance as $key => $value): ?>
-						<tr class="bg-color-white">
-							<td><?=$value->lecturer_attendance_id?></td>	
-							<td><?=date("M d, Y - l", $value->lecturer_attendance_date)?></td>	
-							<td><?=date("h:i A", $value->lecturer_attendance_in)?></td>	
-							<td><?=date("h:i A", $value->lecturer_attendance_out)?></td>	
-						</tr>
-					<?php endforeach ?>
-				</tbody>
-			</table>
-		<?php endif ?>
-		
+						<td>Remarks</td>					</tr>
+					</thead>
+					<tbody>
+						<?php 
+					// echo "<pre>";
+					// print_r($attendance);
+						?>
+						<?php foreach ($attendance as $key => $value): ?>
+							<tr class="bg-color-white">
+								<td><?=$value['lecturer_attendance_id']?></td>	
+								<td><?=date("M d, Y - l", $value['lecturer_attendance_date'])?></td>	
+								<td><?=date("h:i A", $value['sched_start'])?></td>	
+								<td><?=date("h:i A", $value['sched_end'])?></td>	
+								<td><?=date("h:i A", $value['lecturer_attendance_in'])?></td>	
+								<td><?=date("h:i A", $value['lecturer_attendance_out'])?></td>
+								<td>
+									<blockquote class="color-primary-yellow"><?=$value['remarks_s']?></blockquote>
+									<blockquote class="color-primary-yellow"><?=$value['remarks_e']?></blockquote>
+								</td>
+
+							</tr>
+						<?php endforeach ?>
+					</tbody>
+				</table>
+			<?php endif ?>
+
+		</div>
 	</div>
-</div>

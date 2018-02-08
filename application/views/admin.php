@@ -111,8 +111,12 @@
 
         <!-- Lecturers' Feedback Account -->
         <div class="row" id="div-card-lf" style="display: none; ">
+            <blockquote class="color-primary-green">
+                <h2>Lecturers' Feedback</h2>
+            </blockquote>
+
             <?php if (isset($feedback) && !empty($feedback)): ?>
-                <table class="" id="tbl-feedback" style="table-layout:auto;">
+                <table class="data-table"  style="table-layout:auto;">
                     <thead>
                         <tr>
                             <th>Lecturer</th>
@@ -149,7 +153,7 @@
             <blockquote class="color-primary-green">
                 <h2>Faculties in Charge</h2>
             </blockquote>
-            <table id="tbl-fic">
+            <table class="data-table">
                 <thead>
                     <th>ID</th>
                     <th>Last Name</th>
@@ -193,7 +197,7 @@
             <blockquote class="color-primary-green">
                 <h2>Course Offering Schedule Master List</h2>
             </blockquote>
-            <table id="tbl-card-cosml" >
+            <table class="data-table">
                 <thead >
                     <tr>
                         <th>ID</th>
@@ -236,7 +240,7 @@
             <blockquote class="color-primary-green">
                 <h2>Lecturers' Schedule</h2>
             </blockquote>
-            <table id="tbl-card-ls" >
+            <table class="data-table">
                 <thead >
                     <tr>
                         <th>School ID</th>
@@ -378,7 +382,7 @@
             <blockquote class="color-primary-green">
                 <h2>Class Offering</h2>
             </blockquote>
-            <table id="tbl-com">
+            <table class="data-table">
                 <thead>
                     <tr>
                         <td>ID</td>
@@ -399,7 +403,7 @@
                                 <td class="truncate" style="text-transform: capitalize;"><?= $value->course_course_title ?></td>
                                 <td><?= strtoupper($value->course_department) ?></td>
                                 <td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?= $value->course_id ?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
-                                
+
                             </tr>
                         <?php endforeach ?>
                     <?php endif ?>
@@ -501,160 +505,187 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function ($) {
-            // fittext
-            jQuery("#mdl_lec_div").fitText();
+// fittext
+jQuery("#mdl_lec_div").fitText();
 
+/*==============================
+=            Charts            =
+==============================*/
 
+var ctx = document.getElementById('myChart').getContext('2d');
+$.ajax({
+    url: base_url + 'Admin/charts_student',
+    type: 'post',
+    dataType: 'json',
+    success: function(res){  
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["Mechanical Engineering", "Civil Engineering", "Electrical Engineering", "Electronics and Communication Engineering"],
+                datasets: [{
+                    backgroundColor: [
+                    "#5A87FF",
+                    "#f44336",
+                    "#F2A900",
+                    "#007A33",
 
-         // show feedbacks
-         $(".btn_mdl_feedback").click(function(event) {
-            // alert($(this).data('id'));
-            $id =  $(this).data('id');
-            var html_content ="";
-            $.ajax({
-                url: '<?=base_url()?>Admin/fetchLecturer',
-                type: 'post',
-                dataType: 'json',
-                data: {id:$id},
-                success: function(data){
-                  $("#mdl_lec_name").html(data.firstname + " " + data.midname + " " + data.lastname );
-                  $("#mdl_lec_id").html(data.id_number);
-                  $("#mdl_lec_email").html(data.email);
-                  $("#mdl_lec_expertise").html(data.lecturer_expertise);
-                  $('#mdl_lec_img').attr('src', base_url+data.image_path);
-
-                  // second ajax
-                  $.ajax({
-                    url: '<?=base_url()?>Admin/more_feedback',
-                    type: 'post',
-                    dataType: 'json',
-                    data: {id:$id},
-                    success: function(data){
-                        console.log(data);    
-                        if (data!="false") {
-                         $("#msg_error_feedback").html(" ");
-
-                         for(var i = 0; i < data.length; i++){
-                            html_content += ' <tr>'+
-                            '<td>'+data[i].date+'</td>'+
-                            '<td><blockquote>'+data[i].lecturer_feedback_comment+'</blockquote></td>'+
-                            '</tr>';   
-                        }
-                        $("#mdl_lec_content").html(html_content);
-                    }else{
-                        $("#mdl_lec_content").html(" ");
-
-                        $("#msg_error_feedback").html("<h3 class='center'>No Feedback Recorded Yet</h3>");
-                    }
-                }
-            });
-              }
-          });
-            
-
+                    ],
+                    data: [res[0], res[1],res[2],res[3]]
+                }]
+            }
         });
+    }
 
-        // oncheck fic status
-        $(".chk_fic_status").change(function (event) {
-            var value = $(this).prop("checked") ? 1 : 0;
-            var str_val = $(this).prop("checked") ? "Active" : "Not Active";
-            var id = $(this).data('id');
-            // alert(value);
-            $.ajax({
-                url: '<?= base_url() ?>Admin/updateStatus',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    id: id,
-                    val: value
-                },
-                success: function (data) {
-                    // console.log(id);
-                    $(".stat" + id).html(str_val);
-                    if (value == 0) {
-                        $(".stat" + id).removeClass('color-green');
-                        $(".stat" + id).addClass('color-red');
-                    } else {
-                        $(".stat" + id).removeClass('color-red');
-                        $(".stat" + id).addClass('color-green');
-                    }
+});
 
+/*=====  End of Charts  ======*/
+
+
+// show feedbacks
+$(".btn_mdl_feedback").click(function(event) {
+    // alert($(this).data('id'));
+    $id =  $(this).data('id');
+    var html_content ="";
+    $.ajax({
+        url: '<?=base_url()?>Admin/fetchLecturer',
+        type: 'post',
+        dataType: 'json',
+        data: {id:$id},
+        success: function(data){
+          $("#mdl_lec_name").html(data.firstname + " " + data.midname + " " + data.lastname );
+          $("#mdl_lec_id").html(data.id_number);
+          $("#mdl_lec_email").html(data.email);
+          $("#mdl_lec_expertise").html(data.lecturer_expertise);
+          $('#mdl_lec_img').attr('src', base_url+data.image_path);
+
+           // second ajax
+           $.ajax({
+            url: '<?=base_url()?>Admin/more_feedback',
+            type: 'post',
+            dataType: 'json',
+            data: {id:$id},
+            success: function(data){
+                if (data!="false") {
+                 $("#msg_error_feedback").html(" ");
+
+                 for(var i = 0; i < data.length; i++){
+                    html_content += ' <tr>'+
+                    '<td>'+data[i].date+'</td>'+
+                    '<td><blockquote>'+data[i].lecturer_feedback_comment+'</blockquote></td>'+
+                    '</tr>';   
                 }
-            });
-        });
-        $(".btn_modal_com").click(function (event) {
-            $("#btn_modal_com_update").attr("data-id", $(this).attr("data-id"));
-            $.ajax({
-                url: '<?= base_url() ?>Admin/fetchOffering ',
-                type: 'post',
-                dataType: 'json',
-                data: {id: $(this).attr("data-id")},
-                success: function (data) {
-                    console.log(data);
-                    $(".correl-code").val(data[0].course_course_code);
-                    $(".correl-title").val(data[0].course_course_title);
-                },
-                error: function (data) {
+                $("#mdl_lec_content").html(html_content);
+            }else{
+                $("#mdl_lec_content").html(" ");
 
-                }
-            });
-        });
-        $("#btn_modal_com_update").click(function (event) {
-            $.ajax({
-                url: '<?= base_url() ?>Admin/updateOffering ',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    id: $(this).attr("data-id"),
-                    title: $(".correl-title").val(),
-                    code: $(".correl-code").val(),
-                },
-                success: function (data) {
-                    if (data) {
-                        swal("Done!", "Successfully edited", "success").then(function () {
-                            window.location.reload(true);
-                        });
-                    }
-                },
-                error: function (data) {
-
-                }
-            });
-        });
-        $(".btn_delete_com").click(function (event) {
-
-            swal({
-                title: "Are you sure?",
-                text: "This may cause inconsistency of data in the system!",
-                icon: "error",
-                buttons: true,
-                dangerMode: true,
-            })
-            .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "<?= base_url() ?>Admin/deleteOffering ",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            id: $(this).attr("data-id")
-                        },
-                        success: function (data) {
-                            swal("Poof! Offering has been deleted!", {
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        },
-                        error: function (data) {
-
-                        }
-
-                    });
-                }
-            });
-        });
+                $("#msg_error_feedback").html("<h3 class='center'>No Feedback Recorded Yet</h3>");
+            }
+        }
     });
+       }
+   });
+
+
+});
+ // oncheck fic status
+ $(".chk_fic_status").change(function (event) {
+    var value = $(this).prop("checked") ? 1 : 0;
+    var str_val = $(this).prop("checked") ? "Active" : "Not Active";
+    var id = $(this).data('id');
+     // alert(value);
+     $.ajax({
+        url: '<?= base_url() ?>Admin/updateStatus',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            id: id,
+            val: value
+        },
+        success: function (data) {
+            $(".stat" + id).html(str_val);
+            if (value == 0) {
+                $(".stat" + id).removeClass('color-green');
+                $(".stat" + id).addClass('color-red');
+            } else {
+                $(".stat" + id).removeClass('color-red');
+                $(".stat" + id).addClass('color-green');
+            }
+
+        }
+    });
+ });
+ $(".btn_modal_com").click(function (event) {
+    $("#btn_modal_com_update").attr("data-id", $(this).attr("data-id"));
+    $.ajax({
+        url: '<?= base_url() ?>Admin/fetchOffering ',
+        type: 'post',
+        dataType: 'json',
+        data: {id: $(this).attr("data-id")},
+        success: function (data) {
+            $(".correl-code").val(data[0].course_course_code);
+            $(".correl-title").val(data[0].course_course_title);
+        },
+        error: function (data) {
+
+        }
+    });
+});
+ $("#btn_modal_com_update").click(function (event) {
+    $.ajax({
+        url: '<?= base_url() ?>Admin/updateOffering ',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            id: $(this).attr("data-id"),
+            title: $(".correl-title").val(),
+            code: $(".correl-code").val(),
+        },
+        success: function (data) {
+            if (data) {
+                swal("Done!", "Successfully edited", "success").then(function () {
+                    window.location.reload(true);
+                });
+            }
+        },
+        error: function (data) {
+
+        }
+    });
+});
+ $(".btn_delete_com").click(function (event) {
+
+    swal({
+        title: "Are you sure?",
+        text: "This may cause inconsistency of data in the system!",
+        icon: "error",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                url: "<?= base_url() ?>Admin/deleteOffering ",
+                type: "post",
+                dataType: "json",
+                data: {
+                    id: $(this).attr("data-id")
+                },
+                success: function (data) {
+                    swal("Poof! Offering has been deleted!", {
+                        icon: "success",
+                    }).then(function () {
+                        window.location.reload(true);
+                    });
+                },
+                error: function (data) {
+
+                }
+
+            });
+        }
+    });
+});
+});
 function shorten_text(text, id) {
     var ret = text;
     if (ret.length > 20) {
