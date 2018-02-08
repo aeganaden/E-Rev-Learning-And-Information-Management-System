@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-        $_POST['username'] = "mgbabaran";
-        $_POST['password'] = "mark";
+//        $_POST['username'] = "mgbabaran";
+//        $_POST['password'] = "mark";
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
