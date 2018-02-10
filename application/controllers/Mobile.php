@@ -59,7 +59,6 @@ class Mobile extends CI_Controller {
         }
 
         $where = array(
-            "announcement_audience" => (string) $temp,
             "announcement_end_datetime >" => strtotime("now"),
             "announcement_is_active" => 1
         );
@@ -70,7 +69,12 @@ class Mobile extends CI_Controller {
         $like[0] = "announcement_audience";
         $like[1] = (string) $temp;
         if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true)) {
-            print_r(json_encode($result));
+            foreach ($result['result'] as $res) {
+                $res["announcement_created_at"] = date("M d, Y", $res["announcement_created_at"]);
+                $res["announcement_end_datetime"] = date("M d, Y", $res["announcement_end_datetime"]);
+                $res["announcement_start_datetime"] = date("M d, Y", $res["announcement_start_datetime"]);
+            }
+//            print_r(json_encode($result));
         } else {
             print_r("");
         }
