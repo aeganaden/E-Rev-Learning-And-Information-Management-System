@@ -34,3 +34,4 @@ class Coursewares_fic extends CI_Controller {
 
 /* End of file Coursewares_fic.php */
 /* Location: ./application/controllers/Coursewares_fic.php */
+

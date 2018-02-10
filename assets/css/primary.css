@@ -104,11 +104,11 @@ a{
 }
 
 #subject-section {
-	-webkit-animation-duration: 1s;
+	-webkit-animation-duration: 0.38s;
 	-webkit-animation-delay: 0s;
 }	
 #topics-section {
-	-webkit-animation-duration: 1s;
+	-webkit-animation-duration: 0.38s;
 	-webkit-animation-delay: 0s;
 }	
 
