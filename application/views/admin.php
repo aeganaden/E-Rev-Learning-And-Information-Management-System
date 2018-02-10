@@ -1,7 +1,8 @@
 <?php $this->load->view('includes/navbar-admin'); ?>
 <?php date_default_timezone_set("Asia/Manila")
 ?>
-<!--===========================
+<?php if (!$active_enrollment): ?>
+    <!--===========================
 =            Cards            =
 ============================-->
 
@@ -501,6 +502,27 @@
 
 <!--====  End of Modal Lecturers Feedback  ====-->
 
+<?php else: ?>
+
+    <div class="row ">
+        <div class="col s2"></div>
+        <div class="col s8 valign-wrapper">
+            <div class="col s4 " style="padding-top: 15%">
+                <img src="<?=base_url()?>assets/img/icons/tools.svg" alt="">
+            </div>
+            <div class="col s8">
+                <h1 class="center">Hi there!</h1>
+                <h3 class="center">It seems like there is no data yet in the system.</h3>
+                <br><br>
+                <center>
+                    <a class="btn bg-primary-green waves-effect waves-light" href="<?= base_url() ?>importdata"><i class="material-icons right">cloud_upload</i>Populate</a>
+                </center>
+            </div>
+        </div>  
+        <div class="col s2"></div>
+    </div>  
+
+<?php endif ?>
 
 <script type="text/javascript">
 

@@ -12,10 +12,16 @@
 <div class="row container">
 	<div class="col s1"></div>
 	<div class="col s11">
-		<textarea name="editor1"></textarea>
+		<textarea name="editor1" id="q_editor"></textarea>
+		<input id="send" type="button" value="Send">
 		<script>
-
 			CKEDITOR.replace( 'editor1');
+			jQuery(document).ready(function($) {
+				$("#send").click(function(event) {
+					var value = CKEDITOR.instances['q_editor'].getData()
+					console.log(value);	
+				});
+			});
 		</script>
 	</div>
 

@@ -37,8 +37,6 @@
 					</thead>
 					<tbody>
 						<?php 
-					// echo "<pre>";
-					// print_r($attendance);
 						?>
 						<?php foreach ($attendance as $key => $value): ?>
 							<tr class="bg-color-white">
@@ -49,8 +47,8 @@
 								<td><?=date("h:i A", $value['lecturer_attendance_in'])?></td>	
 								<td><?=date("h:i A", $value['lecturer_attendance_out'])?></td>
 								<td>
-									<blockquote class="color-primary-yellow"><?=$value['remarks_s']?></blockquote>
-									<blockquote class="color-primary-yellow"><?=$value['remarks_e']?></blockquote>
+									<blockquote class="color-primary-green"><span class="color-black"><?=$value['remarks_s']?></span></blockquote>
+									<blockquote class="color-primary-green"><span class="color-black"><?=$value['remarks_e']?></span></blockquote>
 								</td>
 
 							</tr>
