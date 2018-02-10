@@ -14,6 +14,12 @@ $(document).ready(function() {
 	});
 	$('input#input_text, textarea#reg_expertise').characterCounter();
 	
+	// Date now and tomorrow
+	var today = new Date();
+	var tomorrow = new Date();
+	tomorrow.setDate(today.getDate()+1); 
+
+
 	$('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -21,7 +27,7 @@ $(document).ready(function() {
     clear: 'Clear',
     close: 'Ok',
     hiddenName: true,
-    min: new Date("now"),
+    min: tomorrow,
     format: 'mmmm d, yyyy',
     closeOnSelect: false // Close upon selecting a date,
 });

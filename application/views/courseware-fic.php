@@ -9,15 +9,36 @@
 	</div>
 	<div class="col s4"></div>
 </div>
+
+<div class="row container">
+	<div class="col s1"></div>
+	<div class="col s11"></div>
+</div>
+
+<!--=======================================
+=            WIRIS TEXT EDITOR            =
+========================================-->
+<!-- 
 <div class="row container">
 	<div class="col s1"></div>
 	<div class="col s11">
-		<textarea name="editor1"></textarea>
-		<script>
-
-			CKEDITOR.replace( 'editor1');
-		</script>
+		<textarea name="editor1" id="q_editor"></textarea>
+		<input id="send" type="button" value="Send">
 	</div>
 
-</div>
+</div> -->
+
+<!--====  End of WIRIS TEXT EDITOR  ====-->
+
 <a id="btn_show_menu"  class="btn-floating btn-large waves-effect waves-light red button-collapse right" data-activates="slide-out"><i  class="material-icons">menu</i></a>
+
+
+<script>
+	jQuery(document).ready(function($) {
+		CKEDITOR.replace( 'editor1');
+		$("#send").click(function(event) {
+			var value = CKEDITOR.instances['q_editor'].getData()
+			console.log(value);	
+		});
+	});
+</script>
