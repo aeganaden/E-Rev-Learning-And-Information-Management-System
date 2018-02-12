@@ -35,7 +35,7 @@ class Mobile extends CI_Controller {
     }
 
     public function announcement() {
-        $_POST['identifier'] = "CE";
+//        $_POST['identifier'] = "CE";
         /*
          * 1 = CE
          * 2 = ECE
@@ -69,12 +69,12 @@ class Mobile extends CI_Controller {
         $like[0] = "announcement_audience";
         $like[1] = (string) $temp;
         if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true)) {
-            foreach ($result['result'] as $res) {
-                $res["announcement_created_at"] = date("M d, Y", $res["announcement_created_at"]);
-                $res["announcement_end_datetime"] = date("M d, Y", $res["announcement_end_datetime"]);
-                $res["announcement_start_datetime"] = date("M d, Y", $res["announcement_start_datetime"]);
+            foreach ($result['result'] as $key => $res) {
+                $result['result'][$key]['announcement_created_at'] = date("M d, Y", $res["announcement_created_at"]);
+                $result['result'][$key]['announcement_end_datetime'] = date("M d, Y", $res["announcement_end_datetime"]);
+                $result['result'][$key]['announcement_start_datetime'] = date("M d, Y", $res["announcement_start_datetime"]);
             }
-//            print_r(json_encode($result));
+            print_r(json_encode($result));
         } else {
             print_r("");
         }
