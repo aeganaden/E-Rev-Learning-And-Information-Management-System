@@ -30,6 +30,16 @@ class Coursewares_fic extends CI_Controller {
 		$this->load->view('includes/footer');
 	}
 
+	public function fetchCoursewares()
+	{
+		$topic_id = $this->input->post("topic_id");
+		if ($data = $this->Crud_model->fetch("courseware_question",array("topic_id"=>$topic_id))) {
+			echo json_encode($data);
+		}else{
+			echo "false";
+		}
+	}
+
 }
 
 /* End of file Coursewares_fic.php */
