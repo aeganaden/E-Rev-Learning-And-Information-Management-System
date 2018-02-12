@@ -25,10 +25,56 @@ class Mobile extends CI_Controller {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "fic";
             print_r(json_encode($result));
-        } else if ($result = $this->Crud_model->fetch("prof", $where)) {
+        } else if ($result = $this->Crud_model->fetch_array("prof", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "prof";
             print_r(json_encode($result));
+        } else {
+            print_r("");
+        }
+    }
+
+    public function announcement() {
+        $_POST['identifier'] = "CE";
+        /*
+         * 1 = CE
+         * 2 = ECE
+         * 3 = EE
+         * 4 = ME
+         */
+        $temp = 0;
+        switch ($_POST['identifier']) {
+            case "CE":
+                $temp = 1;
+                break;
+            case "ECE":
+                $temp = 2;
+                break;
+            case "EE":
+                $temp = 3;
+                break;
+            case "ME":
+                $temp = 4;
+                break;
+        }
+
+        $where = array(
+            "announcement_end_datetime >" => strtotime("now"),
+            "announcement_is_active" => 1
+        );
+        $col = array(
+            "announcement_title", "announcement_content", "announcement_created_at", "announcement_end_datetime", "announcement_start_datetime", "announcement_announcer"
+        );
+
+        $like[0] = "announcement_audience";
+        $like[1] = (string) $temp;
+        if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true)) {
+            foreach ($result['result'] as $res) {
+                $res["announcement_created_at"] = date("M d, Y", $res["announcement_created_at"]);
+                $res["announcement_end_datetime"] = date("M d, Y", $res["announcement_end_datetime"]);
+                $res["announcement_start_datetime"] = date("M d, Y", $res["announcement_start_datetime"]);
+            }
+//            print_r(json_encode($result));
         } else {
             print_r("");
         }
