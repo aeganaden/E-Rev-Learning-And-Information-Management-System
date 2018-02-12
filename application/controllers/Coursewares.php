@@ -33,9 +33,11 @@ class Coursewares extends CI_Controller {
 	public function fetchTopics()
 	{
 		$id = $this->input->post("id");
-		$data = $this->Crud_model->fetch("topic",array("subject_id"=>$id));
-
-		echo json_encode($data);
+		if ($data = $this->Crud_model->fetch("topic",array("subject_id"=>$id))) {
+			echo json_encode($data);
+		}else{
+			echo json_encode("false");
+		}
 	}
 
 }
