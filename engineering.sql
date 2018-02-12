@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2018 at 08:52 AM
+-- Generation Time: Feb 12, 2018 at 08:56 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -119,6 +119,48 @@ INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announceme
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `attendance_in`
+--
+
+CREATE TABLE `attendance_in` (
+  `attendance_in_id` int(20) NOT NULL,
+  `attendance_in_time` int(20) NOT NULL,
+  `lecturer_attendance_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `attendance_in`
+--
+
+INSERT INTO `attendance_in` (`attendance_in_id`, `attendance_in_time`, `lecturer_attendance_id`) VALUES
+(1, 1517957400, 1),
+(2, 1518066900, 2),
+(3, 1518166800, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `attendance_out`
+--
+
+CREATE TABLE `attendance_out` (
+  `attendance_out_id` int(20) NOT NULL,
+  `attendance_out_time` int(20) NOT NULL,
+  `lecturer_attendance_id` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `attendance_out`
+--
+
+INSERT INTO `attendance_out` (`attendance_out_id`, `attendance_out_time`, `lecturer_attendance_id`) VALUES
+(1, 1517967000, 1),
+(2, 1518073200, 2),
+(3, 1518174000, 3);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `choice`
 --
 
@@ -178,7 +220,7 @@ CREATE TABLE `courseware_question` (
   `courseware_question_question` varchar(800) NOT NULL,
   `courseware_question_reference` varchar(800) DEFAULT NULL,
   `grade_assessment_id` int(20) NOT NULL,
-  `subject_id` int(20) NOT NULL
+  `topic_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -292,10 +334,8 @@ INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `las
 --
 
 CREATE TABLE `lecturer_attendance` (
-  `lecturer_attendance_id` int(20) NOT NULL,
+  `lecturer_attendance_id` int(50) NOT NULL,
   `lecturer_attendance_date` int(20) NOT NULL,
-  `lecturer_attendance_in` int(20) DEFAULT NULL,
-  `lecturer_attendance_out` int(20) DEFAULT NULL,
   `lecturer_id` int(20) NOT NULL,
   `offering_id` int(20) NOT NULL,
   `schedule_id` int(20) NOT NULL
@@ -305,10 +345,10 @@ CREATE TABLE `lecturer_attendance` (
 -- Dumping data for table `lecturer_attendance`
 --
 
-INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_attendance_in`, `lecturer_attendance_out`, `lecturer_id`, `offering_id`, `schedule_id`) VALUES
-(1, 1515455338, 1515455338, 1515476979, 1, 1, 1),
-(2, 1515479755, 1515479755, 1515503216, 2, 2, 2),
-(3, 1518166800, 1518166800, 1518174000, 1, 3, 3);
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_id`, `offering_id`, `schedule_id`) VALUES
+(1, 1517957400, 1, 1, 1),
+(2, 1518066900, 2, 2, 2),
+(3, 1518166800, 1, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -592,6 +632,20 @@ ALTER TABLE `announcement`
   ADD PRIMARY KEY (`announcement_id`);
 
 --
+-- Indexes for table `attendance_in`
+--
+ALTER TABLE `attendance_in`
+  ADD PRIMARY KEY (`attendance_in_id`),
+  ADD KEY `fk_attendance_in_lecturer_attendance1_idx` (`lecturer_attendance_id`);
+
+--
+-- Indexes for table `attendance_out`
+--
+ALTER TABLE `attendance_out`
+  ADD PRIMARY KEY (`attendance_out_id`),
+  ADD KEY `fk_attendance_out_lecturer_attendance1_idx` (`lecturer_attendance_id`);
+
+--
 -- Indexes for table `choice`
 --
 ALTER TABLE `choice`
@@ -619,7 +673,7 @@ ALTER TABLE `course`
 ALTER TABLE `courseware_question`
   ADD PRIMARY KEY (`courseware_question_id`),
   ADD KEY `fk_courseware_question_grade_assessment1_idx` (`grade_assessment_id`),
-  ADD KEY `fk_courseware_question_subject1_idx` (`subject_id`);
+  ADD KEY `fk_courseware_question_topic1_idx` (`topic_id`);
 
 --
 -- Indexes for table `course_modules`
@@ -859,6 +913,18 @@ ALTER TABLE `activity`
   ADD CONSTRAINT `fk_activity_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `attendance_in`
+--
+ALTER TABLE `attendance_in`
+  ADD CONSTRAINT `fk_attendance_in_lecturer_attendance1` FOREIGN KEY (`lecturer_attendance_id`) REFERENCES `lecturer_attendance` (`lecturer_attendance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `attendance_out`
+--
+ALTER TABLE `attendance_out`
+  ADD CONSTRAINT `fk_attendance_out_lecturer_attendance1` FOREIGN KEY (`lecturer_attendance_id`) REFERENCES `lecturer_attendance` (`lecturer_attendance_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `choice`
 --
 ALTER TABLE `choice`
@@ -882,7 +948,7 @@ ALTER TABLE `course`
 --
 ALTER TABLE `courseware_question`
   ADD CONSTRAINT `fk_courseware_question_grade_assessment1` FOREIGN KEY (`grade_assessment_id`) REFERENCES `grade_assessment` (`grade_assessment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_courseware_question_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_courseware_question_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `course_modules`
