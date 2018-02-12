@@ -84,7 +84,7 @@ class Crud_model extends CI_Model {
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL) { //wherein used only to replace orwherein if it is not used
+    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL, $orderby = NULL) { //wherein used only to replace orwherein if it is not used
         if ($distinct == TRUE) {
             $this->db->distinct();
         }
@@ -102,6 +102,9 @@ class Crud_model extends CI_Model {
         }
         if (!empty($like)) {
             $this->db->like($like[0], $like[1]);
+        }
+        if (!empty($orderby)) {
+            $this->db->order_by($orderby[0], $orderby[1]);
         }
         $query = $this->db->get($table);
         if (!empty($resultinarray) && $resultinarray == TRUE) {             //changed to if-else for compatibility issues - mark
