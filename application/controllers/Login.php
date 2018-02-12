@@ -47,55 +47,80 @@ class Login extends CI_Controller {
 
 	public function redirect_page()
 	{
+		$active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
+		$active_enrollment = $active_enrollment[0];
 		// echo "<pre>";
 		// print_r( $this->session->userdata('userInfo'));
-		$data = $this->session->userdata('userInfo');
-		echo $data["identifier"];
-		switch ( $data["identifier"]) {
-			case 'professor':
-			$log_data = array(
-				"log_user_id"=>$data['user']->professor_id,
-				"log_timedate"=>time(),
-				"log_platform"=>1,
-				"log_content_id"=>1
-			);
-			$this->Crud_model->insert("log",$log_data);
-			redirect('Home');
-			break;
-			case 'administrator':
-			$log_data = array(
-				"log_user_id"=>$data['user']->admin_id,
-				"log_timedate"=>time(),
-				"log_platform"=>1,
-				"log_content_id"=>1
-			);
-			$this->Crud_model->insert("log",$log_data);
-			redirect('Admin');
-			break;
-			case 'student':
-			$log_data = array(
-				"log_user_id"=>$data['user']->student_id,
-				"log_timedate"=>time(),
-				"log_platform"=>1,
-				"log_content_id"=>1
-			);
-			$this->Crud_model->insert("log",$log_data);
-			redirect('Home');
-			break;
-			case 'fic':
-			$log_data = array(
-				"log_user_id"=>$data['user']->fic_id,
-				"log_timedate"=>time(),
-				"log_platform"=>1,
-				"log_content_id"=>1
-			);
-			$this->Crud_model->insert("log",$log_data);
-			redirect('Home');
-			break;
-			
-			default:
+		if ($active_enrollment) {
+			$data = $this->session->userdata('userInfo');
+			echo $data["identifier"];
+			switch ( $data["identifier"]) {
+				case 'professor':
+				$log_data = array(
+					"log_user_id"=>$data['user']->professor_id,
+					"log_timedate"=>time(),
+					"log_platform"=>1,
+					"log_content_id"=>1
+				);
+				$this->Crud_model->insert("log",$log_data);
+				redirect('Home');
+				break;
+				case 'administrator':
+				$log_data = array(
+					"log_user_id"=>$data['user']->admin_id,
+					"log_timedate"=>time(),
+					"log_platform"=>1,
+					"log_content_id"=>1
+				);
+				$this->Crud_model->insert("log",$log_data);
+				redirect('Admin');
+				break;
+				case 'student':
+				$log_data = array(
+					"log_user_id"=>$data['user']->student_id,
+					"log_timedate"=>time(),
+					"log_platform"=>1,
+					"log_content_id"=>1
+				);
+				$this->Crud_model->insert("log",$log_data);
+				redirect('Home');
+				break;
+				case 'fic':
+				$log_data = array(
+					"log_user_id"=>$data['user']->fic_id,
+					"log_timedate"=>time(),
+					"log_platform"=>1,
+					"log_content_id"=>1
+				);
+				$this->Crud_model->insert("log",$log_data);
+				redirect('Home');
+				break;
+
+				default:
 				# code...
-			break;
+				break;
+			}
+		}else{
+			$data = $this->session->userdata('userInfo');
+			echo $data["identifier"];
+			switch ( $data["identifier"]) {
+				case 'professor':
+				redirect('Home');
+				break;
+				case 'administrator':
+				redirect('Admin');
+				break;
+				case 'student':
+				redirect('Home');
+				break;
+				case 'fic':
+				redirect('Home');
+				break;
+				
+				default:
+				# code...
+				break;
+			}
 		}
 
 	}
@@ -106,8 +131,10 @@ class Login extends CI_Controller {
         =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
         =============================================================*/
         
+
         $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active"=>1));
         $active_enrollment = $active_enrollment[0];
+
         
         // echo "<pre>";
         // print_r($active_enrollment);
@@ -126,7 +153,7 @@ class Login extends CI_Controller {
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "professor",
-        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        		"active_enrollment"=>  $active_enrollment ? $active_enrollment->enrollment_id : "none" 
         	);
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");
@@ -140,7 +167,7 @@ class Login extends CI_Controller {
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "administrator",
-        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        		"active_enrollment"=>  $active_enrollment ? $active_enrollment->enrollment_id : "none" 
         	);
         	$this->session->set_userdata('userInfo',$userData);
         	
@@ -155,7 +182,7 @@ class Login extends CI_Controller {
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "student",
-        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        		"active_enrollment"=>$active_enrollment ? $active_enrollment->enrollment_id : "none" 
         	);
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");
@@ -169,7 +196,7 @@ class Login extends CI_Controller {
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "fic",
-        		"active_enrollment"=>  $active_enrollment->enrollment_id
+        		"active_enrollment"=>  $active_enrollment ? $active_enrollment->enrollment_id : "none" 
         	);
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");
