@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2018 at 08:56 AM
+-- Generation Time: Feb 12, 2018 at 12:45 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -166,8 +166,8 @@ INSERT INTO `attendance_out` (`attendance_out_id`, `attendance_out_time`, `lectu
 
 CREATE TABLE `choice` (
   `choice_id` int(20) NOT NULL,
-  `choice_content` varchar(500) NOT NULL,
-  `choice_is_correct` int(1) NOT NULL,
+  `choice_choice` varchar(800) NOT NULL,
+  `choice_is_answer` tinyint(1) NOT NULL,
   `courseware_question_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -212,15 +212,27 @@ INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `courseware`
+--
+
+CREATE TABLE `courseware` (
+  `courseware_id` int(50) NOT NULL,
+  `courseware_name` varchar(100) NOT NULL,
+  `courseware_description` varchar(800) DEFAULT NULL,
+  `topic_id` int(20) NOT NULL,
+  `grade_assessment_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `courseware_question`
 --
 
 CREATE TABLE `courseware_question` (
   `courseware_question_id` int(20) NOT NULL,
   `courseware_question_question` varchar(800) NOT NULL,
-  `courseware_question_reference` varchar(800) DEFAULT NULL,
-  `grade_assessment_id` int(20) NOT NULL,
-  `topic_id` int(20) NOT NULL
+  `courseware_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -295,7 +307,7 @@ CREATE TABLE `grade_assessment` (
   `grade_assessment_id` int(20) NOT NULL,
   `grade_assessment_score` int(10) NOT NULL,
   `grade_assessment_total` int(10) NOT NULL,
-  `grade_assessment_percentage` varchar(45) DEFAULT NULL
+  `student_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -598,7 +610,8 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 CREATE TABLE `total_grade` (
   `total_grade_id` int(11) NOT NULL,
   `total_grade_total` varchar(45) NOT NULL,
-  `subject_id` int(20) NOT NULL
+  `subject_id` int(20) NOT NULL,
+  `student_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -668,12 +681,19 @@ ALTER TABLE `course`
   ADD KEY `fk_offering_professor1_idx` (`professor_id`);
 
 --
+-- Indexes for table `courseware`
+--
+ALTER TABLE `courseware`
+  ADD PRIMARY KEY (`courseware_id`),
+  ADD KEY `fk_courseware_topic1_idx` (`topic_id`),
+  ADD KEY `fk_courseware_grade_assessment1_idx` (`grade_assessment_id`);
+
+--
 -- Indexes for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
   ADD PRIMARY KEY (`courseware_question_id`),
-  ADD KEY `fk_courseware_question_grade_assessment1_idx` (`grade_assessment_id`),
-  ADD KEY `fk_courseware_question_topic1_idx` (`topic_id`);
+  ADD KEY `fk_courseware_question_courseware1_idx` (`courseware_id`);
 
 --
 -- Indexes for table `course_modules`
@@ -698,7 +718,8 @@ ALTER TABLE `fic`
 -- Indexes for table `grade_assessment`
 --
 ALTER TABLE `grade_assessment`
-  ADD PRIMARY KEY (`grade_assessment_id`);
+  ADD PRIMARY KEY (`grade_assessment_id`),
+  ADD KEY `fk_grade_assessment_student1_idx` (`student_id`);
 
 --
 -- Indexes for table `lecturer`
@@ -787,7 +808,8 @@ ALTER TABLE `topic`
 --
 ALTER TABLE `total_grade`
   ADD PRIMARY KEY (`total_grade_id`),
-  ADD KEY `fk_total_grade_subject1_idx` (`subject_id`);
+  ADD KEY `fk_total_grade_subject1_idx` (`subject_id`),
+  ADD KEY `fk_total_grade_student1_idx` (`student_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -828,6 +850,12 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `course`
   MODIFY `course_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `courseware`
+--
+ALTER TABLE `courseware`
+  MODIFY `courseware_id` int(50) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `courseware_question`
@@ -944,17 +972,29 @@ ALTER TABLE `course`
   ADD CONSTRAINT `fk_offering_professor1` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`professor_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `courseware`
+--
+ALTER TABLE `courseware`
+  ADD CONSTRAINT `fk_courseware_grade_assessment1` FOREIGN KEY (`grade_assessment_id`) REFERENCES `grade_assessment` (`grade_assessment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_courseware_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `courseware_question`
 --
 ALTER TABLE `courseware_question`
-  ADD CONSTRAINT `fk_courseware_question_grade_assessment1` FOREIGN KEY (`grade_assessment_id`) REFERENCES `grade_assessment` (`grade_assessment_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_courseware_question_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_courseware_question_courseware1` FOREIGN KEY (`courseware_id`) REFERENCES `courseware` (`courseware_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `course_modules`
 --
 ALTER TABLE `course_modules`
   ADD CONSTRAINT `fk_course_modules_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `grade_assessment`
+--
+ALTER TABLE `grade_assessment`
+  ADD CONSTRAINT `fk_grade_assessment_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `lecturer_attendance`
@@ -1016,6 +1056,7 @@ ALTER TABLE `topic`
 -- Constraints for table `total_grade`
 --
 ALTER TABLE `total_grade`
+  ADD CONSTRAINT `fk_total_grade_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_total_grade_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
