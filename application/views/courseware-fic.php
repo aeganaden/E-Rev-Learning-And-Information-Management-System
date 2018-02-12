@@ -12,7 +12,15 @@
 
 <div class="row container">
 	<div class="col s1"></div>
-	<div class="col s11"></div>
+	<div class="col s11">
+		<nav style="background-color: transparent !important; box-shadow: none;" >
+			<div class="nav-wrapper" >
+				<div class="col s12 ">
+					<a href="#!" class="breadcrumb">Subjects</a>
+				</div>
+			</div>
+		</nav>
+	</div>
 </div>
 
 <!--=======================================

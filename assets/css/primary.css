@@ -112,6 +112,14 @@ a{
 	-webkit-animation-delay: 0s;
 }	
 
+.breadcrumb:before {
+	color: #007A33;
+}
+
+.breadcrumb, .breadcrumb:last-child {
+	color: #007A33;
+}
+
 
 /*================================
 =            Home CSS            =
