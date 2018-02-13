@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-        $_POST['username'] = "mgbabaran";
-        $_POST['password'] = "mark";
+//        $_POST['username'] = "mgbabaran";
+//        $_POST['password'] = "mark";
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
@@ -21,11 +21,11 @@ class Mobile extends CI_Controller {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "student";
             print_r(json_encode($result));
-        } else if ($result = $this->Crud_model->fetch_array("fic", NULL, $where)) {
+        } else if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "fic";
             print_r(json_encode($result));
-        } else if ($result = $this->Crud_model->fetch_array("prof", NULL, $where)) {
+        } else if ($result['result'] = $this->Crud_model->fetch_array("prof", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "prof";
             print_r(json_encode($result));
@@ -35,7 +35,7 @@ class Mobile extends CI_Controller {
     }
 
     public function announcement() {
-//        $_POST['identifier'] = "CE";
+        $_POST['department'] = "CE";
         /*
          * 1 = CE
          * 2 = ECE
@@ -43,7 +43,7 @@ class Mobile extends CI_Controller {
          * 4 = ME
          */
         $temp = 0;
-        switch ($_POST['identifier']) {
+        switch ($_POST['department']) {
             case "CE":
                 $temp = 1;
                 break;
@@ -67,8 +67,10 @@ class Mobile extends CI_Controller {
         );
 
         $like[0] = "announcement_audience";
-        $like[1] = (string) $temp;
-        if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true)) {
+        $like[1] = "$temp";
+        $orderby[0] = "announcement_created_at";
+        $orderby[1] = "DESC";
+        if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true, $orderby)) {
             foreach ($result['result'] as $key => $res) {
                 $result['result'][$key]['announcement_created_at'] = date("M d, Y", $res["announcement_created_at"]);
                 $result['result'][$key]['announcement_end_datetime'] = date("M d, Y", $res["announcement_end_datetime"]);
