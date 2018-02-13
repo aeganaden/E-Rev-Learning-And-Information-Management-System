@@ -32,3 +32,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /Engineering/nbproject/private/
 
 ~$sample.xlsx
+application/config/config.php
