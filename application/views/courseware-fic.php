@@ -105,6 +105,20 @@
 
 <!--====  End of DIV TOPICS SECTION  ====-->
 
+<!--=====================================================
+=            DIV COURSEWARE QUESTION SECTION            =
+======================================================-->
+
+<div class="row container" id="question-section" style="display: none;">
+	<div class="col s1"></div>
+	<div class="col s11">
+		
+	</div>
+</div>
+
+<!--====  End of DIV COURSEWARE QUESTION SECTION  ====-->
+
+
 <!--=======================================
 =            WIRIS TEXT EDITOR            =
 ========================================-->
@@ -138,22 +152,50 @@
 		/*===============================================
 		=            AJAX AND ANIMATE SCRIPT            =
 		===============================================*/
+
+		// LAUNCH QUESTION
+		$(document).on("click", ".btn_cw_question", function () {
+			// alert($(this).data('question'));
+			if ($("#div-bread-question").length==0) {
+				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
+				// $("#div-bread-question").attr('data-id', $id);
+			}
+			if ($('#topics-section').css('display') == "block") {
+				$('#topics-section').animateCss('zoomOut', function() {
+					$("#topics-section").css('display', 'none');
+					$('#question-section').addClass('animated zoomIn');
+					$("#question-section").css('display', 'block');
+				});
+			}
+		});
 		
-		// ajax
-		$(".btn_launch_topics").click(function(event) {
+		// LAUNCH TOPICS
+		$(document).on("click touchend", ".btn_launch_topics, #div-bread-topics", function () {
 			// alert();
 			$id = $(this).data("id");
 			var html_content = "";
 			if ($("#div-bread-topics").length==0) {
-				$("#div-bread").append('<a href="#!" class="breadcrumb" id="div-bread-topics">Topics</a>');
+				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
+				$("#div-bread-topics").attr('data-id', $id);
+			}
+			// alert($(this).data("id"));
+			if ($('#subject-section').css('display') == "block") {
+				$('#subject-section').animateCss('zoomOut', function() {
+					$("#subject-section").css('display', 'none');
+					$('#topics-section').addClass('animated zoomIn');
+					$("#topics-section").css('display', 'block');
+				});
 			}
 
-			$('#subject-section').animateCss('zoomOut', function() {
-				$("#subject-section").css('display', 'none');
-				$('#topics-section').addClass('animated zoomIn');
-				$("#topics-section").css('display', 'block');
-			});
+			if ($('#question-section').css('display') == "block") {
+				$("#div-bread-question").remove();
 
+				$('#question-section').animateCss('zoomOut', function() {
+					$("#question-section").css('display', 'none');
+					$('#topics-section').addClass('animated zoomIn');
+					$("#topics-section").css('display', 'block');
+				});
+			}
 			$.ajax({
 				url: '<?=base_url()?>Coursewares/fetchTopics',
 				type: 'post',
@@ -185,15 +227,22 @@
 									for(var j = 0; j < i_data.length; j++){
 										courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px;">'+
 										'<div class="col s6">'+
-										'<p>Coursware Name here</p>'+ 
+										'<p><b>'+i_data[j].courseware_name+'</b></p>'+
+										'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:'+i_data[j].date_edited+'<p>'+ 
+										'<blockquote class="color-primary-green"><span class="color-black">'+i_data[j].courseware_description+'</span> </blockquote>'+
 										'</div>'+
 										'<div class="col s6">'+
-										'<a class=" waves-effect waves-light btn right color-black" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right ">launch</i></a>'+
+										'<div class="col s6">'+
+										'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
+										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
+										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failed remarks">mood_bad</i>46</span>'+
+										'</div>'+
+										'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-question="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
 										'</div>'+
 										'</div>';
 									}
 									$("#courseware_"+$topic_id).html(courseware_content);
-
+									$('.tooltipped').tooltip({delay: 50});
 
 								}
 							});
@@ -214,6 +263,8 @@
 
 		});
 
+
+		// LAUNCH SUBJECTS
 		$("#btn_launch_subjects").click(function(event) {
 			$("#div-bread-topics").remove();
 			if ($("#subject-section").css('display')=="none") {
