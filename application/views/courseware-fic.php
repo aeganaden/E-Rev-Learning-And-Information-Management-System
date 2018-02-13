@@ -19,7 +19,7 @@
 		<nav  style="background-color: transparent; box-shadow: none;">
 			<div class="nav-wrapper">
 				<div class="col s12" id="div-bread">
-					<a href="#!" class="breadcrumb" id="btn_launch_subjects">Subjects</a>
+					<a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subjects</a>
 				</div>
 			</div>
 		</nav>
@@ -27,6 +27,8 @@
 </div>
 
 <!--====  End of Breadcrumbs  ====-->
+
+
 <div class="row container" id="subject-section">
 	<div class="col s1"></div>
 	<div class="col s11">
@@ -111,8 +113,9 @@
 
 <div class="row container" id="question-section" style="display: none;">
 	<div class="col s1"></div>
-	<div class="col s11">
+	<div class="col s11" id="div-q-sec">
 		
+
 	</div>
 </div>
 
@@ -122,8 +125,8 @@
 <!--=======================================
 =            WIRIS TEXT EDITOR            =
 ========================================-->
-<!-- 
-<div class="row container">
+
+<!-- <div class="row container">
 	<div class="col s1"></div>
 	<div class="col s11">
 		<textarea name="editor1" id="q_editor"></textarea>
@@ -134,13 +137,17 @@
 
 <!--====  End of WIRIS TEXT EDITOR  ====-->
 
+
+
 <a id="btn_show_menu"  class="btn-floating btn-large waves-effect waves-light red button-collapse right" data-activates="slide-out"><i  class="material-icons">menu</i></a>
 
 
 <script>
 	jQuery(document).ready(function($) {
+		
+
 		jQuery(".sub_name").fitText();
-		// CKEDITOR.replace( 'editor1');
+		// CKEDITOR.replace( 'question1');
 		$("#send").click(function(event) {
 			var value = CKEDITOR.instances['q_editor'].getData()
 			console.log(value);	
@@ -155,7 +162,7 @@
 
 		// LAUNCH QUESTION
 		$(document).on("click", ".btn_cw_question", function () {
-			// alert($(this).data('question'));
+			$id = $(this).data('cwid');
 			if ($("#div-bread-question").length==0) {
 				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
 				// $("#div-bread-question").attr('data-id', $id);
@@ -167,6 +174,21 @@
 					$("#question-section").css('display', 'block');
 				});
 			}
+
+			$.ajax({
+				url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
+				type: 'post',
+				dataType: 'html',
+				data: {cw_id: $id},
+				success: function(data){
+					// console.log(data);	
+					$("#div-q-sec").html(data);
+				},
+				error: function(){
+					console.log("error");	
+				}
+			});
+			
 		});
 		
 		// LAUNCH TOPICS
@@ -237,7 +259,7 @@
 										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
 										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failed remarks">mood_bad</i>46</span>'+
 										'</div>'+
-										'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-question="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
+										'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
 										'</div>'+
 										'</div>';
 									}
@@ -266,13 +288,27 @@
 
 		// LAUNCH SUBJECTS
 		$("#btn_launch_subjects").click(function(event) {
-			$("#div-bread-topics").remove();
+			
+			
+
+			// zoomout topics
 			if ($("#subject-section").css('display')=="none") {
-				$('#topics-section').animateCss('zoomOut', function() {
-					$("#topics-section").css('display', 'none');
-					$('#subject-section').addClass('animated zoomIn');
-					$("#subject-section").css('display', 'block');
-				});
+				$("#div-bread-topics").remove();
+				if ($("#topics-section").css('display')=="block") {
+					$('#topics-section').animateCss('zoomOut', function() {
+						$("#topics-section").css('display', 'none');
+						$('#subject-section').addClass('animated zoomIn');
+						$("#subject-section").css('display', 'block');
+					});
+				}
+				if ($("#question-section").css('display')=="block") {
+					$("#div-bread-question").remove();
+					$('#question-section').animateCss('zoomOut', function() {
+						$("#question-section").css('display', 'none');
+						$('#subject-section').addClass('animated zoomIn');
+						$("#subject-section").css('display', 'block');
+					});
+				}
 			}
 
 		});

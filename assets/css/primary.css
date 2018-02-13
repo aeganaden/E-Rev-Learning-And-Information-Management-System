@@ -64,7 +64,9 @@ a{
 .color-grey { color: #616161 !important; }
 .color-pink-light-2 { color: #f06292   !important; } /* PINK */
 
-
+/*blockqoute*/
+.bq-primary-yellow {border-color: #F2A900;} /*Yellow*/
+.bq-primary-green{border-color: #007A33;} /*Green*/
 
 /*BACKGROUNDS*/
 .bg-primary-yellow {	background-color: #F2A900 !important; } /*Yellow*/
@@ -118,6 +120,26 @@ a{
 
 .breadcrumb, .breadcrumb:last-child {
 	color: #007A33;
+}
+[type="radio"].with-gap + label:before {
+	border-radius: 50%;
+	border: 2px solid #007A33; 
+}
+[type="radio"].with-gap:checked + label:before {
+	border-radius: 50%;
+	border: 2px solid #007A33; 
+}
+
+[type="radio"].with-gap:checked + label:after {
+	border-radius: 50%;
+	border: 2px solid #007A33;
+	background-color: #007A33;
+	z-index: 0;
+	-webkit-transform: scale(.5);
+	-moz-transform: scale(.5);
+	-ms-transform: scale(.5);
+	-o-transform: scale(.5);
+	transform: scale(.5); 
 }
 
 
