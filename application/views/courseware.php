@@ -2,14 +2,11 @@
 <?php $this->load->view('includes/home-sidenav'); ?>
 
 
-<div class="row container">
-	<div class="col s1"></div>
-	<div class="col s7">
-		<blockquote class="color-primary-green">
-			<h3 class="color-black">Coursewares</h3>
-		</blockquote>
-	</div>
-	<div class="col s4"></div>
+<div class="row container">		
+	<blockquote class="color-primary-green">
+		<h3 class="color-black">Coursewares</h3>
+	</blockquote>
+</div>
 </div>
 
 <!--=================================
@@ -17,16 +14,13 @@
 ==================================-->
 
 <div class="row container">
-	<div class="col s1"></div>
-	<div class="col s11">
-		<nav  style="background-color: transparent; box-shadow: none;">
-			<div class="nav-wrapper">
-				<div class="col s12" id="div-bread">
-					<a href="#!" class="breadcrumb" id="btn_launch_subjects">Subjects</a>
-				</div>
+	<nav  style="background-color: transparent; box-shadow: none;">
+		<div class="nav-wrapper">
+			<div class="col s12" id="div-bread">
+				<a href="#!" class="breadcrumb" id="btn_launch_subjects">Subjects</a>
 			</div>
-		</nav>
-	</div>
+		</div>
+	</nav>
 </div>
 
 <!--====  End of Breadcrumbs  ====-->
@@ -37,54 +31,50 @@
 =======================================-->
 
 <div class="row	 container" id="subject-section">
-	<div class="col s1"></div>
-	<div class="col s11">
 
+	<?php 
+	$section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
+	$section = $section[0];
+	$subjects = $this->Crud_model->fetch("subject",array("offering_id"=>$section->offering_id));
 
-		<?php 
-		$section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
-		$section = $section[0];
-		$subjects = $this->Crud_model->fetch("subject",array("offering_id"=>$section->offering_id));
+	$count = 1;
+	?>
+	<?php foreach ($subjects as $key => $value): ?>
+		<?php if ($count == 4): ?><?=  "<div class='row'>" ?><?php endif ?>
+			<?php 
+			$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$value->lecturer_id));
+			$lecturer = $lecturer[0];
+			?>
+			<div class="col s3" >
+				<div class="card sticky-action" >
+					<div class="card-image waves-effect waves-block waves-light" >
+						<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
+					</div>
+					<div class="card-content bg-primary-yellow" >
+						<blockquote class="color-primary-green" style="margin-top: 0;">
+							<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$value->subject_name?><i class="material-icons right ">more_vert</i></span>
+						</blockquote>
+						<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+					</div>
+					<div class="card-reveal bg-primary-green">
+						<span class="card-title color-white ">ABOUT</span>
+						<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$value->subject_description?></span></p>
+					</div>
 
-		$count = 1;
-		?>
-		<?php foreach ($subjects as $key => $value): ?>
-			<?php if ($count == 4): ?><?=  "<div class='row'>" ?><?php endif ?>
-				<?php 
-				$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$value->lecturer_id));
-				$lecturer = $lecturer[0];
-				?>
-				<div class="col s3" >
-					<div class="card sticky-action" >
-						<div class="card-image waves-effect waves-block waves-light" >
-							<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
-						</div>
-						<div class="card-content bg-primary-yellow" >
-							<blockquote class="color-primary-green" style="margin-top: 0;">
-								<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$value->subject_name?><i class="material-icons right ">more_vert</i></span>
-							</blockquote>
-							<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
-						</div>
-						<div class="card-reveal bg-primary-green">
-							<span class="card-title color-white ">ABOUT</span>
-							<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$value->subject_description?></span></p>
-						</div>
+					<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+						<div class="row ">
+							<div class="col s12 ">
 
-						<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-							<div class="row ">
-								<div class="col s12 ">
+								<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
-									<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
-
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
-				<?php $count++; ?>
-			<?php  endforeach ?>
-		</div>
+			</div>
+			<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
+			<?php $count++; ?>
+		<?php  endforeach ?>
 
 	</div>
 

@@ -9,21 +9,15 @@
 <!--ABOVE IS PERMA-->
 
 
-<div class="row container">
-    <div class="col s1"></div>
-    <div class="col s11">
-        <div class="col s4">
-            <blockquote class="color-primary-green">
-                <h1 class="color-black">Feedback</h1>
-            </blockquote>
-        </div>
-        <div class="col s4"></div>
-        <div class="col s4"></div>
-    </div>
+<div class="row container">        <div class="col s4">
+    <blockquote class="color-primary-green">
+        <h3 class="color-black">Feedback</h3>
+    </blockquote>
+</div>
+<div class="col s4"></div>
+<div class="col s4"></div>
 </div>
 <div class="row container">
- <div class="col s1"></div>
- <div class="col s11">
     <form method="post" action="<?= base_url() ?>feedback/">
         <div class="row">
             <div class="input-field col s6">
@@ -87,5 +81,4 @@
             <h3 class="color-red">Invalid input</h3>
         </center>
     <?php endif; ?>
-</div>
 </div>

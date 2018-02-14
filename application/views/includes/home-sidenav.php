@@ -30,7 +30,7 @@ switch ($info['user']->$ident) {
 // print_r($info);
 ?>
 
-<ul id="slide-out" class="side-nav bg-color-white fixed">
+<ul id="slide-out" class="side-nav bg-color-white ">
     <li><div class="user-view">
         <div class="background" style="background-color: #F2A900">
 
