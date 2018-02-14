@@ -8,15 +8,13 @@
 <!--====  End of Navigation Top  ====-->
 
 
-
+<?php $this->load->view('includes/home-sidenav'); ?>
 <!-- 
 <?php echo "<pre>" ?>
   <?php print_r($info) ?> -->
   <div class="row">
     <div class="row container">
-      <div class="col s1">
-        <?php $this->load->view('includes/home-sidenav'); ?>
-      </div>
+      <div class="col s1"></div>
       <div class="col s11">
          <!--==========================================
         =            Announcement Section            =
