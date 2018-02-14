@@ -35,7 +35,7 @@ class Mobile extends CI_Controller {
     }
 
     public function announcement() {
-        $_POST['department'] = "CE";
+//        $_POST['department'] = "CE";
         /*
          * 1 = CE
          * 2 = ECE
@@ -72,7 +72,7 @@ class Mobile extends CI_Controller {
         $orderby[1] = "DESC";
         if ($result['result'] = $this->Crud_model->fetch_select("announcement", $col, $where, NULL, NULL, NULL, $like, true, $orderby)) {
             foreach ($result['result'] as $key => $res) {
-                $result['result'][$key]['announcement_created_at'] = date("M d, Y", $res["announcement_created_at"]);
+                $result['result'][$key]['announcement_created_at'] = date("M d, Y | g:i A", $res["announcement_created_at"]);
                 $result['result'][$key]['announcement_end_datetime'] = date("M d, Y", $res["announcement_end_datetime"]);
                 $result['result'][$key]['announcement_start_datetime'] = date("M d, Y", $res["announcement_start_datetime"]);
             }
