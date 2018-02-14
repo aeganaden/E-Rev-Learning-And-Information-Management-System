@@ -200,11 +200,28 @@ a{
 =            Media Query            =
 ===================================*/
 
-@media only screen and (max-width:1271px) {
+/*@media only screen and (max-width:1280px) {
 	#slide-out{
 		display: none;
 	}
+	#menu_side{
+		display: none;
+	}
+	#menu_side_none{
+		display: block;
+	}
 }
+@media only screen and (min-width:1281px) {
+	#slide-out{
+		display: block;
+	}
+	#menu_side{
+		display: none;
+	}
+	#menu_side_none{
+		display: block;
+	}
+	}*/
 
 /*=====  End of Media Query  ======*/
 

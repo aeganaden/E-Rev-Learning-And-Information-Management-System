@@ -2,31 +2,21 @@
 =            Navigation Top            =
 =====================================-->
 
-<div class="row valign-wrapper">
-  <div class="col s4 ">
+<?php $this->load->view('includes/home-navbar'); ?>
 
-    <a href="#" style="padding-left: 2%" data-activates="slide-out" class="color-black button-collapse valign-wrapper">
-      <i class="material-icons small">menu</i> MENU
-    </a>
-  </div>
-  <div class="col s4">
-    <center>
-      <img src="<?=base_url()?>assets/img/feu-header.png" style="width: 40vh; margin-top: 2%;">
-    </center> 
-  </div>
-  <div class="col s4"></div>
-</div>
 
 <!--====  End of Navigation Top  ====-->
 
 
-<?php $this->load->view('includes/home-sidenav'); ?>
+
 <!-- 
 <?php echo "<pre>" ?>
   <?php print_r($info) ?> -->
   <div class="row">
     <div class="row container">
-      <div class="col s1"></div>
+      <div class="col s1">
+        <?php $this->load->view('includes/home-sidenav'); ?>
+      </div>
       <div class="col s11">
          <!--==========================================
         =            Announcement Section            =
