@@ -128,44 +128,43 @@ public function Activity() {
     }
 }
 
-    /* COMMENT DAHIL ERROR SA SIDE KO - MARK
-      public function fetchSchedule()
-      {
-      $id = $this->input->post("id");
-      $data = $this->Crud_model->fetch("schedule",array("offering_id"=>$id));
-      $data = $data[0];
-      $data->min = $data->
-      echo json_encode($data);
-      }
-     */
 
-      public function updateActivity() {
-        $this->session->unset_userdata('insertion_info');
-        $id = $this->input->post("id");
-        $time = $this->input->post("time");
-        $date = $this->input->post("date");
-        $desc = $this->input->post("desc");
-        $dateFull = strtotime($date . " " . $time);
+public function fetchSchedule()
+{
+  $id = $this->input->post("id");
+  $data = $this->Crud_model->fetch("schedule",array("offering_id"=>$id));
 
-        $data = array(
-            "activity_description" => $desc,
-            "activity_date_time" => $dateFull
-        );
-        if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
-            echo json_encode(true);
-        }
+  echo json_encode($data);
+}
+
+
+public function updateActivity() {
+    $this->session->unset_userdata('insertion_info');
+    $id = $this->input->post("id");
+    $time = $this->input->post("time");
+    $date = $this->input->post("date");
+    $desc = $this->input->post("desc");
+    $dateFull = strtotime($date . " " . $time);
+
+    $data = array(
+        "activity_description" => $desc,
+        "activity_date_time" => $dateFull
+    );
+    if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
+        echo json_encode(true);
     }
+}
 
-    public function deleteActivity() {
-        $this->session->unset_userdata('insertion_info');
-        $id = $this->input->post("id");
-        $where = array(
-            "activity_id" => $id
-        );
-        if ($this->Crud_model->delete("activity", $where)) {
-            echo json_encode(true);
-        }
+public function deleteActivity() {
+    $this->session->unset_userdata('insertion_info');
+    $id = $this->input->post("id");
+    $where = array(
+        "activity_id" => $id
+    );
+    if ($this->Crud_model->delete("activity", $where)) {
+        echo json_encode(true);
     }
+}
 
 }
 

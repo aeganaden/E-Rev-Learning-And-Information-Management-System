@@ -82,23 +82,50 @@
 		<?php endif ?>
 	</div>
 </div>
+<?php 
+$ident = $info['identifier'];
+$ident.="_department";
+$program = "";
 
-<div id="modal_add_activity" class="modal" style="height: 100vh">
+switch ($info['user']->$ident) {
+	case 'CE':
+	$program = "Civil Engineering";
+	break;
+	case 'EE':
+	$program = "Electrical Engineering";
+	break;
+	case 'ECE':
+	$program = "Electronics and Computer Engineering";
+	break;
+	case 'ME':
+	$program = "Mechanical Engineering";
+	break;
+
+	default:
+        # code...
+	break;
+}
+?>
+
+<div id="modal_add_activity" class="modal bg-color-white"  style="height: 100vh">
 	<div class="modal-content">
 		<h4>Add Activity</h4>
 		<div class="input-field col s12">
 			<select id="section_area" name="select_section">
-				<option value="" disabled selected>Choose your option</option>
+				<?php 
+				$offering = $this->Crud_model->fetch("offering",array("offering_department"=>$info['user']->$ident));
+				?>
+				<option value="" disabled selected>Choose Section</option>
 				<?php if ($offering): ?>
 					<?php foreach ($offering as $key => $value): ?>
-						<option value="<?=$value->offering_id?>" style="text-transform: uppercase;"><?=$value->offering_course_code." - ".$value->offering_section?></option>
+						<option value="<?=$value->offering_id?>" style="text-transform: uppercase;"><?=$value->offering_name?></option>
 					<?php endforeach ?>
 				<?php endif ?>
 			</select>
-			<label>Materialize Select</label>
+			<label><?=$program?> sections</label>
 		</div>
 	</div>
-	<div class="modal-footer">
+	<div class="modal-footer bg-color-white">
 		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
 	</div>
 </div>
