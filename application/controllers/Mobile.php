@@ -19,15 +19,19 @@ class Mobile extends CI_Controller {
 
         if ($result['result'] = $this->Crud_model->fetch_array("student", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
-            $result['result'][0]['identifier'] = "student";
+            $result['result'][0]['identifier'] = "Student";
             print_r(json_encode($result));
         } else if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
-            $result['result'][0]['identifier'] = "fic";
-            print_r(json_encode($result));
+            $result['result'][0]['identifier'] = "Faculty in Charge";
+            if ($result['result'][0]['fic_status'] == 1) {
+                print_r(json_encode($result));
+            } else {
+                print_r("");
+            }
         } else if ($result['result'] = $this->Crud_model->fetch_array("prof", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
-            $result['result'][0]['identifier'] = "prof";
+            $result['result'][0]['identifier'] = "Professor";
             print_r(json_encode($result));
         } else {
             print_r("");
