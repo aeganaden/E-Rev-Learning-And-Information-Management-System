@@ -23,7 +23,6 @@ class Feedback extends CI_Controller {
                 "s_h" => "",
                 "s_a" => "",
                 "s_c" => "",
-                "s_f" => "selected-nav",
                 "s_f" => "selected-nav"
             );
             $this->load->view('includes/header', $data);
