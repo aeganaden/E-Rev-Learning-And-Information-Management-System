@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Manila");
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -21,6 +22,7 @@ class Home extends CI_Controller {
           foreach ($ann_full as $key => $value) {
             $seconds = $value->announcement_end_datetime - $value->announcement_start_datetime;
             $days = ceil($seconds/(3600*24));
+            // echo date("M d, Y h:i A",$value->announcement_end_datetime);
             if ($days <= 0) {
 
               $this->Crud_model->update("announcement",array("announcement_is_active"=>0),array("announcement_id"=>$value->announcement_id));
@@ -30,26 +32,29 @@ class Home extends CI_Controller {
   // echo "<pre>";
   // print_r($info);
   // die();
-  $program = 0;
-  if (isset($info['user']->student_department)) {
-    switch ($info['user']->student_department) {
-        case 'CE':
-        $program = 1;
-        break;
-        case 'ECE':
-        $program = 2;
-        break;
-        case 'EE':
-        $program = 3;
-        break;
-        case 'ME':
-        $program = 4;
-        break;
 
-        default:
-        break;
-    }
+  $ident = $info['identifier'];
+  $ident.="_department";
+  $program = 0;
+
+  switch ($info['user']->$ident) {
+    case 'CE':
+    $program = 1;
+    break;
+    case 'ECE':
+    $program = 2;
+    break;
+    case 'EE':
+    $program = 3;
+    break;
+    case 'ME':
+    $program = 4;
+    break;
+
+    default:
+    break;
 }
+
 
 if ($info['logged_in'] && $info['identifier'] != "administrator") {
     $data = array(
