@@ -163,6 +163,26 @@ class Crud_model extends CI_Model {
         }
     }
 
+    public function mobile_check($table, $col = NULL, $like = NULL) {           //authentication on mobile
+        if (!empty($like)) {
+            $this->db->like('LOWER(' . $like[0] . ')', strtolower($like[1]));
+            $this->db->like('LOWER(' . $like[2] . ')', strtolower($like[3]));
+            $this->db->like('LOWER(' . $like[4] . ')', strtolower($like[5]));
+            $this->db->like($like[6], $like[7]);
+        }
+        if (!empty($col)) {
+            $this->db->select($col);
+        }
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        if (!empty($table)) {
+            $this->db->from($table);
+        }
+        $query = $this->db->get();
+        return ($query->num_rows() > 0) ? $query->result() : FALSE;
+    }
+
 }
 
 ?>

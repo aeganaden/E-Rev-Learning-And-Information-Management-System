@@ -39,7 +39,8 @@ class Mobile extends CI_Controller {
     }
 
     public function announcement() {
-        $_POST['department'] = "CE";
+//        $_POST['department'] = "CE";
+        $_POST['department'] = strtoupper($_POST['department']);
         /*
          * 1 = CE
          * 2 = ECE
@@ -87,61 +88,87 @@ class Mobile extends CI_Controller {
     }
 
     public function feedback() {            //LAST - need to change source vars
-        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
-            $info = $this->session->userdata('userInfo');
-            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
-            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
+        $_POST['identifier'] = "Student";
+        $_POST['firstname'] = "IAN";
+        $_POST['midname'] = "BACULI";
+        $_POST['lastname'] = "AdRe";
+        $_POST['student_id'] = '201511438';
+        $_POST['department'] = "CE";
+        $_POST['offering_id'] = 1;
+//        print_r($this->Crud_model->mobile_check("student", "student_id", $like) == true);
+//        print_r(strtolower($identifier) == "student");
+        $like[0] = "firstname";
+        $like[1] = $_POST['firstname'];
+        $like[2] = "midname";
+        $like[3] = $_POST['midname'];
+        $like[4] = "lastname";
+        $like[5] = $_POST['lastname'];
+        $like[6] = "student_id";
+        $like[7] = $_POST['student_id'];
+        $identifier = $_POST['identifier'];
+
+        if ($this->Crud_model->mobile_check("student", "student_id", $like) && strtolower($identifier) == "student") {  //checked
+            //INITIALIZATION
+            $department = $_POST['department'];
+            $offering_id = $_POST['offering_id'];
+
+//            $info = $this->session->userdata('userInfo');
+//            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
+            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $department));
             $feedback_status = $dept_temp[0]->professor_feedback_active;
 
             if ($feedback_status == 1) {                //checks if feedback is open
-                $error = true;          //error holder
-                $user_hold = $this->session->userdata('userInfo')['user'];
-                $user_id = $user_hold->offering_id;
-                $course_hold2 = $this->Crud_model->fetch('offering', array('offering_id' => $user_id))[0]->course_id;
-                $course_hold = $this->Crud_model->fetch('course', array('course_id' => $course_hold2))[0];
-                $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
-                if (empty($enrollment_hold) != 1) {       //check the fetched table and if it is active
-                    if ($enrollment_hold->enrollment_is_active == 0) {
-                        $result['message'][0]['content'] = "No data";
-                        print_r(json_encode($result));
-                    }
-                }
+                $col = array('lecturer.lecturer_id, lecturer.image_path, offering.offering_name, subject.subject_name, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name', false);
+                $join2 = array('lecturer', 'lecturer.lecturer_id = subject.lecturer_id');
+                $join1 = array('subject', 'subject.offering_id = offering.offering_id');
+                $jointype = "INNER";
+                $where = array('subject.offering_id' => $offering_id);
+                $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);       //LAST - success getting lects
+                $result['result'][] = $result_hold;
+                print_r(json_encode($result));
 
-                if ($error) {
-                    $subject_hold = $this->Crud_model->fetch('subject', array('offering_id' => $user_id));
-                    $lect = array();
-                    $inner_counter = 0;
-                    if (empty($subject_hold) != 1) {
-                        foreach ($subject_hold as $subject) {
-                            $lect_id = $subject->lecturer_id;
-                            $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
-                            $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
-                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
-                                $lect_hold->sent_feedback = 1;
-                            } else {
-                                $lect_hold->sent_feedback = 0;
-                            }
-                            array_push($lect, $lect_hold);
-                            $inner_counter++;
-                        }
-
-                        $data = array(
-                            'title' => "Feedback",
-                            "s_h" => "",
-                            "s_a" => "",
-                            "s_c" => "",
-                            "s_f" => "selected-nav",
-                            'info' => $info,
-                            'lect' => $lect,
-                        );
-                        $this->load->view('feedback/feedback_main', $data);
-                    } else {
-                        $this->load->view('feedback/feedback_main', $data);
-                        include(APPPATH . 'views\feedback\custom3.php');
-                    }
-                }
+//                $error = true;          //error holder
+////                $user_hold = $this->session->userdata('userInfo')['user'];
+//                $user_id = $offering_id;
+//                $course_hold2 = $this->Crud_model->fetch('offering', array('offering_id' => $user_id))[0]->course_id;
+//                $course_hold = $this->Crud_model->fetch('course', array('course_id' => $course_hold2))[0];
+//                $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
+//                if (empty($enrollment_hold) != 1) {       //check the fetched table and if it is active
+//                    if ($enrollment_hold->enrollment_is_active == 0) {
+//                        $result['message'][0]['message'] = "No data";
+//                        print_r(json_encode($result));
+//                    }
+//                }
+//
+//                if ($error) {
+//                    $subject_hold = $this->Crud_model->fetch('subject', array('offering_id' => $user_id));
+//                    $lect = array();
+//                    $inner_counter = 0;
+//                    if (empty($subject_hold) != 1) {
+//                        foreach ($subject_hold as $subject) {
+//                            $lect_id = $subject->lecturer_id;
+//                            $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
+//                            $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
+//                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $like[7]))[0]) {
+//                                $lect_hold->sent_feedback = 1;
+//                            } else {
+//                                $lect_hold->sent_feedback = 0;
+//                            }
+//                            $result['result'][] = $lect_hold;
+//                            echo "<pre>";
+//                            print_r($lect_hold);
+//                            $inner_counter++;
+//                        }
+//                        //                        THIS SHOULD DISPLAY LECTURERS
+//
+//                        print_r(json_encode($result));
+//                    } else {
+//                        $result['message'][0]['message'] = "No data to show";
+//                        print_r(json_encode($result));
+//                    }
+//                }
             } else {
-                $result['result'][0]['message'] = "Feedbcak is not yet activated";
+                $result['message'][0]['message'] = "Feedback is not yet activated";
                 print_r(json_encode($result));
             }
         }
