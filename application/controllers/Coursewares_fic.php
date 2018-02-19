@@ -49,10 +49,34 @@ class Coursewares_fic extends CI_Controller {
 		$courseware_id = $this->input->post("cw_id");
 
 		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"))) {
-			
 			echo $this->load->view('courseware/load_questions', array("data"=>$data), TRUE);
 		}else{
 			echo json_encode("false");
+		}
+
+	}
+
+	public function updateQuestion()
+	{
+		$id = $this->input->post("q_id");
+		$content = $this->input->post("content");
+
+		if ($this->Crud_model->update("courseware_question",array("courseware_question_question"=>$content),array("courseware_question_id"=>$id))) {
+			echo json_encode(true);
+		}else{
+			echo "Update question failed";
+		}
+
+	}
+	public function updateAnswer()
+	{
+		$id = $this->input->post("a_id");
+		$content = $this->input->post("content");
+
+		if ($this->Crud_model->update("choice",array("choice_choice"=>$content),array("choice_id"=>$id))) {
+			echo json_encode(true);
+		}else{
+			echo "Update question failed";
 		}
 
 	}

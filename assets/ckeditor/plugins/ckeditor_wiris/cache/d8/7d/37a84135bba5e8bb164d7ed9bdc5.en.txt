@@ -1,0 +1,1 @@
+{"result":{"text":"open square brackets 1 space plus space 1 close square brackets space equals space 2 space subscript 1 space open vertical bar 2222 close vertical bar"},"status":"ok"}
