@@ -13,7 +13,7 @@
 <?php echo "<pre>" ?>
   <?php print_r($info) ?> -->
   <div class="row">
-    <div class="container">
+    <div class="row">
          <!--==========================================
         =            Announcement Section            =
         ===========================================-->
@@ -41,9 +41,16 @@
               <div class="card bg-primary-green">
                 <div class="card-content white-text">
                   <span class="card-title" style="text-transform: capitalize;"><?=$value->announcement_title?></span>
-                  <p style="font-size: 80%" class="color-primary-yellow">Shown Until <?=date("M d, Y", $value->announcement_end_datetime)?></p>
+                  <p style="font-size: 80%" class="color-primary-yellow">Shown Until <?=date("M d, Y h:i A", $value->announcement_end_datetime)?></p>
                   <hr>
                   <p><?=$value->announcement_content?></p>
+                </div>
+              </div>
+            <?php else: ?>
+              <?php echo $program ?>
+              <div class="card bg-primary-green">
+                <div class="card-content">
+                  <h5 class="center color-white">No Announcement Yet</h5>
                 </div>
               </div>
             <?php endif ?>

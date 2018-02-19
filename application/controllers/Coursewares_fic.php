@@ -26,7 +26,7 @@ class Coursewares_fic extends CI_Controller {
 			
 		);
 		$this->load->view('includes/header', $data);
-		$this->load->view('courseware-fic');
+		$this->load->view('courseware/courseware-fic');
 		$this->load->view('includes/footer');
 	}
 
@@ -50,7 +50,7 @@ class Coursewares_fic extends CI_Controller {
 
 		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"))) {
 			
-			echo $this->load->view('load_questions', array("data"=>$data), TRUE);
+			echo $this->load->view('courseware/load_questions', array("data"=>$data), TRUE);
 		}else{
 			echo json_encode("false");
 		}

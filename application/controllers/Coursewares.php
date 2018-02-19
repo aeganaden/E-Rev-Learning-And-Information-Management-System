@@ -26,7 +26,7 @@ class Coursewares extends CI_Controller {
 			
 		);
 		$this->load->view('includes/header', $data);
-		$this->load->view('courseware');
+		$this->load->view('courseware/courseware');
 		$this->load->view('includes/footer');
 	}
 
