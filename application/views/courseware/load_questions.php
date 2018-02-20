@@ -41,9 +41,12 @@
 										<div class="col s3 valign-wrapper">
 											<i class="material-icons color-primary-green btn-edit-answer" data-id="<?=$i_value->choice_id?>" style="cursor: pointer;">border_color</i>
 											<i class="material-icons color-primary-green"  id="btn-update-answer<?=$i_value->choice_id?>" data-id="<?=$i_value->choice_id?>" style="cursor: pointer; display: none;">navigation</i>
-											<?php if ($i_value->choice_is_answer == 0): ?>
-												<i class="material-icons color-white" id="btn-mark-answer<?=$i_value->choice_id?>" data-id="<?=$i_value->choice_id?>" style="cursor: pointer; display: none;">star</i>
+											<?php if ($i_value->choice_is_answer == 1): ?>
+												<?php $is_answer = 1; ?>
+											<?php else: ?>
+												<?php $is_answer = 0; ?>
 											<?php endif ?>
+											<i class="material-icons color-white" id="btn-mark-answer<?=$i_value->choice_id?>" data-id="<?=$i_value->choice_id?>" data-a="<?=$is_answer?>" data-qid="<?=$value->courseware_question_id?>" style="cursor: pointer; display: none;">star</i>
 										</div>
 									</div>
 								<?php endforeach ?>
@@ -92,6 +95,8 @@
 				// make ck editor appear
 				CKEDITOR.inline($q_id);		
 				$("#btn-update-question"+$id).css('display', 'block');
+				$(".btn-edit-question").not(this).css("display", "none");
+
 				
 			}else{
 				// alter the icon
@@ -102,6 +107,8 @@
 				$("#"+$q_id).html($initial_data_q);
 				CKEDITOR.instances[$q_id].destroy();
 				$("#btn-update-question"+$id).css('display', 'none');
+				$(".btn-edit-question").css("display", "block");
+
 
 			}
 
@@ -164,6 +171,8 @@
 				// alter the icon
 				$(this).html("cancel");
 				$(this).addClass('color-red');
+				// $(".btn-edit-answer").css('display', 'none');
+				$(".btn-edit-answer").not(this).css("display", "none");
 				// make it editable
 				$("#"+$a_id).attr("contenteditable",true);
 				// add focus
@@ -171,7 +180,11 @@
 				// make ck editor appear
 				CKEDITOR.inline($a_id);		
 				$("#btn-update-answer"+$id).css('display', 'block');
-				$("#btn-mark-answer"+$id).css('display', 'block');
+				if ($("#btn-mark-answer"+$id).data('a')==0) {
+					$("#btn-mark-answer"+$id).css('display', 'block');
+				}else{
+					$("#btn-mark-answer"+$id).css('display', 'none');
+				}
 
 			}else{
 				// alter the icon
@@ -183,6 +196,8 @@
 				CKEDITOR.instances[$a_id].destroy();
 				$("#btn-update-answer"+$id).css('display', 'none');
 				$("#btn-mark-answer"+$id).css('display', 'none');
+				$(".btn-edit-answer").css("display", "block");
+
 
 
 			}
@@ -205,7 +220,7 @@
 						content: $content,
 					},
 					success: function(data){
-						console.log(data);	
+						// console.log(data);	
 						if (true) {
 							$toastContent = $('<span>Successfully Updated Answer</span>');
 							Materialize.toast($toastContent, 5000);
@@ -229,14 +244,43 @@
 				
 			});
 
-			// mark as answer 
-			$("#btn-mark-answer"+$id).click(function(event) {
-				$("#i_"+$id).html("star");
+			var click = function (e) {
+				$q_id = $(this).data('qid');
 				// fetch the answer
 				// then configure it base on return value from ajax
+				// console.log($q_id);	
+				$.ajax({
+					url: '<?=base_url()?>Coursewares_fic/fetchCorrectAnswer',
+					type: 'post',
+					dataType: 'json',
+					data: {
+						q_id: $q_id,
+						a_id: $id,
+					},
+					success: function(data){
+						if (data) {
+							console.log(data);	
+							$("#i_"+$id).html("star");
+							$("#i_"+data).html("");
 
-				
-			});
+							$("#btn-mark-answer"+$id).css("display","none");
+							$("#btn-mark-answer"+data).data('a', 0);
+							$("#btn-mark-answer"+$id).data('a', 1);
+							$toastContent = $('<span>Correct Answer Changed</span>');
+							Materialize.toast($toastContent, 2000);
+
+						}
+					}
+				});
+
+				e.stopImmediatePropagation();
+				return false;
+
+			}
+			// mark as answer 
+			$("#btn-mark-answer"+$id).one('click', click);
+
+
 
 
 		});

@@ -81,6 +81,33 @@ class Coursewares_fic extends CI_Controller {
 
 	}
 
+	public function fetchCorrectAnswer()
+	{
+
+		$q_id = $this->input->post("q_id");
+		$a_id = $this->input->post("a_id");
+
+		
+		$where = array(
+			"courseware_question_id"=>$q_id,
+			"choice_is_answer"=>1
+		);
+		// Fetch correct answer
+		if ($answer = $this->Crud_model->fetch("choice",$where)) {
+			$answer = $answer[0];
+			// Update correct answer
+			$this->Crud_model->update("choice",array("choice_is_answer"=>0),array("choice_id"=>$answer->choice_id));
+			$this->Crud_model->update("choice",array("choice_is_answer"=>1),array("choice_id"=>$a_id));
+			
+			
+			echo json_encode($answer->choice_id);
+		}else{
+			$this->Crud_model->update("choice",array("choice_is_answer"=>1),array("choice_id"=>$a_id));
+			// echo json_encode("Failed to fetch answer");
+			echo json_encode(false);
+		}
+	}
+
 }
 
 /* End of file Coursewares_fic.php */

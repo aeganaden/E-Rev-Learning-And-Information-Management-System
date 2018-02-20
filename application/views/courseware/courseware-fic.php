@@ -127,10 +127,6 @@
 <!--====  End of WIRIS TEXT EDITOR  ====-->
 
 
-
-<a id="btn_show_menu"  class="btn-floating btn-large waves-effect waves-light red button-collapse right" data-activates="slide-out"><i  class="material-icons">menu</i></a>
-
-
 <script>
 	jQuery(document).ready(function($) {
 		
