@@ -64,17 +64,19 @@
 		<?php endforeach ?>
 	<?php else: ?>
 
-		<h1 class="color-primary-green center">204 No Content</h1>
-		<p class="zoom-area color-primary-green center">Contact the <b>CSO-MIS </b>regarding this error</p>
-		<section class="error-container">
-			<span><span>2</span></span>
-			<span>0</span>
-			<span><span>4</span></span>
-		</section>
-		<div class="link-container">
-			<a target="_blank" href="!#" class="more-link bg-primary-green">Report to Administrator</a>
-		</div>
+		<div class="row">				<img src="<?=base_url()?>assets/img/chibi/Chibi_crying.svg" alt="">
+			<h1 class="color-primary-green center">204 No Content</h1>
+			<p class="zoom-area color-primary-green center">Contact the <b>CSO-MIS </b>regarding this error</p>
+			<section class="error-container">
+				<span><span>2</span></span>
+				<span>0</span>
+				<span><span>4</span></span>
+			</section>
 
+			<div class="link-container">
+				<a target="_blank" href="!#" class="more-link bg-primary-green">Report to Administrator</a>
+			</div>
+		</div>
 	<?php endif ?>
 </div>
 <!--========================================
@@ -106,9 +108,70 @@
 		
 
 	</div>
+	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large bg-primary-yellow">
+			<i class="large material-icons">menu</i>
+		</a>
+		<ul>
+			<li>
+				<a class="btn-floating bg-primary-green modal-trigger tooltipped" id="btn_add_q" data-position="left" data-tooltip="Add Question" href="#modal_q">
+					<i class="material-icons">add</i>
+				</a>
+			</li>
+			<!-- <li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+			<li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+			<li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li> -->
+		</ul>
+	</div>
 </div>
 
 <!--====  End of DIV COURSEWARE QUESTION SECTION  ====-->
+
+<!--====================================
+=            MODAL QUESTION            =
+=====================================-->
+
+<div id="modal_q" class="modal modal-fixed-footer bg-color-white">
+	<div class="modal-content">
+		<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
+		<blockquote class="color-primary-yellow">
+			<h5 class="color-black">Content</h5>
+		</blockquote>
+		<!-- Editor -->
+		<textarea name="editor1" id="q_editor"></textarea>
+
+
+		<blockquote class="color-primary-yellow">
+			<h5 class="color-black">Answers</h5>
+		</blockquote>
+
+		<blockquote class="color-primary-green" style="margin-left: 3%;">
+			<div class="col s12 bg-color-white color-black">
+				<p  id="answer_1" contenteditable="true">Click Here To Add Answer #1</p>
+			</div>
+		</blockquote>
+		<blockquote class="color-primary-green" style="margin-left: 3%;">
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_2" contenteditable="true">Click Here To Add Answer #2</p>
+			</div>
+		</blockquote>
+		<blockquote class="color-primary-green" style="margin-left: 3%;">
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_3" contenteditable="true">Click Here To Add Answer #3</p>
+			</div>
+		</blockquote>
+		<blockquote class="color-primary-green" style="margin-left: 3%;">
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_4" contenteditable="true">Click Here To Add Answer #4</p>
+			</div>
+		</blockquote>
+	</div>
+	<div class="modal-footer bg-color-white	">
+		<a href="#!" id="send" class="waves-effect waves-green btn bg-primary-green ">ADD</a>
+	</div>
+</div>
+
+<!--====  End of MODAL QUESTION  ====-->
 
 
 <!--=======================================
@@ -127,19 +190,77 @@
 <!--====  End of WIRIS TEXT EDITOR  ====-->
 
 
-
-<a id="btn_show_menu"  class="btn-floating btn-large waves-effect waves-light red button-collapse right" data-activates="slide-out"><i  class="material-icons">menu</i></a>
-
-
 <script>
 	jQuery(document).ready(function($) {
 		
 
 		jQuery(".sub_name").fitText();
-		// CKEDITOR.replace( 'question1');
+		CKEDITOR.replace( 'q_editor');
+
+		var answer1 = CKEDITOR.instances['answer_1'];
+		if (answer1) { CKEDITOR.instances['answer_1'].destroy(); }
+		CKEDITOR.inline('answer_1');
+
+		var answer2 = CKEDITOR.instances['answer_2'];
+		if (answer2) { CKEDITOR.instances['answer_2'].destroy(); }
+		CKEDITOR.inline('answer_2');
+
+		var answer3 = CKEDITOR.instances['answer_3'];
+		if (answer3) { CKEDITOR.instances['answer_3'].destroy();}
+		CKEDITOR.inline('answer_3');
+
+		var answer4 = CKEDITOR.instances['answer_4'];
+		if (answer4) {  CKEDITOR.instances['answer_4'].destroy(); }
+		CKEDITOR.inline('answer_4');
+
 		$("#send").click(function(event) {
-			var value = CKEDITOR.instances['q_editor'].getData()
-			console.log(value);	
+			var q_id = $("#q_id_num").html();
+			var cw_id = $("#q_id_num").data("cwid");
+			var content = CKEDITOR.instances['q_editor'].getData();
+			var answer1 = CKEDITOR.instances['answer_1'].getData();
+			var answer2 = CKEDITOR.instances['answer_2'].getData();
+			var answer3 = CKEDITOR.instances['answer_3'].getData();
+			var answer4 = CKEDITOR.instances['answer_4'].getData();
+			// console.log(cw_id);	
+			// // Insertion of Question
+			$.ajax({
+				url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					content:content,
+					answer1:answer1,
+					answer2:answer2,
+					answer3:answer3,
+					answer4:answer4,
+					q_id:q_id,
+					cw_id:cw_id
+				},
+				success: function(data){
+					if(data==true){
+						swal("Question Added!", {
+							icon: "success",
+						}).then(function(){
+							$('#modal_q').modal('close');
+							$.ajax({
+								url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
+								type: 'post',
+								dataType: 'html',
+								data: {cw_id: $id},
+								success: function(data){
+									
+									$("#div-q-sec").html(data);
+								},
+								error: function(){
+									console.log("error");	
+								}
+							});
+						});
+					}
+				}
+			});
+			
+
 		});
 
 
@@ -149,9 +270,32 @@
 		=            AJAX AND ANIMATE SCRIPT            =
 		===============================================*/
 
+
+		// ADD Question
+		$("#btn_add_q").click(function(event) {
+			$.ajax({
+				url: '<?=base_url()?>Coursewares_fic/fetch_last_q',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					table: 'courseware_question',
+					col: 'courseware_question_id',
+				},
+				success: function(data){
+					$no = parseInt(data) + 1;
+					$("#q_id_num").html($no);	
+				}
+			});
+			
+		});
+
 		// LAUNCH QUESTION
 		$(document).on("click", ".btn_cw_question", function () {
 			$id = $(this).data('cwid');
+
+			// add data cwid to q_id_num
+			$("#q_id_num").data('cwid', $id);
+
 			if ($("#div-bread-question").length==0) {
 				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
 				// $("#div-bread-question").attr('data-id', $id);
