@@ -10,6 +10,7 @@ class Coursewares_fic extends CI_Controller {
 
 	public function index()
 	{
+		
 		$info = $this->session->userdata('userInfo');
 		if (!$info) {
 			redirect('Welcome','refresh');

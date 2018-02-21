@@ -32,7 +32,9 @@
 								<?php foreach ($answers as $key => $i_value): ?>
 									<div class="row">
 										<div class="col s1">
-											<i class="material-icons color-white tooltipped" id="i_<?=$i_value->choice_id?>" data-position="left" data-tooltip="Correct Answer"><?=$i_value->choice_is_answer==1 ? "star" : ""?></i>
+											<i class="material-icons color-white tooltipped" id="i_<?=$i_value->choice_id?>" data-position="left" data-tooltip="Correct Answer">
+												<?=$i_value->choice_is_answer==1 ? "star" : ""?>
+											</i>
 										</div>
 										<div class="valign-wrapper color-black col s8 disabled" id="ans_<?=$i_value->choice_id?>"
 											style="border-bottom: 3px solid #007A33">
@@ -51,14 +53,8 @@
 									</div>
 								<?php endforeach ?>
 							<?php else: ?>
-								<h5 class="color-black valign-wrapper">Answers
-									<i class="material-icons color-primary-green btn_add_answer" data-id="<?=$value->courseware_question_id?>" 
-										style="cursor: pointer; margin-left: 3%;" >add_box
-									</i>
-								</h5>
-								<div class="row" id="div_answer_<?=$value->courseware_question_id?>">
-
-								</div>
+								<h5 class="color-black valign-wrapper">No Answers</h5>
+								<!-- id="div_answer_<?=$value->courseware_question_id?>" -->
 							<?php endif ?>
 
 
@@ -69,13 +65,16 @@
 			</div>
 		</div>
 	</div>
+
 <?php endforeach ?>
-<!-- contenteditable="true" -->
+
+
+
+
 <script type="text/javascript">
-	
+
 	jQuery(document).ready(function($) {
 		$('.tooltipped').tooltip({delay: 50});
-
 		// Edit Question
 		$initial_data_q = "";
 		$initial_data_a = "";
@@ -154,12 +153,13 @@
 
 		});
 
-		
 		// add answer
 		$(".btn_add_answer").click(function(event) {
-			
+			alert($(this).data("id"));
 		});
-		
+
+
+
 		// edit answer
 		$(".btn-edit-answer").click(function(event) {
 			$a_id = "ans_"+$(this).data('id');
