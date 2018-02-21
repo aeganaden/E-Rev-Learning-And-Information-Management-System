@@ -57,6 +57,58 @@ class Coursewares_fic extends CI_Controller {
 
 	}
 
+	public function insertQuestion()
+	{
+		$q_id = $this->input->post("q_id");
+		$cw_id = $this->input->post("cw_id");
+		$content = $this->input->post("content");
+		$answer1 = $this->input->post("answer1");
+		$answer2 = $this->input->post("answer2");
+		$answer3 = $this->input->post("answer3");
+		$answer4 = $this->input->post("answer4");
+
+		$data_q = array(
+			"courseware_question_question"=>$content,
+			"courseware_id"=>$cw_id
+		);
+
+		$data_a = array(
+			array(
+				"choice_choice"=>$answer1,
+				"choice_is_answer"=>0,
+				"courseware_question_id"=>$q_id,
+			),
+			array(
+				"choice_choice"=>$answer2,
+				"choice_is_answer"=>0,
+				"courseware_question_id"=>$q_id,
+			),
+			array(
+				"choice_choice"=>$answer3,
+				"choice_is_answer"=>0,
+				"courseware_question_id"=>$q_id,
+			),
+			array(
+				"choice_choice"=>$answer4,
+				"choice_is_answer"=>0,
+				"courseware_question_id"=>$q_id,
+			),
+		);
+
+		if ($this->Crud_model->insert("courseware_question",$data_q)) {
+			if ($this->Crud_model->insert_batch("choice",$data_a)) {
+				echo json_encode(true);
+			}else{
+				echo json_encode("Err - Answer Insertion Failed");
+			}
+		}else{
+			echo json_encode("Err - Question Insertion Failed");
+		}
+
+
+
+	}
+
 	public function updateQuestion()
 	{
 		$id = $this->input->post("q_id");
@@ -107,6 +159,21 @@ class Coursewares_fic extends CI_Controller {
 			// echo json_encode("Failed to fetch answer");
 			echo json_encode(false);
 		}
+	}
+
+	public function fetch_last_q()
+	{
+		$table = $this->input->post("table");
+		$col = $this->input->post("col");
+
+		$data = $this->Crud_model->fetch_last($table,$col);
+		if ($data) {
+			$data = $data->courseware_question_id;
+		}else{
+			$data = 1;
+		}
+		echo json_encode($data);
+
 	}
 
 }

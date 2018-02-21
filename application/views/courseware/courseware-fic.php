@@ -114,7 +114,7 @@
 		</a>
 		<ul>
 			<li>
-				<a class="btn-floating bg-primary-green modal-trigger tooltipped" data-position="left" data-tooltip="Add Question" href="#modal1">
+				<a class="btn-floating bg-primary-green modal-trigger tooltipped" id="btn_add_q" data-position="left" data-tooltip="Add Question" href="#modal_q">
 					<i class="material-icons">add</i>
 				</a>
 			</li>
@@ -131,9 +131,9 @@
 =            MODAL QUESTION            =
 =====================================-->
 
-<div id="modal1" class="modal modal-fixed-footer bg-color-white">
+<div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
-		<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question Numbah</h4>
+		<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
 		<blockquote class="color-primary-yellow">
 			<h5 class="color-black">Content</h5>
 		</blockquote>
@@ -146,23 +146,23 @@
 		</blockquote>
 
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black" id="answer_1" contenteditable="true">
-				<h5>Click Here To Add Answer #1</h5>
+			<div class="col s12 bg-color-white color-black">
+				<p  id="answer_1" contenteditable="true">Click Here To Add Answer #1</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black" id="answer_2" contenteditable="true">
-				<h5>Click Here To Add Answer #2</h5>
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_2" contenteditable="true">Click Here To Add Answer #2</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black" id="answer_3" contenteditable="true">
-				<h5>Click Here To Add Answer #3</h5>
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_3" contenteditable="true">Click Here To Add Answer #3</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black" id="answer_4" contenteditable="true">
-				<h5>Click Here To Add Answer #4</h5>
+			<div class="col s12 bg-color-white color-black">
+				<p id="answer_4" contenteditable="true">Click Here To Add Answer #4</p>
 			</div>
 		</blockquote>
 	</div>
@@ -196,22 +196,71 @@
 
 		jQuery(".sub_name").fitText();
 		CKEDITOR.replace( 'q_editor');
+
 		var answer1 = CKEDITOR.instances['answer_1'];
-		if (answer1) { answer1.destroy(true); }
-		CKEDITOR.inline('answer_1');
-		var answer2 = CKEDITOR.instances['answer_1'];
-		if (answer2) { answer2.destroy(true); }
-		CKEDITOR.inline('answer_1');
-		var answer3 = CKEDITOR.instances['answer_1'];
-		if (answer3) { answer3.destroy(true); }
-		CKEDITOR.inline('answer_1');
-		var answer4 = CKEDITOR.instances['answer_1'];
-		if (answer4) { answer4.destroy(true); }
+		if (answer1) { CKEDITOR.instances['answer_1'].destroy(); }
 		CKEDITOR.inline('answer_1');
 
+		var answer2 = CKEDITOR.instances['answer_2'];
+		if (answer2) { CKEDITOR.instances['answer_2'].destroy(); }
+		CKEDITOR.inline('answer_2');
+
+		var answer3 = CKEDITOR.instances['answer_3'];
+		if (answer3) { CKEDITOR.instances['answer_3'].destroy();}
+		CKEDITOR.inline('answer_3');
+
+		var answer4 = CKEDITOR.instances['answer_4'];
+		if (answer4) {  CKEDITOR.instances['answer_4'].destroy(); }
+		CKEDITOR.inline('answer_4');
+
 		$("#send").click(function(event) {
-			var value = CKEDITOR.instances['q_editor'].getData()
-			console.log(value);	
+			var q_id = $("#q_id_num").html();
+			var cw_id = $("#q_id_num").data("cwid");
+			var content = CKEDITOR.instances['q_editor'].getData();
+			var answer1 = CKEDITOR.instances['answer_1'].getData();
+			var answer2 = CKEDITOR.instances['answer_2'].getData();
+			var answer3 = CKEDITOR.instances['answer_3'].getData();
+			var answer4 = CKEDITOR.instances['answer_4'].getData();
+			// console.log(cw_id);	
+			// // Insertion of Question
+			$.ajax({
+				url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					content:content,
+					answer1:answer1,
+					answer2:answer2,
+					answer3:answer3,
+					answer4:answer4,
+					q_id:q_id,
+					cw_id:cw_id
+				},
+				success: function(data){
+					if(data==true){
+						swal("Question Added!", {
+							icon: "success",
+						}).then(function(){
+							$('#modal_q').modal('close');
+							$.ajax({
+								url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
+								type: 'post',
+								dataType: 'html',
+								data: {cw_id: $id},
+								success: function(data){
+									
+									$("#div-q-sec").html(data);
+								},
+								error: function(){
+									console.log("error");	
+								}
+							});
+						});
+					}
+				}
+			});
+			
+
 		});
 
 
@@ -221,9 +270,32 @@
 		=            AJAX AND ANIMATE SCRIPT            =
 		===============================================*/
 
+
+		// ADD Question
+		$("#btn_add_q").click(function(event) {
+			$.ajax({
+				url: '<?=base_url()?>Coursewares_fic/fetch_last_q',
+				type: 'post',
+				dataType: 'json',
+				data: {
+					table: 'courseware_question',
+					col: 'courseware_question_id',
+				},
+				success: function(data){
+					$no = parseInt(data) + 1;
+					$("#q_id_num").html($no);	
+				}
+			});
+			
+		});
+
 		// LAUNCH QUESTION
 		$(document).on("click", ".btn_cw_question", function () {
 			$id = $(this).data('cwid');
+
+			// add data cwid to q_id_num
+			$("#q_id_num").data('cwid', $id);
+
 			if ($("#div-bread-question").length==0) {
 				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
 				// $("#div-bread-question").attr('data-id', $id);

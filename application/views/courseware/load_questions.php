@@ -153,10 +153,10 @@
 
 		});
 
-		// add answer
-		$(".btn_add_answer").click(function(event) {
-			alert($(this).data("id"));
-		});
+		// // add answer
+		// $(".btn_add_answer").click(function(event) {
+		// 	alert($(this).data("id"));
+		// });
 
 
 
@@ -269,6 +269,12 @@
 							$toastContent = $('<span>Correct Answer Changed</span>');
 							Materialize.toast($toastContent, 2000);
 
+						}else{
+							$("#i_"+$id).html("star")
+							$("#btn-mark-answer"+$id).css("display","none");
+							$("#btn-mark-answer"+$id).data('a', 1);
+							$toastContent = $('<span>Correct Answer Changed</span>');
+							Materialize.toast($toastContent, 2000);							
 						}
 					}
 				});
