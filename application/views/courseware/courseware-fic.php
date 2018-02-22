@@ -173,6 +173,23 @@
 
 <!--====  End of MODAL QUESTION  ====-->
 
+<!--======================================
+=            MODAL COURSEWARE            =
+=======================================-->
+
+<div id="modal_cw" class="modal modal-fixed-footer">
+	<div class="modal-content">
+		<h4>Modal Header</h4>
+		<p>A bunch of text</p>
+	</div>
+	<div class="modal-footer">
+		<a href="#!" id="send_cw" class="modal-action modal-close waves-effect waves-green btn bg-primary-green">Agree</a>
+	</div>
+</div>
+
+<!--====  End of MODAL COURSEWARE  ====-->
+
+
 
 <!--=======================================
 =            WIRIS TEXT EDITOR            =
@@ -192,26 +209,30 @@
 
 <script>
 	jQuery(document).ready(function($) {
-		
+		$('.tooltipped').tooltip({delay: 50});
 
 		jQuery(".sub_name").fitText();
 		CKEDITOR.replace( 'q_editor');
 
 		var answer1 = CKEDITOR.instances['answer_1'];
-		if (answer1) { CKEDITOR.instances['answer_1'].destroy(); }
-		CKEDITOR.inline('answer_1');
+		if (!answer1) { 
+			CKEDITOR.inline('answer_1');
+		}
 
 		var answer2 = CKEDITOR.instances['answer_2'];
-		if (answer2) { CKEDITOR.instances['answer_2'].destroy(); }
-		CKEDITOR.inline('answer_2');
+		if (!answer2) { 
+			CKEDITOR.inline('answer_2');
+		}
 
 		var answer3 = CKEDITOR.instances['answer_3'];
-		if (answer3) { CKEDITOR.instances['answer_3'].destroy();}
-		CKEDITOR.inline('answer_3');
+		if (!answer3) {  
+			CKEDITOR.inline('answer_3');
+		}
 
 		var answer4 = CKEDITOR.instances['answer_4'];
-		if (answer4) {  CKEDITOR.instances['answer_4'].destroy(); }
-		CKEDITOR.inline('answer_4');
+		if (!answer4) {   
+			CKEDITOR.inline('answer_4');
+		}
 
 		$("#send").click(function(event) {
 			var q_id = $("#q_id_num").html();
@@ -242,19 +263,15 @@
 							icon: "success",
 						}).then(function(){
 							$('#modal_q').modal('close');
-							$.ajax({
-								url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
-								type: 'post',
-								dataType: 'html',
-								data: {cw_id: $id},
-								success: function(data){
-									
-									$("#div-q-sec").html(data);
-								},
-								error: function(){
-									console.log("error");	
-								}
-							});
+							// fetch question
+							fetchQuestion();
+							$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+						});
+					}else{
+						swal("Question Added!", {
+							icon: "error",
+						}).then(function(){
+							location.reload();
 						});
 					}
 				}
@@ -269,6 +286,39 @@
 		/*===============================================
 		=            AJAX AND ANIMATE SCRIPT            =
 		===============================================*/
+
+		//  Delete question
+		$(document.body).on('click', '.btn-del-q' ,function(){
+			// alert();
+			$id = $(this).data('id');
+
+			swal({
+				title: "Are you sure?",
+				text: "This question will be put into archive",
+				icon: "error",
+				buttons: true,
+				dangerMode: true,
+			})
+			.then((willDelete) => {
+				if (willDelete) {
+					$.ajax({
+						url: '<?=base_url()?>Coursewares_fic/deleteQuestion ',
+						type: 'post',
+						dataType: 'json',
+						data: {
+							id: $id
+						},
+						success: function(data){
+							if (data == true) {
+								swal("Success", "Question has been put into archive", "success");
+								fetchQuestion();
+							}
+						}
+					});
+				}
+			});
+		});
+		
 
 
 		// ADD Question
@@ -289,6 +339,13 @@
 			
 		});
 
+		// Add courseware
+		$(document).on('click', '.btn-add-cw', function(event) {
+			$t_id = $(this).data("id");
+			console.log($t_id);	
+			$("#send_cw").data('id',$t_id);
+
+		});
 		// LAUNCH QUESTION
 		$(document).on("click", ".btn_cw_question", function () {
 			$id = $(this).data('cwid');
@@ -308,19 +365,7 @@
 				});
 			}
 
-			$.ajax({
-				url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
-				type: 'post',
-				dataType: 'html',
-				data: {cw_id: $id},
-				success: function(data){
-					// console.log(data);	
-					$("#div-q-sec").html(data);
-				},
-				error: function(){
-					console.log("error");	
-				}
-			});
+			fetchQuestion();			
 			
 		});
 		
@@ -328,7 +373,6 @@
 		$(document).on("click touchend", ".btn_launch_topics, #div-bread-topics", function () {
 			// alert();
 			$id = $(this).data("id");
-			var html_content = "";
 			if ($("#div-bread-topics").length==0) {
 				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
 				$("#div-bread-topics").attr('data-id', $id);
@@ -351,68 +395,7 @@
 					$("#topics-section").css('display', 'block');
 				});
 			}
-			$.ajax({
-				url: '<?=base_url()?>Coursewares/fetchTopics',
-				type: 'post',
-				dataType: 'json',
-				data: {id: $id},
-				success: function(data){
-					// console.log(data);	
-					if (data.length > 0) {
-						$("#div-topics").css('display', 'none');
-
-						for(var i = 0; i < data.length; i++){
-							$topic_id = data[i].topic_id;
-
-							// console.log(i);	
-							html_content += '<li>'+
-							'<div class="collapsible-header" style="background-color: transparent; text-transform: capitalize;"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-							'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
-							'</div>'+
-							'</li>';
-
-							// AJAX FOR COURSEWARE
-							var courseware_content = "";
-							$.ajax({
-								url: '<?=base_url()?>Coursewares_fic/fetchCoursewares',
-								type: 'post',
-								dataType: 'json',
-								data: {topic_id: $topic_id},
-								success: function(i_data){
-									for(var j = 0; j < i_data.length; j++){
-										courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px;">'+
-										'<div class="col s6">'+
-										'<p><b>'+i_data[j].courseware_name+'</b></p>'+
-										'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:'+i_data[j].date_edited+'<p>'+ 
-										'<blockquote class="color-primary-green"><span class="color-black">'+i_data[j].courseware_description+'</span> </blockquote>'+
-										'</div>'+
-										'<div class="col s6">'+
-										'<div class="col s6">'+
-										'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
-										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
-										' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failed remarks">mood_bad</i>46</span>'+
-										'</div>'+
-										'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
-										'</div>'+
-										'</div>';
-									}
-									$("#courseware_"+$topic_id).html(courseware_content);
-									$('.tooltipped').tooltip({delay: 50});
-
-								}
-							});
-						}
-
-						$("#topic_content").html(html_content);
-					}else{
-						$("#topic_content").html("");
-						html_content = '<h1 class="center" style=" box-shadow: none !important;"> No topics added yet</h1>';
-						$("#div-topics").css('display', 'block');
-						$("#div-topics").html(html_content);
-
-					}
-				}
-			});
+			fetchTopics($id);			
 
 
 
@@ -485,4 +468,97 @@
 
 
 		});
-	</script>
+
+
+function fetchCourseware(topic_id) {
+	// AJAX FOR COURSEWARE
+	var courseware_content = "";
+	$.ajax({
+		url: '<?=base_url()?>Coursewares_fic/fetchCoursewares',
+		type: 'post',
+		dataType: 'json',
+		data: {topic_id: topic_id},
+		success: function(i_data){
+			for(var j = 0; j < i_data.length; j++){
+				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px;">'+
+				'<div class="col s6">'+
+				'<p><b>'+i_data[j].courseware_name+'</b></p>'+
+				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:'+i_data[j].date_edited+'<p>'+ 
+				'<blockquote class="color-primary-green"><span class="color-black">'+i_data[j].courseware_description+'</span> </blockquote>'+
+				'</div>'+
+				'<div class="col s6">'+
+				'<div class="col s6">'+
+				'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
+				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
+				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failed remarks">mood_bad</i>46</span>'+
+				'</div>'+
+				'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
+				'</div>'+
+				'</div>';
+			}
+			$("#courseware_"+topic_id).html(courseware_content);
+			$('.tooltipped').tooltip({delay: 50});
+
+		}
+	});
+}
+
+
+function fetchTopics(id) {
+	
+	var html_content = "";
+	$.ajax({
+		url: '<?=base_url()?>Coursewares/fetchTopics',
+		type: 'post',
+		dataType: 'json',
+		data: {id: id},
+		success: function(data){
+
+			if (data.length > 0) {
+				$("#div-topics").css('display', 'none');
+
+				for(var i = 0; i < data.length; i++){
+					$topic_id = data[i].topic_id;
+
+					html_content += '<li>'+
+					'<div class="collapsible-header" style="background-color: transparent; text-transform: capitalize;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+					'<div class="col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
+					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
+					'</div>'+
+					'</li>';
+
+					fetchCourseware($topic_id);
+				}
+
+				$("#topic_content").html(html_content);
+			}else{
+				$("#topic_content").html("");
+				html_content = '<h1 class="center" style=" box-shadow: none !important;"> No topics added yet</h1>';
+				$("#div-topics").css('display', 'block');
+				$("#div-topics").html(html_content);
+
+			}
+		}
+	});
+}
+
+
+
+function fetchQuestion() {
+	$.ajax({
+		url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
+		type: 'post',
+		dataType: 'html',
+		data: {cw_id: $id},
+		success: function(data){
+			$("#div-q-sec").html(data);
+		},
+		error: function(){
+			console.log("error");	
+		}
+	});
+}
+
+
+
+</script>
