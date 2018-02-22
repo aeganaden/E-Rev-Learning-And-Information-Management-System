@@ -28,43 +28,52 @@
 	?>
 	<?php if ($offering): ?>
 		<?php foreach ($offering as $key => $value): ?>
+
 			<?php
 			$subject = $this->Crud_model->fetch("subject",array("offering_id"=>$value->offering_id));
-			$subject = $subject[0];
-			$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$subject->lecturer_id));
-			$lecturer = $lecturer[0];
 			?>
-			<div class="col s3" >
-				<div class="card sticky-action" >
-					<div class="card-image waves-effect waves-block waves-light" >
-						<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
-					</div>
-					<div class="card-content bg-primary-yellow" >
-						<blockquote class="color-primary-green" style="margin-top: 0;">
-							<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$subject->subject_name?><i class="material-icons right ">more_vert</i></span>
-						</blockquote>
-						<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
-					</div>
-					<div class="card-reveal bg-primary-green">
-						<span class="card-title color-white ">ABOUT</span>
-						<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$subject->subject_description?></span></p>
-					</div>
+			<?php if ($subject): ?>
+				<?php foreach ($subject as $key => $i_value): ?>
 
-					<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-						<div class="row ">
-							<div class="col s12 ">
+					<?php  
+					$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
+					$lecturer = $lecturer[0];
+					?>
+					<div class="col s3" >
+						<div class="card sticky-action" >
+							<div class="card-image waves-effect waves-block waves-light" >
+								<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
+							</div>
+							<div class="card-content bg-primary-yellow" >
+								<blockquote class="color-primary-green" style="margin-top: 0;">
+									<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$i_value->subject_name?><i class="material-icons right ">more_vert</i></span>
+								</blockquote>
+								<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+							</div>
+							<div class="card-reveal bg-primary-green">
+								<span class="card-title color-white ">ABOUT</span>
+								<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$i_value->subject_description?></span></p>
+							</div>
 
-								<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$subject->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
+							<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+								<div class="row ">
+									<div class="col s12 ">
 
+										<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
+
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+
+				<?php endforeach ?>
+			<?php endif ?>
 		<?php endforeach ?>
 	<?php else: ?>
 
-		<div class="row">				<img src="<?=base_url()?>assets/img/chibi/Chibi_crying.svg" alt="">
+		<div class="row">				
+			<img src="<?=base_url()?>assets/img/chibi/Chibi_crying.svg" alt="">
 			<h1 class="color-primary-green center">204 No Content</h1>
 			<p class="zoom-area color-primary-green center">Contact the <b>CSO-MIS </b>regarding this error</p>
 			<section class="error-container">
@@ -177,13 +186,30 @@
 =            MODAL COURSEWARE            =
 =======================================-->
 
-<div id="modal_cw" class="modal modal-fixed-footer">
+<div id="modal_cw" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
-		<h4>Modal Header</h4>
-		<p>A bunch of text</p>
+		<h4 style="border-bottom: 2px solid #F2A900; padding-bottom: 1%;">ADD COURSEWARE</h4>
+		<div class="row">
+			<div class="input-field col s6">
+				<blockquote class="color-primary-green"><h4 class="color-black">Title</h4></blockquote>
+				<input placeholder="" id="cw_title" type="text" class="validate"> 
+			</div>
+		</div>
+		<div class="row">
+			<form class="col s12">
+				<div class="row">
+					<div class="input-field col s12">
+						<blockquote class="color-primary-green"><h4 class="color-black">Description</h4></blockquote>
+						<textarea id="cw_des" class="materialize-textarea"></textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
 	</div>
-	<div class="modal-footer">
-		<a href="#!" id="send_cw" class="modal-action modal-close waves-effect waves-green btn bg-primary-green">Agree</a>
+	<div class="modal-footer bg-color-white">
+		<a href="#!" id="send_cw" class="modal-action modal-close waves-effect waves-green btn bg-primary-green">ADD</a>
 	</div>
 </div>
 
@@ -234,6 +260,7 @@
 			CKEDITOR.inline('answer_4');
 		}
 
+		// ADD QUESTION
 		$("#send").click(function(event) {
 			var q_id = $("#q_id_num").html();
 			var cw_id = $("#q_id_num").data("cwid");
@@ -264,15 +291,12 @@
 						}).then(function(){
 							$('#modal_q').modal('close');
 							// fetch question
-							fetchQuestion();
+							fetchQuestion(cw_id);
 							$("html, body").animate({ scrollTop: $(document).height() }, 1000);
 						});
 					}else{
-						swal("Question Added!", {
-							icon: "error",
-						}).then(function(){
-							location.reload();
-						});
+						$toastContent = $('<span>'+data+'</span>');
+						Materialize.toast($toastContent, 2000);
 					}
 				}
 			});
@@ -295,9 +319,10 @@
 			swal({
 				title: "Are you sure?",
 				text: "This question will be put into archive",
-				icon: "error",
-				buttons: true,
-				dangerMode: true,
+				icon: "error",buttons: {
+					cancel: true,
+					confirm: true,
+				},
 			})
 			.then((willDelete) => {
 				if (willDelete) {
@@ -311,7 +336,7 @@
 						success: function(data){
 							if (data == true) {
 								swal("Success", "Question has been put into archive", "success");
-								fetchQuestion();
+								fetchQuestion($id);
 							}
 						}
 					});
@@ -323,13 +348,14 @@
 
 		// ADD Question
 		$("#btn_add_q").click(function(event) {
+			// console.log($(this).data('cwid'));	
 			$.ajax({
-				url: '<?=base_url()?>Coursewares_fic/fetch_last_q',
+				url: '<?=base_url()?>Coursewares_fic/countQuestion',
 				type: 'post',
 				dataType: 'json',
 				data: {
 					table: 'courseware_question',
-					col: 'courseware_question_id',
+					cwid : $(this).data('cwid'),
 				},
 				success: function(data){
 					$no = parseInt(data) + 1;
@@ -339,11 +365,125 @@
 			
 		});
 
+		// ADD Courseware 
+		$("#send_cw").click(function(event) {
+			if ($(this).text()=="add") {
+				// console.log("add");	
+				$cw_t = $("#cw_title").val();
+				$cw_d = $("#cw_des").val();
+				$t_id = $(this).data('id');
+				$s_id = $(this).data('subid');
+
+
+				$.ajax({
+					url: '<?=base_url()?>Coursewares_fic/addCourseware ',
+					type: 'post',
+					dataType: 'json',
+					data: {
+						cw_t: $cw_t,
+						cw_d: $cw_d,
+						t_id: $t_id,
+					},
+					success:function(data){
+						// console.log(data);	
+						if (data == true) {
+							$toastContent = $('<span>Successfully Added</span>');
+							Materialize.toast($toastContent, 2000);
+							fetchTopics($s_id);
+						}else{
+							$toastContent = $('<span>'+data+'</span>');
+							Materialize.toast($toastContent, 2000);
+
+						}
+					}
+				});
+			}else{
+				// console.log("update");	
+				$cw_t = $("#cw_title").val();
+				$cw_d = $("#cw_des").val();
+				$cw_id = $(this).data('cwid');
+				// console.log($cw_id);	
+				/*=====================================
+				=            DATE AND TIME            =
+				=====================================*/
+				
+				var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"	];
+				var dNow = new Date();
+				var hours = dNow.getHours();
+				var minutes = dNow.getMinutes();
+				var ampm = hours >= 12 ? 'PM' : 'AM';
+				hours = hours % 12;
+				hours = hours ? hours : 12;  
+				minutes = minutes < 10 ? '0'+minutes : minutes;
+				var strTime = hours + ':' + minutes + ' ' + ampm;
+				var localdate= (monthNames[dNow.getMonth()]) + ' ' + dNow.getDate() + ', ' + dNow.getFullYear() + ' ' + strTime;
+
+				
+				/*=====  End of DATE AND TIME  ======*/
+				
+
+				// console.log($cw_id);	
+				$.ajax({
+					url: '<?=base_url()?>Coursewares_fic/updateCourseware ',
+					type: 'post',
+					dataType: 'json',
+					data: {
+						cw_t: $cw_t,
+						cw_d: $cw_d,
+						cw_id: $cw_id,
+					},
+					success: function(data){
+						if (data == true) {
+							$("#cw_t_"+$cw_id).html("<b>"+$cw_t+"</b>");
+							$("#cw_d_"+$cw_id).text($cw_d);
+							$("#cw_te_"+$cw_id).text(localdate);
+
+							$toastContent = $('<span>Successfully Updated</span>');
+							Materialize.toast($toastContent, 2000); 
+						}else{
+							$toastContent = $('<span>'+data+'</span>');
+							Materialize.toast($toastContent, 2000);
+
+						}
+
+					}
+				});
+			}
+
+		});
+
+		// Edit Courseware
+		$(document).on('click', '.btn-edit-cw', function(event) {
+			$cw_id = $(this).data('cwid');
+			$cw_t = $("#cw_t_"+$cw_id).text();
+			$cw_d = $("#cw_d_"+$cw_id).text();
+			$("#send_cw").html("update");
+			if (!$('#send_cw').attr('data-cwid')) {
+				$('#send_cw').attr('data-cwid', $cw_id);
+			}else{
+				$('#send_cw').data('cwid', $cw_id);
+			}
+			$("#cw_title").val($cw_t);
+			$("#cw_des").val($cw_d);
+			// console.log($cw_id);	
+
+
+			// console.log("click");	
+		});
+
 		// Add courseware
+		// Add id to submit button
 		$(document).on('click', '.btn-add-cw', function(event) {
+
+			$("#cw_title").val("");
+			$("#cw_des").val("");
 			$t_id = $(this).data("id");
-			console.log($t_id);	
-			$("#send_cw").data('id',$t_id);
+			$s_id = $(this).data("subid");
+			$("#send_cw").html("add");
+			// console.log($t_id);	
+			$('#send_cw').attr('data-id', $t_id);
+			$('#send_cw').attr('data-subid', $s_id);
+
 
 		});
 		// LAUNCH QUESTION
@@ -365,7 +505,7 @@
 				});
 			}
 
-			fetchQuestion();			
+			fetchQuestion($id);			
 			
 		});
 		
@@ -478,21 +618,26 @@ function fetchCourseware(topic_id) {
 		type: 'post',
 		dataType: 'json',
 		data: {topic_id: topic_id},
+		beforeSend: function() {
+			$("#preloader").css('display', 'block');
+		},
 		success: function(i_data){
+			$("#preloader").css('display', 'none');
+
 			for(var j = 0; j < i_data.length; j++){
-				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px;">'+
+				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
 				'<div class="col s6">'+
-				'<p><b>'+i_data[j].courseware_name+'</b></p>'+
-				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:'+i_data[j].date_edited+'<p>'+ 
-				'<blockquote class="color-primary-green"><span class="color-black">'+i_data[j].courseware_description+'</span> </blockquote>'+
+				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
+				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
+				'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
 				'</div>'+
 				'<div class="col s6">'+
 				'<div class="col s6">'+
 				'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
 				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
-				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failed remarks">mood_bad</i>46</span>'+
+				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failing remarks">mood_bad</i>46</span>'+
 				'</div>'+
-				'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
+				'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 				'</div>'+
 				'</div>';
 			}
@@ -512,9 +657,13 @@ function fetchTopics(id) {
 		type: 'post',
 		dataType: 'json',
 		data: {id: id},
+		beforeSend: function() {
+			$("#preloader").css('display', 'block');
+		},
 		success: function(data){
+			$("#preloader").css('display', 'none');
 
-			if (data.length > 0) {
+			if (data!=false) {
 				$("#div-topics").css('display', 'none');
 
 				for(var i = 0; i < data.length; i++){
@@ -522,7 +671,7 @@ function fetchTopics(id) {
 
 					html_content += '<li>'+
 					'<div class="collapsible-header" style="background-color: transparent; text-transform: capitalize;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-					'<div class="col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
+					'<div class="col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+
 					'</li>';
@@ -544,14 +693,19 @@ function fetchTopics(id) {
 
 
 
-function fetchQuestion() {
+function fetchQuestion(id) {
 	$.ajax({
 		url: '<?=base_url()?>Coursewares_fic/fetchQuestions ',
 		type: 'post',
 		dataType: 'html',
-		data: {cw_id: $id},
+		data: {cw_id: id},
+		beforeSend: function() {
+			$("#preloader").css('display', 'block');
+		},
 		success: function(data){
+			$("#preloader").css('display', 'none');
 			$("#div-q-sec").html(data);
+			$("#btn_add_q").attr("data-cwid",id)
 		},
 		error: function(){
 			console.log("error");	

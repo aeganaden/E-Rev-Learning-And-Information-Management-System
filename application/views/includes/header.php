@@ -71,3 +71,6 @@
 	</script>
 </head>
 <body>
+	<div class="progress bg-primary-yellow" style="margin: 0; padding: 0; display: none;" id="preloader">
+		<div class="indeterminate bg-primary-green"></div>
+	</div>

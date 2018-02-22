@@ -164,11 +164,6 @@
 		
 		/*=====  End of EDIT QUESTION BTN  ======*/
 		
-		
-		// // add answer
-		// $(".btn_add_answer").click(function(event) {
-		// 	alert($(this).data("id"));
-		// });
 
 
 
