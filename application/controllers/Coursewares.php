@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set("Asia/Manila");
 
 class Coursewares extends CI_Controller {
 	public function __construct() {
@@ -36,7 +37,7 @@ class Coursewares extends CI_Controller {
 		if ($data = $this->Crud_model->fetch("topic",array("subject_id"=>$id))) {
 			echo json_encode($data);
 		}else{
-			echo json_encode("false");
+			echo json_encode(false);
 		}
 	}
 

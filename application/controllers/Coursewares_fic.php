@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set("Asia/Manila");
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Coursewares_fic extends CI_Controller {
@@ -37,7 +39,7 @@ class Coursewares_fic extends CI_Controller {
 		if ($data = $this->Crud_model->fetch("courseware",array("topic_id"=>$topic_id))) {
 			foreach ($data as $key => $value) {
 				$value->date_added = date("M d, Y",$value->courseware_date_added);
-				$value->date_edited = date("M d, Y",$value->courseware_date_edited);
+				$value->date_edited = date("M d, Y h:i A",$value->courseware_date_edited);
 			}
 			echo json_encode($data);
 		}else{
@@ -45,17 +47,84 @@ class Coursewares_fic extends CI_Controller {
 		}
 	}
 
+	public function updateCourseware()
+	{
+		$cw_t = $this->input->post("cw_t");
+		$cw_t_c = str_replace(' ', '', $cw_t);
+		$cw_d = $this->input->post("cw_d");
+		$cw_d_c = str_replace(' ', '', $cw_d);
+		$cw_id = $this->input->post("cw_id");
+		$data = array(
+			"courseware_name"=>$cw_t,
+			"courseware_description"=>$cw_d,
+			"courseware_date_edited"=>time(), 
+		);
+
+		if (empty($cw_t_c) || empty($cw_d_c)) {
+			echo json_encode("Both values must not be empty");	
+		}else{
+			if ($this->Crud_model->update("courseware",$data,array("courseware_id"=>$cw_id))) {
+				echo json_encode(true);
+			}else{
+				echo json_encode("Failed to update courseware");
+			}
+		}	
+	}
+
+	public function addCourseware()
+	{
+		$cw_t = $this->input->post("cw_t");
+		$cw_t_c = str_replace(' ', '', $cw_t);
+		$cw_d = $this->input->post("cw_d");
+		$cw_d_c = str_replace(' ', '', $cw_d);
+		$t_id = $this->input->post("t_id");
+		$data = array(
+			"courseware_name"=>$cw_t,
+			"courseware_description"=>$cw_d,
+			"courseware_date_added"=>time(),
+			"courseware_date_edited"=>time(),
+			"topic_id"=>$t_id,
+		);
+
+		if (empty($cw_t_c) || empty($cw_d_c)) {
+			echo json_encode("Both values must not be empty");	
+		}else{
+			if ($this->Crud_model->insert("courseware",$data)) {
+				echo json_encode(true);
+			}else{
+				echo json_encode("Failed to insert courseware");
+			}
+		}
+	}
+
 	public function fetchQuestions()
 	{
 		$courseware_id = $this->input->post("cw_id");
 
-		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"))) {
+		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"=>$courseware_id,"courseware_question_status"=>1))) {
 			echo $this->load->view('courseware/load_questions', array("data"=>$data), TRUE);
 		}else{
-			echo json_encode("false");
+			$data = array(
+				"message_l" => "No questions available yet",
+				"message_r" => "Add some!",
+			);
+			echo $this->load->view('chibi/err-sad.php', array("data"=>$data), TRUE);
+
 		}
 
 	}
+
+	public function deleteQuestion()
+	{
+		$id = $this->input->post("id");
+		if ($this->Crud_model->update("courseware_question",array("courseware_question_status"=>0),array("courseware_question_id"=>$id))) {
+			echo json_encode(true);
+		}else{
+			echo json_encode("Failed to delete Question");
+		}
+	}
+
+
 
 	public function insertQuestion()
 	{
@@ -66,44 +135,55 @@ class Coursewares_fic extends CI_Controller {
 		$answer2 = $this->input->post("answer2");
 		$answer3 = $this->input->post("answer3");
 		$answer4 = $this->input->post("answer4");
+		$content_c = str_replace(' ', '', $content);
+		$answer1_c = str_replace(' ', '', $answer1);
+		$answer2_c = str_replace(' ', '', $answer2);
+		$answer3_c = str_replace(' ', '', $answer3);
+		$answer4_c = str_replace(' ', '', $answer4);
 
-		$data_q = array(
-			"courseware_question_question"=>$content,
-			"courseware_id"=>$cw_id
-		);
-
-		$data_a = array(
-			array(
-				"choice_choice"=>$answer1,
-				"choice_is_answer"=>0,
-				"courseware_question_id"=>$q_id,
-			),
-			array(
-				"choice_choice"=>$answer2,
-				"choice_is_answer"=>0,
-				"courseware_question_id"=>$q_id,
-			),
-			array(
-				"choice_choice"=>$answer3,
-				"choice_is_answer"=>0,
-				"courseware_question_id"=>$q_id,
-			),
-			array(
-				"choice_choice"=>$answer4,
-				"choice_is_answer"=>0,
-				"courseware_question_id"=>$q_id,
-			),
-		);
-
-		if ($this->Crud_model->insert("courseware_question",$data_q)) {
-			if ($this->Crud_model->insert_batch("choice",$data_a)) {
-				echo json_encode(true);
-			}else{
-				echo json_encode("Err - Answer Insertion Failed");
-			}
+		if (empty($content_c) || empty($answer1) || empty($answer2) || empty($answer3) || empty($answer4)) {
+			echo json_encode("All values must not be empty");
 		}else{
-			echo json_encode("Err - Question Insertion Failed");
+
+			$data_q = array(
+				"courseware_question_question"=>$content,
+				"courseware_id"=>$cw_id
+			);
+
+			$data_a = array(
+				array(
+					"choice_choice"=>$answer1,
+					"choice_is_answer"=>0,
+					"courseware_question_id"=>$q_id,
+				),
+				array(
+					"choice_choice"=>$answer2,
+					"choice_is_answer"=>0,
+					"courseware_question_id"=>$q_id,
+				),
+				array(
+					"choice_choice"=>$answer3,
+					"choice_is_answer"=>0,
+					"courseware_question_id"=>$q_id,
+				),
+				array(
+					"choice_choice"=>$answer4,
+					"choice_is_answer"=>0,
+					"courseware_question_id"=>$q_id,
+				),
+			);
+
+			if ($this->Crud_model->insert("courseware_question",$data_q)) {
+				if ($this->Crud_model->insert_batch("choice",$data_a)) {
+					echo json_encode(true);
+				}else{
+					echo json_encode("Err - Answer Insertion Failed");
+				}
+			}else{
+				echo json_encode("Err - Question Insertion Failed");
+			}
 		}
+
 
 
 
@@ -116,6 +196,11 @@ class Coursewares_fic extends CI_Controller {
 
 		if ($this->Crud_model->update("courseware_question",array("courseware_question_question"=>$content),array("courseware_question_id"=>$id))) {
 			echo json_encode(true);
+			$cw_q_data = $this->Crud_model->fetch("courseware_question",array("courseware_question_id"=>$id));
+			// $cw_q_data = $cw_q_data[0];
+			// if ($this->Crud_model->update()) {
+			// 	# code...
+			// }
 		}else{
 			echo "Update question failed";
 		}
@@ -161,17 +246,12 @@ class Coursewares_fic extends CI_Controller {
 		}
 	}
 
-	public function fetch_last_q()
+	public function countQuestion()
 	{
 		$table = $this->input->post("table");
-		$col = $this->input->post("col");
+		$cwid = $this->input->post("cwid");
+		$data = $this->Crud_model->countResult($table,array("courseware_id"=>$cwid,"courseware_question_status"=>1));
 
-		$data = $this->Crud_model->fetch_last($table,$col);
-		if ($data) {
-			$data = $data->courseware_question_id;
-		}else{
-			$data = 1;
-		}
 		echo json_encode($data);
 
 	}

@@ -3,6 +3,7 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card bg-primary-yellow">
+				<i class="material-icons right small btn-del-q color-red" style="margin-top: 1%; margin-right: 2%; cursor: pointer;" data-id="<?=$value->courseware_question_id?>">delete</i>
 				<div class="card-content white-text">
 					<div class="row">
 						<div class="col s6">
@@ -72,12 +73,21 @@
 
 
 <script type="text/javascript">
-
+	
 	jQuery(document).ready(function($) {
 		$('.tooltipped').tooltip({delay: 50});
+
+		
+		
+
+		/*=========================================
+		=            EDIT QUESTION BTN            =
+		=========================================*/
+		
 		// Edit Question
 		$initial_data_q = "";
 		$initial_data_a = "";
+		
 		$(".btn-edit-question").click(function(data) {
 			$q_id = 'question'+$(this).data('id');
 			$id = $(this).data('id');
@@ -111,10 +121,7 @@
 
 			}
 
-
-
-
-
+			
 			// update question
 			$("#btn-update-question"+$id).click(function(event) {
 				$q_id = 'question'+$(this).data('id');
@@ -142,6 +149,7 @@
 							CKEDITOR.instances[$q_id].destroy();
 							$("#btn-update-question"+$id).css('display', 'none');
 
+
 						}else{
 							$toastContent = $('<span>Error Updating</span>').add($('<button class="btn-flat toast-action" onClick="window.location.reload()" >Refresh</button>'));
 							Materialize.toast($toastContent, 10000);
@@ -153,13 +161,16 @@
 
 		});
 
-		// // add answer
-		// $(".btn_add_answer").click(function(event) {
-		// 	alert($(this).data("id"));
-		// });
+		
+		/*=====  End of EDIT QUESTION BTN  ======*/
+		
 
 
 
+		/*===================================
+		=            EDIT ANSWER            =
+		===================================*/
+		
 		// edit answer
 		$(".btn-edit-answer").click(function(event) {
 			$a_id = "ans_"+$(this).data('id');
@@ -229,6 +240,8 @@
 							$(".btn-edit-answer").html("border_color");
 							$(".btn-edit-answer").removeClass('color-red');
 							$("#btn-mark-answer"+$id).css('display', 'none');
+							$(".btn-edit-answer").css("display", "block");
+
 
 							// make it uneditable
 							$("#"+$a_id).attr("contenteditable",false);
@@ -290,6 +303,9 @@
 
 
 		});
+		
+		/*=====  End of EDIT ANSWER  ======*/
+		
 
 	});
 </script>
