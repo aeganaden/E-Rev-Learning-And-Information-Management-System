@@ -20,6 +20,19 @@ class Mobile extends CI_Controller {
         if ($result['result'] = $this->Crud_model->fetch_array("student", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
             $result['result'][0]['identifier'] = "Student";
+            $result['result'][0]['offering_id'];
+
+            /* GETS THE ENROLLMENT ID OF STUD'S ENROLLMENT ID */
+            $col = array('enrollment.enrollment_id', false);
+            $join2 = array('enrollment', 'enrollment.enrollment_id = course.enrollment_id');
+            $join1 = array('course', 'course.course_id = offering.course_id');
+            $jointype = "INNER";
+            $where = array('enrollment.enrollment_is_active' => 1, "offering.offering_id" => $result['result'][0]['offering_id']);
+            $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
+            $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
+//            echo "<pre>";
+//            print_r($result);
+
             print_r(json_encode($result));
         } else if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
             $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
@@ -107,7 +120,7 @@ class Mobile extends CI_Controller {
         $like[7] = $_POST['student_id'];
         $identifier = $_POST['identifier'];
 
-        if ($this->Crud_model->mobile_check("student", "student_id", $like) && strtolower($identifier) == "student") {  //checked
+        if ($this->Crud_model->mobile_check("student", "student_id", $like) && strtolower($identifier) == "student") {
             //INITIALIZATION
             $department = $_POST['department'];
             $offering_id = $_POST['offering_id'];
@@ -156,6 +169,59 @@ class Mobile extends CI_Controller {
                 $result['message'][0]['message'] = "No data";
                 print_r(json_encode($result));
             }
+        }
+    }
+
+    public function feedback_fetch() {
+//        $_POST['lect_id'] = 1;
+//        $_POST['stud_id'] = 201511281;
+//        $_POST['department'] = "CE";
+//        $_POST['enrollment_id'] = 1;
+//        $_POST['offering_id'] = 1;
+
+        $lect_id = $_POST['lect_id'];
+        $stud_id = $_POST['stud_id'];
+        $department = $_POST['department'];
+        $enrollment_id = $_POST['enrollment_id'];
+        $offering_id = $_POST['offering_id'];
+
+        $where = array("lecturer_feedback_department" => $department, "student_id" => $stud_id, "lecturer_id" => $lect_id, "enrollment_id" => $enrollment_id, "offering_id" => $offering_id);
+        $result_hold = $this->Crud_model->fetch("lecturer_feedback", $where);
+        if ($this->Crud_model->fetch("lecturer_feedback", $where)) {      //already submitted
+            $result['message'][0]['message'] = "Feedback already submitted";
+            print_r(json_encode($result));
+        } else {                        //get the expertise of lecturer
+            $result_hold1 = $this->Crud_model->fetch_select("lecturer", array("lecturer_expertise", FALSE), array("lecturer_id" => $lect_id));
+            $result["result"][0]["lecturer_expertise"] = $result_hold1[0]->lecturer_expertise;
+//            echo "<pre>";
+//            print_r($result);
+            print_r(json_encode($result));
+        }
+    }
+
+    public function feedback_submit() {
+        $lect_id = $_POST['lect_id'];
+        $stud_id = $_POST['stud_id'];
+        $department = $_POST['department'];
+        $enrollment_id = $_POST['enrollment_id'];
+        $offering_id = $_POST['offering_id'];
+        $content = $_POST["content"];
+
+        $data = array(
+            "lecturer_feedback_timedate" => time(),
+            "lecturer_feedback_department" => $department,
+            "lecturer_feedback_comment" => $content,
+            "student_id" => $stud_id,
+            "lecturer_id" => $lect_id,
+            "enrollment_id" => $enrollment_id,
+            "offering_id" => $offering_id
+        );
+        if ($this->Crud_model->insert("lecturer_feedback", $data) > 0) {        //if successful
+            $result['result'][0]['result'] = "Successful";
+            print_r(json_encode($result));
+        } else {
+            $result['message'][0]['message'] = "Submitting failed";
+            print_r(json_encode($result));
         }
     }
 
