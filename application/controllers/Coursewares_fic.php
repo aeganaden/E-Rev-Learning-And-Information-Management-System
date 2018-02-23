@@ -142,7 +142,7 @@ class Coursewares_fic extends CI_Controller {
 		$answer4_c = str_replace(' ', '', $answer4);
 
 		if (empty($content_c) || empty($answer1) || empty($answer2) || empty($answer3) || empty($answer4)) {
-			echo json_encode("All values must not be empty");
+			echo json_encode("Question and Answers Must Not Be Empty");
 		}else{
 
 			$data_q = array(
@@ -253,7 +253,21 @@ class Coursewares_fic extends CI_Controller {
 		$data = $this->Crud_model->countResult($table,array("courseware_id"=>$cwid,"courseware_question_status"=>1));
 
 		echo json_encode($data);
+	}
 
+	public function fetchLastQuestion()
+	{
+		$data = $this->Crud_model->fetch_last("courseware_question","courseware_question_id");
+		$data = $data->courseware_question_id;
+		$data = (int)$data;
+
+		if ($data) {
+			$data+=1;
+			echo json_encode($data);
+		}else{
+			$data = 1;
+			echo json_encode($data);
+		}
 	}
 
 }

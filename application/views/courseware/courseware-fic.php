@@ -262,44 +262,52 @@
 
 		// ADD QUESTION
 		$("#send").click(function(event) {
-			var q_id = $("#q_id_num").html();
-			var cw_id = $("#q_id_num").data("cwid");
-			var content = CKEDITOR.instances['q_editor'].getData();
-			var answer1 = CKEDITOR.instances['answer_1'].getData();
-			var answer2 = CKEDITOR.instances['answer_2'].getData();
-			var answer3 = CKEDITOR.instances['answer_3'].getData();
-			var answer4 = CKEDITOR.instances['answer_4'].getData();
-			// console.log(cw_id);	
-			// // Insertion of Question
+			$q_id = 0;
 			$.ajax({
-				url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
+				url: '<?=base_url()?>Coursewares_fic/fetchLastQuestion',
 				type: 'post',
 				dataType: 'json',
-				data: {
-					content:content,
-					answer1:answer1,
-					answer2:answer2,
-					answer3:answer3,
-					answer4:answer4,
-					q_id:q_id,
-					cw_id:cw_id
-				},
 				success: function(data){
-					if(data==true){
-						swal("Question Added!", {
-							icon: "success",
-						}).then(function(){
-							$('#modal_q').modal('close');
+					$q_id = data; 
+					var cw_id = $("#q_id_num").data("cwid");
+					var content = CKEDITOR.instances['q_editor'].getData();
+					var answer1 = CKEDITOR.instances['answer_1'].getData();
+					var answer2 = CKEDITOR.instances['answer_2'].getData();
+					var answer3 = CKEDITOR.instances['answer_3'].getData();
+					var answer4 = CKEDITOR.instances['answer_4'].getData();
+
+					$.ajax({
+						url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
+						type: 'post',
+						dataType: 'json',
+						data: {
+							content:content,
+							answer1:answer1,
+							answer2:answer2,
+							answer3:answer3,
+							answer4:answer4,
+							q_id:$q_id,
+							cw_id:cw_id
+						},
+						success: function(data){
+							if(data==true){
+								swal("Question Added!", {
+									icon: "success",
+								}).then(function(){
+									$('#modal_q').modal('close');
 							// fetch question
 							fetchQuestion(cw_id);
 							$("html, body").animate({ scrollTop: $(document).height() }, 1000);
 						});
-					}else{
-						$toastContent = $('<span>'+data+'</span>');
-						Materialize.toast($toastContent, 2000);
-					}
+							}else{
+								$toastContent = $('<span>'+data+'</span>');
+								Materialize.toast($toastContent, 2000);
+							}
+						}
+					});
 				}
 			});
+			
 			
 
 		});
@@ -315,6 +323,7 @@
 		$(document.body).on('click', '.btn-del-q' ,function(){
 			// alert();
 			$id = $(this).data('id');
+			$cwid = $(this).data('cwid');
 
 			swal({
 				title: "Are you sure?",
@@ -336,7 +345,7 @@
 						success: function(data){
 							if (data == true) {
 								swal("Success", "Question has been put into archive", "success");
-								fetchQuestion($id);
+								fetchQuestion($cwid);
 							}
 						}
 					});

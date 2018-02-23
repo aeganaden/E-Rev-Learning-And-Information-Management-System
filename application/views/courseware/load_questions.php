@@ -3,7 +3,7 @@
 	<div class="row">
 		<div class="col s12">
 			<div class="card bg-primary-yellow">
-				<i class="material-icons right small btn-del-q color-red" style="margin-top: 1%; margin-right: 2%; cursor: pointer;" data-id="<?=$value->courseware_question_id?>">delete</i>
+				<i class="material-icons right small btn-del-q color-red" style="margin-top: 1%; margin-right: 2%; cursor: pointer;" data-cwid="<?=$value->courseware_id?>" data-id="<?=$value->courseware_question_id?>">delete</i>
 				<div class="card-content white-text">
 					<div class="row">
 						<div class="col s6">
