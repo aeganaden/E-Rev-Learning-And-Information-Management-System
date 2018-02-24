@@ -6,6 +6,7 @@ class Crud_model extends CI_Model {
         if (!empty($where)) {
             $this->db->where($where);
         }
+
         $query = $this->db->get($table);
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
@@ -19,10 +20,9 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
-    public function fetch_last($table,$column)
-    {
-        $query = $this->db->order_by($column,"desc")->limit(1)->get($table)->row();
-        return ($query) ? $query : FALSE; 
+    public function fetch_last($table, $column) {
+        $query = $this->db->order_by($column, "desc")->limit(1)->get($table)->row();
+        return ($query) ? $query : FALSE;
     }
 
     public function countResult($table, $where = NULL) {
@@ -90,7 +90,7 @@ class Crud_model extends CI_Model {
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL, $orderby = NULL) { //wherein used only to replace orwherein if it is not used
+    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL, $orderby = NULL, $limit = NULL) { //wherein used only to replace orwherein if it is not used
         if ($distinct == TRUE) {
             $this->db->distinct();
         }
@@ -112,6 +112,12 @@ class Crud_model extends CI_Model {
         if (!empty($orderby)) {
             $this->db->order_by($orderby[0], $orderby[1]);
         }
+        if (!empty($limit) && is_array($limit)) {       //limits results - mark
+            $this->db->limit($limit[0], $limit[1]);
+        } else if (!empty($limit) && !is_array($limit)) {
+            $this->db->limit($limit);
+        }
+
         $query = $this->db->get($table);
         if (!empty($resultinarray) && $resultinarray == TRUE) {             //changed to if-else for compatibility issues - mark
             return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
@@ -135,7 +141,7 @@ class Crud_model extends CI_Model {
         if (!empty($where)) {
             $this->db->where($where);
         }
-        if ($distinct == TRUE) {
+        if ($distinct == TRUE) {        //depends sa irereturn na cols
             $this->db->distinct();
         }
         if (!empty($col)) {
