@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-        $_POST['username'] = "riza";
-        $_POST['password'] = "riza";
+//        $_POST['username'] = "riza";
+//        $_POST['password'] = "riza";
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
@@ -39,7 +39,7 @@ class Mobile extends CI_Controller {
                 $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
                 $result['result'][0]['identifier'] = "Faculty in Charge";
 
-                /* GETS THE ENROLLMENT ID OF STUD'S ENROLLMENT ID */
+                /* GETS THE ENROLLMENT ID OF fic'S ENROLLMENT ID */
                 $col = array('enrollment.enrollment_id', false);
                 $join2 = array('enrollment', 'enrollment.enrollment_id = course.enrollment_id');
                 $join1 = array('course', 'course.course_id = offering.course_id');
@@ -204,16 +204,14 @@ class Mobile extends CI_Controller {
     public function feedback_fetch() {
 //        $_POST['lect_id'] = 1;
 //        $_POST['stud_id'] = 201511281;
-        $_POST['department'] = "CE";
+//        $_POST['department'] = "CE";
 //        $_POST['enrollment_id'] = 1;
 //        $_POST['offering_id'] = 1;
-
-        $_POST['identifier'] = "Faculty in Charge";
-        $_POST['lect_id'] = 1;
-        $_POST['lower_limit'] = 0;
-        $_POST['higher_limit'] = 3;
-        $_POST['enrollment_id'] = 1;
-        $_POST['sort'] = "ASC";
+//        $_POST['identifier'] = "Faculty in Charge";
+//        $_POST['lect_id'] = 1;
+//        $_POST['lower_limit'] = 2;
+//        $_POST['higher_limit'] = 2;
+//        $_POST['sort'] = "ASC";
 
         $identifier = $_POST['identifier'];
         $department = $_POST['department'];
@@ -236,10 +234,14 @@ class Mobile extends CI_Controller {
             }
         } else if (strtolower($identifier) == "faculty in charge") {
             $lect_id = $_POST['lect_id'];
-            $enrollment_id = $_POST['enrollment_id'];
             $low = $_POST['lower_limit'];
             $high = $_POST['higher_limit'];
             $sort = strtoupper($_POST['sort']);
+
+            $col = array('enrollment_id');
+            $where = array("enrollment_is_active" => 1);
+            //gets active enrollment
+            $enrollment_id = $this->Crud_model->fetch_select('enrollment', $col, $where)[0]->enrollment_id;
 
             $where = array(
                 'lecturer_id' => $lect_id,
@@ -248,14 +250,27 @@ class Mobile extends CI_Controller {
             );
             $orderby = array("lecturer_feedback_timedate", $sort);
             $limit = array($high, $low);
-            $result = $this->Crud_model->fetch_select('lecturer_feedback', NULL, $where, NULL, NULL, NULL, NULL, NULL, $orderby, $limit);
+            $col = array("lecturer_feedback_timedate", "lecturer_feedback_comment");
 
-            foreach ($result as $key) {
-                $result[$key]->date = date("M d, Y | g:i A", $key->lecturer_feedback_timedate);
+            if ($result["temp"] = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where, NULL, NULL, NULL, NULL, TRUE, $orderby, $limit)) {
+                $result["result"] = $result["temp"];
+                unset($result["temp"]);
+                foreach ($result["result"] as $key => $val) {
+                    $result["result"][$key]["lecturer_feedback_timedate"] = date("M d, Y\ng:i A", $val["lecturer_feedback_timedate"]);
+                }
+
+//                echo"<pre>";
+//                print_r($result);
+                print_r(json_encode($result));
+            } else {
+                unset($result);
+                $result['message'][0]['message'] = "No data";
+                print_r(json_encode($result));
             }
-
-            echo "<pre>";
-            print_r($result);
+        } else {
+            unset($result);
+            $result['message'][0]['message'] = "No data";
+            print_r(json_encode($result));
         }
     }
 
