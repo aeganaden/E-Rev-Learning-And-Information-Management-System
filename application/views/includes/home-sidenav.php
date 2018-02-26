@@ -15,7 +15,7 @@ switch ($info['user']->$ident) {
     case 'EE':
         $program = "Electrical Engineering";
         break;
-    case 'EEE':
+    case 'ECE':
         $program = "Electronics and Computer Engineering";
         break;
     case 'ME':
