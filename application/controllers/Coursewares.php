@@ -41,6 +41,23 @@ class Coursewares extends CI_Controller {
 		}
 	}
 
+	public function fetchQuestions()
+	{
+		$courseware_id = $this->input->post("cw_id");
+
+		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"=>$courseware_id,"courseware_question_status"=>1))) {
+			echo $this->load->view('courseware/load_questions_student', array("data"=>$data), TRUE);
+		}else{
+			$data = array(
+				"message_l" => "No questions available yet",
+				"message_r" => "",
+			);
+			echo $this->load->view('chibi/err-sad.php', array("data"=>$data), TRUE);
+
+		}
+
+	}
+
 }
 
 /* End of file Coursewares.php */
