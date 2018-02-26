@@ -99,6 +99,12 @@ switch ($info['user']->$ident) {
     <li class="<?= $s_f ?>">
         <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
+
+    <?php if ($info["identifier"] == "professor"): ?>
+        <li class="color-black <?= $s_c ?>">
+            <a href="<?= base_url() ?>Coursewares" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a> <!--mark - naglagay-->
+        </li>
+    <?php endif ?>
     <li>
         <div class="divider"></div>
     </li>
