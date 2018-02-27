@@ -27,7 +27,15 @@
 							?>
 							<?php if ($answers): ?>
 								<h5 class="color-black">Answers</h5>
+								<?php foreach ($answers as $key => $i_value): ?>
+									<div class="row">
+										<p>
+											<input name="group1" type="radio" id="s_a<?=$i_value->choice_id?>" />
+											<label for="s_a<?=$i_value->choice_id?>" class="color-black"><?=$i_value->choice_choice?></label>
+										</p>
 
+									</div>
+								<?php endforeach ?>
 							<?php else: ?>
 								<h5 class="color-black valign-wrapper">No Answers</h5>
 								<!-- id="div_answer_<?=$value->courseware_question_id?>" -->
@@ -48,10 +56,10 @@
 
 
 <script type="text/javascript">
-
+	
 	jQuery(document).ready(function($) {
 		$('.tooltipped').tooltip({delay: 50});
-
+		
 
 	});
 </script>

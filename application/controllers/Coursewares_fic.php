@@ -135,14 +135,27 @@ class Coursewares_fic extends CI_Controller {
 		$answer2 = $this->input->post("answer2");
 		$answer3 = $this->input->post("answer3");
 		$answer4 = $this->input->post("answer4");
+		$i_a_1 = $this->input->post("i_a_1");
+		$i_a_2 = $this->input->post("i_a_2");
+		$i_a_3 = $this->input->post("i_a_3");
+		$i_a_4 = $this->input->post("i_a_4");
 		$content_c = str_replace(' ', '', $content);
 		$answer1_c = str_replace(' ', '', $answer1);
 		$answer2_c = str_replace(' ', '', $answer2);
 		$answer3_c = str_replace(' ', '', $answer3);
 		$answer4_c = str_replace(' ', '', $answer4);
 
+		$check_i = true;
+
+		if ($i_a_1 == 0 &&$i_a_2 == 0 &&$i_a_3 == 0 &&$i_a_4 == 0 ) {
+			$check_i = false;
+		}
+
+
 		if (empty($content_c) || empty($answer1) || empty($answer2) || empty($answer3) || empty($answer4)) {
 			echo json_encode("Question and Answers Must Not Be Empty");
+		}elseif ($check_i == false) {
+			echo json_encode("One answer must be mark");
 		}else{
 
 			$data_q = array(
@@ -155,21 +168,25 @@ class Coursewares_fic extends CI_Controller {
 					"choice_choice"=>$answer1,
 					"choice_is_answer"=>0,
 					"courseware_question_id"=>$q_id,
+					"choice_is_answer"=>$i_a_1
 				),
 				array(
 					"choice_choice"=>$answer2,
 					"choice_is_answer"=>0,
 					"courseware_question_id"=>$q_id,
+					"choice_is_answer"=>$i_a_2
 				),
 				array(
 					"choice_choice"=>$answer3,
 					"choice_is_answer"=>0,
 					"courseware_question_id"=>$q_id,
+					"choice_is_answer"=>$i_a_3
 				),
 				array(
 					"choice_choice"=>$answer4,
 					"choice_is_answer"=>0,
 					"courseware_question_id"=>$q_id,
+					"choice_is_answer"=>$i_a_4
 				),
 			);
 

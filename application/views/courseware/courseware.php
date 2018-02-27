@@ -192,24 +192,42 @@
 			$(document).on("click", ".btn_cw_question", function () {
 				$id = $(this).data('cwid');
 
-			// add data cwid to q_id_num
-			$("#q_id_num").data('cwid', $id);
 
-			if ($("#div-bread-question").length==0) {
-				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
-				// $("#div-bread-question").attr('data-id', $id);
-			}
-			if ($('#topics-section').css('display') == "block") {
-				$('#topics-section').animateCss('zoomOut', function() {
-					$("#topics-section").css('display', 'none');
-					$('#question-section').addClass('animated zoomIn');
-					$("#question-section").css('display', 'block');
+				swal({
+					title: "Take this exam?",
+					text: "You are about the take this exam. This exam will be used to assess your grades and configure your skills reports.",
+					icon: "info",
+					buttons: {
+						cancel: true,
+						confirm: "Continue",
+					},
+				})
+				.then((takeExam) => {
+					if (takeExam) { 
+						// add data cwid to q_id_num
+						$("#q_id_num").data('cwid', $id);
+
+						if ($("#div-bread-question").length==0) {
+							$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
+							$("#div-bread").;
+							// $("#div-bread-question").attr('data-id', $id);
+						}
+						if ($('#topics-section').css('display') == "block") {
+							$('#topics-section').animateCss('zoomOut', function() {
+								$("#topics-section").css('display', 'none');
+								$('#question-section').addClass('animated zoomIn');
+								$("#question-section").css('display', 'block');
+							});
+						}
+
+
+						fetchQuestion($id);			
+
+					}
 				});
-			}
 
-			fetchQuestion($id);			
-			
-		});
+
+			});
 
 			/*==========================================
 			=            jQuery Animate Css            =
@@ -270,7 +288,7 @@
 						$topic_id = data[i].topic_id;
 
 						html_content += '<li>'+
-						'<div class="collapsible-header" style="background-color: transparent; text-transform: capitalize;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+						'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
 						'<div class="col s6"></div></div>'+
 						'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 						'</div>'+
@@ -314,9 +332,13 @@
 					'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
 					'</div>'+
 					'<div class="col s6">'+
-					'<div class="col s6">'+ 
+					'<div class="col s6"> '+ 
+					'<div class="col s12 valign-wrapper"><i class="material-icons">equalizer</i>'+
+					'35.6%</div>'+
+					'<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>'+
+					'13 Minutes, 25 Seconds</div>'+
 					'</div>'+
-					'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a></div>'+
+					'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
 					'</div>'+
 					'</div>';
 				}

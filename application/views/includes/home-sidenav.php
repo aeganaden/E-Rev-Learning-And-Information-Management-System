@@ -15,8 +15,8 @@ switch ($info['user']->$ident) {
     case 'EE':
     $program = "Electrical Engineering";
     break;
-    case 'ECE':
-    $program = "Electronics and Computer Engineering";
+    case 'EEE':
+    $program = "Electronics and Electrical Engineering";
     break;
     case 'ME':
     $program = "Mechanical Engineering";
@@ -94,6 +94,12 @@ switch ($info['user']->$ident) {
     <?php if ($info["identifier"] == "student"): ?>
         <li class="color-black <?= $s_c ?>">
             <a href="<?= base_url() ?>Coursewares" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
+        </li>
+    <?php endif ?>
+
+    <?php if ($info["identifier"] != "student"): ?>
+        <li class="color-black <?= $s_c ?>">
+            <a href="<?= base_url() ?>" class="color-black"><i class="material-icons color-black">title</i>Topics</a>
         </li>
     <?php endif ?>
     <li class="<?= $s_f ?>">

@@ -155,23 +155,31 @@
 		</blockquote>
 
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black">
-				<p  id="answer_1" contenteditable="true">Click Here To Add Answer #1</p>
+			
+			<div class="col s12 bg-color-white color-black valign-wrapper">
+				<i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i>
+				<p style="display: inline; margin-left: 2%;"  id="answer_1" contenteditable="true">Click Here To Add Answer #1</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black">
-				<p id="answer_2" contenteditable="true">Click Here To Add Answer #2</p>
+			
+			<div class="col s12 bg-color-white color-black valign-wrapper">
+				<i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i>
+				<p style="display: inline; margin-left: 2%;" id="answer_2" contenteditable="true">Click Here To Add Answer #2</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black">
-				<p id="answer_3" contenteditable="true">Click Here To Add Answer #3</p>
+			
+			<div class="col s12 bg-color-white color-black valign-wrapper">
+				<i class="material-icons" style="cursor: pointer;" id="i_answer_3">check_box_outline_blank</i>
+				<p style="display: inline; margin-left: 2%;" id="answer_3" contenteditable="true">Click Here To Add Answer #3</p>
 			</div>
 		</blockquote>
 		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			<div class="col s12 bg-color-white color-black">
-				<p id="answer_4" contenteditable="true">Click Here To Add Answer #4</p>
+			
+			<div class="col s12 bg-color-white color-black valign-wrapper">
+				<i class="material-icons" style="cursor: pointer;" id="i_answer_4">check_box_outline_blank</i>
+				<p style="display: inline; margin-left: 2%;" id="answer_4" contenteditable="true">Click Here To Add Answer #4</p>
 			</div>
 		</blockquote>
 	</div>
@@ -234,7 +242,21 @@
 
 
 <script>
+	// window.onbeforeunload = function(){
+	// 	myfun();
+	// 	return 'Are you sure you want to leave?';
+	// };
+
+	// function myfun(){ 
+	// 	console.log('hello');
+	// }
+
 	jQuery(document).ready(function($) {
+		// $(window).bind('beforeunload', function(){
+		// 	return '>>>>>Before You Go<<<<<<<< \n Your custom message go here';
+		// });
+
+
 		$('.tooltipped').tooltip({delay: 50});
 
 		jQuery(".sub_name").fitText();
@@ -259,6 +281,56 @@
 		if (!answer4) {   
 			CKEDITOR.inline('answer_4');
 		}
+
+		var i_a_1 = 1;
+		var i_a_2 = 0;
+		var i_a_3 = 0;
+		var i_a_4 = 0;
+
+		// Mark answer modal
+		$("#i_answer_1").click(function(event) {
+			i_a_1 = 1;
+			i_a_2 = 0;
+			i_a_3 = 0;
+			i_a_4 = 0;
+			$(this).html("check_box");
+			$("#i_answer_2").html("check_box_outline_blank");
+			$("#i_answer_3").html("check_box_outline_blank");
+			$("#i_answer_4").html("check_box_outline_blank");
+		});
+
+		$("#i_answer_2").click(function(event) {
+			i_a_1 = 0;
+			i_a_2 = 1;
+			i_a_3 = 0;
+			i_a_4 = 0;
+			$(this).html("check_box");
+			$("#i_answer_1").html("check_box_outline_blank");
+			$("#i_answer_3").html("check_box_outline_blank");
+			$("#i_answer_4").html("check_box_outline_blank");
+		});
+
+		$("#i_answer_3").click(function(event) {
+			i_a_1 = 0;
+			i_a_2 = 0;
+			i_a_3 = 1;
+			i_a_4 = 0;
+			$(this).html("check_box");
+			$("#i_answer_2").html("check_box_outline_blank");
+			$("#i_answer_1").html("check_box_outline_blank");
+			$("#i_answer_4").html("check_box_outline_blank");
+		});
+
+		$("#i_answer_4").click(function(event) {
+			i_a_1 = 0;
+			i_a_2 = 0;
+			i_a_3 = 0;
+			i_a_4 = 1;
+			$(this).html("check_box");
+			$("#i_answer_2").html("check_box_outline_blank");
+			$("#i_answer_3").html("check_box_outline_blank");
+			$("#i_answer_1").html("check_box_outline_blank");
+		});
 
 		// ADD QUESTION
 		$("#send").click(function(event) {
@@ -286,6 +358,10 @@
 							answer2:answer2,
 							answer3:answer3,
 							answer4:answer4,
+							i_a_1:i_a_1,
+							i_a_2:i_a_2,
+							i_a_3:i_a_3,
+							i_a_4:i_a_4,
 							q_id:$q_id,
 							cw_id:cw_id
 						},
@@ -293,8 +369,14 @@
 							if(data==true){
 								swal("Question Added!", {
 									icon: "success",
-								}).then(function(){
+								}).then(function(){ 
+									CKEDITOR.instances['q_editor'].setData('');
+									$("#answer_1").html("Click Here To Add Answer #1");
+									$("#answer_2").html("Click Here To Add Answer #2");
+									$("#answer_3").html("Click Here To Add Answer #3");
+									$("#answer_4").html("Click Here To Add Answer #4");
 									$('#modal_q').modal('close');
+									unsavedChanges = true;
 							// fetch question
 							fetchQuestion(cw_id);
 							$("html, body").animate({ scrollTop: $(document).height() }, 1000);
@@ -344,7 +426,7 @@
 						},
 						success: function(data){
 							if (data == true) {
-								swal("Success", "Question has been put into archive", "success");
+								// swal("Success", "Question has been put into archive", "success");
 								fetchQuestion($cwid);
 							}
 						}
@@ -355,7 +437,7 @@
 		
 
 
-		// ADD Question
+		// count Question
 		$("#btn_add_q").click(function(event) {
 			// console.log($(this).data('cwid'));	
 			$.ajax({
@@ -679,7 +761,7 @@ function fetchTopics(id) {
 					$topic_id = data[i].topic_id;
 
 					html_content += '<li>'+
-					'<div class="collapsible-header" style="background-color: transparent; text-transform: capitalize;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
 					'<div class="col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+

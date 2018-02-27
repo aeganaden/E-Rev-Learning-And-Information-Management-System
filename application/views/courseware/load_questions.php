@@ -73,11 +73,12 @@
 
 
 <script type="text/javascript">
-	
+
+
 	jQuery(document).ready(function($) {
 		$('.tooltipped').tooltip({delay: 50});
 
-		
+
 		
 
 		/*=========================================
@@ -259,6 +260,7 @@
 
 			var click = function (e) {
 				$q_id = $(this).data('qid');
+				unsavedChanges = false;
 				// fetch the answer
 				// then configure it base on return value from ajax
 				// console.log($q_id);	

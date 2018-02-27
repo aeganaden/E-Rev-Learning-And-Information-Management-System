@@ -44,6 +44,8 @@
 
 	<!-- SweetAlert2 -->
 	<script src="<?= base_url(); ?>assets/js/sweetalert2.all.js"></script>
+	<!-- Timerjs -->
+	<script src="<?= base_url(); ?>assets/js/timer.js"></script>
 	<!-- ckeditor -->
 	<!-- <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>'> -->
 	<script src="<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>"></script>
@@ -51,6 +53,8 @@
 	<script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image"></script>
 
 	<script type="text/javascript">
+		var unsavedChanges = true;
+
 		function store(id) {
 			ident = "div-" + id;
 			document.cookie = ident;
