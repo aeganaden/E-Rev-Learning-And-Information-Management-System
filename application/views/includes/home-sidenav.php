@@ -12,12 +12,12 @@ switch ($info['user']->$ident) {
     case 'CE':
     $program = "Civil Engineering";
     break;
-    case 'EE':
+    case 'EE': 
     $program = "Electrical Engineering";
     break;
     case 'EEE':
     $program = "Electronics and Electrical Engineering";
-    break;
+    break; 
     case 'ME':
     $program = "Mechanical Engineering";
     break;
@@ -53,23 +53,23 @@ switch ($info['user']->$ident) {
                 <h5 class="color-black"><?= $info["identifier"] != 'fic' ? strtoupper($info["identifier"]) : "FACULTY IN CHARGE" ?></h5>
             </blockquote>
         </div>
-        
+
         <div class="row" style="margin-top: 0px !important; border-bottom: 2px solid #007A33;">
 
         </div>
         <div class="row">
-            <?php   
-            if ($info['identifier']!="professor" && $info['identifier']!="fic") {
-                $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
+            <?php
+            if ($info['identifier'] != "professor" && $info['identifier'] != "fic") {
+                $section = $this->Crud_model->fetch("offering", array("offering_id" => $info['user']->offering_id));
                 $section = $section[0];
             }
             ?>
             <blockquote class="color-primary-green" style="margin: 0">
                 <h5 class="color-black" >ABOUT</h5>
             </blockquote>
-            <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$program?></h6>
-            <?php if ($info['identifier']!="professor"&& $info['identifier']!="fic"): ?>
-                <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?=$section->offering_name?></h6>
+            <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?= $program ?></h6>
+            <?php if ($info['identifier'] != "professor" && $info['identifier'] != "fic"): ?>
+                <h6  style="text-transform: capitalize; margin: 0; margin-left: 10%;" class="color-black valign-wrapper" ><i class="material-icons color-primary-green">chevron_right</i><?= $section->offering_name ?></h6>
             <?php endif ?>
 
         </div>
@@ -77,7 +77,7 @@ switch ($info['user']->$ident) {
             <!-- <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a> -->
         </div>
     </div></li>
-    <li class="<?=$s_h?>">
+    <li class="<?= $s_h ?>">
         <a clas href="<?= base_url() ?>Home" class="color-black"><i class="material-icons color-black">home</i>Home</a> <!--mark - naglagay-->
     </li>
     <?php if ($info["identifier"] == "fic"): ?>
@@ -105,6 +105,12 @@ switch ($info['user']->$ident) {
     <li class="<?= $s_f ?>">
         <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
+
+    <?php if ($info["identifier"] == "professor"): ?>
+        <li class="color-black <?= $s_c ?>">
+            <a href="<?= base_url() ?>Coursewares" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a> <!--mark - naglagay-->
+        </li>
+    <?php endif ?>
     <li>
         <div class="divider"></div>
     </li>

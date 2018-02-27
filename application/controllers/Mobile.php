@@ -65,17 +65,17 @@ class Mobile extends CI_Controller {
 //        $_POST['department'] = "CE";
         $_POST['department'] = strtoupper($_POST['department']);
         /*
-         * 1 = CE
-         * 2 = ECE
-         * 3 = EE
-         * 4 = ME
+         * 1 = CE   civil
+         * 2 = EE   electrical and electronics
+         * 3 = EEE  electrical
+         * 4 = ME   mech
          */
         $temp = 0;
         switch ($_POST['department']) {
             case "CE":
                 $temp = 1;
                 break;
-            case "ECE":
+            case "EEE":
                 $temp = 2;
                 break;
             case "EE":

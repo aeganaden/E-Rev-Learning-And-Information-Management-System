@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2018 at 02:43 PM
+-- Generation Time: Feb 26, 2018 at 02:30 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -114,7 +114,9 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, '1,2', 'admin admin admin', 0, 0);
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 0, '1,2', 'admin admin admin', 0, 0),
+(2, 'HEY CE STUDS!', 'THIS IS TESTING', 1519019115, 1519019115, 1, '1', 'Admin Admin', 1519019115, 1519747200),
+(3, 'test CE AND ME', 'CE AND ME STUDS', 1519020383, 1519020383, 1, '1,4', 'Admin Admin', 1519020383, 1519660800);
 
 -- --------------------------------------------------------
 
@@ -393,12 +395,19 @@ CREATE TABLE `lecturer_feedback` (
 --
 
 INSERT INTO `lecturer_feedback` (`lecturer_feedback_id`, `lecturer_feedback_timedate`, `lecturer_feedback_comment`, `lecturer_feedback_department`, `student_id`, `lecturer_id`, `enrollment_id`, `offering_id`) VALUES
-(1, 1515455338, 'hey wassup this is comment', 'CE', 201511281, 1, 1, 1),
+(1, 1519545518, 'atcastro hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs  hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfoatcastro hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs  hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfoatcastro hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs  hdsbfsd bfsdb fhdsbf dsb dhsb fsd', 'CE', 201411823, 1, 1, 2),
 (2, 1517149393, 'testting ang', 'CE', 201511281, 2, 1, 1),
-(3, 1517152407, 'gefefawef', 'CE', 201411491, 1, 1, 1),
+(3, 1517152407, 'gefefawef hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201411491, 1, 1, 1),
 (4, 1517152410, 'faefaefaewfdfsd', 'CE', 201411491, 2, 1, 1),
-(5, 1517152981, 'grfgdfrg', 'CE', 201410215, 1, 1, 2),
-(6, 1517152985, 'dsrgserge', 'CE', 201410215, 2, 1, 2);
+(5, 1517152981, 'grfgdfrg hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201410215, 1, 1, 2),
+(6, 1517152985, 'dsrgserge', 'CE', 201410215, 2, 1, 2),
+(7, 1519210978, 'you\'re great! hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201410679, 1, 1, 1),
+(9, 1519310227, 'heyyyyy', 'CE', 201410679, 2, 1, 1),
+(10, 1519392944, 'testiiing - mark hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo\r\n fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201511281, 1, 1, 1),
+(12, 1519541386, 'dasdasdasdasd hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201411851, 1, 1, 2),
+(13, 1519545449, 'cbadre hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201511438, 1, 1, 1),
+(14, 1519545479, 'spbustamante hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201420096, 1, 1, 2),
+(15, 1519545492, 'vzcastelo hdsbfsd bfsdb fhdsbf dsb dhsb fsdbf djs fosjdfojsdbfodsnf ojsdn sdfo fhdsbf dsb dhsb fsdbf djs fosj dfoj sdbf odsnf ojsdn sdfo fos jdfojs dbfo dsnf ojsdn sdfo', 'CE', 201512590, 1, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -413,6 +422,31 @@ CREATE TABLE `log` (
   `log_platform` tinyint(1) NOT NULL,
   `log_content_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `log`
+--
+
+INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log_content_id`) VALUES
+(1, 201511281, 1518844326, 1, 1),
+(2, 2, 1518844403, 1, 1),
+(3, 201111111, 1518844437, 1, 1),
+(4, 2, 1519019078, 1, 1),
+(5, 999999999, 1519019094, 1, 1),
+(6, 201410679, 1519210964, 1, 1),
+(7, 201410679, 1519281753, 1, 1),
+(8, 201410679, 1519300126, 1, 1),
+(9, 999999999, 1519397291, 1, 1),
+(10, 201411491, 1519540249, 1, 1),
+(11, 201411851, 1519540269, 1, 1),
+(12, 201511438, 1519545441, 1, 1),
+(13, 201411491, 1519545462, 1, 1),
+(14, 201420096, 1519545475, 1, 1),
+(15, 201512590, 1519545488, 1, 1),
+(16, 201410215, 1519545503, 1, 1),
+(17, 201411823, 1519545514, 1, 1),
+(18, 201512491, 1519545526, 1, 1),
+(19, 201511281, 1519546443, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -484,7 +518,7 @@ CREATE TABLE `professor` (
 --
 
 INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `professor_department`, `email`, `username`, `password`, `image_path`, `professor_feedback_active`) VALUES
-(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'assets/img/profiles/profile.jpg', 0),
+(201111111, 'Juan Carlo', 'De Regla', 'Valencia', 'CE', 'jdvalencia@fit.edu.ph', 'jdvalencia', 'jc', 'assets/img/profiles/profile.jpg', 1),
 (201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'abzaguirre', 'markus', 'assets/img/profiles/profile.jpg', 0),
 (201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'aptorres', 'allen', 'assets/img/profiles/profile.jpg', 0),
 (201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'rbuen', 'ralph', 'assets/img/profiles/profile.jpg', 0);
@@ -589,323 +623,6 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lec
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subject_list`
---
-
-CREATE TABLE `subject_list` (
-  `subject_list_id` int(20) NOT NULL,
-  `subject_list_name` varchar(100) NOT NULL,
-  `subject_list_department` varchar(5) NOT NULL,
-  `year_level_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subject_list`
---
-
-INSERT INTO `subject_list` (`subject_list_id`, `subject_list_name`, `subject_list_department`, `year_level_id`) VALUES
-(1, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 2),
-(2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 3),
-(3, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 5),
-(4, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 2),
-(5, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 3),
-(6, 'STRUCTURAL ENGINEERING AND CONSTRUCTION', 'CE', 3),
-(7, 'MATHEMATICS', 'EE', 2),
-(8, 'MATHEMATICS', 'EE', 3),
-(9, 'MATHEMATICS', 'EE', 5),
-(10, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 2),
-(11, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 3),
-(12, 'ENGINEERING SCIENCES AND ALLIED SUBJECTS', 'EE', 3),
-(13, 'MATHEMATICS', 'EEE', 2),
-(14, 'MATHEMATICS', 'EEE', 3),
-(15, 'MATHEMATICS', 'EEE', 5),
-(16, 'ELECTRONICS ENGINEERING', 'EEE', 2),
-(17, 'ELECTRONICS ENGINEERING', 'EEE', 3),
-(18, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 2),
-(19, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 3),
-(20, 'ELECTRONICS SYSTEMS AND TECHNOLOGIES', 'EEE', 3),
-(21, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 2),
-(22, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 3),
-(23, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 5),
-(24, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 2),
-(25, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 3),
-(26, 'POWER AND INDUSTRIAL PLANT ENGINEERING', 'ME', 3);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subject_list_has_topic_list`
---
-
-CREATE TABLE `subject_list_has_topic_list` (
-  `subject_list_id` int(20) NOT NULL,
-  `topic_list_id` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subject_list_has_topic_list`
---
-
-INSERT INTO `subject_list_has_topic_list` (`subject_list_id`, `topic_list_id`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(1, 11),
-(1, 12),
-(2, 1),
-(2, 2),
-(2, 3),
-(2, 4),
-(2, 5),
-(2, 6),
-(2, 7),
-(2, 8),
-(2, 9),
-(2, 10),
-(2, 11),
-(2, 12),
-(3, 1),
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 5),
-(3, 6),
-(3, 7),
-(3, 8),
-(3, 9),
-(3, 10),
-(3, 11),
-(3, 12),
-(4, 13),
-(4, 14),
-(4, 15),
-(4, 16),
-(4, 17),
-(4, 18),
-(4, 19),
-(4, 20),
-(4, 21),
-(4, 22),
-(4, 23),
-(4, 24),
-(5, 13),
-(5, 14),
-(5, 15),
-(5, 16),
-(5, 17),
-(5, 18),
-(5, 19),
-(5, 20),
-(5, 21),
-(5, 22),
-(5, 23),
-(5, 24),
-(6, 25),
-(6, 26),
-(6, 27),
-(6, 28),
-(6, 29),
-(6, 30),
-(6, 31),
-(6, 32),
-(6, 33),
-(7, 1),
-(7, 2),
-(7, 3),
-(7, 4),
-(7, 5),
-(7, 6),
-(7, 7),
-(7, 34),
-(7, 35),
-(7, 36),
-(7, 37),
-(8, 1),
-(8, 2),
-(8, 3),
-(8, 4),
-(8, 5),
-(8, 6),
-(8, 7),
-(8, 34),
-(8, 35),
-(8, 36),
-(8, 37),
-(9, 1),
-(9, 2),
-(9, 3),
-(9, 4),
-(9, 5),
-(9, 6),
-(9, 7),
-(9, 34),
-(9, 35),
-(9, 36),
-(9, 37),
-(10, 38),
-(10, 39),
-(10, 40),
-(10, 41),
-(10, 42),
-(10, 43),
-(10, 44),
-(10, 45),
-(10, 46),
-(11, 38),
-(11, 39),
-(11, 40),
-(11, 41),
-(11, 42),
-(11, 43),
-(11, 44),
-(11, 45),
-(11, 46),
-(12, 47),
-(12, 48),
-(12, 49),
-(12, 50),
-(12, 51),
-(12, 52),
-(12, 53),
-(12, 54),
-(12, 55),
-(12, 56),
-(12, 57),
-(13, 1),
-(13, 2),
-(13, 3),
-(13, 4),
-(13, 5),
-(13, 6),
-(13, 7),
-(13, 34),
-(13, 35),
-(13, 36),
-(13, 37),
-(14, 1),
-(14, 2),
-(14, 3),
-(14, 4),
-(14, 5),
-(14, 6),
-(14, 7),
-(14, 34),
-(14, 35),
-(14, 36),
-(14, 37),
-(15, 1),
-(15, 2),
-(15, 3),
-(15, 4),
-(15, 5),
-(15, 6),
-(15, 7),
-(15, 34),
-(15, 35),
-(15, 36),
-(15, 37),
-(16, 38),
-(16, 39),
-(16, 40),
-(16, 58),
-(16, 59),
-(17, 38),
-(17, 39),
-(17, 40),
-(17, 58),
-(17, 59),
-(18, 60),
-(18, 61),
-(18, 62),
-(18, 63),
-(18, 64),
-(18, 65),
-(18, 66),
-(19, 60),
-(19, 61),
-(19, 62),
-(19, 63),
-(19, 64),
-(19, 65),
-(19, 66),
-(20, 67),
-(20, 68),
-(20, 69),
-(20, 70),
-(20, 71),
-(20, 72),
-(20, 73),
-(21, 1),
-(21, 4),
-(21, 5),
-(21, 6),
-(21, 7),
-(21, 34),
-(21, 35),
-(21, 36),
-(21, 37),
-(21, 74),
-(21, 75),
-(21, 76),
-(22, 1),
-(22, 4),
-(22, 5),
-(22, 6),
-(22, 7),
-(22, 34),
-(22, 35),
-(22, 36),
-(22, 37),
-(22, 74),
-(22, 75),
-(22, 76),
-(23, 1),
-(23, 4),
-(23, 5),
-(23, 6),
-(23, 7),
-(23, 34),
-(23, 35),
-(23, 36),
-(23, 37),
-(23, 74),
-(23, 75),
-(23, 76),
-(24, 39),
-(24, 40),
-(24, 42),
-(24, 77),
-(24, 78),
-(24, 79),
-(24, 80),
-(24, 81),
-(25, 39),
-(25, 40),
-(25, 42),
-(25, 77),
-(25, 78),
-(25, 79),
-(25, 80),
-(25, 81),
-(26, 82),
-(26, 83),
-(26, 84),
-(26, 85),
-(26, 86),
-(26, 87),
-(26, 88),
-(26, 89);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `topic`
 --
 
@@ -930,112 +647,6 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `topic_list`
---
-
-CREATE TABLE `topic_list` (
-  `topic_list_id` int(20) NOT NULL,
-  `topic_list_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `topic_list`
---
-
-INSERT INTO `topic_list` (`topic_list_id`, `topic_list_name`) VALUES
-(51, 'AC Machinces'),
-(34, 'Advance Math'),
-(1, 'Algebra'),
-(71, 'analog Modulation'),
-(4, 'Analytic Geometry'),
-(69, 'Antenna'),
-(52, 'Aparatus and Equipment'),
-(36, 'Chemistry'),
-(47, 'Circuits 1'),
-(48, 'Circuits 2'),
-(49, 'Circuits 3'),
-(83, 'Combustion Engine'),
-(78, 'Combustion Engineering'),
-(46, 'Computer Fundamentals'),
-(61, 'DC and AC circuits'),
-(50, 'DC Machine'),
-(5, 'Differential Calculus'),
-(7, 'Differential Equation'),
-(72, 'Digital Communications '),
-(9, 'Economy'),
-(60, 'Electrical Elements'),
-(62, 'Electricity and Magnetism'),
-(57, 'Electronics'),
-(43, 'Engineering Econmy'),
-(59, 'Engineering Economy'),
-(73, 'Fiber Oprics'),
-(82, 'Fluid Machinery'),
-(42, 'Fluid Mechanics'),
-(17, 'Geotech 2'),
-(18, 'Geotech 3'),
-(19, 'Geotech 4'),
-(77, 'Heat Transfer'),
-(41, 'Hydraulics'),
-(13, 'Hydraulics 1'),
-(14, 'Hydraulics 2'),
-(15, 'Hydraulics 3'),
-(16, 'hydraulics 4'),
-(54, 'Illumination'),
-(66, 'Industrial Electronics and Power Supply'),
-(87, 'Industrial Plant Engineering'),
-(85, 'Industrial Process'),
-(6, 'Integral Calculus'),
-(45, 'Laws and Ethics'),
-(65, 'Logic Circuits'),
-(79, 'Machine Elements'),
-(80, 'Machine Shop Theory'),
-(81, 'Material Science Engineering'),
-(38, 'Mechanics'),
-(20, 'Mechanics 1'),
-(21, 'Mechanics 2'),
-(22, 'Mechanics 3'),
-(63, 'Microelectronics'),
-(70, 'Microwave Communications'),
-(44, 'Philippine Electrical Code'),
-(37, 'Physics'),
-(2, 'Plane and Spherical Geometry'),
-(3, 'Plane and Spherical Trigo'),
-(56, 'Power Plant'),
-(88, 'Power Plant Engineering'),
-(53, 'Power Systems'),
-(8, 'Probability'),
-(35, 'Probability and Statistics'),
-(67, 'Radiowave Communications'),
-(31, 'RCD 1'),
-(32, 'RCD 2'),
-(33, 'RCD 3'),
-(84, 'Refrigeration, Heating, Ventilation and Airconditioning'),
-(86, 'Safety Engineering and Intrumentation'),
-(64, 'Semiconductor Devices'),
-(75, 'Solid Mensuration'),
-(76, 'Statics and Dynamics'),
-(28, 'Steel 1'),
-(29, 'Steel 2'),
-(30, 'Steel 3'),
-(23, 'Strength 1'),
-(24, 'Strength 2'),
-(39, 'Strength of Materials'),
-(10, 'Survey 1'),
-(11, 'Survey 2'),
-(12, 'Survey 3'),
-(25, 'Theory 1'),
-(26, 'Theory 2'),
-(27, 'Theory 3'),
-(40, 'Thermodynamics'),
-(55, 'Transient'),
-(68, 'Transmission Lines and Waveguides'),
-(74, 'Trigonometry'),
-(58, 'Vector Analysis and Electromagnets'),
-(89, 'Vibration Engineering');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `total_grade`
 --
 
@@ -1045,28 +656,6 @@ CREATE TABLE `total_grade` (
   `subject_id` int(20) NOT NULL,
   `student_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `year_level`
---
-
-CREATE TABLE `year_level` (
-  `year_level_id` int(20) NOT NULL,
-  `year_level_name` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `year_level`
---
-
-INSERT INTO `year_level` (`year_level_id`, `year_level_name`) VALUES
-(1, '1st year'),
-(2, '2nd year'),
-(3, '3rd year'),
-(4, '4th year'),
-(5, 'Terminal year');
 
 --
 -- Indexes for dumped tables
@@ -1251,33 +840,11 @@ ALTER TABLE `subject`
   ADD KEY `fk_subject_offering1_idx` (`offering_id`);
 
 --
--- Indexes for table `subject_list`
---
-ALTER TABLE `subject_list`
-  ADD PRIMARY KEY (`subject_list_id`),
-  ADD KEY `fk_subject_list_year_level1_idx` (`year_level_id`);
-
---
--- Indexes for table `subject_list_has_topic_list`
---
-ALTER TABLE `subject_list_has_topic_list`
-  ADD PRIMARY KEY (`subject_list_id`,`topic_list_id`),
-  ADD KEY `fk_subject_list_has_topic_list_topic_list1_idx` (`topic_list_id`),
-  ADD KEY `fk_subject_list_has_topic_list_subject_list1_idx` (`subject_list_id`);
-
---
 -- Indexes for table `topic`
 --
 ALTER TABLE `topic`
   ADD PRIMARY KEY (`topic_id`),
   ADD KEY `fk_topic_subject1_idx` (`subject_id`);
-
---
--- Indexes for table `topic_list`
---
-ALTER TABLE `topic_list`
-  ADD PRIMARY KEY (`topic_list_id`),
-  ADD UNIQUE KEY `topic_list_name_UNIQUE` (`topic_list_name`);
 
 --
 -- Indexes for table `total_grade`
@@ -1286,12 +853,6 @@ ALTER TABLE `total_grade`
   ADD PRIMARY KEY (`total_grade_id`),
   ADD KEY `fk_total_grade_subject1_idx` (`subject_id`),
   ADD KEY `fk_total_grade_student1_idx` (`student_id`);
-
---
--- Indexes for table `year_level`
---
-ALTER TABLE `year_level`
-  ADD PRIMARY KEY (`year_level_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1313,7 +874,7 @@ ALTER TABLE `activity_details`
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announcement_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `announcement_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `choice`
@@ -1373,13 +934,13 @@ ALTER TABLE `lecturer`
 -- AUTO_INCREMENT for table `lecturer_feedback`
 --
 ALTER TABLE `lecturer_feedback`
-  MODIFY `lecturer_feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `lecturer_feedback_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `log_content`
@@ -1400,34 +961,16 @@ ALTER TABLE `subject`
   MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `subject_list`
---
-ALTER TABLE `subject_list`
-  MODIFY `subject_list_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
-
---
 -- AUTO_INCREMENT for table `topic`
 --
 ALTER TABLE `topic`
   MODIFY `topic_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `topic_list`
---
-ALTER TABLE `topic_list`
-  MODIFY `topic_list_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
-
---
 -- AUTO_INCREMENT for table `total_grade`
 --
 ALTER TABLE `total_grade`
   MODIFY `total_grade_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `year_level`
---
-ALTER TABLE `year_level`
-  MODIFY `year_level_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
@@ -1545,19 +1088,6 @@ ALTER TABLE `student`
 ALTER TABLE `subject`
   ADD CONSTRAINT `fk_subject_lecturer1` FOREIGN KEY (`lecturer_id`) REFERENCES `lecturer` (`lecturer_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_subject_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `subject_list`
---
-ALTER TABLE `subject_list`
-  ADD CONSTRAINT `fk_subject_list_year_level1` FOREIGN KEY (`year_level_id`) REFERENCES `year_level` (`year_level_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `subject_list_has_topic_list`
---
-ALTER TABLE `subject_list_has_topic_list`
-  ADD CONSTRAINT `fk_subject_list_has_topic_list_subject_list1` FOREIGN KEY (`subject_list_id`) REFERENCES `subject_list` (`subject_list_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_subject_list_has_topic_list_topic_list1` FOREIGN KEY (`topic_list_id`) REFERENCES `topic_list` (`topic_list_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `topic`
