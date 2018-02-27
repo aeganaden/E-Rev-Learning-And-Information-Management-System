@@ -152,9 +152,6 @@ class Crud_model extends CI_Model {
         if (!empty($table)) {
             $this->db->from($table);
         }
-        if (!empty($where)) {
-            $this->db->where($where);
-        }
         if (!empty($join1) && !empty($jointype)) {
             $this->db->join($join1[0], $join1[1], $jointype);
         } else if (!empty($join1) && empty($jointype)) {
@@ -193,6 +190,40 @@ class Crud_model extends CI_Model {
         }
         $query = $this->db->get();
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
+    }
+
+    public function fetch_join2($table, $col = NULL, $join = NULL, $jointype = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL) {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        if ($distinct == TRUE) {        //depends sa irereturn na cols
+            $this->db->distinct();
+        }
+        if (!empty($col)) {
+            $this->db->select($col);
+        } else {
+            $this->db->select('*');
+        }
+        if (!empty($table)) {
+            $this->db->from($table);
+        }
+        if (!empty($join) && !empty($jointype)) {
+            foreach ($join as $val) {
+                $this->db->join($val[0], $val[1], $jointype);
+            }
+        } else if (!empty($join) && empty($jointype)) {
+            foreach ($join as $val) {
+                $this->db->join($val[0], $val[1]);
+            }
+        }
+
+        $query = $this->db->get();
+
+        if (!empty($resultinarray) && $resultinarray == TRUE) {             //changed to if-else for compatibility issues - mark
+            return ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+        } else {
+            return ($query->num_rows() > 0) ? $query->result() : FALSE;
+        }
     }
 
 }
