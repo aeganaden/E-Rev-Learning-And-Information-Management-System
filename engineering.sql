@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2018 at 05:05 AM
+-- Generation Time: Feb 28, 2018 at 05:11 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -193,7 +193,7 @@ CREATE TABLE `comment` (
 CREATE TABLE `course` (
   `course_id` int(20) NOT NULL,
   `course_course_code` varchar(20) NOT NULL,
-  `course_title` varchar(100) NOT NULL,
+  `course_course_title` varchar(100) NOT NULL,
   `course_department` varchar(10) NOT NULL,
   `enrollment_id` int(20) NOT NULL,
   `professor_id` int(20) NOT NULL
@@ -203,7 +203,7 @@ CREATE TABLE `course` (
 -- Dumping data for table `course`
 --
 
-INSERT INTO `course` (`course_id`, `course_course_code`, `course_title`, `course_department`, `enrollment_id`, `professor_id`) VALUES
+INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, `course_department`, `enrollment_id`, `professor_id`) VALUES
 (1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 1, 201111111),
 (2, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 1, 201122222),
 (3, 'ECECORREL1', 'ECE CORRELATION COURSE 1', 'ECE', 1, 201133333),
