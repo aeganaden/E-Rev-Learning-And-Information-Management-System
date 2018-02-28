@@ -82,14 +82,24 @@ class Coursewares extends CI_Controller {
 
 	public function insertAnswer()
 	{
+		$info = $this->session->userdata('userInfo');
 		$answer = $this->input->post("answer");
 		$q_id = $this->input->post("q_id");
-		$data = {
+		$data = array(
 			"courseware_question_id"=>$q_id,
-			"choice_id"=>$answer,
-		}
+			"choice_id"=>$answer, 
+			"student_id"=> $info['user']->student_id, 
+		);
 		if ($this->Crud_model->insert("student_answer",$data)) {
-			# code...
+			$data = array(
+				"message_l" => "Successfully submitted answers!",
+				"message_r" => "Please check grade assessment navigation for the scores!",
+			);
+			echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
+
+		}else{
+			echo json_encode(false);
+
 		}
 		
 	}

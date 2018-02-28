@@ -37,14 +37,7 @@
 	$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 	$offering = $offering[0];
 	$offering_data = $this->Crud_model->fetch("offering", array("offering_department"=>$dep,"course_id"=>$offering->course_id));
-
-
-	// echo "<pre>";
-	// print_r($offering_data);
-	// die();
-
 	
-
 	$count = 1;
 	?>
 	<?php foreach ($offering_data as $key => $value): ?>
@@ -179,7 +172,7 @@
 
 			var cw_id = $(this).data('id');
 
-			$chkr_answer = true;
+			$chkr_answer = false;
 			$q_id_error = [];
 
 			$.ajax({
@@ -212,7 +205,23 @@
 							$q_id = data[i].courseware_question_id;
 							$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
 
-							insertAnswer($ans_id,$q_id);
+							swal({
+								title: "Submit Exam?",
+								text: "You are about to submit this Exam, are you sure you want to submit?",
+								icon: "info",
+								buttons: {
+									cancel: true,
+									confirm: "Submit",
+								},
+							})
+							.then((submitAnswer) => {
+								if (submitAnswer) { 
+									insertAnswer($ans_id,$q_id);
+								}
+							});
+
+							// console.log();
+							// console.log($var);	 
 
 						}
 					}
@@ -370,14 +379,16 @@ function insertAnswer(answer_id,q_id) {
 	$.ajax({
 		url: '<?=base_url()?>Coursewares/insertAnswer',
 		type: 'post',
-		dataType: 'post',
+		dataType: 'html',
 		data: {
 			answer: answer_id,
 			q_id: q_id,
 		},
 		success: function(data){
-			if (data === "true") {
-				return true;
+			console.log(data);	
+			if (data!=false) {
+				o_ex = false;
+				$("#question-section").html(data);
 			}else{
 				return false;
 			}
