@@ -37,14 +37,7 @@
 	$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 	$offering = $offering[0];
 	$offering_data = $this->Crud_model->fetch("offering", array("offering_department"=>$dep,"course_id"=>$offering->course_id));
-
-
-	// echo "<pre>";
-	// print_r($offering_data);
-	// die();
-
-	
-
+ 
 	$count = 1;
 	?>
 	<?php foreach ($offering_data as $key => $value): ?>
