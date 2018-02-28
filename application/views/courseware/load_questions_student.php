@@ -30,7 +30,7 @@
 								<?php foreach ($answers as $key => $i_value): ?>
 									<div class="row">
 										<p>
-											<input name="group1" type="radio" id="s_a<?=$i_value->choice_id?>" />
+											<input name="group<?=$value->courseware_question_id?>" type="radio" id="s_a<?=$i_value->choice_id?>" />
 											<label for="s_a<?=$i_value->choice_id?>" class="color-black"><?=$i_value->choice_choice?></label>
 										</p>
 

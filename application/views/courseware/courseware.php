@@ -126,19 +126,28 @@
 =            DIV COURSEWARE QUESTION SECTION            =
 ======================================================-->
 
-<div class="row container" id="question-section" style="display: none;">
-	<div class="col s1">
+<div class="row" id="question-section" style="display: none;">
+	<div class="col s2">
 	</div>
-	<div class="col s10" id="div-q-sec">
+	<div class="col s8" id="div-q-sec">
 		
 
 	</div>
-	<div class="col s1" id="timer_div">
-		TIME
-		<p>
-			<span class="values"></span>
-		</p>
+	<div class="col s2" id="timer_div">
+		<div  id="sticky" class="bg-color-black" style="padding: 1%; padding-left: 2%; border-radius: 10px;">
+			<p class=" valign-wrapper">
+				<i class="material-icons color-white" style="margin-right: 5%;">access_time</i>
+				<span class="values color-black color-white"></span>
+			</p>
+		</div>
 	</div>
+
+	<div class="fixed-action-btn">
+		<a class="btn-floating btn-large bg-primary-green">
+			<i class="large material-icons tooltipped" data-tooltip="Submit Answers" data-position="left">navigation</i>
+		</a>
+	</div>
+
 </div> 
 
 
@@ -148,12 +157,15 @@
 
 
 <script type="text/javascript">
+
+
 	var o_ex = false;
 
 	var timer = new Timer();
 	jQuery(document).ready(function($) {
 
-		
+		$("#sticky").sticky({topSpacing:0});
+
 		window.onbeforeunload = function() { 
 			if (o_ex==true) {
 				return 'Leave the exam? This exam will not be recorded if you leave.';
@@ -174,7 +186,7 @@
 					}
 				}
 
-				console.log(chk);	
+				// console.log(chk);	
 
 				if (chk == false) {
 					$id = $(this).data("id");
@@ -304,92 +316,92 @@
 
 
 
-	function fetchTopics(id) {
+function fetchTopics(id) {
 
-		var html_content = "";
-		$.ajax({
-			url: '<?=base_url()?>Coursewares/fetchTopics',
-			type: 'post',
-			dataType: 'json',
-			data: {id: id},
-			beforeSend: function() {
-				$("#preloader").css('display', 'block');
-			},
-			success: function(data){
-				$("#preloader").css('display', 'none');
+	var html_content = "";
+	$.ajax({
+		url: '<?=base_url()?>Coursewares/fetchTopics',
+		type: 'post',
+		dataType: 'json',
+		data: {id: id},
+		beforeSend: function() {
+			$("#preloader").css('display', 'block');
+		},
+		success: function(data){
+			$("#preloader").css('display', 'none');
 
-				if (data!=false) {
-					$("#div-topics").css('display', 'none');
+			if (data!=false) {
+				$("#div-topics").css('display', 'none');
 
-					for(var i = 0; i < data.length; i++){
-						$topic_id = data[i].topic_id;
+				for(var i = 0; i < data.length; i++){
+					$topic_id = data[i].topic_id;
 
-						html_content += '<li>'+
-						'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-						'<div class="col s6"></div></div>'+
-						'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
-						'</div>'+
-						'</li>';
+					html_content += '<li>'+
+					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+					'<div class="col s6"></div></div>'+
+					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
+					'</div>'+
+					'</li>';
 
-						fetchCourseware($topic_id);
-					}
-
-					$("#topic_content").html(html_content);
-				}else{
-					$("#topic_content").html("");
-					html_content = '<h1 class="center" style=" box-shadow: none !important;"> No topics added yet</h1>';
-					$("#div-topics").css('display', 'block');
-					$("#div-topics").html(html_content);
-
+					fetchCourseware($topic_id);
 				}
-			}
-		});
-	}
 
-
-
-	function fetchCourseware(topic_id) { 
-		var courseware_content = "";
-		$.ajax({
-			url: '<?=base_url()?>Coursewares_fic/fetchCoursewares',
-			type: 'post',
-			dataType: 'json',
-			data: {topic_id: topic_id},
-			beforeSend: function() {
-				$("#preloader").css('display', 'block');
-			},
-			success: function(i_data){
-				$("#preloader").css('display', 'none');
-
-				for(var j = 0; j < i_data.length; j++){
-					courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
-					'<div class="col s6">'+
-					'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
-					'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
-					'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
-					'</div>'+
-					'<div class="col s6">'+
-					'<div class="col s6"> '+ 
-					'<div class="col s12 valign-wrapper"><i class="material-icons">equalizer</i>'+
-					'35.6%</div>'+
-					'<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>'+
-					'13 Minutes, 25 Seconds</div>'+
-					'</div>'+
-					'<div class="col s6" id="btn_cw_question'+i_data[j].courseware_id+'"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
-					'</div>'+
-					'</div>';
-
-					countQuestion(i_data[j].courseware_id);		
-				}
-				$("#courseware_"+topic_id).html(courseware_content);
-				$('.tooltipped').tooltip({delay: 50});
+				$("#topic_content").html(html_content);
+			}else{
+				$("#topic_content").html("");
+				html_content = '<h1 class="center" style=" box-shadow: none !important;"> No topics added yet</h1>';
+				$("#div-topics").css('display', 'block');
+				$("#div-topics").html(html_content);
 
 			}
-		});
-	}
+		}
+	});
+}
 
 
-	function fetchQuestion(id) {
+
+function fetchCourseware(topic_id) { 
+	var courseware_content = "";
+	$.ajax({
+		url: '<?=base_url()?>Coursewares_fic/fetchCoursewares',
+		type: 'post',
+		dataType: 'json',
+		data: {topic_id: topic_id},
+		beforeSend: function() {
+			$("#preloader").css('display', 'block');
+		},
+		success: function(i_data){
+			$("#preloader").css('display', 'none');
+
+			for(var j = 0; j < i_data.length; j++){
+				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
+				'<div class="col s6">'+
+				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
+				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
+				'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
+				'</div>'+
+				'<div class="col s6">'+
+				'<div class="col s6"> '+ 
+				'<div class="col s12 valign-wrapper"><i class="material-icons">equalizer</i>'+
+				'35.6%</div>'+
+				'<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>'+
+				'13 Minutes, 25 Seconds</div>'+
+				'</div>'+
+				'<div class="col s6" id="btn_cw_question'+i_data[j].courseware_id+'"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
+				'</div>'+
+				'</div>';
+
+				countQuestion(i_data[j].courseware_id);		
+			}
+			$("#courseware_"+topic_id).html(courseware_content);
+			$('.tooltipped').tooltip({delay: 50});
+
+		}
+	});
+}
+
+
+function fetchQuestion(id) {
 		// console.log(id);	
 		$.ajax({
 			url: '<?=base_url()?>Coursewares/fetchQuestions ',
@@ -400,6 +412,7 @@
 				$("#preloader").css('display', 'block');
 			},
 			success: function(data){ 
+
 				timer.start({precision: 'seconds'});
 				timer.addEventListener('secondsUpdated', function (e) {   
 
