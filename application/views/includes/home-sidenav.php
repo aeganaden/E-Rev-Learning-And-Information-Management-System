@@ -111,10 +111,9 @@ switch ($info['user']->$ident) {
     <li class="<?= $s_f ?>">
         <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
     </li>
-
-    <?php if ($info["identifier"] == "professor"): ?>
+    <?php if ($info["identifier"] == "prof"): ?>
         <li class="color-black <?= $s_c ?>">
-            <a href="<?= base_url() ?>Coursewares" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a> <!--mark - naglagay-->
+            <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
         </li>
     <?php endif ?>
     <li>

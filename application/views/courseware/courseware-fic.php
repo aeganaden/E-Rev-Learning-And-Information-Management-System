@@ -343,6 +343,9 @@
 					$q_id = data; 
 					var cw_id = $("#q_id_num").data("cwid");
 					var content = CKEDITOR.instances['q_editor'].getData();
+
+					content = "<div>"+content+"</div>";
+					console.log(content);	
 					var answer1 = CKEDITOR.instances['answer_1'].getData();
 					var answer2 = CKEDITOR.instances['answer_2'].getData();
 					var answer3 = CKEDITOR.instances['answer_3'].getData();

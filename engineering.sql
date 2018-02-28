@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2018 at 02:43 PM
+-- Generation Time: Feb 28, 2018 at 09:54 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -114,7 +114,7 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, '1,2', 'admin admin admin', 0, 0);
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 0, '1,2', 'admin admin admin', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -221,6 +221,7 @@ CREATE TABLE `courseware` (
   `courseware_description` varchar(800) DEFAULT NULL,
   `courseware_date_added` int(20) NOT NULL,
   `courseware_date_edited` int(20) NOT NULL,
+  `courseware_status` tinyint(1) DEFAULT '1',
   `topic_id` int(20) NOT NULL,
   `grade_assessment_id` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -229,8 +230,8 @@ CREATE TABLE `courseware` (
 -- Dumping data for table `courseware`
 --
 
-INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_description`, `courseware_date_added`, `courseware_date_edited`, `topic_id`, `grade_assessment_id`) VALUES
-(1, 'Practical Examination', 'This is a practical examination consists of all mathematical equation starting from the bottom of my heart. Hehe', 1518443372, 1518443372, 2, NULL);
+INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_description`, `courseware_date_added`, `courseware_date_edited`, `courseware_status`, `topic_id`, `grade_assessment_id`) VALUES
+(1, 'Practical Examination', 'This is a practical examination consists of all mathematical equation starting from the bottom of my heart. Hehe', 1518443372, 1518443372, 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -240,7 +241,7 @@ INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_descri
 
 CREATE TABLE `courseware_question` (
   `courseware_question_id` int(20) NOT NULL,
-  `courseware_question_question` varchar(800) NOT NULL,
+  `courseware_question_question` text NOT NULL,
   `courseware_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -254,6 +255,19 @@ CREATE TABLE `course_modules` (
   `courseware_file_id` int(20) NOT NULL,
   `courseware_file_path` varchar(100) NOT NULL,
   `subject_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_scores`
+--
+
+CREATE TABLE `data_scores` (
+  `data_scores_id` int(20) NOT NULL,
+  `data_scores_name` varchar(100) NOT NULL,
+  `data_scores_type` tinyint(1) NOT NULL,
+  `data_scores_score` int(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -561,6 +575,36 @@ INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `userna
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `student_answer`
+--
+
+CREATE TABLE `student_answer` (
+  `student_answer_id` int(11) NOT NULL,
+  `courseware_question_id` int(20) NOT NULL,
+  `choice_id` int(20) NOT NULL,
+  `student_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_scores`
+--
+
+CREATE TABLE `student_scores` (
+  `student_scores_id` int(20) NOT NULL,
+  `student_scores_is_failed` tinyint(1) NOT NULL,
+  `student_scores_upload_num` int(50) NOT NULL,
+  `student_scores_score` int(45) NOT NULL,
+  `student_scores_stud_num` int(10) NOT NULL,
+  `data_scores_id` int(20) NOT NULL,
+  `topic_topic_id` int(20) NOT NULL,
+  `course_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subject`
 --
 
@@ -596,6 +640,7 @@ CREATE TABLE `subject_list` (
   `subject_list_id` int(20) NOT NULL,
   `subject_list_name` varchar(100) NOT NULL,
   `subject_list_department` varchar(5) NOT NULL,
+  `subject_list_is_active` tinyint(1) NOT NULL,
   `year_level_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -603,33 +648,33 @@ CREATE TABLE `subject_list` (
 -- Dumping data for table `subject_list`
 --
 
-INSERT INTO `subject_list` (`subject_list_id`, `subject_list_name`, `subject_list_department`, `year_level_id`) VALUES
-(1, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 2),
-(2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 3),
-(3, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 5),
-(4, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 2),
-(5, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 3),
-(6, 'STRUCTURAL ENGINEERING AND CONSTRUCTION', 'CE', 3),
-(7, 'MATHEMATICS', 'EE', 2),
-(8, 'MATHEMATICS', 'EE', 3),
-(9, 'MATHEMATICS', 'EE', 5),
-(10, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 2),
-(11, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 3),
-(12, 'ENGINEERING SCIENCES AND ALLIED SUBJECTS', 'EE', 3),
-(13, 'MATHEMATICS', 'EEE', 2),
-(14, 'MATHEMATICS', 'EEE', 3),
-(15, 'MATHEMATICS', 'EEE', 5),
-(16, 'ELECTRONICS ENGINEERING', 'EEE', 2),
-(17, 'ELECTRONICS ENGINEERING', 'EEE', 3),
-(18, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 2),
-(19, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 3),
-(20, 'ELECTRONICS SYSTEMS AND TECHNOLOGIES', 'EEE', 3),
-(21, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 2),
-(22, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 3),
-(23, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 5),
-(24, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 2),
-(25, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 3),
-(26, 'POWER AND INDUSTRIAL PLANT ENGINEERING', 'ME', 3);
+INSERT INTO `subject_list` (`subject_list_id`, `subject_list_name`, `subject_list_department`, `subject_list_is_active`, `year_level_id`) VALUES
+(1, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 2),
+(2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 3),
+(3, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 5),
+(4, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, 2),
+(5, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, 3),
+(6, 'STRUCTURAL ENGINEERING AND CONSTRUCTION', 'CE', 1, 3),
+(7, 'MATHEMATICS', 'EE', 1, 2),
+(8, 'MATHEMATICS', 'EE', 1, 3),
+(9, 'MATHEMATICS', 'EE', 1, 5),
+(10, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, 2),
+(11, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, 3),
+(12, 'ENGINEERING SCIENCES AND ALLIED SUBJECTS', 'EE', 1, 3),
+(13, 'MATHEMATICS', 'EEE', 1, 2),
+(14, 'MATHEMATICS', 'EEE', 1, 3),
+(15, 'MATHEMATICS', 'EEE', 1, 5),
+(16, 'ELECTRONICS ENGINEERING', 'EEE', 1, 2),
+(17, 'ELECTRONICS ENGINEERING', 'EEE', 1, 3),
+(18, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 1, 2),
+(19, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'EEE', 1, 3),
+(20, 'ELECTRONICS SYSTEMS AND TECHNOLOGIES', 'EEE', 1, 3),
+(21, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 2),
+(22, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 3),
+(23, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 5),
+(24, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, 2),
+(25, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, 3),
+(26, 'POWER AND INDUSTRIAL PLANT ENGINEERING', 'ME', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -935,103 +980,104 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 
 CREATE TABLE `topic_list` (
   `topic_list_id` int(20) NOT NULL,
-  `topic_list_name` varchar(100) NOT NULL
+  `topic_list_name` varchar(100) NOT NULL,
+  `topic_list_is_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `topic_list`
 --
 
-INSERT INTO `topic_list` (`topic_list_id`, `topic_list_name`) VALUES
-(51, 'AC Machinces'),
-(34, 'Advance Math'),
-(1, 'Algebra'),
-(71, 'analog Modulation'),
-(4, 'Analytic Geometry'),
-(69, 'Antenna'),
-(52, 'Aparatus and Equipment'),
-(36, 'Chemistry'),
-(47, 'Circuits 1'),
-(48, 'Circuits 2'),
-(49, 'Circuits 3'),
-(83, 'Combustion Engine'),
-(78, 'Combustion Engineering'),
-(46, 'Computer Fundamentals'),
-(61, 'DC and AC circuits'),
-(50, 'DC Machine'),
-(5, 'Differential Calculus'),
-(7, 'Differential Equation'),
-(72, 'Digital Communications '),
-(9, 'Economy'),
-(60, 'Electrical Elements'),
-(62, 'Electricity and Magnetism'),
-(57, 'Electronics'),
-(43, 'Engineering Econmy'),
-(59, 'Engineering Economy'),
-(73, 'Fiber Oprics'),
-(82, 'Fluid Machinery'),
-(42, 'Fluid Mechanics'),
-(17, 'Geotech 2'),
-(18, 'Geotech 3'),
-(19, 'Geotech 4'),
-(77, 'Heat Transfer'),
-(41, 'Hydraulics'),
-(13, 'Hydraulics 1'),
-(14, 'Hydraulics 2'),
-(15, 'Hydraulics 3'),
-(16, 'hydraulics 4'),
-(54, 'Illumination'),
-(66, 'Industrial Electronics and Power Supply'),
-(87, 'Industrial Plant Engineering'),
-(85, 'Industrial Process'),
-(6, 'Integral Calculus'),
-(45, 'Laws and Ethics'),
-(65, 'Logic Circuits'),
-(79, 'Machine Elements'),
-(80, 'Machine Shop Theory'),
-(81, 'Material Science Engineering'),
-(38, 'Mechanics'),
-(20, 'Mechanics 1'),
-(21, 'Mechanics 2'),
-(22, 'Mechanics 3'),
-(63, 'Microelectronics'),
-(70, 'Microwave Communications'),
-(44, 'Philippine Electrical Code'),
-(37, 'Physics'),
-(2, 'Plane and Spherical Geometry'),
-(3, 'Plane and Spherical Trigo'),
-(56, 'Power Plant'),
-(88, 'Power Plant Engineering'),
-(53, 'Power Systems'),
-(8, 'Probability'),
-(35, 'Probability and Statistics'),
-(67, 'Radiowave Communications'),
-(31, 'RCD 1'),
-(32, 'RCD 2'),
-(33, 'RCD 3'),
-(84, 'Refrigeration, Heating, Ventilation and Airconditioning'),
-(86, 'Safety Engineering and Intrumentation'),
-(64, 'Semiconductor Devices'),
-(75, 'Solid Mensuration'),
-(76, 'Statics and Dynamics'),
-(28, 'Steel 1'),
-(29, 'Steel 2'),
-(30, 'Steel 3'),
-(23, 'Strength 1'),
-(24, 'Strength 2'),
-(39, 'Strength of Materials'),
-(10, 'Survey 1'),
-(11, 'Survey 2'),
-(12, 'Survey 3'),
-(25, 'Theory 1'),
-(26, 'Theory 2'),
-(27, 'Theory 3'),
-(40, 'Thermodynamics'),
-(55, 'Transient'),
-(68, 'Transmission Lines and Waveguides'),
-(74, 'Trigonometry'),
-(58, 'Vector Analysis and Electromagnets'),
-(89, 'Vibration Engineering');
+INSERT INTO `topic_list` (`topic_list_id`, `topic_list_name`, `topic_list_is_active`) VALUES
+(1, 'Algebra', 1),
+(2, 'Plane and Spherical Geometry', 1),
+(3, 'Plane and Spherical Trigo', 1),
+(4, 'Analytic Geometry', 1),
+(5, 'Differential Calculus', 1),
+(6, 'Integral Calculus', 1),
+(7, 'Differential Equation', 1),
+(8, 'Probability', 1),
+(9, 'Economy', 1),
+(10, 'Survey 1', 1),
+(11, 'Survey 2', 1),
+(12, 'Survey 3', 1),
+(13, 'Hydraulics 1', 1),
+(14, 'Hydraulics 2', 1),
+(15, 'Hydraulics 3', 1),
+(16, 'hydraulics 4', 1),
+(17, 'Geotech 2', 1),
+(18, 'Geotech 3', 1),
+(19, 'Geotech 4', 1),
+(20, 'Mechanics 1', 1),
+(21, 'Mechanics 2', 1),
+(22, 'Mechanics 3', 1),
+(23, 'Strength 1', 1),
+(24, 'Strength 2', 1),
+(25, 'Theory 1', 1),
+(26, 'Theory 2', 1),
+(27, 'Theory 3', 1),
+(28, 'Steel 1', 1),
+(29, 'Steel 2', 1),
+(30, 'Steel 3', 1),
+(31, 'RCD 1', 1),
+(32, 'RCD 2', 1),
+(33, 'RCD 3', 1),
+(34, 'Advance Math', 1),
+(35, 'Probability and Statistics', 1),
+(36, 'Chemistry', 1),
+(37, 'Physics', 1),
+(38, 'Mechanics', 1),
+(39, 'Strength of Materials', 1),
+(40, 'Thermodynamics', 1),
+(41, 'Hydraulics', 1),
+(42, 'Fluid Mechanics', 1),
+(43, 'Engineering Econmy', 1),
+(44, 'Philippine Electrical Code', 1),
+(45, 'Laws and Ethics', 1),
+(46, 'Computer Fundamentals', 1),
+(47, 'Circuits 1', 1),
+(48, 'Circuits 2', 1),
+(49, 'Circuits 3', 1),
+(50, 'DC Machine', 1),
+(51, 'AC Machinces', 1),
+(52, 'Aparatus and Equipment', 1),
+(53, 'Power Systems', 1),
+(54, 'Illumination', 1),
+(55, 'Transient', 1),
+(56, 'Power Plant', 1),
+(57, 'Electronics', 1),
+(58, 'Vector Analysis and Electromagnets', 1),
+(59, 'Engineering Economy', 1),
+(60, 'Electrical Elements', 1),
+(61, 'DC and AC circuits', 1),
+(62, 'Electricity and Magnetism', 1),
+(63, 'Microelectronics', 1),
+(64, 'Semiconductor Devices', 1),
+(65, 'Logic Circuits', 1),
+(66, 'Industrial Electronics and Power Supply', 1),
+(67, 'Radiowave Communications', 1),
+(68, 'Transmission Lines and Waveguides', 1),
+(69, 'Antenna', 1),
+(70, 'Microwave Communications', 1),
+(71, 'analog Modulation', 1),
+(72, 'Digital Communications ', 1),
+(73, 'Fiber Oprics', 1),
+(74, 'Trigonometry', 1),
+(75, 'Solid Mensuration', 1),
+(76, 'Statics and Dynamics', 1),
+(77, 'Heat Transfer', 1),
+(78, 'Combustion Engineering', 1),
+(79, 'Machine Elements', 1),
+(80, 'Machine Shop Theory', 1),
+(81, 'Material Science Engineering', 1),
+(82, 'Fluid Machinery', 1),
+(83, 'Combustion Engine', 1),
+(84, 'Refrigeration, Heating, Ventilation and Airconditioning', 1),
+(85, 'Industrial Process', 1),
+(86, 'Safety Engineering and Intrumentation', 1),
+(87, 'Industrial Plant Engineering', 1),
+(88, 'Power Plant Engineering', 1),
+(89, 'Vibration Engineering', 1);
 
 -- --------------------------------------------------------
 
@@ -1157,6 +1203,12 @@ ALTER TABLE `course_modules`
   ADD KEY `fk_course_modules_subject1_idx` (`subject_id`);
 
 --
+-- Indexes for table `data_scores`
+--
+ALTER TABLE `data_scores`
+  ADD PRIMARY KEY (`data_scores_id`);
+
+--
 -- Indexes for table `enrollment`
 --
 ALTER TABLE `enrollment`
@@ -1241,6 +1293,24 @@ ALTER TABLE `schedule`
 ALTER TABLE `student`
   ADD PRIMARY KEY (`student_id`),
   ADD KEY `fk_student_offering1_idx` (`offering_id`);
+
+--
+-- Indexes for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  ADD PRIMARY KEY (`student_answer_id`),
+  ADD KEY `fk_student_answer_courseware_question1_idx` (`courseware_question_id`),
+  ADD KEY `fk_student_answer_choice1_idx` (`choice_id`),
+  ADD KEY `fk_student_answer_student1_idx` (`student_id`);
+
+--
+-- Indexes for table `student_scores`
+--
+ALTER TABLE `student_scores`
+  ADD PRIMARY KEY (`student_scores_id`),
+  ADD KEY `fk_student_scores_data_scores1_idx` (`data_scores_id`),
+  ADD KEY `fk_student_scores_topic1_idx` (`topic_topic_id`),
+  ADD KEY `fk_student_scores_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `subject`
@@ -1352,6 +1422,12 @@ ALTER TABLE `course_modules`
   MODIFY `courseware_file_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `data_scores`
+--
+ALTER TABLE `data_scores`
+  MODIFY `data_scores_id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `enrollment`
 --
 ALTER TABLE `enrollment`
@@ -1392,6 +1468,18 @@ ALTER TABLE `log_content`
 --
 ALTER TABLE `schedule`
   MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  MODIFY `student_answer_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `student_scores`
+--
+ALTER TABLE `student_scores`
+  MODIFY `student_scores_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `subject`
@@ -1538,6 +1626,22 @@ ALTER TABLE `schedule`
 --
 ALTER TABLE `student`
   ADD CONSTRAINT `fk_student_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  ADD CONSTRAINT `fk_student_answer_choice1` FOREIGN KEY (`choice_id`) REFERENCES `choice` (`choice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_answer_courseware_question1` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_answer_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `student_scores`
+--
+ALTER TABLE `student_scores`
+  ADD CONSTRAINT `fk_student_scores_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_scores_data_scores1` FOREIGN KEY (`data_scores_id`) REFERENCES `data_scores` (`data_scores_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_scores_topic1` FOREIGN KEY (`topic_topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `subject`

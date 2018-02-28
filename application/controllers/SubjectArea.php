@@ -34,7 +34,7 @@ class SubjectArea extends CI_Controller {
             echo "<pre>";
             print_r($result);
 
-            set_cookie("subject_area", $value);
+//            set_cookie("subject_area", $value);
 
             $data = array(
                 "title" => "Subject Area Management",
@@ -48,6 +48,8 @@ class SubjectArea extends CI_Controller {
             $this->load->view('includes/header', $data);
             $this->load->view('subject_area/main');
             $this->load->view('includes/footer');
+        } else {
+            redirect("");
         }
     }
 

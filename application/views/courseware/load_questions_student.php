@@ -13,7 +13,7 @@
 							</span>
 							<blockquote class="bq-primary-green">
 								<!-- QUESTIONS -->
-								<div id="question<?=$value->courseware_question_id?>" class="color-black editor disabled" >
+								<div id="question<?=$value->courseware_question_id?>" data-id="<?=$value->courseware_question_id?>" class="color-black editor disabled question_div" >
 									<span class="color-black">
 										<?=$value->courseware_question_question?>
 									</span>
@@ -30,8 +30,8 @@
 								<?php foreach ($answers as $key => $i_value): ?>
 									<div class="row">
 										<p>
-											<input name="group1" type="radio" id="s_a<?=$i_value->choice_id?>" />
-											<label for="s_a<?=$i_value->choice_id?>" class="color-black"><?=$i_value->choice_choice?></label>
+											<input name="group<?=$value->courseware_question_id?>" type="radio" id="s_a<?=$i_value->choice_id?>" />
+											<label for="s_a<?=$i_value->choice_id?>" data-id="<?=$i_value->choice_id?>" class="color-black"><?=$i_value->choice_choice?></label>
 										</p>
 
 									</div>
