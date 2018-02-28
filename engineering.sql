@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2018 at 06:31 AM
+-- Generation Time: Feb 28, 2018 at 09:54 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -114,7 +114,7 @@ CREATE TABLE `announcement` (
 --
 
 INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
-(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 1, '1,2', 'admin admin admin', 0, 0);
+(1, 'This is an announcement', 'Et nulla magna dolore aute duis dolore ex ex sit ullamco consequat non in id id laborum duis ea aute dolor incididunt do labore nisi anim sed nisi dolor dolore labore ea dolor in incididunt aute esse enim sunt esse sit in laborum aute consequat esse velit consequat cupidatat id voluptate dolor excepteur incididunt anim reprehenderit cillum dolore consequat aute sunt esse minim in excepteur ut culpa pariatur nulla culpa excepteur nisi ut aute aute nulla ad deserunt excepteur amet ex eu ea do enim amet deserunt aliqua pariatur veniam adipisicing ullamco incididunt amet consectetur do amet esse pariatur mollit in qui veniam ex dolore eu id dolore sunt in in aute veniam eiusmod in exercitation mollit fugiat duis minim incididunt commodo veniam sint sit amet anim veniam pariatur ad sunt quis re', 1515589773, 1515589773, 0, '1,2', 'admin admin admin', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -241,7 +241,7 @@ INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_descri
 
 CREATE TABLE `courseware_question` (
   `courseware_question_id` int(20) NOT NULL,
-  `courseware_question_question` varchar(800) NOT NULL,
+  `courseware_question_question` text NOT NULL,
   `courseware_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -581,7 +581,8 @@ INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `userna
 CREATE TABLE `student_answer` (
   `student_answer_id` int(11) NOT NULL,
   `courseware_question_id` int(20) NOT NULL,
-  `choice_id` int(20) NOT NULL
+  `choice_id` int(20) NOT NULL,
+  `student_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1299,7 +1300,8 @@ ALTER TABLE `student`
 ALTER TABLE `student_answer`
   ADD PRIMARY KEY (`student_answer_id`),
   ADD KEY `fk_student_answer_courseware_question1_idx` (`courseware_question_id`),
-  ADD KEY `fk_student_answer_choice1_idx` (`choice_id`);
+  ADD KEY `fk_student_answer_choice1_idx` (`choice_id`),
+  ADD KEY `fk_student_answer_student1_idx` (`student_id`);
 
 --
 -- Indexes for table `student_scores`
@@ -1468,6 +1470,12 @@ ALTER TABLE `schedule`
   MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  MODIFY `student_answer_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `student_scores`
 --
 ALTER TABLE `student_scores`
@@ -1624,7 +1632,8 @@ ALTER TABLE `student`
 --
 ALTER TABLE `student_answer`
   ADD CONSTRAINT `fk_student_answer_choice1` FOREIGN KEY (`choice_id`) REFERENCES `choice` (`choice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_student_answer_courseware_question1` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_student_answer_courseware_question1` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_answer_student1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `student_scores`

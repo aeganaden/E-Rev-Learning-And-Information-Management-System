@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Course Management</h3>
+            <h3 class="color-black">Course Management <a href="<?= base_url() ?>course/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Course</a></h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
