@@ -392,7 +392,8 @@ function insertAnswer(answer_id,q_id) {
 			q_id: q_id,
 		},
 		success: function(data){
-			if (data === "true") {
+			console.log(data);	
+			if (data!=false) {
 				$("#question-section").html(data);
 			}else{
 				return false;
