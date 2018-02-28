@@ -57,6 +57,7 @@ class Coursewares extends CI_Controller {
 		}
 
 	}
+
 	public function countQuestion()
 	{
 		$courseware_id = $this->input->post("cw_id");
@@ -67,6 +68,30 @@ class Coursewares extends CI_Controller {
 			echo json_encode("No Questions Yet");
 		}
 
+	}
+
+	public function fetchQuestionJson()
+	{
+		$cw_id = $this->input->post("cw_id");
+		if ($data = $this->Crud_model->fetch("courseware_question", array("courseware_id"=> $cw_id,"courseware_question_status"=>1))) {
+			echo json_encode($data);
+		}else{
+			echo json_encode(false);
+		}
+	}
+
+	public function insertAnswer()
+	{
+		$answer = $this->input->post("answer");
+		$q_id = $this->input->post("q_id");
+		$data = {
+			"courseware_question_id"=>$q_id,
+			"choice_id"=>$answer,
+		}
+		if ($this->Crud_model->insert("student_answer",$data)) {
+			# code...
+		}
+		
 	}
 
 }

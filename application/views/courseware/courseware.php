@@ -143,7 +143,7 @@
 	</div>
 
 	<div class="fixed-action-btn">
-		<a class="btn-floating btn-large bg-primary-green">
+		<a class="btn-floating btn-large bg-primary-green" id="btn_submit_answers">
 			<i class="large material-icons tooltipped" data-tooltip="Submit Answers" data-position="left">navigation</i>
 		</a>
 	</div>
@@ -174,85 +174,137 @@
 
 		jQuery(".sub_name").fitText();
 
-			// LAUNCH TOPICS
-			$(document).on("click touchend", ".btn_launch_topics, #div-bread-topics", function () {
-				var chk = false;
-				if (o_ex == true) {
-					var answer = confirm('Leave the exam? This exam will not be recorded if you leave.');
-					if (answer) {  
-						timer.reset();
-					} else { 
-						chk = true;
+		// Submit Answer
+		$("#btn_submit_answers").click(function() {
+
+			var cw_id = $(this).data('id');
+
+			$chkr_answer = true;
+			$q_id_error = [];
+
+			$.ajax({
+				url: '<?=base_url()?>Coursewares/fetchQuestionJson ',
+				type: 'post',
+				dataType: 'json',
+				data: {cw_id: cw_id},
+				success: function(data){
+
+					for(var i = 0; i< data.length; i++){
+						$q_id = data[i].courseware_question_id;
+						$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
+						if ($ans_id === undefined) {
+							$chkr_answer = true;
+							$q_id_error.push((i+1));
+						}
+
 					}
-				}
 
-				// console.log(chk);	
-
-				if (chk == false) {
-					$id = $(this).data("id");
-					if ($("#div-bread-topics").length==0) {
-						$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
-						$("#div-bread-topics").attr('data-id', $id);
-					} 
-					if ($('#subject-section').css('display') == "block") {
-						$('#subject-section').animateCss('zoomOut', function() {
-							$("#subject-section").css('display', 'none');
-							$('#topics-section').addClass('animated zoomIn');
-							$("#topics-section").css('display', 'block');
+					if ($chkr_answer == true) {
+						$.each($q_id_error, function( index, value ) {
+							var $toastContent = $('<span>You still have question unanswered - Question '+value+'</span>');
+							Materialize.toast($toastContent, 2000);
 						});
+						
 					}
 
-					if ($('#question-section').css('display') == "block") {
-						$("#div-bread-question").remove();
+					if ($chkr_answer == false) {
+						for(var i = 0; i< data.length; i++){ 
+							$q_id = data[i].courseware_question_id;
+							$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
 
-						$('#question-section').animateCss('zoomOut', function() {
-							$("#question-section").css('display', 'none');
-							$('#topics-section').addClass('animated zoomIn');
-							$("#topics-section").css('display', 'block');
-						});
+							insertAnswer($ans_id,$q_id);
+
+						}
 					}
+					
+
 				}
-				fetchTopics($id);		
-
-
-
-
-
 			});
 
 
+		});
 
-			$("#btn_launch_subjects").click(function(event) {
 
-				$("#div-bread-topics").remove();
-				if ($("#subject-section").css('display')=="none") {
-					$('#topics-section').animateCss('zoomOut', function() {
-						$("#topics-section").css('display', 'none');
-						$('#subject-section').addClass('animated zoomIn');
-						$("#subject-section").css('display', 'block');
+
+
+		// LAUNCH TOPICS
+		$(document).on("click touchend", ".btn_launch_topics, #div-bread-topics", function () {
+			var chk = false;
+			if (o_ex == true) {
+				var answer = confirm('Leave the exam? This exam will not be recorded if you leave.');
+				if (answer) {  
+					timer.reset();
+				} else { 
+					chk = true;
+				}
+			}
+
+			if (chk == false) {
+				$id = $(this).data("id");
+				if ($("#div-bread-topics").length==0) {
+					$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
+					$("#div-bread-topics").attr('data-id', $id);
+				} 
+				if ($('#subject-section').css('display') == "block") {
+					$('#subject-section').animateCss('zoomOut', function() {
+						$("#subject-section").css('display', 'none');
+						$('#topics-section').addClass('animated zoomIn');
+						$("#topics-section").css('display', 'block');
 					});
 				}
 
-			});
+				if ($('#question-section').css('display') == "block") {
+					$("#div-bread-question").remove();
 
-			// LAUNCH QUESTION
-			$(document).on("click", ".btn_cw_question", function () {
-				$id = $(this).data('cwid');
+					$('#question-section').animateCss('zoomOut', function() {
+						$("#question-section").css('display', 'none');
+						$('#topics-section').addClass('animated zoomIn');
+						$("#topics-section").css('display', 'block');
+					});
+				}
+			}
+			fetchTopics($id);		
 
 
-				swal({
-					title: "Take this exam?",
-					text: "You are about the take this exam. This exam will be used to assess your grades and configure your skills reports.",
-					icon: "info",
-					buttons: {
-						cancel: true,
-						confirm: "Continue",
-					},
-				})
-				.then((takeExam) => {
-					if (takeExam) { 
 
-						o_ex = true;
+
+
+		});
+
+
+
+		$("#btn_launch_subjects").click(function(event) {
+
+			$("#div-bread-topics").remove();
+			if ($("#subject-section").css('display')=="none") {
+				$('#topics-section').animateCss('zoomOut', function() {
+					$("#topics-section").css('display', 'none');
+					$('#subject-section').addClass('animated zoomIn');
+					$("#subject-section").css('display', 'block');
+				});
+			}
+
+		});
+
+
+		// LAUNCH QUESTION
+		$(document).on("click", ".btn_cw_question", function () {
+			$id = $(this).data('cwid');
+
+
+			swal({
+				title: "Take this exam?",
+				text: "You are about the take this exam. This exam will be used to assess your grades and configure your skills reports.",
+				icon: "info",
+				buttons: {
+					cancel: true,
+					confirm: "Continue",
+				},
+			})
+			.then((takeExam) => {
+				if (takeExam) { 
+
+					o_ex = true;
 						// add data cwid to q_id_num
 						$("#q_id_num").data('cwid', $id);
 
@@ -276,43 +328,62 @@
 				});
 
 
-			});
-
-			/*==========================================
-			=            jQuery Animate Css            =
-			==========================================*/
-			
-			$.fn.extend({
-				animateCss: function(animationName, callback) {
-					var animationEnd = (function(el) {
-						var animations = {
-							animation: 'animationend',
-							OAnimation: 'oAnimationEnd',
-							MozAnimation: 'mozAnimationEnd',
-							WebkitAnimation: 'webkitAnimationEnd',
-						};
-
-						for (var t in animations) {
-							if (el.style[t] !== undefined) {
-								return animations[t];
-							}
-						}
-					})(document.createElement('div'));
-
-					this.addClass('animated ' + animationName).one(animationEnd, function() {
-						$(this).removeClass('animated ' + animationName);
-
-						if (typeof callback === 'function') callback();
-					});
-
-					return this;
-				},
-			});
-			
-			/*=====  End of jQuery Animate Css  ======*/
-			
-
 		});
+		/*==========================================
+		=            jQuery Animate Css            =
+		==========================================*/
+
+		$.fn.extend({
+			animateCss: function(animationName, callback) {
+				var animationEnd = (function(el) {
+					var animations = {
+						animation: 'animationend',
+						OAnimation: 'oAnimationEnd',
+						MozAnimation: 'mozAnimationEnd',
+						WebkitAnimation: 'webkitAnimationEnd',
+					};
+
+					for (var t in animations) {
+						if (el.style[t] !== undefined) {
+							return animations[t];
+						}
+					}
+				})(document.createElement('div'));
+
+				this.addClass('animated ' + animationName).one(animationEnd, function() {
+					$(this).removeClass('animated ' + animationName);
+
+					if (typeof callback === 'function') callback();
+				});
+
+				return this;
+			},
+		});
+
+		/*=====  End of jQuery Animate Css  ======*/
+
+
+	});
+
+
+function insertAnswer(answer_id,q_id) {
+	$.ajax({
+		url: '<?=base_url()?>Coursewares/insertAnswer',
+		type: 'post',
+		dataType: 'post',
+		data: {
+			answer: answer_id,
+			q_id: q_id,
+		},
+		success: function(data){
+			if (data === "true") {
+				return true;
+			}else{
+				return false;
+			}
+		}
+	});
+}
 
 
 
@@ -413,6 +484,7 @@ function fetchQuestion(id) {
 			},
 			success: function(data){ 
 
+				$("#btn_submit_answers").attr('data-id', id);
 				timer.start({precision: 'seconds'});
 				timer.addEventListener('secondsUpdated', function (e) {   
 
@@ -449,4 +521,8 @@ function fetchQuestion(id) {
 			}
 		});
 	}
+
+
+
+
 </script>
