@@ -10,6 +10,7 @@ class Course extends CI_Controller {
         $this->load->model('Crud_model');
         $this->load->library('form_validation');
         $this->load->helper(array('form', 'url'));
+        $this->load->helper('cookie');
     }
 
     public function index() {
@@ -35,7 +36,8 @@ class Course extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "",
-                    "result" => $result
+                    "result" => $result,
+                    "insert_success" => get_cookie('course_insertion', false)
                 );
                 $this->load->view('includes/header', $data);
                 $this->load->view('course/main');
@@ -109,30 +111,12 @@ class Course extends CI_Controller {
         }
     }
 
-    //
-//    public function index() {
-//        $this->load->helper(array('form', 'url'));
-//
-//        $this->load->library('form_validation');
-//
-//        $this->form_validation->set_rules('username', "Username", "required|alpha_numeric|min_length[5]|is_unique[accounts.username]");
-//        $this->form_validation->set_rules('password', "Password Mo to", "required");
-//        $this->form_validation->set_rules('passconf', "Confirm Password", "required|matches[password]");
-//        $this->form_validation->set_rules('email', "Email mo to", "required|valid_email");
-//        $this->form_validation->set_message('alpha_numeric', "{field} eto na yung bagong message ni alplanumeric!");
-//
-//        if ($this->form_validation->run() == FALSE) {
-//            $this->load->view('form/myform');
-//        } else {
-//            $this->load->view('form/formsuccess');
-//        }
-//    }
-
     public function add() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
 
-
+            $this->form_validation->set_rules('course_code', "Course Code", "required|alpha_numeric|min_length[3]|max_length[20]");
+            $this->form_validation->set_rules('course_title', "Course Title", "required|alpha_numeric|min_length[3]|max_length[100]");
 
             $data = array(
                 "title" => "Course Management",
@@ -143,7 +127,12 @@ class Course extends CI_Controller {
                 "s_f" => ""
             );
             $this->load->view('includes/header', $data);
-            $this->load->view('course/add');
+            if ($this->form_validation->run() == FALSE) {       //wrong
+                $this->load->view('course/add');
+            } else {
+                echo '<script>alert("Successful insertion");</script>';
+                redirect("Course");
+            }
             $this->load->view('includes/footer');
         } else {
             redirect();
