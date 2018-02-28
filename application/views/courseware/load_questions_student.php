@@ -26,7 +26,7 @@
 							$answers = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$value->courseware_question_id));
 							?>
 							<?php if ($answers): ?>
-								<h5 class="color-black">Answers</h5>
+								<h5 class="color-black">Choices</h5>
 								<?php foreach ($answers as $key => $i_value): ?>
 									<div class="row">
 										<p>

@@ -275,10 +275,10 @@ class Coursewares_fic extends CI_Controller {
 	public function fetchLastQuestion()
 	{
 		$data = $this->Crud_model->fetch_last("courseware_question","courseware_question_id");
-		$data = $data->courseware_question_id;
-		$data = (int)$data;
-
+		
 		if ($data) {
+			$data = $data->courseware_question_id;
+			$data = (int)$data;
 			$data+=1;
 			echo json_encode($data);
 		}else{
