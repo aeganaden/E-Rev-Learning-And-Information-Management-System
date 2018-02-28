@@ -127,56 +127,91 @@
 ======================================================-->
 
 <div class="row container" id="question-section" style="display: none;">
-	<div class="col s1"></div>
-	<div class="col s11" id="div-q-sec">
+	<div class="col s1">
+	</div>
+	<div class="col s10" id="div-q-sec">
 		
 
-	</div> 
-</div>
+	</div>
+	<div class="col s1" id="timer_div">
+		TIME
+		<p>
+			<span class="values"></span>
+		</p>
+	</div>
+</div> 
+
+
 
 <!--====  End of DIV COURSEWARE QUESTION SECTION  ====-->
 
 
 
 <script type="text/javascript">
+	var o_ex = false;
+
+	var timer = new Timer();
 	jQuery(document).ready(function($) {
+
+		
+		window.onbeforeunload = function() { 
+			if (o_ex==true) {
+				return 'Leave the exam? This exam will not be recorded if you leave.';
+			}
+		}
+
 		jQuery(".sub_name").fitText();
 
 			// LAUNCH TOPICS
 			$(document).on("click touchend", ".btn_launch_topics, #div-bread-topics", function () {
-			// alert();
-			$id = $(this).data("id");
-			if ($("#div-bread-topics").length==0) {
-				$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
-				$("#div-bread-topics").attr('data-id', $id);
-			}
-			// alert($(this).data("id"));
-			if ($('#subject-section').css('display') == "block") {
-				$('#subject-section').animateCss('zoomOut', function() {
-					$("#subject-section").css('display', 'none');
-					$('#topics-section').addClass('animated zoomIn');
-					$("#topics-section").css('display', 'block');
-				});
-			}
+				var chk = false;
+				if (o_ex == true) {
+					var answer = confirm('Leave the exam? This exam will not be recorded if you leave.');
+					if (answer) {  
+						timer.reset();
+					} else { 
+						chk = true;
+					}
+				}
 
-			if ($('#question-section').css('display') == "block") {
-				$("#div-bread-question").remove();
+				console.log(chk);	
 
-				$('#question-section').animateCss('zoomOut', function() {
-					$("#question-section").css('display', 'none');
-					$('#topics-section').addClass('animated zoomIn');
-					$("#topics-section").css('display', 'block');
-				});
-			}
-			fetchTopics($id);			
+				if (chk == false) {
+					$id = $(this).data("id");
+					if ($("#div-bread-topics").length==0) {
+						$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-topics">Topics</a>');
+						$("#div-bread-topics").attr('data-id', $id);
+					} 
+					if ($('#subject-section').css('display') == "block") {
+						$('#subject-section').animateCss('zoomOut', function() {
+							$("#subject-section").css('display', 'none');
+							$('#topics-section').addClass('animated zoomIn');
+							$("#topics-section").css('display', 'block');
+						});
+					}
+
+					if ($('#question-section').css('display') == "block") {
+						$("#div-bread-question").remove();
+
+						$('#question-section').animateCss('zoomOut', function() {
+							$("#question-section").css('display', 'none');
+							$('#topics-section').addClass('animated zoomIn');
+							$("#topics-section").css('display', 'block');
+						});
+					}
+				}
+				fetchTopics($id);		
 
 
 
-		});
+
+
+			});
 
 
 
 			$("#btn_launch_subjects").click(function(event) {
+
 				$("#div-bread-topics").remove();
 				if ($("#subject-section").css('display')=="none") {
 					$('#topics-section').animateCss('zoomOut', function() {
@@ -204,12 +239,14 @@
 				})
 				.then((takeExam) => {
 					if (takeExam) { 
+
+						o_ex = true;
 						// add data cwid to q_id_num
 						$("#q_id_num").data('cwid', $id);
 
 						if ($("#div-bread-question").length==0) {
 							$("#div-bread").append('<a href="#!" class="breadcrumb"  id="div-bread-question">Courseware Question</a>');
-							$("#div-bread").;
+							// $("#div-bread").;
 							// $("#div-bread-question").attr('data-id', $id);
 						}
 						if ($('#topics-section').css('display') == "block") {
@@ -338,9 +375,11 @@
 					'<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>'+
 					'13 Minutes, 25 Seconds</div>'+
 					'</div>'+
-					'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
+					'<div class="col s6" id="btn_cw_question'+i_data[j].courseware_id+'"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
 					'</div>'+
 					'</div>';
+
+					countQuestion(i_data[j].courseware_id);		
 				}
 				$("#courseware_"+topic_id).html(courseware_content);
 				$('.tooltipped').tooltip({delay: 50});
@@ -351,7 +390,7 @@
 
 
 	function fetchQuestion(id) {
-		console.log(id);	
+		// console.log(id);	
 		$.ajax({
 			url: '<?=base_url()?>Coursewares/fetchQuestions ',
 			type: 'post',
@@ -360,13 +399,40 @@
 			beforeSend: function() {
 				$("#preloader").css('display', 'block');
 			},
-			success: function(data){
+			success: function(data){ 
+				timer.start({precision: 'seconds'});
+				timer.addEventListener('secondsUpdated', function (e) {   
+
+					$('#timer_div .values').html(timer.getTimeValues().toString());
+				});   
 				$("#preloader").css('display', 'none');
 				$("#div-q-sec").html(data);
 				$("#btn_add_q").attr("data-cwid",id)
 			},
 			error: function(){
 				console.log("error");	
+			}
+		});
+	}
+
+	function countQuestion(id) {
+		// console.log(id);	
+		$.ajax({
+			url: '<?=base_url()?>Coursewares/countQuestion ',
+			type: 'post',
+			dataType: 'html',
+			data: {cw_id: id},
+			success: function(data){
+				console.log();	
+				if (data!=="true") {
+					$("#btn_cw_question"+id).html(
+						`
+						<i class="material-icons right tooltipped" data-position="left" data-tooltip="No Questions Yet">remove_circle_outline</i>
+						`);
+
+
+					$('.tooltipped').tooltip({delay: 50});
+				}
 			}
 		});
 	}

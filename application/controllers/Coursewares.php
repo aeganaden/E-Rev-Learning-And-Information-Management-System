@@ -57,6 +57,17 @@ class Coursewares extends CI_Controller {
 		}
 
 	}
+	public function countQuestion()
+	{
+		$courseware_id = $this->input->post("cw_id");
+
+		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"=>$courseware_id,"courseware_question_status"=>1))) {
+			echo json_encode(true);
+		}else{
+			echo json_encode("No Questions Yet");
+		}
+
+	}
 
 }
 
