@@ -179,7 +179,7 @@
 
 			var cw_id = $(this).data('id');
 
-			$chkr_answer = true;
+			$chkr_answer = false;
 			$q_id_error = [];
 
 			$.ajax({
@@ -212,7 +212,23 @@
 							$q_id = data[i].courseware_question_id;
 							$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
 
-							insertAnswer($ans_id,$q_id);
+							swal({
+								title: "Submit Exam?",
+								text: "You are about to submit this Exam, are you sure you want to submit?",
+								icon: "info",
+								buttons: {
+									cancel: true,
+									confirm: "Submit",
+								},
+							})
+							.then((submitAnswer) => {
+								if (submitAnswer) { 
+									insertAnswer($ans_id,$q_id);
+								}
+							});
+
+							// console.log();
+							// console.log($var);	 
 
 						}
 					}
@@ -370,14 +386,14 @@ function insertAnswer(answer_id,q_id) {
 	$.ajax({
 		url: '<?=base_url()?>Coursewares/insertAnswer',
 		type: 'post',
-		dataType: 'post',
+		dataType: 'html',
 		data: {
 			answer: answer_id,
 			q_id: q_id,
 		},
 		success: function(data){
 			if (data === "true") {
-				return true;
+				$("#question-section").html(data);
 			}else{
 				return false;
 			}
