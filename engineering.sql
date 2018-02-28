@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2018 at 05:11 AM
+-- Generation Time: Feb 28, 2018 at 06:31 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -221,6 +221,7 @@ CREATE TABLE `courseware` (
   `courseware_description` varchar(800) DEFAULT NULL,
   `courseware_date_added` int(20) NOT NULL,
   `courseware_date_edited` int(20) NOT NULL,
+  `courseware_status` tinyint(1) DEFAULT '1',
   `topic_id` int(20) NOT NULL,
   `grade_assessment_id` int(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -229,8 +230,8 @@ CREATE TABLE `courseware` (
 -- Dumping data for table `courseware`
 --
 
-INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_description`, `courseware_date_added`, `courseware_date_edited`, `topic_id`, `grade_assessment_id`) VALUES
-(1, 'Practical Examination', 'This is a practical examination consists of all mathematical equation starting from the bottom of my heart. Hehe', 1518443372, 1518443372, 2, NULL);
+INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_description`, `courseware_date_added`, `courseware_date_edited`, `courseware_status`, `topic_id`, `grade_assessment_id`) VALUES
+(1, 'Practical Examination', 'This is a practical examination consists of all mathematical equation starting from the bottom of my heart. Hehe', 1518443372, 1518443372, 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -574,6 +575,18 @@ INSERT INTO `student` (`student_id`, `firstname`, `midname`, `lastname`, `userna
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `student_answer`
+--
+
+CREATE TABLE `student_answer` (
+  `student_answer_id` int(11) NOT NULL,
+  `courseware_question_id` int(20) NOT NULL,
+  `choice_id` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `student_scores`
 --
 
@@ -583,9 +596,9 @@ CREATE TABLE `student_scores` (
   `student_scores_upload_num` int(50) NOT NULL,
   `student_scores_score` int(45) NOT NULL,
   `student_scores_stud_num` int(10) NOT NULL,
-  `data_scores_data_scores_id` int(20) NOT NULL,
+  `data_scores_id` int(20) NOT NULL,
   `topic_topic_id` int(20) NOT NULL,
-  `course_course_id` int(20) NOT NULL
+  `course_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -1281,13 +1294,21 @@ ALTER TABLE `student`
   ADD KEY `fk_student_offering1_idx` (`offering_id`);
 
 --
+-- Indexes for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  ADD PRIMARY KEY (`student_answer_id`),
+  ADD KEY `fk_student_answer_courseware_question1_idx` (`courseware_question_id`),
+  ADD KEY `fk_student_answer_choice1_idx` (`choice_id`);
+
+--
 -- Indexes for table `student_scores`
 --
 ALTER TABLE `student_scores`
   ADD PRIMARY KEY (`student_scores_id`),
-  ADD KEY `fk_student_scores_data_scores1_idx` (`data_scores_data_scores_id`),
+  ADD KEY `fk_student_scores_data_scores1_idx` (`data_scores_id`),
   ADD KEY `fk_student_scores_topic1_idx` (`topic_topic_id`),
-  ADD KEY `fk_student_scores_course1_idx` (`course_course_id`);
+  ADD KEY `fk_student_scores_course1_idx` (`course_id`);
 
 --
 -- Indexes for table `subject`
@@ -1599,11 +1620,18 @@ ALTER TABLE `student`
   ADD CONSTRAINT `fk_student_offering1` FOREIGN KEY (`offering_id`) REFERENCES `offering` (`offering_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `student_answer`
+--
+ALTER TABLE `student_answer`
+  ADD CONSTRAINT `fk_student_answer_choice1` FOREIGN KEY (`choice_id`) REFERENCES `choice` (`choice_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_answer_courseware_question1` FOREIGN KEY (`courseware_question_id`) REFERENCES `courseware_question` (`courseware_question_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `student_scores`
 --
 ALTER TABLE `student_scores`
-  ADD CONSTRAINT `fk_student_scores_course1` FOREIGN KEY (`course_course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_student_scores_data_scores1` FOREIGN KEY (`data_scores_data_scores_id`) REFERENCES `data_scores` (`data_scores_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_scores_course1` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_student_scores_data_scores1` FOREIGN KEY (`data_scores_id`) REFERENCES `data_scores` (`data_scores_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_student_scores_topic1` FOREIGN KEY (`topic_topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --

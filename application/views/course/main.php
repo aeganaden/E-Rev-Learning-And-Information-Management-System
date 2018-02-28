@@ -36,7 +36,7 @@
                 <?php foreach ($result as $key => $res): ?>
                     <tr class="bg-color-white">
                         <td><?= $res->course_course_code ?></td>
-                        <td><?= $res->course_title ?></td>
+                        <td><?= $res->course_course_title ?></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn green btn_view">View</a></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn yellow">Edit</a></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red">Delete</a></td>
@@ -51,16 +51,12 @@
         </center>
     <?php endif; ?>
 </div>
-<!--
+
 <script>
     $(document).ready(function () {
         $(".btn_view").click(function () {
             $data = $(this).data('id');
-            $hold = String(<?= $res->course_id_sha ?>);
-            if ("56a192b791" == $hold) {
-                alert("nice");
-            }
-//            alert($data);
+            window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
         });
     });
-</script>-->
+</script>
