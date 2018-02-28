@@ -37,7 +37,7 @@
 	$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 	$offering = $offering[0];
 	$offering_data = $this->Crud_model->fetch("offering", array("offering_department"=>$dep,"course_id"=>$offering->course_id));
- 
+	
 	$count = 1;
 	?>
 	<?php foreach ($offering_data as $key => $value): ?>
@@ -387,6 +387,7 @@ function insertAnswer(answer_id,q_id) {
 		success: function(data){
 			console.log(data);	
 			if (data!=false) {
+				o_ex = false;
 				$("#question-section").html(data);
 			}else{
 				return false;
