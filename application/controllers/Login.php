@@ -30,16 +30,25 @@ class Login extends CI_Controller {
 			"password"=>$this->input->post("password")
 		);
 
-		if ($this->Crud_model->fetch("professor",$where)) {
-			$bool = sha1("professor");
+		if ($data = $this->Crud_model->fetch("professor",$where)) {
+			if ($data[0]->professor_status == 1) {
+				$bool = sha1("professor");
+			}else{
+				$bool = "Account Deactivated - Contact CSO-MIS";
+			}
 		}elseif ($this->Crud_model->fetch("admin",$where)) {
 			$bool = sha1("administrator");
 		}elseif ($this->Crud_model->fetch("student",$where)) {
 			$bool = sha1("student");
-		}elseif ($this->Crud_model->fetch("fic",$where)) {
-			$bool = sha1("fic");
+		}elseif ($data = $this->Crud_model->fetch("fic",$where)) {
+			if ($data[0]->fic_status == 1) {
+				$bool = sha1("fic");
+			}else{
+				$bool = "Account Deactivated - Contact CSO-MIS";
+			}
+
 		}else{
-			$bool = false;
+			$bool = "No Account Found";
 		}
 
 		echo json_encode($bool);
@@ -189,7 +198,7 @@ class Login extends CI_Controller {
         	break;
 
         	case 'ea1462c1fe6251c885dce5002ad73edb0f613628':
-				# student
+				# fic
         	$info = $this->Crud_model->fetch("fic",array("username"=>$this->input->post("username")));
         	$info = $info[0];
         	$userData = array(

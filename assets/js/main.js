@@ -205,11 +205,7 @@ function login_verify() {
 			password: $password
 		},
 		success: function(data){
-			if (data == false) {
-				$("#login-username").addClass('invalid');
-				$("#login-password").addClass('invalid');
-				$("#login-message").css('display', 'block');
-			}else if(data == "68d5fef94c7754840730274cf4959183b4e4ec35"){
+			if(data == "68d5fef94c7754840730274cf4959183b4e4ec35"){
 				$.ajax({
 						// professor
 						url: base_url+"Login/redirect/68d5fef94c7754840730274cf4959183b4e4ec35",
@@ -277,6 +273,11 @@ function login_verify() {
 						}
 
 					});
+			}else{ 
+				$("#login-username").addClass('invalid');
+				$("#login-password").addClass('invalid');
+				$("#login-message").css('display', 'block');
+				$("#login-message").html(data);
 			}
 		},
 		error: function(data){
@@ -294,18 +295,19 @@ function login_verify() {
 ================================*/
 
 function initiateOnClick(){
-	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
-	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
-	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
-	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","div-card-chart","div-card-lf");
-	showReportonClick("card-clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","div-card-chart","div-card-lf");
-	showReportonClick("card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart","div-card-lf");
-	showReportonClick("card-chart","div-card-chart","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-lf");
-	showReportonClick("card-lf","div-card-lf","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart");
+	showReportonClick("card-cosml","div-card-cosml","div-card-ls","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-ls","div-card-ls","div-card-cosml","div-card-lahr","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-lahr","div-card-lahr","div-card-cosml","div-card-ls","div-card-lcl","div-card-clof","div-card-fic","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-lcl","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-fic","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-clof","div-card-clof","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-fic","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-fic","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart","div-card-lf","div-card-mpa");
+	showReportonClick("card-chart","div-card-chart","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-lf","div-card-mpa");
+	showReportonClick("card-lf","div-card-lf","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart","div-card-mpa");
+	showReportonClick("card-mpa","div-card-mpa","div-card-fic","div-card-lcl","div-card-cosml","div-card-ls","div-card-lahr","div-card-clof","div-card-chart","div-card-lf");
 
 }
 
-function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5,div_hide_6,div_hide_7){
+function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4,div_hide_5,div_hide_6,div_hide_7,div_hide_8){
 	$("#"+id).click(function(event) {
 		$("#"+div_id).fadeIn();
 		$("#"+div_id).css("display","block");
@@ -316,6 +318,7 @@ function showReportonClick(id,div_id,div_hide_1,div_hide_2,div_hide_3,div_hide_4
 		$("#"+div_hide_5).css("display","none");
 		$("#"+div_hide_6).css("display","none");
 		$("#"+div_hide_7).css("display","none");
+		$("#"+div_hide_8).css("display","none");
 
 	});
 }

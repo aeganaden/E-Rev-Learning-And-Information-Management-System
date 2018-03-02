@@ -77,6 +77,17 @@
                             </center>
                         </div>
                     </li>
+
+                    <li> 
+                        <div class="collapsible-header bg-primary-green color-white"><i class="material-icons">group</i>Mange Professors' Account</div>
+                        <div class="collapsible-body valign-wrapper">
+                            <p><i>This section provides the Activating ang Deactivating Professors account</i></p>
+                            <center>
+                                <button class="btn bg-primary-green waves-effect valign-wrapper" id="card-mpa" onclick="store(this.id)">Show List</button>
+                            </center>
+                        </div>
+                    </li>
+
                     <li>
                         <div class="collapsible-header bg-primary-green color-white"><i class="material-icons">group</i>Manage FICs Account</div>
                         <div class="collapsible-body"><p><i>This section provides the updating and managing Faculties in Charge account</i></p>
@@ -421,6 +432,56 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Manage Professors Account -->
+            <div class="row" id="div-card-mpa" style="display: none; ">
+                <?php
+                $professor = $this->Crud_model->fetch("professor");
+                ?>
+                <blockquote class="color-primary-green">
+                    <h2>Professors</h2>
+                </blockquote>
+                <table class="data-table">
+                    <thead>
+                        <th>ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody >
+                        <?php foreach ($professor as $key => $value): ?>
+                            <?php
+                            $status = $value->professor_status == 1 ? "Active" : "Not Active";
+                            $status_color = $value->professor_status == 1 ? "color-green" : "color-red";
+                            $status_chk_prof = $value->professor_status == 1 ? "checked" : "color-red";
+                            ?>
+                            <tr class="bg-color-white">
+                                <td><?= $value->professor_id ?></td>
+                                <td><?= $value->lastname ?></td>
+                                <td><?= $value->firstname ?></td>
+                                <td><?= $value->midname ?></td>
+                                <td><?= $value->professor_department ?></td>
+                                <td class="statProf<?= $value->professor_id ?> <?= $status_color ?>"><?= $status ?></td>
+                                <td>
+                                    <div class="switch">
+                                        <label>
+                                            Deactivated
+                                            <input <?= $status_chk_prof ?> type="checkbox" data-id="<?= $value->professor_id ?>"  class="chk_prof_status">
+                                            <span class="lever" ></span>
+                                            Activated
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+            </div>
+
+
         </div>
     </div>
 
@@ -645,7 +706,37 @@ $(".btn_mdl_feedback").click(function (event) {
                 }
             });
         });
-        $(".btn_modal_com").click(function (event) {
+         // oncheck prof status
+         $(".chk_prof_status").change(function (event) {
+            var value = $(this).prop("checked") ? 1 : 0;
+            var str_val = $(this).prop("checked") ? "Active" : "Not Active";
+            var id = $(this).data('id');
+            // alert(value);
+            $.ajax({
+                url: '<?= base_url() ?>Admin/updateStatusProf',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    id: id,
+                    val: value
+                },
+                success: function (data) {
+                    $(".statProf" + id).html(str_val);
+                    if (value == 0) {
+                        $(".statProf" + id).removeClass('color-green');
+                        $(".statProf" + id).addClass('color-red');
+                    } else {
+                        $(".statProf" + id).removeClass('color-red');
+                        $(".statProf" + id).addClass('color-green');
+                    }
+
+                }
+            });
+        });
+
+
+
+         $(".btn_modal_com").click(function (event) {
             $("#btn_modal_com_update").attr("data-id", $(this).attr("data-id"));
             $.ajax({
                 url: '<?= base_url() ?>Admin/fetchOffering ',
@@ -661,7 +752,7 @@ $(".btn_mdl_feedback").click(function (event) {
                 }
             });
         });
-        $("#btn_modal_com_update").click(function (event) {
+         $("#btn_modal_com_update").click(function (event) {
             $.ajax({
                 url: '<?= base_url() ?>Admin/updateOffering ',
                 type: 'post',
@@ -683,7 +774,7 @@ $(".btn_mdl_feedback").click(function (event) {
                 }
             });
         });
-        $(".btn_delete_com").click(function (event) {
+         $(".btn_delete_com").click(function (event) {
 
             swal({
                 title: "Are you sure?",
@@ -715,7 +806,7 @@ $(".btn_mdl_feedback").click(function (event) {
                 }
             });
         });
-    });
+     });
 function shorten_text(text, id) {
     var ret = text;
     if (ret.length > 20) {

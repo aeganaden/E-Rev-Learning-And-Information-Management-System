@@ -542,6 +542,14 @@ class Admin extends CI_Controller {
         echo json_encode("true");
       }
     }
+    // prof
+    public function updateStatusProf() {
+      $id = $this->input->post("id");
+      $val = $this->input->post("val");
+      if ($this->Crud_model->update("professor", array("professor_status" => $val), array("professor_id" => $id))) {
+        echo json_encode("true");
+      }
+    }
 
     public function more_feedback()
     {
