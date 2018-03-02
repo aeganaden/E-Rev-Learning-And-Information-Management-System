@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set("Asia/Manila");
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -197,7 +198,7 @@ class Feedback extends CI_Controller {
                     $this->load->view('feedback/fic_view2', $data);
                 }
             } else {
-                redirect("feedback");
+                redirect("Feedback");
             }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") { //show to prof
             $info = $this->session->userdata('userInfo');
@@ -301,7 +302,7 @@ class Feedback extends CI_Controller {
                     $this->load->view('feedback/prof_view', $data);
                 }
             } else {
-                redirect("feedback");
+                redirect("Feedback");
             }
         } else {
             redirect("");
@@ -349,7 +350,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -426,13 +427,11 @@ class Feedback extends CI_Controller {
             $this->load->view('includes/footer');
 //
         } else {
-            redirect("home");
+            redirect("Home");
         }
     }
 
-
-    public function activateFeedback()
-    {
+    public function activateFeedback() {
 
         $info = $this->session->userdata('userInfo');
         $ident = $info['identifier'];
@@ -441,24 +440,24 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'ECE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
         $data = array(
-            "title"=> "Feedback - Learning Management System | FEU - Institute of Techonology",
+            "title" => "Feedback - Learning Management System | FEU - Institute of Techonology",
             "info" => $info,
             "program" => $program,
             "s_h" => "selected-nav",
@@ -466,27 +465,25 @@ class Feedback extends CI_Controller {
             "s_f" => "",
             "s_c" => ""
         );
-        $this->load->view('includes/header',$data);   
-        $this->load->view('feedback/feedback_prof_activation');   
-        $this->load->view('includes/footer');   
+        $this->load->view('includes/header', $data);
+        $this->load->view('feedback/feedback_prof_activation');
+        $this->load->view('includes/footer');
     }
 
-    public function credentialChecking()
-    {
+    public function credentialChecking() {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
 
         $data = array(
-            "username"=>$username,
-            "password"=>$password,
+            "username" => $username,
+            "password" => $password,
         );
 
-        if ($this->Crud_model->fetch("professor",$data)) {
+        if ($this->Crud_model->fetch("professor", $data)) {
             echo json_encode(true);
-        }else{
+        } else {
             echo json_encode("No account found");
         }
-
     }
 
 }
