@@ -19,7 +19,7 @@ class Feedback extends CI_Controller {
             $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
             $feedback_status = $dept_temp[0]->professor_feedback_active;
             $data = array(
-                'title' => "Feedback",
+                'title' => "Feedback - Learning Management System | FEU - Institute of Techonology",
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
