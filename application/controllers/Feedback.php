@@ -19,7 +19,7 @@ class Feedback extends CI_Controller {
             $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
             $feedback_status = $dept_temp[0]->professor_feedback_active;
             $data = array(
-                'title' => "Feedback",
+                'title' => "Feedback - Learning Management System | FEU - Institute of Techonology",
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
@@ -428,6 +428,65 @@ class Feedback extends CI_Controller {
         } else {
             redirect("home");
         }
+    }
+
+
+    public function activateFeedback()
+    {
+
+        $info = $this->session->userdata('userInfo');
+        $ident = $info['identifier'];
+        $ident.="_department";
+        $program = 0;
+
+        switch ($info['user']->$ident) {
+            case 'CE':
+            $program = 1;
+            break;
+            case 'ECE':
+            $program = 2;
+            break;
+            case 'EE':
+            $program = 3;
+            break;
+            case 'ME':
+            $program = 4;
+            break;
+
+            default:
+            break;
+        }
+
+        $data = array(
+            "title"=> "Feedback - Learning Management System | FEU - Institute of Techonology",
+            "info" => $info,
+            "program" => $program,
+            "s_h" => "selected-nav",
+            "s_a" => "",
+            "s_f" => "",
+            "s_c" => ""
+        );
+        $this->load->view('includes/header',$data);   
+        $this->load->view('feedback/feedback_prof_activation');   
+        $this->load->view('includes/footer');   
+    }
+
+    public function credentialChecking()
+    {
+        $username = $this->input->post('username');
+        $password = $this->input->post('password');
+
+        $data = array(
+            "username"=>$username,
+            "password"=>$password,
+        );
+
+        if ($this->Crud_model->fetch("professor",$data)) {
+            echo json_encode(true);
+        }else{
+            echo json_encode("No account found");
+        }
+
     }
 
 }
