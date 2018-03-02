@@ -489,4 +489,30 @@ class Feedback extends CI_Controller {
 
     }
 
+    public function check_status_feedback()
+    {
+        $prof_id = $this->input->post("prof_id");
+        $data = $this->Crud_model->fetch("professor",array("professor_id"=>$prof_id));
+        $data = $data[0];
+        if ($data) {
+            echo json_encode($data->professor_feedback_active);
+        }
+
+    }
+
+    public function update_status_feedback()
+    {
+      $prof_id = $this->input->post("prof_id");
+      $value = $this->input->post("value");
+      $data = array(
+        "professor_feedback_active"=>$value,
+    );
+
+      if ($this->Crud_model->update("professor",$data,array("professor_id"=>$prof_id))) {
+          echo json_encode(true);
+      }else{
+        echo json_encode("Error Updating Feedback Module Status");
+    }
+}
+
 }

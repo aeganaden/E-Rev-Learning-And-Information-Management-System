@@ -113,6 +113,14 @@ a{
 	-webkit-animation-duration: 0.38s;
 	-webkit-animation-delay: 0s;
 }	
+#div_activation {
+	-webkit-animation-duration: 0.38s;
+	-webkit-animation-delay: 0s;
+}	
+#div_verify {
+	-webkit-animation-duration: 0.38s;
+	-webkit-animation-delay: 0s;
+}	
 
 .breadcrumb:before {
 	color: #007A33;
