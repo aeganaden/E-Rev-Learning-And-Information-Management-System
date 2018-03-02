@@ -110,7 +110,7 @@ switch ($info['user']->$ident) {
     <?php endif ?>
     <?php if ($info['identifier'] != "professor"): ?>
         <li class="<?= $s_f ?>">
-            <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
+            <a href="<?= base_url() ?>Feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
 
         </li>
     <?php endif ?>
@@ -127,8 +127,8 @@ switch ($info['user']->$ident) {
                 <a class="collapsible-header">Feedback<i class="material-icons" id="btn_click_feed_i"  >keyboard_arrow_right</i></a>
                 <div class="collapsible-body bg-color-white">
                   <ul>
-                    <li><a href="<?= base_url() ?>feedback"><i class="material-icons">visibility</i>View Feedback</a></li>
-                    <li><a href="#!"><i class="material-icons">hdr_strong</i>Toggle Feedback Submission</a></li> 
+                    <li><a href="<?= base_url() ?>Feedback"><i class="material-icons">visibility</i>View Feedback</a></li>
+                    <li><a href="<?= base_url() ?>Feedback/activateFeedback"><i class="material-icons">hdr_strong</i>Toggle Feedback Submission</a></li> 
                 </ul>
             </div>
         </li>
