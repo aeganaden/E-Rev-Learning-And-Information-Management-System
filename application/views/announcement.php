@@ -44,7 +44,7 @@
 			</div>
 			<div class="row">
 				<p><b>End Date</b></p>
-				<input name="end_time" type="text" class="datepicker">
+				<input name="end_time" type="text" class="datepicker" id="date_pick_ann">
 			</div>
 			<button id="btn_add_ann" class="btn bg-primary-green waves-effect right">Post</button>
 		</form>
@@ -248,11 +248,16 @@
 
 			$("#btn_add_ann").click(function(event) {
 				checked = $("input[type=checkbox]:checked").length;
-
+				$date = $("#date_pick_ann").val();
 				if(!checked) {
 					alert("You must check at least one checkbox.");
 					return false;
+				}else if (!$date){
+					alert("Announcement deadline is required");
+					return false;
 				}
+
+
 			});
 			$('form').one('submit', function(e) {
 				e.preventDefault();

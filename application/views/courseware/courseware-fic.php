@@ -13,7 +13,7 @@
 	<nav  style="background-color: transparent; box-shadow: none;">
 		<div class="nav-wrapper">
 			<div class="col s12" id="div-bread">
-				<a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subjects</a>
+				<a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subject Area</a>
 			</div>
 		</div>
 	</nav>

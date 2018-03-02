@@ -34,12 +34,37 @@
             <?php foreach ($announcements as $key => $value): ?>
               <?php
               $audience = explode(",", $value->announcement_audience);
+              $str_aud = '';
               ?>
               <?php if (in_array($program, $audience)): ?>
                 <div class="card bg-primary-green">
                   <div class="card-content white-text">
-                    <span class="card-title" style="text-transform: capitalize;"><?= $value->announcement_title ?></span>
-                    <p style="font-size: 80%" class="color-primary-yellow">Shown Until <?= date("M d, Y", $value->announcement_end_datetime) ?></p>
+                    <h5  style="text-transform: capitalize;"><?= $value->announcement_title ?></h5>
+                    <p style="font-size: 80%" class="color-primary-yellow">Created at <?= date("M d, Y", $value->announcement_created_at) ?> | Shown Until <?= date("M d, Y", $value->announcement_end_datetime) ?></p>
+                    <p style="font-size: 80%">Audience  
+                      |
+                      <?php foreach ($audience as $key => $i_value): ?>
+                        <?php switch ($i_value) {
+                          case '1':
+                          $str_aud = 'CE';
+                          break;
+                          case '2':
+                          $str_aud = 'EEE';
+                          break;
+                          case '3':
+                          $str_aud = 'EE';
+                          break;
+                          case '4':
+                          $str_aud = 'ME';
+                          break;
+                          
+                          default:
+                            # code...
+                          break;
+                        } ?>
+                        <span><?= $str_aud." |" ?></span>
+                      <?php endforeach ?>
+                    </p>
                     <hr>
                     <p><?= $value->announcement_content ?></p>
                   </div>
@@ -66,7 +91,7 @@
         </div>
 
         <!--====  End of Announcement Section  ====-->
-        <div class="col s4 red">sdada</div>
+        <div class="col s4 red"></div>
         <div class="col s4 green"></div>
       </div>
     </div>
