@@ -107,10 +107,17 @@ switch ($info['user']->$ident) {
         <li class="color-black <?= $s_c ?>">
             <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
         </li>
-    <?php endif ?> 
+    <?php endif ?>
     <?php if ($info['identifier'] != "professor"): ?>
         <li class="<?= $s_f ?>">
             <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
+
+        </li>
+    <?php endif ?>
+    
+    <?php if ($info["identifier"] == "professor"): ?>
+        <li class="color-black <?= $s_c ?>">
+            <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
         </li>
     <?php endif ?>
     <?php if ($info["identifier"] == "professor"): ?>
@@ -129,11 +136,6 @@ switch ($info['user']->$ident) {
 </li>
 <?php endif ?>
 <?php if ($info["identifier"] == "prof"): ?>
-    <li class="color-black <?= $s_c ?>">
-        <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
-    </li>
-<?php endif ?>
-<?php if ($info["identifier"] == "professor"): ?>
     <li class="color-black <?= $s_c ?>">
         <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
     </li>
@@ -157,7 +159,7 @@ switch ($info['user']->$ident) {
 
     jQuery(document).ready(function($) {
         $("#btn_click_feed").click(function(event) {
-         if ($("#btn_click_feed_i").html()=="keyboard_arrow_right") {
+           if ($("#btn_click_feed_i").html()=="keyboard_arrow_right") {
             $("#btn_click_feed_i").html("keyboard_arrow_down");
         }else{
             $("#btn_click_feed_i").html("keyboard_arrow_right");
@@ -165,11 +167,3 @@ switch ($info['user']->$ident) {
     });
     }); 
 </script>
-
-
-=======
-<li class="<?= $s_f ?>">
-    <a href="<?= base_url() ?>feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
-</li>
-
->>>>>>> 590b8a434fe485cc503a16ccfaf60549dc34d3c7
