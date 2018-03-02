@@ -26,7 +26,8 @@ class Course extends CI_Controller {
 //                echo"<pre>";
 //                print_r($result[0]);
                 foreach ($result as $key => $res) {
-                    $result[$key]->course_id_sha = substr(sha1($res->course_id), 1, 10);
+                    $var = (string) $res->course_id;
+                    $result[$key]->course_id_sha = $this->hash_id($var);
                 }
 
                 $data = array(
@@ -36,8 +37,7 @@ class Course extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "",
-                    "result" => $result,
-                    "insert_success" => get_cookie('course_insertion', false)
+                    "result" => $result
                 );
                 $this->load->view('includes/header', $data);
                 $this->load->view('course/main');
@@ -63,15 +63,14 @@ class Course extends CI_Controller {
                 $segment = $this->uri->segment(3);  //get segment
                 $isit = false;                      //holder if it is confirmed
                 foreach ($result as $key => $res) {
-                    if ($segment == substr(sha1($res->course_id), 1, 10)) {
+                    $var = $res->course_id;
+                    if ($segment == $this->hash_id($var)) {
                         $isit = true;
                         $hold_key = $key;
                         break;
                     }
                 }
                 if ($isit) {
-//                    echo "<pre>";
-//                    print_r($result[$hold_key]);
                     $course = $result[$hold_key];
                     $col = 'off.offering_id, off.offering_name, sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue';
                     $where = array("off.course_id" => $result[$hold_key]->course_id);
@@ -81,7 +80,7 @@ class Course extends CI_Controller {
                         )
                     );
                     $result = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
-//                    print_r($result);
+
                     foreach ($result as $key => $res) {
                         $result[$key]->format_time = date("g:iA", $res->schedule_start_time) . "-" . date("g:iA", $res->schedule_end_time);
                         $result[$key]->format_day = date("D", $res->schedule_start_time);
@@ -131,7 +130,28 @@ class Course extends CI_Controller {
                 $this->load->view('course/add');
             } else {
                 echo '<script>alert("Successful insertion");</script>';
-                redirect("Course");
+
+                //GET ENROLLMENT OF THE USER
+                $where = array(
+                    "professor_id" => $info["user"]->professor_id,
+                    "course_department" => $info["user"]->professor_department
+                );
+                $col = "enrollment_id";
+                $result = $this->Crud_model->fetch_select("course", $col, $where);
+
+                $hold = $this->input->post(array('course_code', 'course_title'));
+//                print_r($hold);
+                $data = array(
+                    "course_course_code" => $hold["course_code"],
+                    "course_course_title" => $hold["course_course_title"],
+                    "course_department" => $info["user"]->professor_department,
+                    "course_is_active" => 1
+                );
+                if ($result = $this->Crud_model->insert("course", $data)) {
+
+                } else {
+                    redirect("Course");
+                }
             }
             $this->load->view('includes/footer');
         } else {
@@ -148,6 +168,10 @@ class Course extends CI_Controller {
         } else {
             return "There is no activated enrollment";
         }
+    }
+
+    private function hash_id($var) {
+        return substr(sha1($var), 1, 10);
     }
 
 }

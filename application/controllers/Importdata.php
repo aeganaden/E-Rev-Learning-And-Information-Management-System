@@ -119,7 +119,7 @@ class Importdata extends CI_Controller {
                                         if (($this->is_this_string_an_integer($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) || $col_hold == 0) { //kapag tinanggal rightmost, bawal ang 0
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
-                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
+                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " of table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;
                                         }
@@ -127,7 +127,7 @@ class Importdata extends CI_Controller {
                                         if (is_string($col_hold) == 1 && $col_length >= strlen($col_hold) && !empty($col_hold)) {
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
-                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
+                                            echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " of table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;
                                         }

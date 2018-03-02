@@ -43,10 +43,10 @@
                 <div class="input-field col s6">
                     <?php if (!empty(form_error('course_title'))): ?>
                         <label class="red-text" for="course_title">Course Code</label>
-                        <input style="border-bottom: 1px solid #e24646;box-shadow: none;" name="course_title" value="<?= set_value('course_code') ?>" type="text">
+                        <input style="border-bottom: 1px solid #e24646;box-shadow: none;" name="course_title" value="<?= set_value('course_title') ?>" type="text">
                         <span class="red-text"><?php echo form_error('course_title'); ?></span>
                     <?php else: ?>
-                        <label for="course_title">Course Code</label>
+                        <label for="course_title">Course Title</label>
                         <input name="course_title" value="<?= set_value('course_title') ?>" type="text">
                     <?php endif; ?>
                 </div>
