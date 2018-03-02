@@ -114,8 +114,8 @@ class Course extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
 
-            $this->form_validation->set_rules('course_code', "Course Code", "required|alpha_numeric|min_length[3]|max_length[20]");
-            $this->form_validation->set_rules('course_title', "Course Title", "required|alpha_numeric|min_length[3]|max_length[100]");
+            $this->form_validation->set_rules('course_code', "Course Code", "required|alpha_numeric_spaces|min_length[3]|max_length[20]");
+            $this->form_validation->set_rules('course_title', "Course Title", "required|alpha_numeric_spaces|min_length[3]|max_length[100]");
 
             $data = array(
                 "title" => "Course Management",
@@ -143,14 +143,19 @@ class Course extends CI_Controller {
 //                print_r($hold);
                 $data = array(
                     "course_course_code" => $hold["course_code"],
-                    "course_course_title" => $hold["course_course_title"],
+                    "course_course_title" => $hold["course_title"],
                     "course_department" => $info["user"]->professor_department,
-                    "course_is_active" => 1
+                    "course_is_active" => 1,
+                    "enrollment_id" => $this->get_active_enrollment(),
+                    "professor_id" => $info["user"]->professor_id
                 );
                 if ($result = $this->Crud_model->insert("course", $data)) {
-
+//                    redirect("Course");
+                    echo "test";
                 } else {
-                    redirect("Course");
+                    echo "<pre>";
+
+                    print_r($this->db->error());
                 }
             }
             $this->load->view('includes/footer');

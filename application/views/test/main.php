@@ -1,4 +1,4 @@
-<?php echo form_open_multipart('Importdata/filecheck'); ?>
+<?php echo form_open_multipart('testing/testing_upload'); ?>
 <div class="file-field input-field">
     <div class="btn">
         <span>File</span>
