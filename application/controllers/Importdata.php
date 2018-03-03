@@ -89,7 +89,7 @@ class Importdata extends CI_Controller {
                 $sheetnames = $obj->getSheetNames();
 
                 $counter = 0;
-                include(APPPATH . 'views\excel_reader\custom1.php');
+                include('./application/views/excel_reader/custom1.php');
 
                 $tab_names = $this->Crud_model->table_names();
                 $error_counter = 0;              //for checking field/column names
@@ -155,15 +155,16 @@ class Importdata extends CI_Controller {
                         echo "<b>The file is deleted.</b>";
                     }
                 } else {                                    //success magiinsert na
-                    include(APPPATH . 'views\excel_reader\custom2.php');
+                    include('./application/views/excel_reader/custom2.php');
                     $temp_counter = 0;
                     $this->db->trans_begin();
                     foreach ($sheetnames as $sheet) {
                         $temp = $this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'];
                         if ($this->db->trans_status() === FALSE && !empty($temp)) {
                             echo "<br>***" . $temp . " on '$sheet' table";
-                            $temp_counter++;
-                            include(APPPATH . 'views\excel_reader\custom4.php');
+                            $temp_counter++; 
+                            include('./application/views/excel_reader/custom4.php');
+
                         } else {
                             echo "<br>Insertion success on table '$sheet'";
                         }
@@ -177,8 +178,9 @@ class Importdata extends CI_Controller {
                     } else {
                         $this->db->trans_commit();
                     }
-                    include(APPPATH . 'views\excel_reader\custom3.php');
-                    include(APPPATH . 'views\excel_reader\custom5.php');
+                    include('./application/views/excel_reader/custom3.php');
+                    include('./application/views/excel_reader/custom5.php');
+
                 }
                 $this->load->view('includes/footer');
             } else {
