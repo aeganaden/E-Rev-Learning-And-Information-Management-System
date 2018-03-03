@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Course Management <a href="<?= base_url() ?>course/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Course</a></h3>
+            <h3 class="color-black">Course Management <a href="<?= base_url() ?>Course/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Course</a></h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
@@ -73,9 +73,8 @@
                     dangerMode: true,
             }).then((willDelete) <?= "=>" ?>{
             if (willDelete) {
-                swal("Poof! Your imaginary file has been deleted!", {
-                    icon: "success",
-                });
+                $data = $(this).data('id');
+                window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data;
             }
         });
     });
