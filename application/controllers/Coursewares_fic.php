@@ -292,6 +292,46 @@ class Coursewares_fic extends CI_Controller {
 		}
 	}
 
+
+	public function ToggleCourseware()
+	{
+		$info = $this->session->userdata('userInfo');
+		if (!$info) {
+			redirect('Welcome','refresh');
+		}elseif ($info['identifier']!='fic') {
+			redirect('Home','refresh');
+		}
+		$data = array(
+			"title" => "Coursewares - Learning Management System | FEU - Institute of Techonology",
+			"info"=>$info,
+			"s_h"=> "",
+			"s_a"=> "",
+			"s_f"=> "",
+			"s_c"=> "selected-nav",
+			"s_t" => "",
+			"s_s" => "",
+			"s_co" => "",
+			"s_ss" => "",
+
+			
+		);
+		$this->load->view('includes/header', $data);
+		$this->load->view('courseware/toggle_courseware');
+		$this->load->view('includes/footer');
+	}
+
+	public function updateCoursewareStatus()
+	{
+		$value = $this->input->post("value");
+		$id_cw = $this->input->post("id_cw");
+
+		if ($this->Crud_model->update("courseware",array("courseware_status"=>$value),array("courseware_id"=>$id_cw))) {
+			echo json_encode(true);
+		}else{
+			echo json_encode("Failed updating courseware status");
+		}
+	}
+
 }
 
 /* End of file Coursewares_fic.php */
