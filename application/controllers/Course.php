@@ -21,7 +21,7 @@ class Course extends CI_Controller {
                 $enrollment_active = $hold[0]->enrollment_id;
 
                 $col = 'cou.course_id, cou.course_course_title, cou.course_course_code';
-                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department);
+                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department, "course_is_active" => 1);
                 $result = $this->Crud_model->fetch_select("course as cou", $col, $where);
 //                echo"<pre>";
 //                print_r($result[0]);
@@ -58,16 +58,18 @@ class Course extends CI_Controller {
                 $enrollment_active = $hold[0]->enrollment_id;
 
                 $col = 'cou.course_id, cou.course_course_title, cou.course_course_code';
-                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department, "cou.professor_id" => $info["user"]->professor_id);
-                $result = $this->Crud_model->fetch_select("course as cou", $col, $where);
-                $segment = $this->uri->segment(3);  //get segment
-                $isit = false;                      //holder if it is confirmed
-                foreach ($result as $key => $res) {
-                    $var = $res->course_id;
-                    if ($segment == $this->hash_id($var)) {
-                        $isit = true;
-                        $hold_key = $key;
-                        break;
+                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department,
+                    "cou.professor_id" => $info["user"]->professor_id, "cou.course_is_active" => 1);
+                $isit = false;
+                if ($result = $this->Crud_model->fetch_select("course as cou", $col, $where)) {
+                    $segment = $this->uri->segment(3);  //get segment
+                    foreach ($result as $key => $res) {
+                        $var = $res->course_id;
+                        if ($segment == $this->hash_id($var)) {
+                            $isit = true;
+                            $hold_key = $key;
+                            break;
+                        }
                     }
                 }
                 if ($isit) {
@@ -79,12 +81,14 @@ class Course extends CI_Controller {
                             "schedule as sch", "sch.offering_id = off.offering_id"
                         )
                     );
-                    $result = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
 
-                    foreach ($result as $key => $res) {
-                        $result[$key]->format_time = date("g:iA", $res->schedule_start_time) . "-" . date("g:iA", $res->schedule_end_time);
-                        $result[$key]->format_day = date("D", $res->schedule_start_time);
+                    if ($result = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where)) {
+                        foreach ($result as $key => $res) {
+                            $result[$key]->format_time = date("g:iA", $res->schedule_start_time) . "-" . date("g:iA", $res->schedule_end_time);
+                            $result[$key]->format_day = date("D", $res->schedule_start_time);
+                        }
                     }
+
                     $data = array(
                         "title" => "Section Management",
                         'info' => $info,
@@ -129,36 +133,83 @@ class Course extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {       //wrong
                 $this->load->view('course/add');
             } else {
-                echo '<script>alert("Successful insertion");</script>';
-
-                //GET ENROLLMENT OF THE USER
-                $where = array(
-                    "professor_id" => $info["user"]->professor_id,
-                    "course_department" => $info["user"]->professor_department
-                );
-                $col = "enrollment_id";
-                $result = $this->Crud_model->fetch_select("course", $col, $where);
-
                 $hold = $this->input->post(array('course_code', 'course_title'));
-//                print_r($hold);
+
                 $data = array(
                     "course_course_code" => $hold["course_code"],
                     "course_course_title" => $hold["course_title"],
                     "course_department" => $info["user"]->professor_department,
                     "course_is_active" => 1,
-                    "enrollment_id" => $this->get_active_enrollment(),
+                    "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id,
                     "professor_id" => $info["user"]->professor_id
                 );
-                if ($result = $this->Crud_model->insert("course", $data)) {
-//                    redirect("Course");
-                    echo "test";
+                $result = $this->Crud_model->insert("course", $data);
+                if ($this->db->error()["code"] == 0) {      //means error
+                    echo "
+                    <script>alert('Addition failed. Error code: " . $this->db->error()["code"] . "');</script>
+                             ";
+//                    print_r($this->db->error());
                 } else {
-                    echo "<pre>";
-
-                    print_r($this->db->error());
+                    redirect("Course");
                 }
             }
             $this->load->view('includes/footer');
+        } else {
+            redirect();
+        }
+    }
+
+    public function edit() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            $info = $this->session->userdata('userInfo');
+            if (is_array($hold = $this->get_active_enrollment())) {        //checks if this is array, else it is error coz multiple active enrollment
+                $enrollment_active = $hold[0]->enrollment_id;
+
+                $col = 'cou.course_id, cou.course_course_title, cou.course_course_code';
+                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department, "cou.professor_id" => $info["user"]->professor_id, "cou.course_is_active" => 1);
+                $isit = false;
+                if ($result = $this->Crud_model->fetch_select("course as cou", $col, $where)) {
+                    $segment = $this->uri->segment(3);  //get segment
+                    foreach ($result as $key => $res) {
+                        $var = $res->course_id;
+                        if ($segment == $this->hash_id($var)) {
+                            $isit = true;
+                            $hold_key = $key;
+                            break;
+                        }
+                    }
+                }
+
+                if ($isit) {
+                    $course = $result[$hold_key];
+                    $col = 'cou.offering_id, off.offering_name, sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue';
+                    $where = array("cou.course_id" => $result[$hold_key]->course_id);
+
+                    if ($result = $this->Crud_model->fetch_select("course as cou", NULL, $where)) {
+                        echo "<pre>";
+                        print_r($result);
+                    }
+
+//                    $data = array(
+//                        "title" => "Section Management",
+//                        'info' => $info,
+//                        "s_h" => "",
+//                        "s_a" => "",
+//                        "s_c" => "",
+//                        "s_f" => "",
+//                        "result" => $result,
+//                        "course_title" => $course->course_course_title,
+//                        "course_code" => $course->course_course_code
+//                    );
+//                    $this->load->view('includes/header', $data);
+//                    $this->load->view('course/edit');
+//                    $this->load->view('includes/footer');
+                } else {
+                    redirect("Course");
+                }
+            } else {
+                redirect("Course");
+            }
         } else {
             redirect();
         }
