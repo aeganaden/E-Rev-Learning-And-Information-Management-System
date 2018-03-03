@@ -23,6 +23,7 @@
         <blockquote class="color-primary-green">
             <h5 class="color-black">Import Student Scores</h5>
         </blockquote>
+        <?php // echo form_open_multipart("Student_scores/read_excel/" . $this->uri->segment(3)); ?>
         <form enctype="multipart/form-data" action="<?php echo base_url() . "Student_scores/read_excel/" . $this->uri->segment(3); ?>" method="POST">
             <ul class="collection"  style="margin-bottom: 5%;">
                 <li class="collection-item" id="li_s1" style="padding: 5%; margin-bottom: 1%;">
