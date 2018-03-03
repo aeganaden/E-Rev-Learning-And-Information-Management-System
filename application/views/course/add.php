@@ -48,7 +48,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select>
+                    <select name="subject-area">
                         <?php
                         foreach ($hold as $key => $value):
                             ?>

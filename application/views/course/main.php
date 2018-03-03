@@ -41,7 +41,11 @@
                         <td><?= $res->course_course_title ?></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn bg-primary-yellow btn_edit">Edit</a></td>
-                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red btn_delete">Delete</a></td>
+                        <?php if ($res->course_is_active == 1): ?>
+                            <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red btn_delete">Delete</a></td>
+                        <?php else: ?>
+                            <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red btn_undo">Undo</a></td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach ?>
             </tbody>
@@ -56,27 +60,41 @@
 
 <script>
     $(document).ready(function () {
-        $(".btn_view").click(function () {
-            $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
-        });
-        $(".btn_edit").click(function () {
-            $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
-        });
-        $(".btn_delete").click(function () {
-            swal({
-            title: "Are you sure?",
-                    text: "This will disable the course you selected. You may undo on latter time.",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-            }).then((willDelete) <?= "=>" ?>{
-            if (willDelete) {
-                $data = $(this).data('id');
-                window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data;
-            }
-        });
+    $(".btn_view").click(function () {
+    $data = $(this).data('id');
+    window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
+    });
+    $(".btn_edit").click(function () {
+    $data = $(this).data('id');
+    window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
+    });
+    $(".btn_delete").click(function () {
+    swal({
+    title: "Are you sure?",
+            text: "This will disable the course you selected. You may undo it later.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+    }).then((willDelete) <?= "=>" ?>{
+    if (willDelete) {
+    $data = $(this).data('id');
+    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/0";
+    }
+    });
+    });
+    $(".btn_undo").click(function () {
+    swal({
+    title: "Are you sure?",
+            text: "This will activate the course you selected.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+    }).then((willDelete)<?= "=>" ?>{
+    if (willDelete) {
+    $data = $(this).data('id');
+    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/1";
+    }
+    });
     });
     });
 
