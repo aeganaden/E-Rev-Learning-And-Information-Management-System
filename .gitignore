@@ -31,3 +31,7 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 /tests/results/
 /Engineering/nbproject/private/
 
+.htaccess
+.htaccess
+application/config/database.php
+application/config/config.php
