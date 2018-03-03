@@ -25,20 +25,20 @@ class Student_scores extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-                $program = 1;
-                break;
+            $program = 1;
+            break;
             case 'ECE':
-                $program = 2;
-                break;
+            $program = 2;
+            break;
             case 'EE':
-                $program = 3;
-                break;
+            $program = 3;
+            break;
             case 'ME':
-                $program = 4;
-                break;
+            $program = 4;
+            break;
 
             default:
-                break;
+            break;
         }
 
 
@@ -74,20 +74,20 @@ class Student_scores extends CI_Controller {
         $course_id = $this->uri->segment(3);
         switch ($info['user']->$ident) {
             case 'CE':
-                $program = 1;
-                break;
+            $program = 1;
+            break;
             case 'ECE':
-                $program = 2;
-                break;
+            $program = 2;
+            break;
             case 'EE':
-                $program = 3;
-                break;
+            $program = 3;
+            break;
             case 'ME':
-                $program = 4;
-                break;
+            $program = 4;
+            break;
 
             default:
-                break;
+            break;
         }
 
 
@@ -159,7 +159,7 @@ class Student_scores extends CI_Controller {
             'title' => "Imported"
         );
         $this->load->view('includes/header', $data);
-        if ($this->upload->do_upload($this->input->post("excel"))) {       //success upload
+        if ($this->upload->do_upload('excel')) {       //success upload
             $upload_data = $this->upload->data();
             echo"<pre>";
             print_r($upload_data);

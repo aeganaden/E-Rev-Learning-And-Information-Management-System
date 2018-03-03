@@ -22,20 +22,21 @@
 		// Activity details
 			$details = $this->Crud_model->fetch("activity_details", array("activity_details_id"=>$value->activity_details_id));
 			$details = $details[0];
-			$subject = $this->Crud_model->fetch("subject", array("subject_id"=>$value->subject_id));
-			$subject = $subject[0];
-			$section = $this->Crud_model->fetch("offering", array("offering_id"=>$subject->offering_id));
-			$section = $section[0];
-
+			$offering = $this->Crud_model->fetch("offering", array("offering_id"=>$value->offering_id));
+			$offering = $offering[0]; 
 			$is_overdue = "";
-			$date = $value->activity_date_time;
-			$now = time();
+			$schedule = $this->Crud_model->fetch("activity_schedule",array("activity_id"=>$value->activity_id));
+			// echo "<pre>";
 
-			if($date < $now) {
-				$is_overdue = "Overdue";
-			}else{
-				$is_overdue = "";
-			}
+			$schedule = $schedule[0];
+			// $date = $value->activity_date_time;
+			// $now = time();
+
+			// if($date < $now) {
+			// 	$is_overdue = "Overdue";
+			// }else{
+			// 	$is_overdue = "";
+			// }	
 			?>
 			<div class="col s6">
 				<div class="card bg-primary-green ">
@@ -44,17 +45,43 @@
 							<div class="col s8">
 								<blockquote class="color-primary-yellow">
 									<span class="card-title color-white"><?=$details->activity_details_name?> 
-										- <span class="color-red bg-primary-yellow"><?=$is_overdue?></span>
+										- 	<b><?=$offering->offering_name?></b>
 									</span>
-									<b><?=$section->offering_name." | "?></b><i><?=$subject->subject_name?></i>
-									<p> <?=date("M d, Y | h:i A", $value->activity_date_time)?></p>
+									<span class="color-red bg-primary-yellow"><?=$is_overdue?></span>
+									<p> 
+										<?=date("M d, Y", $schedule->activity_schedule_date)?> |
+										<?=date("h:i A", $schedule->activity_schedule_start_time)?> -
+										<?=date("h:i A", $schedule->activity_schedule_end_time)?>
+									</p>
 									<p><?=strtoupper($value->activity_venue)?></p>
 								</blockquote>
 								<div class="row div-edit<?=$value->activity_id?>" style="display: none">
-									<input type="text"  class="timepicker time_data time<?=$value->activity_id?>" value="Change Time">
-									<input type="text" class="datepicker date_data date<?=$value->activity_id?>" value="Change Date">
-									<textarea id="txtarea" class="materialize-textarea desc_data"><?=$value->activity_description?></textarea>
-									<label for="txtarea">Description</label>
+									<div class="col s12">
+										<div class="row">
+											<div class="col s6 input-field">
+												<input type="text"  class="timepicker" id="time_s<?=$value->activity_id?>" value="Change Start Time">
+											</div>
+											<div class="col s6 input-field">
+												<input type="text"  class="timepicker" id="time_e<?=$value->activity_id?>" value="Change End Time">
+											</div>
+										</div>
+										<div class="row">
+											<div class="input-field col s6">
+												<input type="text" class="datepicker " id="date<?=$value->activity_id?>" value="Change Date">
+											</div>
+											<div class="input-field col s6">
+												<input placeholder="E.g F1102" id="venue<?=$value->activity_id?>" value="<?=strtoupper($value->activity_venue)?>" type="text" class="validate">
+												<label for="venue<?=$value->activity_id?>">Venue</label>
+											</div>
+										</div>
+										<div class="input-field">
+											<textarea class="materialize-textarea" id="desc_data<?=$value->activity_id?>"><?=$value->activity_description?></textarea>
+											<label for="txtarea">Description</label>
+										</div>
+									</div>
+									
+									
+									
 									<button class="btn bg-primary-green waves-effect right btn_update_activity" data-id="<?=$value->activity_id?>">Update</button>
 								</div>
 							</div>
@@ -131,22 +158,22 @@ switch ($info['user']->$ident) {
 	jQuery(document).ready(function($) {
 
 
-		$('#section_area').on('change', function() {
-			// alert( this.value );
-			$.ajax({
-				url: '<?=base_url()?>Home/fetchSchedule ',
-				type: 'post',
-				dataType: 'json',
-				data: {id: this.value },
-				success: function(data){	
-					console.log(data);	
-				},
-				error: function(data){
+		// $('#section_area').on('change', function() {
+		// 	// alert( this.value );
+		// 	$.ajax({
+		// 		url: '<?=base_url()?>Home/fetchSchedule ',
+		// 		type: 'post',
+		// 		dataType: 'json',
+		// 		data: {id: this.value },
+		// 		success: function(data){	
+		// 			console.log(data);	
+		// 		},
+		// 		error: function(data){
 
-				}
+		// 		}
 
-			});
-		})
+		// 	});
+		// })
 
 
 
@@ -167,17 +194,21 @@ switch ($info['user']->$ident) {
 
 		});
 
-		$(".btn_update_activity").click(function(event) {
-			$time = $(".time_data").val();
-			$date = $(".date_data").val();
-			$desc = $(".desc_data").val();
+
+		$('body').on('click', '.btn_update_activity', function() {
+			$id = $(this).data("id");
+			$time_s = $("#time_s"+$id).val();
+			$time_e = $("#time_e"+$id).val();
+			$date = $("#date"+$id).val();
+			$desc = $("#desc_data"+$id).val();
 			$.ajax({
 				url: '<?=base_url()?>Home/updateActivity ',
 				type: 'post',
 				dataType: 'json',
 				data: {
 					id: $(this).attr("data-id"),
-					time: $time,
+					time_s: $time_s,
+					time_e: $time_e,
 					date: $date,
 					desc: $desc
 				},
@@ -190,8 +221,9 @@ switch ($info['user']->$ident) {
 
 				}
 			});
-
 		});
+		
+
 
 		$(".btn_delete_activity").click(function(event) {
 			swal({
