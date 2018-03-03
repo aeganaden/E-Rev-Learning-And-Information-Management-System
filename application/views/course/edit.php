@@ -11,15 +11,13 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Add Course</h3>
+            <h3 class="color-black">Edit Course</h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
     <div class="col s4"></div>
 </div>
 <div class="row container">
-
-    <?php // echo form_open('form');   ?>
     <div class="row">
         <form action="" method="POST" class="col s12">
             <div class="row">

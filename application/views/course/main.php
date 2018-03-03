@@ -40,8 +40,8 @@
                         <td><?= $res->course_course_code ?></td>
                         <td><?= $res->course_course_title ?></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn green btn_view">View</a></td>
-                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn yellow">Edit</a></td>
-                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red">Delete</a></td>
+                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn yellow btn_edit">Edit</a></td>
+                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red btn_delete">Delete</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
@@ -57,6 +57,14 @@
 <script>
     $(document).ready(function () {
         $(".btn_view").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
+        });
+        $(".btn_edit").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
+        });
+        $(".btn_delete").click(function () {
             $data = $(this).data('id');
             window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
         });
