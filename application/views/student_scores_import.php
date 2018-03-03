@@ -1,6 +1,21 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <?php $this->load->view('includes/home-sidenav'); ?>
 
+<!--==================================================================
+=            READ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!            =
+===================================================================-->
+
+<!-- 
+
+1. Yung course_id nasa uri segment
+2. Para makuha mo yung upload number, ifetch mo muna last column tas kunin mo last upload number, then increment ka isa.
+
+
+
+-->
+
+<!--====  End of READ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ====-->
+
 
 <div class="container row">
 	<div class="col s1"></div>
