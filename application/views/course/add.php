@@ -18,7 +18,9 @@
     <div class="col s4"></div>
 </div>
 <div class="row container">
-
+    <pre>
+        <?php // print_r($hold); ?>
+    </pre>
     <?php // echo form_open('form');   ?>
     <div class="row">
         <form action="" method="POST" class="col s12">
@@ -44,8 +46,20 @@
                     <?php endif; ?>
                 </div>
             </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select>
+                        <?php
+                        foreach ($hold as $key => $value):
+                            ?>
+                            <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Year Level</label>
+                </div>
+            </div>
             <div class="input-field">
-                <button class="btn waves-effect waves-light right green" type="submit" name="submit">Submit</button>
+                <button class="btn waves-effect waves-light right green" type="submit" name="submit">Add</button>
                 <a href="<?= base_url() ?>Course" class="waves-effect waves-light btn left red">Cancel</a>
             </div>
         </form>

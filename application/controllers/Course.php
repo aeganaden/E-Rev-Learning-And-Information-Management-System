@@ -121,13 +121,34 @@ class Course extends CI_Controller {
             $this->form_validation->set_rules('course_code', "Course Code", "required|alpha_numeric_spaces|min_length[3]|max_length[20]");
             $this->form_validation->set_rules('course_title', "Course Title", "required|alpha_numeric_spaces|min_length[3]|max_length[100]");
 
+            $where = array(
+                "sl.subject_list_department" => $info["user"]->professor_department,
+                "sl.subject_list_is_active" => 1
+            );
+            $join = array(
+                array("subject_list as sl", "sl.year_level_id = yl.year_level_id")
+            );
+            $col = array();
+            $result = $this->Crud_model->fetch_join2("year_level as yl", NULL, $join, NULL, $where, FALSE);
+//            echo"<pre>";
+//            print_r($result);
+//            echo"</pre>";
+            foreach ($result as $key => $res) {     //group them base on year_level_id
+                $var = $res->year_level_id;
+                $result[$key]->year_level_id = $this->hash_id($var);
+                $hold[$res->year_level_id][0][] = $res->subject_list_name;
+                $hold[$res->year_level_id][1]["year_level_name"] = $res->year_level_name;
+            }
+//            print_r($hold);
+//            print_r(implode(" — ", $hold["7de68daecd"]));
             $data = array(
                 "title" => "Course Management",
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
                 "s_c" => "",
-                "s_f" => ""
+                "s_f" => "",
+                "hold" => $hold
             );
             $this->load->view('includes/header', $data);
             if ($this->form_validation->run() == FALSE) {       //wrong
@@ -144,13 +165,13 @@ class Course extends CI_Controller {
                     "professor_id" => $info["user"]->professor_id
                 );
                 $result = $this->Crud_model->insert("course", $data);
-                if ($this->db->error()["code"] == 0) {      //means error
+                if ($this->db->error()["code"] == 0) {      //means success
+                    redirect("Course");
+                } else {
                     echo "
                     <script>alert('Addition failed. Error code: " . $this->db->error()["code"] . "');</script>
                              ";
 //                    print_r($this->db->error());
-                } else {
-                    redirect("Course");
                 }
             }
             $this->load->view('includes/footer');

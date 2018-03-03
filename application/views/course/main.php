@@ -39,8 +39,8 @@
                     <tr class="bg-color-white">
                         <td><?= $res->course_course_code ?></td>
                         <td><?= $res->course_course_title ?></td>
-                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn green btn_view">View</a></td>
-                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn yellow btn_edit">Edit</a></td>
+                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
+                        <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn bg-primary-yellow btn_edit">Edit</a></td>
                         <td><a data-id="<?= $res->course_id_sha ?>" class="waves-effect waves-dark btn red btn_delete">Delete</a></td>
                     </tr>
                 <?php endforeach ?>
@@ -65,8 +65,20 @@
             window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
         });
         $(".btn_delete").click(function () {
-            $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
+            swal({
+            title: "Are you sure?",
+                    text: "This will disable the course you selected. You may undo on latter time.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+            }).then((willDelete) <?= "=>" ?>{
+            if (willDelete) {
+                swal("Poof! Your imaginary file has been deleted!", {
+                    icon: "success",
+                });
+            }
         });
     });
+    });
+
 </script>
