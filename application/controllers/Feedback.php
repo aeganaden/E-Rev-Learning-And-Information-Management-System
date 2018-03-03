@@ -502,7 +502,7 @@ class Feedback extends CI_Controller {
             case 'CE':
             $program = 1;
             break;
-            case 'ECE':
+            case 'EEE':
             $program = 2;
             break;
             case 'EE':
