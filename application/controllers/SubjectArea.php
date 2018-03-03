@@ -41,8 +41,12 @@ class SubjectArea extends CI_Controller {
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
-                "s_c" => "",
                 "s_f" => "",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "selected-nav",
+                "s_co" => "",
+                "s_ss" => "",
                 "result" => $result
             );
             $this->load->view('includes/header', $data);

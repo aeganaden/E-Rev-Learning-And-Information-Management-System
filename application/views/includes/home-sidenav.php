@@ -98,13 +98,13 @@ switch ($info['user']->$ident) {
     <?php endif ?>
 
     <?php if ($info["identifier"] != "student"): ?>
-        <li class="color-black <?= $s_c ?>">
+        <li class="color-black <?= $s_t ?>">
             <a href="<?= base_url() ?>Topics" class="color-black"><i class="material-icons color-black">title</i>Topics</a>
         </li>
     <?php endif ?>
 
     <?php if ($info["identifier"] != "student"): ?>
-        <li class="color-black <?= $s_c ?>">
+        <li class="color-black <?= $s_s ?>">
             <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
         </li>
     <?php endif ?>
@@ -116,30 +116,49 @@ switch ($info['user']->$ident) {
     <?php endif ?>
     
     <?php if ($info["identifier"] == "professor"): ?>
-        <li class="color-black <?= $s_c ?>">
+        <li class="color-black <?= $s_co ?>">
             <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
         </li>
     <?php endif ?>
     <?php if ($info["identifier"] == "professor"): ?>
-        <li class="no-padding" id="btn_click_feed">
+        <li class="no-padding <?= $s_f ?>"  id="btn_click_feed">
             <ul class="collapsible collapsible-accordion">
               <li>
                 <a class="collapsible-header">Feedback<i class="material-icons" id="btn_click_feed_i"  >keyboard_arrow_right</i></a>
                 <div class="collapsible-body bg-color-white">
                   <ul>
-                    <li><a href="<?= base_url() ?>Feedback"><i class="material-icons">visibility</i>View Feedback</a></li>
-                    <li><a href="<?= base_url() ?>Feedback/activateFeedback"><i class="material-icons">hdr_strong</i>Toggle Feedback Submission</a></li> 
+                    <li><a href="<?= base_url() ?>Feedback "><i class="material-icons">visibility</i>View Feedback</a></li>
+                    <li>
+                        <a href="<?= base_url() ?>Feedback/activateFeedback">
+                            <i class="material-icons">hdr_strong</i>Toggle Feedback Submission
+                        </a>
+                    </li>   
                 </ul>
-            </div>
+            </div> 
         </li>
     </ul>
 </li>
 <?php endif ?>
-<?php if ($info["identifier"] == "prof"): ?>
-    <li class="color-black <?= $s_c ?>">
-        <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
-    </li>
+
+<?php if ($info["identifier"] == "fic"): ?>
+    <li class="no-padding <?= $s_ss ?>"  id="btn_click_feed">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Student Scores<i class="material-icons" id="btn_click_feed_i">keyboard_arrow_right</i></a>
+            <div class="collapsible-body bg-color-white">
+              <ul>
+                <li class="color-black ">
+                    <a href="<?= base_url() ?>Student_scores" class="color-black"><i class="material-icons color-black">description</i>Import Scores</a>
+                </li>
+                <li class="color-black ">
+                    <a href="<?= base_url() ?>Student_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
+                </li>
+            </div> 
+        </li>
+    </ul>
+</li>
 <?php endif ?>
+
 <li>
     <div class="divider"></div>
 </li>

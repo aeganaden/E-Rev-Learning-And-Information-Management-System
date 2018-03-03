@@ -25,7 +25,12 @@ class Feedback extends CI_Controller {
                 "s_h" => "",
                 "s_a" => "",
                 "s_c" => "",
-                "s_f" => "selected-nav"
+                "s_f" => "selected-nav",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "",
+                "s_co" => "",
+                "s_ss" => "",
             );
             $this->load->view('includes/header', $data);
             if ($feedback_status == 1) {                //checks if feedback is open
@@ -67,6 +72,11 @@ class Feedback extends CI_Controller {
                             "s_a" => "",
                             "s_c" => "",
                             "s_f" => "selected-nav",
+                            "s_c" => "",
+                            "s_t" => "",
+                            "s_s" => "",
+                            "s_co" => "",
+                            "s_ss" => "",
                             'info' => $info,
                             'lect' => $lect,
                         );
@@ -133,6 +143,11 @@ class Feedback extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "selected-nav",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "",
                     'sections' => $sections,
                     'lecturers' => $lect
                 );
@@ -178,6 +193,11 @@ class Feedback extends CI_Controller {
                         "s_a" => "",
                         "s_c" => "",
                         "s_f" => "selected-nav",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
                         'feedback' => $result
@@ -191,6 +211,11 @@ class Feedback extends CI_Controller {
                         "s_a" => "",
                         "s_c" => "",
                         "s_f" => "selected-nav",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
                         'error' => "Invalid Input"
@@ -250,6 +275,11 @@ class Feedback extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "selected-nav",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "",
                     'sections' => $sections,
                     'lecturers' => $lecturers
                 );
@@ -282,6 +312,11 @@ class Feedback extends CI_Controller {
                         "s_a" => "",
                         "s_c" => "",
                         "s_f" => "selected-nav",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
                         'feedback' => $result
@@ -295,6 +330,11 @@ class Feedback extends CI_Controller {
                         "s_a" => "",
                         "s_c" => "",
                         "s_f" => "selected-nav",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
                         'error' => "Invalid Input"
@@ -323,6 +363,11 @@ class Feedback extends CI_Controller {
                 "s_a" => "",
                 "s_c" => "",
                 "s_f" => "selected-nav",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "",
+                "s_co" => "",
+                "s_ss" => "",
             );
             $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
@@ -333,6 +378,11 @@ class Feedback extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "selected-nav",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "",
                     'info' => $info
                 );
                 $segment = $this->uri->segment(3);
@@ -350,7 +400,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -359,6 +409,11 @@ class Feedback extends CI_Controller {
                             "s_a" => "",
                             "s_c" => "",
                             "s_f" => "selected-nav",
+                            "s_c" => "",
+                            "s_t" => "",
+                            "s_s" => "",
+                            "s_co" => "",
+                            "s_ss" => "",
                             'info' => $info,
                             'lect' => $offering_id
                         );
@@ -377,6 +432,11 @@ class Feedback extends CI_Controller {
                     "s_a" => "",
                     "s_c" => "",
                     "s_f" => "selected-nav",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "",
                     'info' => $info
                 );
                 $this->load->view('feedback/error', $data);
@@ -440,30 +500,35 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-                $program = 1;
-                break;
+            $program = 1;
+            break;
             case 'ECE':
-                $program = 2;
-                break;
+            $program = 2;
+            break;
             case 'EE':
-                $program = 3;
-                break;
+            $program = 3;
+            break;
             case 'ME':
-                $program = 4;
-                break;
+            $program = 4;
+            break;
 
             default:
-                break;
+            break;
         }
 
         $data = array(
             "title" => "Feedback - Learning Management System | FEU - Institute of Techonology",
             "info" => $info,
             "program" => $program,
-            "s_h" => "selected-nav",
+            "s_h" => "",
             "s_a" => "",
             "s_f" => "",
-            "s_c" => ""
+            "s_c" => "",
+            "s_c" => "",
+            "s_t" => "selected-nav",
+            "s_s" => "",
+            "s_co" => "",
+            "s_ss" => "",
         );
         $this->load->view('includes/header', $data);
         $this->load->view('feedback/feedback_prof_activation');

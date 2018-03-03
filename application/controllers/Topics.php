@@ -40,8 +40,12 @@ class Topics extends CI_Controller {
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
+                "s_f" => "",
                 "s_c" => "",
-                "s_f" => ""
+                "s_t" => "selected-nav",
+                "s_s" => "",
+                "s_co" => "",
+                "s_ss" => "",
             );
             $this->load->view('includes/header', $data);
             $this->load->view('topics/main');

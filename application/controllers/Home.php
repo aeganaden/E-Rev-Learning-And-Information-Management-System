@@ -64,7 +64,11 @@ if ($info['logged_in'] && $info['identifier'] != "administrator") {
         "s_h" => "selected-nav",
         "s_a" => "",
         "s_f" => "",
-        "s_c" => ""
+        "s_c" => "",
+        "s_t" => "",
+        "s_s" => "",
+        "s_co" => "",
+        "s_ss" => "",
     );
     $this->load->view('includes/header', $data);
     $this->load->view('home');
@@ -120,7 +124,11 @@ public function Activity() {
             "s_h" => "",
             "s_a" => "selected-nav",
             "s_f" => "",
-            "s_c" => ""
+            "s_c" => "",
+            "s_t" => "",
+            "s_s" => "",
+            "s_co" => "",
+            "s_ss" => "",
                     // "offering" => $offering
         );
         $this->load->view('includes/header', $data);

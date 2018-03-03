@@ -25,7 +25,12 @@ class Coursewares_fic extends CI_Controller {
 			"s_h"=> "",
 			"s_a"=> "",
 			"s_f"=> "",
-			"s_c"=> "selected-nav"
+			"s_c"=> "selected-nav",
+			"s_t" => "",
+			"s_s" => "",
+			"s_co" => "",
+			"s_ss" => "",
+
 			
 		);
 		$this->load->view('includes/header', $data);
