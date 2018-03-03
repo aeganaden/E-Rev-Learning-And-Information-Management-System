@@ -73,7 +73,7 @@ class Importdata extends CI_Controller {
 
     public function filecheck() {
         if (!empty($this->session->userdata('insertion_info')['logged_in']) && $this->session->userdata('insertion_info')['logged_in'] == 1) {
-            $config['upload_path'] = FCPATH . 'assets\uploads\\';
+            $config['upload_path'] = './assets/uploads/';
             $config['allowed_types'] = 'xls|csv|xlsx';
             $config['max_size'] = '10000';
             $stack_hold = array();
