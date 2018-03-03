@@ -162,9 +162,8 @@ class Importdata extends CI_Controller {
                         $temp = $this->Crud_model->insert_batch($sheet, $batch_holder[$sheet])['message'];
                         if ($this->db->trans_status() === FALSE && !empty($temp)) {
                             echo "<br>***" . $temp . " on '$sheet' table";
-                            $temp_counter++; 
+                            $temp_counter++;
                             include('./application/views/excel_reader/custom4.php');
-
                         } else {
                             echo "<br>Insertion success on table '$sheet'";
                         }
@@ -180,7 +179,6 @@ class Importdata extends CI_Controller {
                     }
                     include('./application/views/excel_reader/custom3.php');
                     include('./application/views/excel_reader/custom5.php');
-
                 }
                 $this->load->view('includes/footer');
             } else {
@@ -210,7 +208,7 @@ class Importdata extends CI_Controller {
     }
 
     public function sha1it() {
-        echo sha1('admin');
+        echo sha1('on');
     }
 
     function is_this_string_an_integer($string) {
