@@ -36,17 +36,17 @@
 	$dep = $info['user']->student_department;
 	$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 	$offering = $offering[0];
-	$offering_data = $this->Crud_model->fetch("offering", array("offering_department"=>$dep,"course_id"=>$offering->course_id));
+	$course = $this->Crud_model->fetch("course", array("course_department"=>$dep,"course_id"=>$offering->course_id));
 	
 	$count = 1;
 	?>
-	<?php foreach ($offering_data as $key => $value): ?>
+	<?php foreach ($course as $key => $value): ?>
 		<?php if ($count == 4): ?><?=  "<div class='row'>" ?><?php endif ?>
 			<?php 
 
 			// $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 			// $section = $section[0];
-			$subjects = $this->Crud_model->fetch("subject",array("offering_id"=>$value->offering_id));
+			$subjects = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id));
 			$subjects = $subjects[0];
 			?>
 			<?php if ($subjects): ?>

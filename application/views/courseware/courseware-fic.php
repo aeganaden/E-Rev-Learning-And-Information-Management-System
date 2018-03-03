@@ -24,13 +24,13 @@
 
 <div class="row container" id="subject-section">
 	<?php 
-	$offering = $this->Crud_model->fetch("offering",array("offering_department"=>$info['user']->fic_department));
+	$course = $this->Crud_model->fetch("course",array("course_department"=>$info['user']->fic_department));
 	?>
-	<?php if ($offering): ?>
-		<?php foreach ($offering as $key => $value): ?>
+	<?php if ($course): ?>
+		<?php foreach ($course as $key => $value): ?>
 
 			<?php
-			$subject = $this->Crud_model->fetch("subject",array("offering_id"=>$value->offering_id));
+			$subject = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id));
 			?>
 			<?php if ($subject): ?>
 				<?php foreach ($subject as $key => $i_value): ?>

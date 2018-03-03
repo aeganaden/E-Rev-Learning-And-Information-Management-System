@@ -89,51 +89,70 @@ class Admin extends CI_Controller {
             }
           }
 
-          $course_total = $this->Crud_model->fetch("course");
-
           /* =====  End of COSML REPORTS FETCHING  ====== */
+
+
+          /*================================================
+          =            Course OFFERING per term            =
+          ================================================*/
+          
+          
+          $course_total = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
+          
+          /*=====  End of Course OFFERING per term  ======*/
+          
 
 
         /* ==========================================
           =            LECTURERS SCHEDULE            =
           ========================================== */
+          $sched = (object) array();
+          $schedule = array();
+          $course = $this->Crud_model->fetch("course",array("enrollment_id"=> $active_enrollment->enrollment_id));
+          if ($course) {
+            foreach ($course as $key => $value) {
+              $offering = $this->Crud_model->fetch("offering",array("course_id"=> $value->course_id));
+              if ($offering) {
+                foreach ($offering as $key => $i_value) {
+                  $sched_for = $this->Crud_model->fetch("schedule",array("offering_id"=>$i_value->offering_id));
 
+                  if ($sched_for) {
+                    $sched = $sched_for;
+                    foreach ($sched_for as $key => $sched) {
+                      // fetch lecturer
+                      $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $sched->lecturer_id));
+                      $lecturer = $lecturer[0];
+                      $sched->id_number = $lecturer->id_number;
+                      $sched->firstname = $lecturer->firstname;
+                      $sched->midname = $lecturer->midname;
+                      $sched->lastname = $lecturer->lastname;
+                      $sched->expertise = $lecturer->lecturer_expertise;
+                      $sched->status = $lecturer->lecturer_status;
+                    // fetch course
 
-          $schedule = $this->Crud_model->fetch("schedule");
+                      $offering = $this->Crud_model->fetch("offering", array("offering_id" => $sched->offering_id));
+                      $offering = $offering[0];
 
-          if ($schedule) {
-           foreach ($schedule as $key => $sched) {
-            // fetch lecturer
-            $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $sched->lecturer_id));
-            $lecturer = $lecturer[0];
-            $sched->id_number = $lecturer->id_number;
-            $sched->firstname = $lecturer->firstname;
-            $sched->midname = $lecturer->midname;
-            $sched->lastname = $lecturer->lastname;
-            $sched->expertise = $lecturer->lecturer_expertise;
-            $sched->status = $lecturer->lecturer_status;
-            // fetch course
+                      $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
+                      $course = $course[0];
 
-            $offering = $this->Crud_model->fetch("offering", array("offering_id" => $sched->offering_id));
-            $offering = $offering[0];
+                      $sched->subject = $course->course_course_code;
+                    }
 
-            $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
-            $course = $course[0];
+                    array_push($schedule,$sched);
+                  }
+                }
 
-            $sched->offering = $course->course_course_code;
-
-            // fetch subject
-            $subject = $this->Crud_model->fetch("subject", array("offering_id" => $offering->course_id));
-            $subject = $subject[0];
-            $sched->subject = $subject->subject_name;
+              }
+            }
           }
 
-        }
-        // echo "<pre>";
-        // print_r($lecturer);
-        // die();
 
-        /* =====  End of LECTURERS SCHEDULE  ====== */
+
+
+
+
+          /* =====  End of LECTURERS SCHEDULE  ====== */
 
 
         /* ===========================================
@@ -440,28 +459,32 @@ class Admin extends CI_Controller {
      public function viewClassList() {
         // $subject = $this->Crud_model->fetch("subject", array("lecturer_id" => $this->uri->segment(3)));
       $schedule = $this->Crud_model->fetch("schedule", array("lecturer_id" => $this->uri->segment(3)));
-      foreach ($schedule as $key => $value) {
-        $offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
-        $offering = $offering[0];
-        $value->offering_section = $offering->offering_name;
+      if ($schedule) {
+        foreach ($schedule as $key => $value) {
 
+          $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+          $active_enrollment = $active_enrollment[0];
 
-        $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
-        $course = $course[0];
-        $value->program = $course->course_department;
+          $course = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
+          if ($course) {
+            // echo "TRUE!!!!!!!!!!!!!!!!";
+            foreach ($course as $key => $i_value) {
+              $offering = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id,"course_id"=>$i_value->course_id));
+              if ($offering) {
+                $offering = $offering[0];
+                $value->offering_section = $offering->offering_name;
+                $value->program = $i_value->course_department;
+              }
+            }
+          }else{
+            $schedule = null;
+            break;
+          }
 
-            // fetch course
-            // $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id));
-            // $course = $course[0];
-            // $value->program = $course->course_department;
-            // // fetch offering
-            // $offering = $this->Crud_model->fetch("offering", array("course_id"=>$course->course_id));
-            // $offering = $offering[0];
-            // $value->offering_section = $offering->offering_name;
+        }
+      }else{
+        $schedule = null;
       }
-        // echo "<pre>";
-        // print_r( $student);
-        // die();
       $data = array(
         "title" => "Class List - Learning Management System | FEU - Institute of Techonology",
         "schedule" => $schedule,
