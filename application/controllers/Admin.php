@@ -96,11 +96,14 @@ class Admin extends CI_Controller {
           =            Course OFFERING per term            =
           ================================================*/
           
-          
-          $course_total = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
-          
-          /*=====  End of Course OFFERING per term  ======*/
-          
+          if ($active_enrollment) {
+            $course_total = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
+          }else{
+           $course_total = null;
+         }
+         
+         /*=====  End of Course OFFERING per term  ======*/
+         
 
 
         /* ==========================================
@@ -108,41 +111,43 @@ class Admin extends CI_Controller {
           ========================================== */
           $sched = (object) array();
           $schedule = array();
-          $course = $this->Crud_model->fetch("course",array("enrollment_id"=> $active_enrollment->enrollment_id));
-          if ($course) {
-            foreach ($course as $key => $value) {
-              $offering = $this->Crud_model->fetch("offering",array("course_id"=> $value->course_id));
-              if ($offering) {
-                foreach ($offering as $key => $i_value) {
-                  $sched_for = $this->Crud_model->fetch("schedule",array("offering_id"=>$i_value->offering_id));
+          if ($active_enrollment) {
+            $course = $this->Crud_model->fetch("course",array("enrollment_id"=> $active_enrollment->enrollment_id));
+            if ($course) {
+              foreach ($course as $key => $value) {
+                $offering = $this->Crud_model->fetch("offering",array("course_id"=> $value->course_id));
+                if ($offering) {
+                  foreach ($offering as $key => $i_value) {
+                    $sched_for = $this->Crud_model->fetch("schedule",array("offering_id"=>$i_value->offering_id));
 
-                  if ($sched_for) {
-                    $sched = $sched_for;
-                    foreach ($sched_for as $key => $sched) {
+                    if ($sched_for) {
+                      $sched = $sched_for;
+                      foreach ($sched_for as $key => $sched) {
                       // fetch lecturer
-                      $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $sched->lecturer_id));
-                      $lecturer = $lecturer[0];
-                      $sched->id_number = $lecturer->id_number;
-                      $sched->firstname = $lecturer->firstname;
-                      $sched->midname = $lecturer->midname;
-                      $sched->lastname = $lecturer->lastname;
-                      $sched->expertise = $lecturer->lecturer_expertise;
-                      $sched->status = $lecturer->lecturer_status;
+                        $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $sched->lecturer_id));
+                        $lecturer = $lecturer[0];
+                        $sched->id_number = $lecturer->id_number;
+                        $sched->firstname = $lecturer->firstname;
+                        $sched->midname = $lecturer->midname;
+                        $sched->lastname = $lecturer->lastname;
+                        $sched->expertise = $lecturer->lecturer_expertise;
+                        $sched->status = $lecturer->lecturer_status;
                     // fetch course
 
-                      $offering = $this->Crud_model->fetch("offering", array("offering_id" => $sched->offering_id));
-                      $offering = $offering[0];
+                        $offering = $this->Crud_model->fetch("offering", array("offering_id" => $sched->offering_id));
+                        $offering = $offering[0];
 
-                      $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
-                      $course = $course[0];
+                        $course = $this->Crud_model->fetch("course", array("course_id" => $offering->course_id));
+                        $course = $course[0];
 
-                      $sched->subject = $course->course_course_code;
+                        $sched->subject = $course->course_course_code;
+                      }
+
+                      array_push($schedule,$sched);
                     }
-
-                    array_push($schedule,$sched);
                   }
-                }
 
+                }
               }
             }
           }
