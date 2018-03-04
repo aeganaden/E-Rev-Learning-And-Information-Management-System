@@ -97,7 +97,11 @@
         </blockquote>
         <div class="row">
           <?php 
-          $activity = $this->Crud_model->fetch("activity",array("offering_id"=>$info['user']->offering_id,"activity_status"=>1));
+          if ($info['identifier'] == "student") {
+            $activity = $this->Crud_model->fetch("activity",array("offering_id"=>$info['user']->offering_id,"activity_status"=>1));
+          }else{
+            $activity = $this->Crud_model->fetch("activity",array("activity_status"=>1));
+          }
           ?>
           <?php if ($activity): ?>
             <?php $x = 1; ?>
