@@ -25,9 +25,10 @@ class Student_scores extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
+
                 $program = 1;
                 break;
-            case 'ECE':
+            case 'EEE':
                 $program = 2;
                 break;
             case 'EE':
@@ -76,7 +77,7 @@ class Student_scores extends CI_Controller {
             case 'CE':
                 $program = 1;
                 break;
-            case 'ECE':
+            case 'EEE':
                 $program = 2;
                 break;
             case 'EE':
