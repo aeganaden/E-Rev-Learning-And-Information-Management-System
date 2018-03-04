@@ -23,8 +23,7 @@
         <blockquote class="color-primary-green">
             <h5 class="color-black">Import Student Scores</h5>
         </blockquote>
-        <!-- <?php echo $course_id; ?> -->
-        <form action="#">
+        <form enctype="multipart/form-data" action="<?php echo base_url() . "Student_scores/read_excel/" . $this->uri->segment(3); ?>" method="POST">
             <ul class="collection"  style="margin-bottom: 5%;">
                 <li class="collection-item" id="li_s1" style="padding: 5%; margin-bottom: 1%;">
                     <div class="row  ">
@@ -45,7 +44,7 @@
                             <div class="file-field input-field">
                                 <div class="btn">
                                     <span>File</span>
-                                    <input type="file" id="input_excel">
+                                    <input type="file" id="input_excel" name="excel">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -94,7 +93,7 @@
                             </div>
 
                             <div class="row" id="add_ss_div">
-                                <button class="right btn waves-light waves-effect bg-primary-green" id="btn_submit_ss">SUBMIT</button>
+                                <button type="button" class="right btn waves-light waves-effect bg-primary-green" id="btn_submit_ss">SUBMIT</button>
                             </div>
 
                         </div>
@@ -114,7 +113,7 @@
                         </blockquote>
                         <div class="col s4"></div>
                         <div class="col s4">
-                            <button class="btn bg-primary-green center waves-effect waves-light">IMPORT SCORES</button>
+                            <button class="btn bg-primary-green center waves-effect waves-light" type="submit">IMPORT SCORES</button>
                         </div>
                         <div class="col s4"></div>
                     </div>
