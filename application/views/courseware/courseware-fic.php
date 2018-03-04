@@ -30,7 +30,7 @@
 		<?php foreach ($course as $key => $value): ?>
 
 			<?php
-			$subject = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id));
+			$subject = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id));
 			?>
 			<?php if ($subject): ?>
 				<?php foreach ($subject as $key => $i_value): ?>

@@ -150,7 +150,9 @@ a{
 	transform: scale(.5); 
 }
 
-
+.circle {
+	object-fit: cover !important; 
+}
 
 
 

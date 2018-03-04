@@ -15,7 +15,7 @@
       <h5>Subject Area</h5>
       <ul class="collapsible" data-collapsible="accordion">
         <?php foreach ($course as $key => $value): ?>
-          <?php  $subject_area = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id)); ?>
+          <?php  $subject_area = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id)); ?>
 
           <?php if ($subject_area): ?>
             <?php foreach ($subject_area as $key => $i_value): ?>
