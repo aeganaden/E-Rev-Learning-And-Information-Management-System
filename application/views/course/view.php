@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Course Management</h3>
+            <h3 class="color-black">View Course</h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
@@ -20,9 +20,17 @@
 <div class="row container">
     <a onclick="window.location.replace('<?= base_url() ?>Course');" class="waves-effect waves-light btn red"><i class="material-icons left">keyboard_backspace</i>Back</a>
     <pre>
-        <?php // print_r($result); ?>
+        <?php // print_r($subject_year_course); ?>
     </pre>
     <center><h5><?= $course_title ?> (<?= $course_code ?>)</h5></center>
+    <br>
+    <?php
+    echo "<h6>" . $subject_year_course[0]->year_level_name . ":</h6>";
+    foreach ($subject_year_course as $syc) {
+        echo "<h6>—" . $syc->subject_list_name . "</h6>";
+    }
+    ?>
+    <br>
     <?php if (isset($result) && !empty($result)): ?>
         <table class="data-table responsive-table" id="tbl-course-view" style="table-layout:auto;">
             <thead>

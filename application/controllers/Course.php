@@ -64,10 +64,10 @@ class Course extends CI_Controller {
                 $where = array('enrollment_id' => $enrollment_active, 'course_department' => $info["user"]->professor_department,
                     "professor_id" => $info["user"]->professor_id);
                 $isit = false;
-                if ($result = $this->Crud_model->fetch_select("course", $col, $where)) {
-                    print_r($result);
+                if ($course_orig = $this->Crud_model->fetch_select("course", $col, $where)) {
+
                     $segment = $this->uri->segment(3);  //get segment
-                    foreach ($result as $key => $res) {
+                    foreach ($course_orig as $key => $res) {
                         $var = $res->course_id;
                         if ($segment == $this->hash_id($var)) {
                             $isit = true;
@@ -76,53 +76,56 @@ class Course extends CI_Controller {
                         }
                     }
                 }
-                $col = '';
+                $col = 'subject_list_name, year_level_name';
                 $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department,
-                    "cou.professor_id" => $info["user"]->professor_id, "sl.subject_list_department" => $info["user"]->professor_department);
+                    "cou.professor_id" => $info["user"]->professor_id, "sl.subject_list_department" => $info["user"]->professor_department,
+                    "cou.course_id" => $var);
                 $join = array(
                     array("year_level as yl", "yl.year_level_id = sl.year_level_id"),
                     array("course as cou", "cou.year_level_id = yl.year_level_id")
                 );
-                echo "<pre>";
-                $result = $this->Crud_model->fetch_join2("subject_list as sl", NULL, $join, NULL, $where);
-                print_r($result);
-//                if ($isit) {
-//                    $course = $result[$hold_key];
-//                    $col = 'off.offering_id, off.offering_name, sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue';
-//                    $where = array("off.course_id" => $result[$hold_key]->course_id);
-//                    $join = array(
-//                        array(
-//                            "schedule as sch", "sch.offering_id = off.offering_id"
-//                        )
-//                    );
-//
-//                    if ($result = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where)) {
-//                        foreach ($result as $key => $res) {
-//                            $result[$key]->format_time = date("g:iA", $res->schedule_start_time) . "-" . date("g:iA", $res->schedule_end_time);
-//                            $result[$key]->format_day = date("D", $res->schedule_start_time);
-//                        }
-//                    }
-//
-//                    $data = array(
-//                        "title" => "Section Management",
-//                        'info' => $info,
-//                        "s_h" => "",
-//                        "s_a" => "",
-//                        "s_c" => "",
-//                        "s_f" => "",
-//                        "s_s" => "",
-//                        "s_co" => "selected-nav",
-//                        "s_t" => "",
-//                        "result" => $result,
-//                        "course_title" => $course->course_course_title,
-//                        "course_code" => $course->course_course_code
-//                    );
-//                    $this->load->view('includes/header', $data);
-//                    $this->load->view('course/view');
-//                    $this->load->view('includes/footer');
-//                } else {
-//                    redirect("Course");
-//                }
+
+                $subject_year_course = $this->Crud_model->fetch_join2("subject_list as sl", $col, $join, NULL, $where);
+//                echo "<pre>";
+//                print_r($subject_year_course);
+                if ($isit) {
+                    $course = $course_orig[$hold_key];
+                    $col = 'off.offering_id, off.offering_name, sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue';
+                    $where = array("off.course_id" => $course_orig[$hold_key]->course_id);
+                    $join = array(
+                        array(
+                            "schedule as sch", "sch.offering_id = off.offering_id"
+                        )
+                    );
+
+                    if ($result = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where)) {
+                        foreach ($result as $key => $res) {
+                            $result[$key]->format_time = date("g:iA", $res->schedule_start_time) . "-" . date("g:iA", $res->schedule_end_time);
+                            $result[$key]->format_day = date("D", $res->schedule_start_time);
+                        }
+                    }
+
+                    $data = array(
+                        "title" => "Section Management",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_c" => "",
+                        "s_f" => "",
+                        "s_s" => "",
+                        "s_co" => "selected-nav",
+                        "s_t" => "",
+                        "result" => $result,
+                        "course_title" => $course->course_course_title,
+                        "course_code" => $course->course_course_code,
+                        "subject_year_course" => $subject_year_course
+                    );
+                    $this->load->view('includes/header', $data);
+                    $this->load->view('course/view');
+                    $this->load->view('includes/footer');
+                } else {
+                    redirect("Course");
+                }
             } else {
 //                echo $hold;
                 redirect("Course");
