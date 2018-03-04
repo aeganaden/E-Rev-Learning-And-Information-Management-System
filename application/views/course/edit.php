@@ -19,11 +19,16 @@
 </div>
 <div class="row container">
     <pre>
-        <?php // print_r($hold); ?>
+        <?php
+        print_r($result);
+        echo "====";
+        print_r($select);
+        $hold = $select;
+        ?>
     </pre>
     <?php // echo form_open('form');   ?>
     <div class="row">
-        <form action="" method="POST" class="col s12">
+        <form action="<?= base_url() . "Course/edit/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <div class="row">
                 <div class="input-field col s6">
                     <?php if (!empty(form_error('course_code'))): ?>
@@ -32,7 +37,7 @@
                         <span class="red-text"><?php echo form_error('course_code'); ?></span>
                     <?php else: ?>
                         <label for="course_code">Course Code</label>
-                        <input name="course_code" value="<?= set_value('course_code') ?>" type="text">
+                        <input name="course_code" value="<?= $result[0]->course_course_code ?>" type="text">
                     <?php endif; ?>
                 </div>
                 <div class="input-field col s6">
@@ -42,22 +47,26 @@
                         <span class="red-text"><?php echo form_error('course_title'); ?></span>
                     <?php else: ?>
                         <label for="course_title">Course Title</label>
-                        <input name="course_title" value="<?= set_value('course_title') ?>" type="text">
+                        <input name="course_title" value="<?= $result[0]->course_course_title ?>" type="text">
                     <?php endif; ?>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select>
+                    <select name = "subject">
                         <?php foreach ($hold as $key => $value): ?>
-                            <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
+                            <?php if ($key == $result[0]->subject_list_id): ?>
+                                <option value="<?= $key ?>" selected><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
+                            <?php else: ?>
+                                <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
                     <label>Year Level</label>
                 </div>
             </div>
             <div class="input-field">
-                <button class="btn waves-effect waves-light right green" type="submit" name="submit">Add</button>
+                <button class="btn waves-effect waves-light right green" type="submit" name="submit">Update</button>
                 <a href="<?= base_url() ?>Course" class="waves-effect waves-light btn left red">Cancel</a>
             </div>
         </form>

@@ -2,18 +2,17 @@
     $(document).ready(function () {
         swal({
         title: "Error",
-                text: "There is an error occured while updating the data",
+                text: "Duplicate data.",
                 icon: "warning",
                 buttons: true,
-                dangerMode: true
+                dangerMode: true,
                 closeOnClickOutside: false
         }).then((willDelete) <?= "=>" ?>{
         if (willDelete) {
-            window.location.href = "<?= base_url() . "Course" ?>";
+            window.location.href = "<?= base_url() . "Course/" ?>";
         } else {
-            window.location.href = "<?= base_url() . "Course" ?>";
-            }
+            window.location.href = "<?= base_url() . "Course/" ?>";
         }
-        );
+    });
     });
 </script>
