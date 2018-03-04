@@ -111,6 +111,36 @@ class Student_scores extends CI_Controller {
 		}
 	}
 
+
+	public function insertScore()
+	{
+		$total_s = $this->input->post("total_s");
+		$total_s_alt = str_replace(" ","",strip_tags($total_s));
+
+		$passing_s = $this->input->post("passing_s");
+		$passing_s_alt =str_replace(" ","",strip_tags( $passing_s));
+
+		$select = $this->input->post("select");
+		$select_alt = str_replace(" ","",strip_tags( $select));
+
+
+		if (empty($total_s_alt) || empty($passing_s_alt) || empty($select_alt)) {
+			echo json_encode("Values cannot be NULL");
+		}elseif ($total_s <= $passing_s) {
+			echo json_encode("Total Score must not be greater than passing score");
+		}elseif (is_numeric($total_s) == false || is_numeric($passing_s) == false) {
+			echo json_encode("Total Score and Passing Score Must be numeric only");
+		}elseif ($total_s < 1 || $passing_s < 1) {
+			echo json_encode("No negative and 0 value");
+		}else{
+			if ($this->Crud_model->insert("data_scores",array("data_scores_type"=>$select,"data_scores_score"=>$total_s,"data_scores_passing"=>$select))) {
+				echo json_encode(true);
+			}else{
+				echo json_encode("Problem in inserting Data Scores");
+			}
+		}
+	}
+
 }
 
 /* End of file Student_scores.php */
