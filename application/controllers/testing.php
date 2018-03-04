@@ -12,14 +12,14 @@ class testing extends CI_Controller {
         $this->load->library('form_validation');
     }
 
-    public function index() {
+    private function index() {
         $data = array("title" => "testing");
         $this->load->view('includes/header', $data);
         $this->load->view('test/main');
         $this->load->view('includes/footer');
     }
 
-    public function testing_upload() {
+    private function testing_upload() {
 //        excel_file
         require "./application/vendor/autoload.php";
 
