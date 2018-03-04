@@ -20,10 +20,8 @@
 <div class="row container">
     <pre>
         <?php
-        print_r($result);
-        echo "====";
-        print_r($select);
-        $hold = $select;
+//        print_r($select);
+//        print_r($line);
         ?>
     </pre>
     <?php // echo form_open('form');   ?>
@@ -37,7 +35,7 @@
                         <span class="red-text"><?php echo form_error('course_code'); ?></span>
                     <?php else: ?>
                         <label for="course_code">Course Code</label>
-                        <input name="course_code" value="<?= $result[0]->course_course_code ?>" type="text">
+                        <input name="course_code" value="<?= $line->course_course_code ?>" type="text">
                     <?php endif; ?>
                 </div>
                 <div class="input-field col s6">
@@ -47,22 +45,22 @@
                         <span class="red-text"><?php echo form_error('course_title'); ?></span>
                     <?php else: ?>
                         <label for="course_title">Course Title</label>
-                        <input name="course_title" value="<?= $result[0]->course_course_title ?>" type="text">
+                        <input name="course_title" value="<?= $line->course_course_title ?>" type="text">
                     <?php endif; ?>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select name = "subject">
-                        <?php foreach ($hold as $key => $value): ?>
-                            <?php if ($key == $result[0]->subject_list_id): ?>
-                                <option value="<?= $key ?>" selected><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
+                    <select name="subject-area">
+                        <?php foreach ($select as $key => $value): ?>
+                            <?php if ($key == $line->year_level_id): ?>
+                                <option selected value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
                             <?php else: ?>
                                 <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
-                    <label>Year Level</label>
+                    <label>Subject Area</label>
                 </div>
             </div>
             <div class="input-field">

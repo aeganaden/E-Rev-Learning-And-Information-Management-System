@@ -23,7 +23,7 @@
     </pre>
     <?php // echo form_open('form');   ?>
     <div class="row">
-        <form action="" method="POST" class="col s12">
+        <form action="<?= base_url() . "Course/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <div class="row">
                 <div class="input-field col s6">
                     <?php if (!empty(form_error('course_code'))): ?>
@@ -49,9 +49,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <select name="subject-area">
-                        <?php
-                        foreach ($hold as $key => $value):
-                            ?>
+                        <?php foreach ($hold as $key => $value): ?>
                             <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
                         <?php endforeach; ?>
                     </select>
