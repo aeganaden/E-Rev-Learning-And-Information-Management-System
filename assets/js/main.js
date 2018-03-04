@@ -29,7 +29,7 @@ $(document).ready(function() {
     hiddenName: true,
     min: tomorrow,
     format: 'mmmm d, yyyy',
-    closeOnSelect: false // Close upon selecting a date,
+    closeOnSelect: true // Close upon selecting a date,
 });
 	$('.timepicker').pickatime({
     default: 'now', // Set default time: 'now', '1:30AM', '16:30'
@@ -38,7 +38,7 @@ $(document).ready(function() {
     donetext: 'OK', // text for done-button
     cleartext: 'Clear', // text for clear-button
     canceltext: 'Cancel', // Text for cancel-button
-    autoclose: false, // automatic close timepicker
+    autoclose: true, // automatic close timepicker
     ampmclickable: true, // make AM PM clickable
     aftershow: function(){} //Function for after opening timepicker
 });

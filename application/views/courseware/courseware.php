@@ -46,7 +46,7 @@
 
 			// $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 			// $section = $section[0];
-			$subjects = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id));
+			$subjects = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id));
 			$subjects = $subjects[0];
 			?>
 			<?php if ($subjects): ?>
