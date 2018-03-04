@@ -91,9 +91,9 @@ public function Activity() {
     }
 
     $this->session->unset_userdata('insertion_info');
-    $activity_details = $this->Crud_model->fetch("activity");
+    $activity_details = $this->Crud_model->fetch("activity",array("activity_status"=>1));
     $info = $this->session->userdata('userInfo');
-    $activity = $this->Crud_model->fetch("activity");
+    // $activity = $this->Crud_model->fetch("activity");
 
     switch ($info['identifier']) {
         case 'fic':
@@ -152,12 +152,12 @@ public function fetchSchedule()
 
 
 public function updateActivity() {
-    $this->session->unset_userdata('insertion_info');
     $id = $this->input->post("id");
-    $time = $this->input->post("time");
-    $date = $this->input->post("date");
+    $time_s = strtotime($this->input->post("time_s"));
+    $time_e = strtotime($this->input->post("time_e"));
+    $date = strtotime($this->input->post("date"));
     $desc = $this->input->post("desc");
-    $dateFull = strtotime($date . " " . $time);
+    // $dateFull = strtotime($date . " " . $time);
 
     $data = array(
         "activity_description" => $desc,
@@ -174,7 +174,7 @@ public function deleteActivity() {
     $where = array(
         "activity_id" => $id
     );
-    if ($this->Crud_model->delete("activity", $where)) {
+    if ($this->Crud_model->update("activity",array("activity_status"=>0),$where)) {
         echo json_encode(true);
     }
 }
