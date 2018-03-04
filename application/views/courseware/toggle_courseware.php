@@ -10,12 +10,12 @@
   <div class="col s1"></div>
   <div class="col s11">
 
-    <?php  $offering = $this->Crud_model->fetch("offering",array("offering_department"=>$info['user']->fic_department));  ?>
-    <?php if ($offering): ?>
+    <?php  $course = $this->Crud_model->fetch("course",array("course_department"=>$info['user']->fic_department));  ?>
+    <?php if ($course): ?>
       <h5>Subject Area</h5>
       <ul class="collapsible" data-collapsible="accordion">
-        <?php foreach ($offering as $key => $value): ?>
-          <?php  $subject_area = $this->Crud_model->fetch("subject",array("offering_id"=>$value->offering_id)); ?>
+        <?php foreach ($course as $key => $value): ?>
+          <?php  $subject_area = $this->Crud_model->fetch("subject",array("course_course_id"=>$value->course_id)); ?>
 
           <?php if ($subject_area): ?>
             <?php foreach ($subject_area as $key => $i_value): ?>

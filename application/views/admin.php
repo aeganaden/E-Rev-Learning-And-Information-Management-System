@@ -269,7 +269,6 @@
                             <th>Last Name</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
-                            <th>Offering</th>
                             <th>Subject</th>
                             <th>Day</th>
                             <th>Start Time</th>
@@ -290,7 +289,6 @@
                                     <td><?= ucwords($value->lastname) ?></td>
                                     <td><?= ucwords($value->firstname) ?></td>
                                     <td><?= ucwords($value->midname) ?></td>
-                                    <td><?= $value->offering ?></td>
                                     <td><?= $value->subject ?></td>
                                     <td><?= date("l", $value->schedule_start_time) ?></td>
                                     <td><?= date("h:i A", $value->schedule_start_time) ?></td>
@@ -399,10 +397,10 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Class Offering -->
+            <!-- Course Offering -->
             <div class="row" id="div-card-clof" style="display: none;">
                 <blockquote class="color-primary-green">
-                    <h2>Class Offering</h2>
+                    <h2>Course Offering | <u><?= $t ?>T <?= $sy ?></u></h2>  
                 </blockquote>
                 <table class="data-table">
                     <thead>
@@ -703,6 +701,8 @@ $(".btn_mdl_feedback").click(function (event) {
                         $(".stat" + id).addClass('color-green');
                     }
 
+                    $toastContent = $('<span>FIC Status Updated</span>');
+                    Materialize.toast($toastContent, 2000);
                 }
             });
         });
@@ -730,6 +730,8 @@ $(".btn_mdl_feedback").click(function (event) {
                         $(".statProf" + id).addClass('color-green');
                     }
 
+                    $toastContent = $('<span>Professor Status Updated</span>');
+                    Materialize.toast($toastContent, 2000);
                 }
             });
         });

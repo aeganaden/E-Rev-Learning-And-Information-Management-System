@@ -41,7 +41,7 @@ class Coursewares_fic extends CI_Controller {
 	public function fetchCoursewares()
 	{
 		$topic_id = $this->input->post("topic_id");
-		if ($data = $this->Crud_model->fetch("courseware",array("topic_id"=>$topic_id))) {
+		if ($data = $this->Crud_model->fetch("courseware",array("topic_id"=>$topic_id,"courseware_status"=>1))) {
 			foreach ($data as $key => $value) {
 				$value->date_added = date("M d, Y",$value->courseware_date_added);
 				$value->date_edited = date("M d, Y h:i A",$value->courseware_date_edited);
