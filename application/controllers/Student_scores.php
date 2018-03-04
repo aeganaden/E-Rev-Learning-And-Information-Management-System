@@ -159,7 +159,7 @@ class Student_scores extends CI_Controller {
             'title' => "Imported"
         );
         $this->load->view('includes/header', $data);
-        if ($this->upload->do_upload($this->input->post("excel"))) {       //success upload
+        if ($this->upload->do_upload("excel")) {       //success upload
             $upload_data = $this->upload->data();
             echo"<pre>";
             print_r($upload_data);
