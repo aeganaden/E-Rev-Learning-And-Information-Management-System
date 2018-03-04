@@ -25,20 +25,20 @@ class Student_scores extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'ECE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
 
@@ -74,20 +74,20 @@ class Student_scores extends CI_Controller {
         $course_id = $this->uri->segment(3);
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'ECE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
 
@@ -159,24 +159,51 @@ class Student_scores extends CI_Controller {
             'title' => "Imported"
         );
         $this->load->view('includes/header', $data);
-<<<<<<< HEAD
-        if ($this->upload->do_upload("excel")) {       //success upload
-=======
         if ($this->upload->do_upload('excel')) {       //success upload
->>>>>>> 46d0a4aa224d389d22ca16de29a8be5bcfcf9d9c
             $upload_data = $this->upload->data();
             echo"<pre>";
-            print_r($upload_data);
-            echo"<br>";
-            echo"<br>";
 
             /** Load $inputFileName to a Spreadsheet Object  * */
             $spreadsheet = IOFactory::load($upload_data["full_path"]);
-            $worksheet = $spreadsheet->getActiveSheet();
-            echo $highestRow = $worksheet->getHighestRow(); // e.g. 10
-            echo $highestColumn = $worksheet->getHighestColumn(); // e.g 'F'
-//            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-            print_r($sheetData);
+            //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
+            //topic: "Retrieving a range of cell values to an array"
+            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+//            print_r($sheetData);
+            //disregards other cells, focus on 2A and 2B and beyond
+            foreach ($sheetData as $key => $val) {
+                if ($key != 1) {        //row 2 and beyond
+                    if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
+                        if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int
+                            $val["A"];  //store to new variable and do what you want
+                            $val["B"];
+                            echo $key . " meron<br>";
+                        } else {
+                            //return an error first before break;
+                            break;
+                        }
+                    } else if (empty($val["A"]) && !empty($val["B"])) {     //may laman si A, walang laman si B
+                        //return error saying there is a blank cell in excel
+                        //then break;
+                        break;
+                    } else if (!empty($val["A"]) && empty($val["B"])) {     //walang laman si A, wmay laman si B
+                        //return error saying there is a blank cell in excel
+                        //then break;
+                        break;
+                    } else {
+                        //impossible na mapuntahan to kasi di magfefetch ng empty sa baba kung wala namang mafefetch
+                        break;
+                    }
+                } else {
+                    //checks if it is correct
+                    if (strtolower($val["A"]) == "student number" || strtolower($$val["A"]) == "student_number" &&
+                            strtolower($val["B"]) == "score" || strtolower($val["B"]) == "scores") {
+                        echo "row 1 is correct <br>";
+                    } else {
+                        //return an error first
+                        break;          //cut the loop for efficiency
+                    }
+                }
+            }
         } else {            //uploading failed
             //code here
             echo "<br>";
