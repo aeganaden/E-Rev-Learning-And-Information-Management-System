@@ -136,7 +136,7 @@ class Course extends CI_Controller {
     }
 
     public function add() {
-        echo $this->input->post("subject_area");
+//        echo $this->input->post("subject_area");
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
 
