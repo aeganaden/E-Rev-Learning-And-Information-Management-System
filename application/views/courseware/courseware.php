@@ -214,10 +214,29 @@
 						.then((submitAnswer) => {
 							if (submitAnswer) { 
 
-								for(var i = 0; i< data.length; i++){ 
-									insertAnswer($ans_id[i],$q_id[i]);
-								}
 
+								$.ajax({
+									url: '<?=base_url()?>Coursewares/isExisting ',
+									type: 'post',
+									dataType: 'json',
+									data: {
+										cw_id: cw_id,
+										student_id: <?=$info['user']->student_id?>,
+									},
+									success:function(existing){
+										if (existing == true) {
+											updateAnswer($ans_id,$q_id,cw_id);
+											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											
+										}else{
+											for(var i = 0; i< data.length; i++){ 
+												insertAnswer($ans_id[i],$q_id[i],cw_id);
+											}
+											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+										}
+									}
+								});
+								
 							}
 						});
 
@@ -374,7 +393,7 @@
 	});
 
 
-function insertAnswer(answer_id,q_id) {
+function insertAnswer(answer_id,q_id,cw_id) {
 	$.ajax({
 		url: '<?=base_url()?>Coursewares/insertAnswer',
 		type: 'post', 
@@ -382,6 +401,7 @@ function insertAnswer(answer_id,q_id) {
 		data: {
 			answer: answer_id,
 			q_id: q_id,
+			cw_id: cw_id,
 		},
 		success: function(data){
 			// console.log(data);	\
@@ -396,6 +416,55 @@ function insertAnswer(answer_id,q_id) {
 			}
 		}
 	});
+}
+function updateAnswer(answer_id,q_id,cw_id) {
+
+	var answer_json = JSON.stringify(answer_id);
+	var q_json = JSON.stringify(q_id);
+	// console.log(answer_id);	
+	// console.log(q_id);	
+	// console.log(cw_id);	
+
+
+	$.ajax({
+		url: '<?=base_url()?>Coursewares/updateAnswer',
+		type: 'post', 
+		dataType: 'html',
+		data: {
+			answer: answer_json,
+			q_id: q_json,
+			cw_id: cw_id,
+		},
+		success: function(data){
+			// console.log(data);	\
+			if (data!=false) {
+				o_ex = false;
+				$("#question-section").html(data);
+				$('html, body').animate({
+					scrollTop: $("#top").offset().top
+				}, 500);
+			}else{
+				return false;
+			}
+		}
+	});
+}
+
+function grade_assessment(cw_id,student_id) {
+	
+	$.ajax({
+		url: '<?=base_url()?>Coursewares/countCorrect',
+		type: 'post',
+		dataType: 'json',
+		data: {
+			cw_id: cw_id,
+			student_id: student_id,
+		},
+		success: function(data){
+			console.log(data);	
+		}
+	});
+
 }
 
 

@@ -90,10 +90,12 @@ class Coursewares extends CI_Controller {
 		$info = $this->session->userdata('userInfo');
 		$answer = $this->input->post("answer");
 		$q_id = $this->input->post("q_id");
+		$cw_id = $this->input->post("cw_id");
 		$data = array(
 			"courseware_question_id"=>$q_id,
 			"choice_id"=>$answer, 
 			"student_id"=> $info['user']->student_id, 
+			"courseware_id"=> $cw_id, 
 		);
 
 		// echo "<pre>";
@@ -105,6 +107,10 @@ class Coursewares extends CI_Controller {
 				"message_r" => "Please check grade assessment navigation for the scores!",
 			);
 			$last = $this->Crud_model->fetch_last("student_answer","student_answer_id");
+			// if(!$last){
+			// 	$last = $obj = (object) array('student_answer_' => 'foo');
+			// }
+			// echo $last;
 			$count_correct = 0;
 			if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id,"choice_id"=>$answer,"choice_is_answer"=>1))) {
 				$this->Crud_model->update("student_answer",array("choice_is_correct"=>1),array("student_answer_id"=>$last->student_answer_id));
@@ -118,6 +124,108 @@ class Coursewares extends CI_Controller {
 		}
 		
 	}
+
+
+	public function updateAnswer()
+	{
+		$info = $this->session->userdata('userInfo');
+		$answer = json_decode(stripslashes($this->input->post("answer")));
+		$q_id = json_decode(stripslashes($this->input->post("q_id")));
+		$cw_id = $this->input->post("cw_id");
+
+		echo "<pre>";
+		// echo($answer[0]);
+		// print_r($q_id);
+
+		
+		$data_where = array(
+			"student_id"=> $info['user']->student_id, 
+			"courseware_id"=> $cw_id, 
+		);
+		// echo "<pre>";
+		// print_r($data);
+
+		if ($existing = $this->Crud_model->fetch("student_answer",$data_where)) {
+			// $existing = $existing[0];
+			// echo "<pre>";
+			// print_r($existing);
+			foreach ($existing as $key => $value) {
+				// echo $key;
+				$data = array(
+					"courseware_question_id"=>$q_id[$key],
+					"choice_id"=>$answer[$key],
+				);
+
+				if ($this->Crud_model->update("student_answer",$data,array("student_answer_id"=>$value->student_answer_id))) {
+					if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id[$key],"choice_id"=>$answer[$key],"choice_is_answer"=>1))) {
+						// echo "pasok shet";
+						$this->Crud_model->update("student_answer",array("choice_is_correct"=>1),array("student_answer_id"=>$value->student_answer_id));
+					}else{
+						// echo "mali";
+						$this->Crud_model->update("student_answer",array("choice_is_correct"=>0),array("student_answer_id"=>$value->student_answer_id));
+					}
+				}
+			}
+
+			$data = array(
+				"message_l" => "Successfully submitted answers!",
+				"message_r" => "Please check grade assessment navigation for the scores!",
+			);
+			// if(!$last){
+			// 	$last = $obj = (object) array('student_answer_' => 'foo');
+			// }
+			// echo $last;
+			
+
+			// echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
+
+		}else{
+			echo json_encode(false);
+
+		}
+		
+	}
+
+	public function countCorrect()
+	{
+		$cw_id = $this->input->post("cw_id");
+		$student_id = $this->input->post("student_id");
+		$where = array(
+			"courseware_id"=>$cw_id,
+			"student_id"=>$student_id,
+			"choice_is_correct"=>1
+		);
+
+		$score = $this->Crud_model->countResult("student_answer",$where);
+
+		echo json_encode($score);
+
+	}
+
+	public function isExisting()
+	{
+		$cw_id = $this->input->post("cw_id");
+		$student_id = $this->input->post("student_id");
+		$where = array(
+			"courseware_id"=>$cw_id,
+			"student_id"=>$student_id
+		);
+
+		if ($this->Crud_model->fetch("student_answer",$where)) {
+			echo  json_encode(true);
+		}else{
+			echo  json_encode(false);
+		}
+
+	}
+
+	public function insertGrade()
+	{
+		// NA FETCH NA YUNG SCORE MAG IINSERT KA NALANG
+		# code...
+	}
+
+
 
 }
 

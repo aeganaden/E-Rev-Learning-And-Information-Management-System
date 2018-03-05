@@ -1,4 +1,4 @@
-<nav class="a-navbar" id="top">
+<nav class="a-navbar" id="top" style="margin-top: -1.5%;">
     <div class="nav-wrapper bg-primary-yellow" style="height: 100%;">
         <a href="<?=base_url()?>" class="brand-logo center"><img src="<?= base_url() ?>assets/img/feu-header.png" style="width: 40vh; margin-top: 2%;"></a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -22,18 +22,18 @@
   </a>
   <ul>
     <li id="nav_schedule">
-     <a class="btn-floating bg-primary-green tooltipped" 
-     data-position="left"  
-     data-delay="10"
-     data-tooltip="Schedules"> <i class="material-icons">schedule</i>  </a>
- </li>
- <li id="nav_features">
-     <a class="btn-floating bg-primary-green tooltipped" 
-     data-position="left"  
-     data-delay="10"
-     data-tooltip="Features"> <i class="material-icons">details</i>  </a>
- </li>
- <li id="nav_benefits"><a class="btn-floating bg-primary-green tooltipped"
+       <a class="btn-floating bg-primary-green tooltipped" 
+       data-position="left"  
+       data-delay="10"
+       data-tooltip="Schedules"> <i class="material-icons">schedule</i>  </a>
+   </li>
+   <li id="nav_features">
+       <a class="btn-floating bg-primary-green tooltipped" 
+       data-position="left"  
+       data-delay="10"
+       data-tooltip="Features"> <i class="material-icons">details</i>  </a>
+   </li>
+   <li id="nav_benefits"><a class="btn-floating bg-primary-green tooltipped"
     data-position="left"  
     data-delay="10"
     data-tooltip="Benefits"><i class="material-icons">trending_up</i></a>
