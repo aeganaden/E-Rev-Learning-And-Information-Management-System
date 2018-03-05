@@ -187,69 +187,69 @@
 
         $("#btn_submit_ss").click(function (event) {
 
-          $total_s = $("#input_ts").val();
-          $passing_s = $("#input_ps").val();
-          $select = $("#select_ss").val();
+            $total_s = parseInt($("#input_ts").val());
+            $passing_s = parseInt($("#input_ps").val());
+            $select = $("#select_ss").val();
 
-          if($passing_s > $total_s){
-            $toast = '<span>Passing Score must be less than Total Score</span>';
-            Materialize.toast($toast, 2000);
-        }else if(!$total_s || !$passing_s || $select == null ) {
-         $toast = '<span>All values must not be null</span>'; 
-         Materialize.toast($toast, 2000);
-     }else{
-         $('#li_s3').fadeIn('fast', function () {
-            $("#li_s3").css('display', 'block');
+            if ($passing_s > $total_s) {
+                $toast = '<span>Passing Score must be less than Total Score</span>';
+                Materialize.toast($toast, 2000);
+            } else if (!$total_s || !$passing_s || $select == null) {
+                $toast = '<span>All values must not be null</span>';
+                Materialize.toast($toast, 2000);
+            } else {
+                $('#li_s3').fadeIn('fast', function () {
+                    $("#li_s3").css('display', 'block');
+                });
+            }
+
         });
-     }
+        $("#input_ts").change(function (event) {
+            $total_s = parseInt($("#input_ts").val());
+            $passing_s = parseInt($("#input_ps").val());
+            $select = $("#select_ss").val();
+            if ($passing_s > $total_s) {
+                $toast = '<span>Passing Score must be less than Total Score</span>';
+                Materialize.toast($toast, 2000);
+                $('#li_s3').fadeOut('fast', function () {
+                    $("#li_s3").css('display', 'none');
+                });
+            } else if (!$total_s) {
+                $toast = '<span>Total Score must not be null</span>';
+                Materialize.toast($toast, 2000);
+                $('#li_s3').fadeOut('fast', function () {
+                    $("#li_s3").css('display', 'none');
+                });
+            }
+        });
+        $("#input_ps").change(function (event) {
 
- });
-        $("#input_ts").change(function(event) {  
-          $total_s = $("#input_ts").val();
-          $passing_s = $("#input_ps").val();
-          $select = $("#select_ss").val();
-          if($passing_s > $total_s){
-            $toast = '<span>Passing Score must be less than Total Score</span>';
-            Materialize.toast($toast, 2000);
-            $('#li_s3').fadeOut('fast', function () {
-                $("#li_s3").css('display', 'none');
-            });
-        }else if(!$total_s) {
-            $toast = '<span>Total Score must not be null</span>'; 
-            Materialize.toast($toast, 2000);
-            $('#li_s3').fadeOut('fast', function () {
-                $("#li_s3").css('display', 'none');
-            });
-        }
-    });
-        $("#input_ps").change(function(event) {
+            $total_s = parseInt($("#input_ts").val());
+            $passing_s = parseInt($("#input_ps").val());
+            $select = $("#select_ss").val();
 
-           $total_s = $("#input_ts").val();
-           $passing_s = $("#input_ps").val();
-           $select = $("#select_ss").val();
+            if ($passing_s > $total_s) {
+                $toast = '<span>Passing Score must be less than Total Score</span>';
+                Materialize.toast($toast, 2000);
+                $('#li_s3').fadeOut('fast', function () {
+                    $("#li_s3").css('display', 'none');
+                });
+            } else if (!$passing_s) {
+                $toast = '<span>Passing Score must not be null</span>';
+                Materialize.toast($toast, 2000);
+                $('#li_s3').fadeOut('fast', function () {
+                    $("#li_s3").css('display', 'none');
+                });
+            }
 
-           if($passing_s > $total_s){
-            $toast = '<span>Passing Score must be less than Total Score</span>';
-            Materialize.toast($toast, 2000);
-            $('#li_s3').fadeOut('fast', function () {
-                $("#li_s3").css('display', 'none');
-            });
-        }else if( !$passing_s  ) {
-            $toast = '<span>Passing Score must not be null</span>'; 
-            Materialize.toast($toast, 2000);
-            $('#li_s3').fadeOut('fast', function () {
-                $("#li_s3").css('display', 'none');
-            });
-        }
-
-    });
+        });
 
 
         /*==========================================
          =            jQuery Animate Css            =
          ==========================================*/
 
-         $.fn.extend({
+        $.fn.extend({
             animateCss: function (animationName, callback) {
                 var animationEnd = (function (el) {
                     var animations = {
@@ -277,8 +277,8 @@
             },
         });
 
-         /*=====  End of jQuery Animate Css  ======*/
+        /*=====  End of jQuery Animate Css  ======*/
 
 
-     });
- </script>
+    });
+</script>

@@ -174,6 +174,10 @@ class Student_scores extends CI_Controller {
                     'title' => "Imported",
                     "info" => $info
                 );
+
+//                die(var_dump($_POST["total_score"]));
+//                echo $_POST["total_score"];
+
                 $this->load->view('includes/header', $data);
                 if ($this->upload->do_upload('excel')) {       //success upload
                     $upload_data = $this->upload->data();
@@ -186,16 +190,23 @@ class Student_scores extends CI_Controller {
                     //topic: "Retrieving a range of cell values to an array"
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     //print_r($sheetData);
-
+                    if ($last_upload = $this->Crud_model->fetch_last('student_scores', 'student_scores_upload_num')) {
+                        echo "success<br>";
+                        print_r($last_upload);
+                    } else {
+                        echo "error dbase " . $this->db->error()["message"] . "<br>";
+                    }
                     foreach ($sheetData as $key => $val) {
                         if ($key != 1) {        //row 2 and beyond
                             if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
                                 if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
-                                    if (strlen($val["A"]) == 9 && $input["total_score"] >= $val["B"]) {
-                                        $temp = array(
-                                            $val["A"]
-                                        );
-//                                        $store_val[] = $val["A"] => $val["B"];
+                                    if (strlen((string) $val["A"]) == 9) {
+                                        echo $input["type_of_score"] . "<br>";
+                                        echo $input["total_score"] . "<br>";
+                                        echo $input["passing_score"] . "<br>";
+                                        print_r($last_upload);
+                                        echo "<br>" . "stud num " . $val["A"];
+                                        echo "<br>" . "stud score " . $val["B"];
                                     } else {
                                         $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
                                     }
