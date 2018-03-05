@@ -109,7 +109,7 @@
                             </div>
 
                             <div class="row" id="add_ss_div">
-                                <button type="button" class="right btn waves-light waves-effect bg-primary-green" id="btn_submit_ss">SUBMIT</button>
+                                <button type="button" class="right btn waves-light waves-effect bg-primary-green" id="btn_submit_ss">Next</button>
                             </div>
 
                         </div>
@@ -186,36 +186,46 @@
 
 
         $("#btn_submit_ss").click(function (event) {
-            $total_s = $("#input_ts").val();
-            $passing_s = $("#input_ps").val();
-            $select = $("#select_ss").val();
 
-            $.ajax({
-                url: '<?= base_url() ?>Student_scores/insertScore ',
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    total_s: $total_s,
-                    passing_s: $passing_s,
-                    select: $select,
-                },
-                success: function (data) {
-                    if (data == true) {
-                        var $toastContent = $('<span>Added Successfully </span>');
-                        Materialize.toast($toastContent, 2000);
-                        $("#btn_submit_ss").remove();
-                        $(".div_input").remove();
-                        $('#li_s3').fadeIn('fast', function () {
-                            $("#li_s3").css('display', 'block');
-                        });
-                    } else {
-                        var $toastContent = $('<span> ' + data + '</span>');
-                        Materialize.toast($toastContent, 2000);
-                    }
-                }
-            });
+          $total_s = $("#input_ts").val();
+          $passing_s = $("#input_ps").val();
+          $select = $("#select_ss").val();
 
+          if($passing_s > $total_s){
+            $toast = '<span>Passing Score must be less than Total Score</span>';
+            Materialize.toast($toast, 2000);
+        }else if(!$total_s && !$passing_s && !$select) {
+         $toast = '<span>All values must not be null</span>'; 
+         Materialize.toast($toast, 2000);
+     }else{
+         $('#li_s3').fadeIn('fast', function () {
+            $("#li_s3").css('display', 'block');
         });
+     }
+
+ });
+        $("#input_ts").change(function(event) {  
+          $total_s = $("#input_ts").val();
+          $passing_s = $("#input_ps").val();
+          $select = $("#select_ss").val();
+
+          if($passing_s > $total_s){
+            $toast = '<span>Passing Score must be less than Total Score</span>';
+            Materialize.toast($toast, 2000);
+            $('#li_s3').fadeOut('fast', function () {
+                $("#li_s3").css('display', 'none');
+            });
+        }else{
+            $toast = '<span>All values must not be null</span>'; 
+            Materialize.toast($toast, 2000);
+            $('#li_s3').fadeOut('fast', function () {
+                $("#li_s3").css('display', 'none');
+            });
+        }
+    });
+        $("#input_ps").change(function(event) {
+          alert();
+      });
 
 
         /*==========================================

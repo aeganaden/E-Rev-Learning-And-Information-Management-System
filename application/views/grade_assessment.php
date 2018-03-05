@@ -22,8 +22,6 @@
 			</div>
 			<div id="grades" class="col s12">
 
-				Test 1
-
 			</div>
 			<div id="saPercentage" class="col s12">
 				Test 2
