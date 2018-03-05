@@ -7,7 +7,7 @@
     <div class="col s11">
         <div class="row">
             <blockquote class="color-primary-green">
-                <h5 class="color-black">Import Student Scores</h5>
+                <h5 class="color-black">Manage Student Scores</h5>
             </blockquote>
         </div>
         <?php
@@ -46,6 +46,6 @@
             );
             ?>
             <?php $this->load->view('chibi/err-sad', array("data" => $data), FALSE); ?>
-<?php endif ?>
+        <?php endif ?>
     </div>
 </div>

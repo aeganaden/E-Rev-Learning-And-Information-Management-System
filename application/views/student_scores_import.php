@@ -134,37 +134,37 @@
 
                             </div>
                             <div class="row">
-                             <div class="col s4"></div>
-                             <div class="col s4">
-                                <button class="btn bg-primary-green center waves-effect waves-light modal-trigger" type="button"  href="#modal_topics"  type="submit">Topics</button>
+                                <div class="col s4"></div>
+                                <div class="col s4">
+                                    <button class="btn bg-primary-green center waves-effect waves-light modal-trigger" type="button"  href="#modal_topics"  type="submit">Topics</button>
+                                </div>
+                                <div class="col s4"></div>
                             </div>
-                            <div class="col s4"></div>
                         </div>
+                        <div class="col s2"></div>
                     </div>
-                    <div class="col s2"></div>
-                </div>
-            </li>
-            <li class="collection-item white" id="li_s3" style="padding: 5%; margin-bottom: 1%;  display: none;">
-                <div class="row  ">
-                    <h5 class="valign-wrapper">Step
-                        <i class="material-icons" style="padding-left: 1%;">filter_4</i>
+                </li>
+                <li class="collection-item white" id="li_s3" style="padding: 5%; margin-bottom: 1%;  display: block;">
+                    <div class="row  ">
+                        <h5 class="valign-wrapper">Step
+                            <i class="material-icons" style="padding-left: 1%;">filter_4</i>
 
-                    </h5>
-                    <blockquote class="color-primary-green">
-                        <h6 class="color-black">
-                            Submit
-                        </h6>
-                    </blockquote>
-                    <div class="col s4"></div>
-                    <div class="col s4">
-                        <button class="btn bg-primary-green center waves-effect waves-light" type="submit">IMPORT SCORES</button>
+                        </h5>
+                        <blockquote class="color-primary-green">
+                            <h6 class="color-black">
+                                Submit
+                            </h6>
+                        </blockquote>
+                        <div class="col s4"></div>
+                        <div class="col s4">
+                            <button class="btn bg-primary-green center waves-effect waves-light" type="submit">IMPORT SCORES</button>
+                        </div>
+                        <div class="col s4"></div>
                     </div>
-                    <div class="col s4"></div>
-                </div>
-            </li>
-        </ul>
-    </form>
-</div>
+                </li>
+            </ul>
+        </form>
+    </div>
 </div>
 
 <!-- Modal Structure -->
@@ -173,32 +173,32 @@
         <blockquote class="color-primary-green">
             <h4 class="color-black">Topic List</h4>
         </blockquote>
-        <?php 
-        $active_enrollment = $this->Crud_model->fetch("enrollment",array("enrollment_is_active"=>1));
+        <?php
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
         $active_enrollment = $active_enrollment[0];
         // fetch course
-        $course = $this->Crud_model->fetch("course",array("enrollment_id"=>$active_enrollment->enrollment_id));
-        // fetch subjects 
+        $course = $this->Crud_model->fetch("course", array("enrollment_id" => $active_enrollment->enrollment_id));
+        // fetch subjects
         ?>
-        <?php if($course): ?>
+        <?php if ($course): ?>
             <?php foreach ($course as $key => $value): ?>
-                <?php 
-                $subjects = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id));
+                <?php
+                $subjects = $this->Crud_model->fetch("subject", array("course_id" => $value->course_id));
                 // fetch topic
                 ?>
                 <?php if ($subjects): ?>
-                 <?php foreach ($subjects as $key => $i_value): ?>
-                  <?php 
-                  $topic = $this->Crud_model->fetch("topic",array("subject_id"=>$i_value->subject_id));
-                  ?>
-              <?php endforeach ?>
-          <?php endif ?>
-      <?php endforeach ?>
-  <?php endif ?>
-</div>
-<div class="modal-footer">
-    <a href="#!" type="button" class="modal-action modal-close waves-effect waves-light btn bg-primary-green ">Agree</a>
-</div>
+                    <?php foreach ($subjects as $key => $i_value): ?>
+                        <?php
+                        $topic = $this->Crud_model->fetch("topic", array("subject_id" => $i_value->subject_id));
+                        ?>
+                    <?php endforeach ?>
+                <?php endif ?>
+            <?php endforeach ?>
+        <?php endif ?>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" type="button" class="modal-action modal-close waves-effect waves-light btn bg-primary-green ">Agree</a>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -310,7 +310,7 @@
          =            jQuery Animate Css            =
          ==========================================*/
 
-         $.fn.extend({
+        $.fn.extend({
             animateCss: function (animationName, callback) {
                 var animationEnd = (function (el) {
                     var animations = {
@@ -338,8 +338,8 @@
             },
         });
 
-         /*=====  End of jQuery Animate Css  ======*/
+        /*=====  End of jQuery Animate Css  ======*/
 
 
-     });
- </script>
+    });
+</script>

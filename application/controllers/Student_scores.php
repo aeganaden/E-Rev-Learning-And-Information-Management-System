@@ -212,6 +212,7 @@ class Student_scores extends CI_Controller {
                         $error_message[] = "Wrong section";
                     }
                     /* END - MATCHING OFFERING NAME ON FETCHED DATA ABOVE */
+
                     $spreadsheet->setActiveSheetIndex(0);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     //print_r($sheetData);
@@ -231,8 +232,8 @@ class Student_scores extends CI_Controller {
                                         $student_scores_table[] = array(
                                             "student_scores_is_failed" => $is_pass,
                                             "student_scores_score" => $val["B"],
-                                            "student_scores_student_num" => $val["A"],
-                                            "topic_topic_id" => '1,2,3',
+                                            "student_scores_stud_num" => $val["A"],
+                                            "student_scores_topic_id" => '1,2,3',
                                             "course_id" => $segment
                                         );
                                     } else {
@@ -293,6 +294,7 @@ class Student_scores extends CI_Controller {
 //                        print_r($student_scores_table);
                         $this->Crud_model->insert_batch('student_scores', $student_scores_table);
                         if ($this->db->trans_status() === FALSE) {
+//                            print_r($this->db->error());
                             $this->db->trans_rollback();
                             $error_message[] = "There is an error uploading data to the database";
                             $data = array(
@@ -314,8 +316,7 @@ class Student_scores extends CI_Controller {
                             }
                         } else {
                             $this->db->trans_commit();
-//                            print_r($this->db->error());
-//                            redirect("Student_scores");
+                            redirect("Student_scores");
                         }
                     }
                 } else {            //upload failed
@@ -339,13 +340,64 @@ class Student_scores extends CI_Controller {
                     }
                 }
             } else {            //no segment
-                //code here
-                echo "<br>";
-                print_r($this->upload->display_errors());
-//                redirect("Student_scores");
+                redirect("Student_scores");
             }
             $this->load->view('includes/footer', $data);
         } else {            //not logged in and not fic
+            redirect();
+        }
+    }
+
+    public function view_scores() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            $info = $this->session->userdata('userInfo');
+
+            $ident = $info['identifier'];
+            $ident.="_department";
+            $program = 0;
+
+            switch ($info['user']->$ident) {
+                case 'CE':
+                    $program = 1;
+                    break;
+                case 'EEE':
+                    $program = 2;
+                    break;
+                case 'EE':
+                    $program = 3;
+                    break;
+                case 'ME':
+                    $program = 4;
+                    break;
+
+                default:
+                    break;
+            }
+
+
+            if ($info['logged_in'] && $info['identifier'] != "administrator") {
+                $data = array(
+                    "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                    "info" => $info,
+                    "program" => $program,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "selected-nav",
+                );
+                $this->load->view('includes/header', $data);
+                $this->load->view('student_scores_view');
+                $this->load->view('includes/footer');
+            } elseif ($info['identifier'] == "administrator") {
+                redirect('Admin');
+            } else {
+                redirect('Welcome', 'refresh');
+            }
+        } else {
             redirect();
         }
     }
