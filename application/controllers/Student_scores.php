@@ -191,8 +191,11 @@ class Student_scores extends CI_Controller {
                         if ($key != 1) {        //row 2 and beyond
                             if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
                                 if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
-                                    if (strlen($val["A"]) == 9) {
-
+                                    if (strlen($val["A"]) == 9 && $input["total_score"] >= $val["B"]) {
+                                        $temp = array(
+                                            $val["A"]
+                                        );
+//                                        $store_val[] = $val["A"] => $val["B"];
                                     } else {
                                         $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
                                     }
@@ -236,10 +239,27 @@ class Student_scores extends CI_Controller {
                         }
                     } else {                                        //insert to dbase
                     }
-                } else {            //no segment
-                    redirect("Student_scores");
+                } else {            //upload failed
+                    $error_message[] = $this->upload->display_errors();
+                    $data = array(
+                        'title' => "Imported",
+                        "info" => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "selected-nav",
+                        "error_message" => $error_message
+                    );
+                    $this->load->view('student_scores_import', $data);
+                    if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                        unlink($this->upload->data()["full_path"]);
+                    }
                 }
-            } else {            //uploading failed
+            } else {            //no segment
                 //code here
                 echo "<br>";
                 print_r($this->upload->display_errors());
