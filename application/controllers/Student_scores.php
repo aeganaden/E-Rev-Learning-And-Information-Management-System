@@ -190,83 +190,93 @@ class Student_scores extends CI_Controller {
                 $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
                 /* END - GETTING ALL OFFERINGS */
 
-                /* MATCHING OFFERING NAME ON FETCHED DATA ABOVE */
-//                print_r($sections);
-                foreach ($sections as $key => $value) {
-                    if ($value->offering_name == "V21") {
-                        $math_offering = $value->offering_name;     //stored offering_id that matched on excel
-                        break;
-                    }
-                }
-                /* END - MATCHING OFFERING NAME ON FETCHED DATA ABOVE */
-
                 $this->load->view('includes/header', $data);
                 if ($this->upload->do_upload('excel')) {       //success upload
                     $upload_data = $this->upload->data();
-
                     $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
 
                     /** Load $inputFileName to a Spreadsheet Object  * */
                     $spreadsheet = IOFactory::load($upload_data["full_path"]);
                     //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
                     //topic: "Retrieving a range of cell values to an array"
-                    print_r($spreadsheet->getActiveSheet());
+                    $var = $spreadsheet->getSheetNames();
+
+                    /* MATCHING OFFERING NAME ON FETCHED DATA ABOVE */
+                    foreach ($sections as $key => $value) {
+                        if (strtolower($value->offering_name) == strtolower($var[0])) {
+                            $match_offering = $value->offering_id;     //stored offering_id that matched on excel
+                            break;
+                        }
+                    }
+                    if (!isset($match_offering)) {
+                        $error_message[] = "Wrong section";
+                    }
+                    /* END - MATCHING OFFERING NAME ON FETCHED DATA ABOVE */
+                    $spreadsheet->setActiveSheetIndex(0);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     //print_r($sheetData);
-//                    foreach ($sheetData as $key => $val) {
-//                        if ($key != 1) {        //row 2 and beyond
-//                            if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
-//                                if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
-//                                    if (strlen((string) $val["A"]) == 9) {    //WARNING!!!!!!!!!!!!!!!!!
-//                                        echo $input["type_of_score"] . "<br>";
-//                                        echo $input["total_score"] . "<br>";
-//                                        echo $input["passing_score"] . "<br>";
-//                                        print_r($last_upload);
-//                                        echo "<br>" . "stud num " . $val["A"];
-//                                        echo "<br>" . "stud score " . $val["B"];
-//                                    } else {
-//                                        $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
-//                                    }
-//                                } else {
-//                                    $error_message[] = "Column A and B, row 2 and beyond should be numbers. Row: " . $key;
-//                                }
-//                            } else if (empty($val["A"]) && !empty($val["B"])) {     //may laman si A, walang laman si B
-//                                $error_message[] = "Blank cell on: " . $key . "A";
-//                            } else if (!empty($val["A"]) && empty($val["B"])) {     //walang laman si A, wmay laman si B
-//                                $error_message[] = "Blank cell on: " . $key . "B";
-//                            } else {                        //impossible na mapuntahan to kasi di magfefetch ng empty sa baba kung wala namang mafefetch
-//                                $error_message[] = "Blank row in " . $key;
-//                            }
-//                        } else {
-//                            //checks if it is correct
-//                            if (!(strtolower($val["A"]) == "student number" || strtolower($$val["A"]) == "student_number")) {
-//                                $error_message[] = "1A should be 'student_number' or 'student number'";
-//                            }
-//                            if (!(strtolower($val["B"]) == "score" || strtolower($val["B"]) == "scores")) {
-//                                $error_message[] = "1B should be 'score' or 'scores'";
-//                            }
-//                        }
-//                    }
-//                    if (isset($error_message)) {
-//                        $data = array(
-//                            'title' => "Imported",
-//                            "info" => $info,
-//                            "s_h" => "",
-//                            "s_a" => "",
-//                            "s_f" => "",
-//                            "s_c" => "",
-//                            "s_t" => "",
-//                            "s_s" => "",
-//                            "s_co" => "",
-//                            "s_ss" => "selected-nav",
-//                            "error_message" => $error_message
-//                        );
-//                        $this->load->view('student_scores_import', $data);
-//                        if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-//                            unlink($this->upload->data()["full_path"]);
-//                        }
-//                    } else {                                        //insert to dbase
-//                    }
+                    foreach ($sheetData as $key => $val) {
+                        if ($key != 1) {        //row 2 and beyond
+                            if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
+                                if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
+                                    if (strlen((string) $val["A"]) == 9 && (int) $input["total_score"] >= (int) $val["B"]) {
+//                                        echo $input["type_of_score"] . "<br>";      //data_scores_id
+//                                        echo $input["total_score"] . "<br>";        //total_Score
+//                                        echo $input["passing_score"] . "<br>";      //passing_score
+//                                        echo "offering_id: " . $match_offering;     //offering_id
+//                                        echo "<br>" . "stud num " . $val["A"];      //stud_id
+//                                        echo "<br>" . "stud score " . $val["B"];    //stud_score
+
+                                        $is_pass = $input["passing_score"] <= $val["B"] ? 1 : 0;
+                                        echo $is_pass . "<br>";
+//                                        $student_scores_table = array(
+//                                            array(
+//                                                "student_scores_is_failed" =>
+//                                            )
+//                                        );
+                                    } else {
+                                        $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
+                                    }
+                                } else {
+                                    $error_message[] = "Column A and B, row 2 and beyond should be numbers. Row: " . $key;
+                                }
+                            } else if (empty($val["A"]) && !empty($val["B"])) {     //may laman si A, walang laman si B
+                                $error_message[] = "Blank cell on: " . $key . "A";
+                            } else if (!empty($val["A"]) && empty($val["B"])) {     //walang laman si A, wmay laman si B
+                                $error_message[] = "Blank cell on: " . $key . "B";
+                            } else {                        //impossible na mapuntahan to kasi di magfefetch ng empty sa baba kung wala namang mafefetch
+                                $error_message[] = "Blank row in " . $key;
+                            }
+                        } else {
+                            //checks if it is correct
+                            if (!(strtolower($val["A"]) == "student number" || strtolower($$val["A"]) == "student_number")) {
+                                $error_message[] = "1A should be 'student_number' or 'student number'";
+                            }
+                            if (!(strtolower($val["B"]) == "score" || strtolower($val["B"]) == "scores")) {
+                                $error_message[] = "1B should be 'score' or 'scores'";
+                            }
+                        }
+                    }
+                    if (isset($error_message)) {
+                        $data = array(
+                            'title' => "Imported",
+                            "info" => $info,
+                            "s_h" => "",
+                            "s_a" => "",
+                            "s_f" => "",
+                            "s_c" => "",
+                            "s_t" => "",
+                            "s_s" => "",
+                            "s_co" => "",
+                            "s_ss" => "selected-nav",
+                            "error_message" => $error_message
+                        );
+                        $this->load->view('student_scores_import', $data);
+                        if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                            unlink($this->upload->data()["full_path"]);
+                        }
+                    } else {                                        //insert to dbase
+                    }
                 } else {            //upload failed
                     $error_message[] = $this->upload->display_errors();
                     $data = array(
