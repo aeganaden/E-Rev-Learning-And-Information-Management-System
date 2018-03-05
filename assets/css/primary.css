@@ -47,7 +47,7 @@ a{
 .color-white {color: #F5F5DC !important; border-color: #F5F5DC;} /* White */
 .color-primary-yellow {	color: #F2A900 !important; border-color: #F2A900;} /*Yellow*/
 .color-primary-green{	color: #007A33 !important; border-color: #007A33;} /*Green*/
-.color-red { color: #f44336  !important; } /* Red */
+.color-red { color: #f44336  !important; border-color:#f44336;} /* Red */
 .color-orange { color: #ff9800  !important; } /* Orange */
 .color-pink { color: #FF7C72 !important; } /* Orange */
 .color-yellow { color: #FBF38C !important; } /* Yellow */

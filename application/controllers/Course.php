@@ -348,7 +348,8 @@ class Course extends CI_Controller {
         return substr(sha1($var), 1, 10);
     }
 
-    private function update_subject() {         //LAST
+    private function update_subject() {
+
     }
 
 }

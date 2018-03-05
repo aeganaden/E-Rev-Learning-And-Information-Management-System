@@ -30,12 +30,27 @@
                     <div class="row  ">
                         <h5 class="valign-wrapper">Step
                             <i class="material-icons" style="padding-left: 1%;">filter_1</i>
+                            <a class="tooltipped" data-position="bottom" data-delay="50" data-html="true" data-tooltip="*CELL 1A: 'student_number' or 'student number'<br>*CELL 1B: 'score' or 'scores'<br>*The system only reads the columns A and B<br>*Use other columns as guide (full name of student)">
+                                <i class="material-icons right">help</i>
+                            </a>
                         </h5>
                         <blockquote class="color-primary-green">
                             <h6 class="color-black">
                                 Upload Student Info Using Excel with column of
                                 <i class="color-primary-green">STUDENT_NUMBER</i> and <i class="color-primary-green">SCORE</i>
                             </h6>
+                        </blockquote>
+
+                        <!--produces error message-->
+                        <blockquote class="color-red">
+                            <h6><b>ERROR:</b></h6>
+                            <?php if (isset($error_message)): ?>
+                                <?php foreach ($error_message as $err): ?>
+                                    <h6 class="color-red">
+                                        <?php echo $err; ?>
+                                    </h6>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </blockquote>
                     </div>
                     <div class="row">
@@ -71,23 +86,23 @@
                         <div class="col s9">
                             <div class="row">
                                 <div class="input-field col s2">
-                                    <input placeholder="" id="input_ts" type="number" min="1" class="validate" required>
+                                    <input placeholder="" id="input_ts" name="total_score" type="number" min="1" class="validate" required>
                                     <label for="input_ts">Total Score</label>
                                 </div>
                                 <div class="input-field col s2">
-                                    <input placeholder="" id="input_ps" type="number" min="1" class="validate" required>
+                                    <input placeholder="" id="input_ps" name="passing_score" type="number" min="1" class="validate" required>
                                     <label for="input_ps">Passing Score</label>
                                 </div>
                                 <div class="input-field col s2"></div>
 
                                 <div class="input-field col s6">
                                     <div class="col s10">
-                                        <select id="select_ss" required>
+                                        <select id="select_ss" name="type_of_score" required>
                                             <option value="" disabled selected>Choose Type</option>
                                             <option value="1">Long Quiz</option>
                                             <option value="2">Short Quiz</option>
                                             <option value="3">Seatwork</option>
-                                            <option value="3">Exam</option>
+                                            <option value="4">Exam</option>
                                         </select>
                                     </div>
                                 </div>

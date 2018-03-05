@@ -17,103 +17,116 @@ class Student_scores extends CI_Controller {
     }
 
     public function index() {
-        $info = $this->session->userdata('userInfo');
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            $info = $this->session->userdata('userInfo');
 
-        $ident = $info['identifier'];
-        $ident.="_department";
-        $program = 0;
+            $ident = $info['identifier'];
+            $ident.="_department";
+            $program = 0;
 
-        switch ($info['user']->$ident) {
-            case 'CE':
+            switch ($info['user']->$ident) {
+                case 'CE':
 
-                $program = 1;
-                break;
-            case 'EEE':
-                $program = 2;
-                break;
-            case 'EE':
-                $program = 3;
-                break;
-            case 'ME':
-                $program = 4;
-                break;
+                    $program = 1;
+                    break;
+                case 'EEE':
+                    $program = 2;
+                    break;
+                case 'EE':
+                    $program = 3;
+                    break;
+                case 'ME':
+                    $program = 4;
+                    break;
 
-            default:
-                break;
-        }
+                default:
+                    break;
+            }
 
 
-        if ($info['logged_in'] && $info['identifier'] != "administrator") {
-            $data = array(
-                "title" => "Home - Learning Management System | FEU - Institute of Techonology",
-                "info" => $info,
-                "program" => $program,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "",
-                "s_c" => "",
-                "s_t" => "",
-                "s_s" => "",
-                "s_co" => "",
-                "s_ss" => "selected-nav",
-            );
-            $this->load->view('includes/header', $data);
-            $this->load->view('student_scores');
-            $this->load->view('includes/footer');
-        } elseif ($info['identifier'] == "administrator") {
-            redirect('Admin');
+            if ($info['logged_in'] && $info['identifier'] != "administrator") {
+                $data = array(
+                    "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                    "info" => $info,
+                    "program" => $program,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "selected-nav",
+                );
+                $this->load->view('includes/header', $data);
+                $this->load->view('student_scores');
+                $this->load->view('includes/footer');
+            } elseif ($info['identifier'] == "administrator") {
+                redirect('Admin');
+            } else {
+                redirect('Welcome', 'refresh');
+            }
         } else {
-            redirect('Welcome', 'refresh');
+            redirect();
         }
     }
 
     public function importData() {
-        $info = $this->session->userdata('userInfo');
-        $ident = $info['identifier'];
-        $ident.="_department";
-        $program = 0;
-        $course_id = $this->uri->segment(3);
-        switch ($info['user']->$ident) {
-            case 'CE':
-                $program = 1;
-                break;
-            case 'EEE':
-                $program = 2;
-                break;
-            case 'EE':
-                $program = 3;
-                break;
-            case 'ME':
-                $program = 4;
-                break;
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
 
-            default:
-                break;
-        }
+                $info = $this->session->userdata('userInfo');
+                $ident = $info['identifier'];
+                $ident.="_department";
+                $program = 0;
+
+                switch ($info['user']->$ident) {
+                    case 'CE':
+                        $program = 1;
+                        break;
+                    case 'EEE':
+                        $program = 2;
+                        break;
+                    case 'EE':
+                        $program = 3;
+                        break;
+                    case 'ME':
+                        $program = 4;
+                        break;
+
+                    default:
+                        break;
+                }
 
 
-        if ($info['logged_in'] && $info['identifier'] != "administrator") {
-            $data = array(
-                "title" => "Home - Learning Management System | FEU - Institute of Techonology",
-                "info" => $info,
-                "program" => $program,
-                "course_id" => $course_id,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "",
-                "s_c" => "",
-                "s_t" => "",
-                "s_s" => "",
-                "s_co" => "",
-                "s_ss" => "selected-nav",
-            );
-            $this->load->view('includes/header', $data);
-            $this->load->view('student_scores_import');
-            $this->load->view('includes/footer');
-        } elseif ($info['identifier'] == "administrator") {
-            redirect('Admin');
+                if ($info['logged_in'] && $info['identifier'] != "administrator") {
+                    $data = array(
+                        "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                        "info" => $info,
+                        "program" => $program,
+                        "course_id" => $course_id,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "selected-nav",
+                    );
+                    $this->load->view('includes/header', $data);
+                    $this->load->view('student_scores_import');
+                    $this->load->view('includes/footer');
+                } elseif ($info['identifier'] == "administrator") {
+                    redirect('Admin');
+                } else {
+                    redirect('Welcome', 'refresh');
+                }
+            } else {                //no segment
+                redirect("Student_scores");
+            }
         } else {
-            redirect('Welcome', 'refresh');
+            redirect();
         }
     }
 
@@ -146,71 +159,96 @@ class Student_scores extends CI_Controller {
     }
 
     public function read_excel() {
-        echo $this->uri->segment(3);
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                require "./application/vendor/autoload.php";
 
-        require "./application/vendor/autoload.php";
+                $config['upload_path'] = "./assets/uploads/";
+                $config['allowed_types'] = 'xls|csv|xlsx';
+                $config['max_size'] = '10000';
+                $config["file_name"] = "student_scores_" . time();
 
-        $config['upload_path'] = "./assets/uploads/";
-        $config['allowed_types'] = 'xls|csv|xlsx';
-        $config['max_size'] = '10000';
-        $config["file_name"] = "student_scores_" . time();
+                $this->load->library('upload', $config);
+                $data = array(
+                    'title' => "Imported",
+                    "info" => $info
+                );
+                $this->load->view('includes/header', $data);
+                if ($this->upload->do_upload('excel')) {       //success upload
+                    $upload_data = $this->upload->data();
 
-        $this->load->library('upload', $config);
-        $data = array(
-            'title' => "Imported"
-        );
-        $this->load->view('includes/header', $data);
-        if ($this->upload->do_upload('excel')) {       //success upload
-            $upload_data = $this->upload->data();
-            echo"<pre>";
+                    $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
 
-            /** Load $inputFileName to a Spreadsheet Object  * */
-            $spreadsheet = IOFactory::load($upload_data["full_path"]);
-            //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
-            //topic: "Retrieving a range of cell values to an array"
-            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-//            print_r($sheetData);
-            //disregards other cells, focus on 2A and 2B and beyond
-            foreach ($sheetData as $key => $val) {
-                if ($key != 1) {        //row 2 and beyond
-                    if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
-                        if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int
-                            $val["A"];  //store to new variable and do what you want
-                            $val["B"];
-                            echo $key . " meron<br>";
+                    /** Load $inputFileName to a Spreadsheet Object  * */
+                    $spreadsheet = IOFactory::load($upload_data["full_path"]);
+                    //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
+                    //topic: "Retrieving a range of cell values to an array"
+                    $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                    //print_r($sheetData);
+
+                    foreach ($sheetData as $key => $val) {
+                        if ($key != 1) {        //row 2 and beyond
+                            if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
+                                if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
+                                    if (strlen($val["A"]) == 9) {
+
+                                    } else {
+                                        $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
+                                    }
+                                } else {
+                                    $error_message[] = "Column A and B, row 2 and beyond should be numbers. Row: " . $key;
+                                }
+                            } else if (empty($val["A"]) && !empty($val["B"])) {     //may laman si A, walang laman si B
+                                $error_message[] = "Blank cell on: " . $key . "A";
+                            } else if (!empty($val["A"]) && empty($val["B"])) {     //walang laman si A, wmay laman si B
+                                $error_message[] = "Blank cell on: " . $key . "B";
+                            } else {                        //impossible na mapuntahan to kasi di magfefetch ng empty sa baba kung wala namang mafefetch
+                                $error_message[] = "Blank row in " . $key;
+                            }
                         } else {
-                            //return an error first before break;
-                            break;
+                            //checks if it is correct
+                            if (!(strtolower($val["A"]) == "student number" || strtolower($$val["A"]) == "student_number")) {
+                                $error_message[] = "1A should be 'student_number' or 'student number'";
+                            }
+                            if (!(strtolower($val["B"]) == "score" || strtolower($val["B"]) == "scores")) {
+                                $error_message[] = "1B should be 'score' or 'scores'";
+                            }
                         }
-                    } else if (empty($val["A"]) && !empty($val["B"])) {     //may laman si A, walang laman si B
-                        //return error saying there is a blank cell in excel
-                        //then break;
-                        break;
-                    } else if (!empty($val["A"]) && empty($val["B"])) {     //walang laman si A, wmay laman si B
-                        //return error saying there is a blank cell in excel
-                        //then break;
-                        break;
-                    } else {
-                        //impossible na mapuntahan to kasi di magfefetch ng empty sa baba kung wala namang mafefetch
-                        break;
                     }
-                } else {
-                    //checks if it is correct
-                    if (strtolower($val["A"]) == "student number" || strtolower($$val["A"]) == "student_number" &&
-                            strtolower($val["B"]) == "score" || strtolower($val["B"]) == "scores") {
-                        echo "row 1 is correct <br>";
-                    } else {
-                        //return an error first
-                        break;          //cut the loop for efficiency
+                    if (isset($error_message)) {
+                        $data = array(
+                            'title' => "Imported",
+                            "info" => $info,
+                            "s_h" => "",
+                            "s_a" => "",
+                            "s_f" => "",
+                            "s_c" => "",
+                            "s_t" => "",
+                            "s_s" => "",
+                            "s_co" => "",
+                            "s_ss" => "selected-nav",
+                            "error_message" => $error_message
+                        );
+                        $this->load->view('student_scores_import', $data);
+                        if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                            unlink($this->upload->data()["full_path"]);
+                        }
+                    } else {                                        //insert to dbase
                     }
+                } else {            //no segment
+                    redirect("Student_scores");
                 }
+            } else {            //uploading failed
+                //code here
+                echo "<br>";
+                print_r($this->upload->display_errors());
+//                redirect("Student_scores");
             }
-        } else {            //uploading failed
-            //code here
-            echo "<br>";
-            print_r($this->upload->display_errors());
+            $this->load->view('includes/footer', $data);
+        } else {            //not logged in and not fic
+            redirect();
         }
-        $this->load->view('includes/footer', $data);
     }
 
 }
