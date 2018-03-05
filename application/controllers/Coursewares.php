@@ -95,12 +95,22 @@ class Coursewares extends CI_Controller {
 			"choice_id"=>$answer, 
 			"student_id"=> $info['user']->student_id, 
 		);
+
+		// echo "<pre>";
+		// print_r($data);
+
 		if ($this->Crud_model->insert("student_answer",$data)) {
 			$data = array(
 				"message_l" => "Successfully submitted answers!",
 				"message_r" => "Please check grade assessment navigation for the scores!",
 			);
-			echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
+			$last = $this->Crud_model->fetch_last("student_answer","student_answer_id");
+			$count_correct = 0;
+			if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id,"choice_id"=>$answer,"choice_is_answer"=>1))) {
+				$this->Crud_model->update("student_answer",array("choice_is_correct"=>1),array("student_answer_id"=>$last->student_answer_id));
+			}
+
+			// echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
 
 		}else{
 			echo json_encode(false);

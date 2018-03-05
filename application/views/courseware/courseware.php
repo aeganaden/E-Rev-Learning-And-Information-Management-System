@@ -2,7 +2,7 @@
 <?php $this->load->view('includes/home-sidenav'); ?>
 
 
-<div class="row container">		
+<div class="row container" id="top">		
 	<blockquote class="color-primary-green">
 		<h5 class="color-black">Coursewares</h5>
 	</blockquote>
@@ -174,6 +174,8 @@
 
 			$chkr_answer = false;
 			$q_id_error = [];
+			$q_id = [];
+			$ans_id = [];
 
 			$.ajax({
 				url: '<?=base_url()?>Coursewares/fetchQuestionJson ',
@@ -181,10 +183,9 @@
 				dataType: 'json',
 				data: {cw_id: cw_id},
 				success: function(data){
-
 					for(var i = 0; i< data.length; i++){
-						$q_id = data[i].courseware_question_id;
-						$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
+						$q_id.push(data[i].courseware_question_id);
+						$ans_id.push($("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id"));
 						if ($ans_id === undefined) {
 							$chkr_answer = true;
 							$q_id_error.push((i+1));
@@ -201,29 +202,27 @@
 					}
 
 					if ($chkr_answer == false) {
-						for(var i = 0; i< data.length; i++){ 
-							$q_id = data[i].courseware_question_id;
-							$ans_id = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
+						swal({
+							title: "Submit Exam?",
+							text: "You are about to submit this Exam, are you sure you want to submit?",
+							icon: "info",
+							buttons: {
+								cancel: true,
+								confirm: "Submit",
+							},
+						})
+						.then((submitAnswer) => {
+							if (submitAnswer) { 
 
-							swal({
-								title: "Submit Exam?",
-								text: "You are about to submit this Exam, are you sure you want to submit?",
-								icon: "info",
-								buttons: {
-									cancel: true,
-									confirm: "Submit",
-								},
-							})
-							.then((submitAnswer) => {
-								if (submitAnswer) { 
-									insertAnswer($ans_id,$q_id);
+								for(var i = 0; i< data.length; i++){ 
+									insertAnswer($ans_id[i],$q_id[i]);
 								}
-							});
 
-							// console.log();
-							// console.log($var);	 
+							}
+						});
 
-						}
+
+
 					}
 					
 
@@ -378,17 +377,20 @@
 function insertAnswer(answer_id,q_id) {
 	$.ajax({
 		url: '<?=base_url()?>Coursewares/insertAnswer',
-		type: 'post',
+		type: 'post', 
 		dataType: 'html',
 		data: {
 			answer: answer_id,
 			q_id: q_id,
 		},
 		success: function(data){
-			console.log(data);	
+			// console.log(data);	\
 			if (data!=false) {
 				o_ex = false;
 				$("#question-section").html(data);
+				$('html, body').animate({
+					scrollTop: $("#top").offset().top
+				}, 500);
 			}else{
 				return false;
 			}
