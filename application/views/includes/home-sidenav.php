@@ -106,6 +106,11 @@ switch ($info['user']->$ident) {
             <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
         </li>
     <?php endif ?>
+    <?php if ($info['identifier'] == "fic"): ?>
+        <li class="<?= $s_f ?>">
+            <a href="<?= base_url() ?>Sections" class=" color-black"><i class="material-icons color-black">format_list_bulleted</i>Sections</a> <!--mark - naglagay-->
+        </li>
+    <?php endif ?>
     <?php if ($info['identifier'] != "professor"): ?>
         <li class="<?= $s_f ?>">
             <a href="<?= base_url() ?>Feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->

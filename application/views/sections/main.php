@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Subject Area Management</h3>
+            <h3 class="color-black">Section Management</h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
@@ -19,34 +19,41 @@
 </div>
 <div class="row container">
     <pre>
-        <?php // print_r($year_holder); ?>
+        <?php // print_r($course); ?>
     </pre>
-    <?php if (isset($year_holder) && !empty($year_holder)): ?>
+    <?php if (isset($course) && !empty($course)): ?>
         <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
-                    <th>Year Level</th>
-                    <th>Subject Area</th>
-                    <th></th>
-                    <th></th>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($year_holder as $key => $res): ?>
+                <?php foreach ($course as $key => $res): ?>
                     <tr class="bg-color-white">
-                        <td><?= $key ?></td>
-                        <td><?= implode("<br>", $res); ?></td>
-                        <td><a class="waves-effect waves-dark btn bg-primary-green">View</a></td>
-                        <td><a class="waves-effect waves-dark btn bg-primary-yellow">Edit</a></td>
-                        <td><a class="waves-effect waves-dark btn red">Delete</a></td>
+                        <td><?= $res->course_course_code ?></td>
+                        <td><?= $res->course_course_title ?></td>
+                        <td><a data-id="<?= $res->course_id ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
         </table>
+
     <?php else: ?>
         <center style="margin-top:20vh;">
             <h3>No data to show</h3>
         </center>
     <?php endif; ?>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $(".btn_view").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "Sections/view_sections/" ?>" + $data;
+        });
+
+    });
+</script>

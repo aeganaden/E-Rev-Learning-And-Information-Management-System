@@ -176,35 +176,34 @@ class Course extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {       //wrong
                 $this->load->view('course/add');
             } else {
-                $hold = $this->input->post(array('course_code', 'course_title'));
-                $data = array(
-                    "course_course_code" => $hold["course_code"],
-                    "course_course_title" => $hold["course_title"],
-                    "course_department" => $info["user"]->professor_department,
-                    "course_is_active" => 1,
-                    "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id,
-                    "professor_id" => $info["user"]->professor_id,
-                    "year_level_id" => $hold_key
-                );
-                $result = $this->Crud_model->insert("course", $data);
-                if ($this->db->error()["code"] == 0 && false) {      //means success
-                    redirect("Course");
-                } else if ($this->db->error()["code"] == 1062) {        //should place error message
-                    $error_message[] = "Duplicate data";
+                $holdpost = $this->input->post(array('course_code', 'course_title'));
+                $col = "course_id";
+                $where = "(course_course_code='" . $holdpost["course_code"] . "' OR course_course_title='" .
+                        $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
+                        "' AND course_department='" . $info["user"]->professor_department . "'";
+
+                if ($this->Crud_model->fetch_select("course", $col, $where)) {
+                    $error_message[] = "Course Code and Coude Title should be unique to other courses in your department. (Duplicate data)";
                     $data = array(
-                        "title" => "Course Management",
-                        'info' => $info,
-                        "s_h" => "",
-                        "s_a" => "",
-                        "s_c" => "",
-                        "s_f" => "",
-                        "s_s" => "",
-                        "s_co" => "selected-nav",
-                        "s_t" => "",
-                        "hold" => $hold,
                         "error_message" => $error_message
                     );
                     $this->load->view('course/add', $data);
+                } else {
+                    $data = array(
+                        "course_course_code" => $holdpost["course_code"],
+                        "course_course_title" => $holdpost["course_title"],
+                        "course_department" => $info["user"]->professor_department,
+                        "course_is_active" => 1,
+                        "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id,
+                        "professor_id" => $info["user"]->professor_id,
+                        "year_level_id" => $hold_key
+                    );
+                    $result = $this->Crud_model->insert("course", $data);
+                    $c_id = $this->db->insert_id();
+                    $dept = $info["user"]->professor_department;
+                    $this->add_subject($c_id, $dept);
+
+                    redirect("Course");
                 }
             }
             $this->load->view('includes/footer');
@@ -269,19 +268,32 @@ class Course extends CI_Controller {
                     $this->load->view('includes/header', $data);
                     if ($this->form_validation->run() == FALSE) {       //wrong
                         $this->load->view('course/edit');
-                    } else {
-                        $hold = $this->input->post(array('course_code', 'course_title', 'subject-area'));
-                        $where = array("course_id" => $match_course);
-                        $data = array(
-                            "course_course_code" => $hold["course_code"],
-                            "course_course_title" => $hold["course_title"],
-                            "year_level_id" => $hash_holder[$hold["subject-area"]]
-                        );
+                    } else {                                //input are valid
+                        $holdpost = $this->input->post(array('course_code', 'course_title', 'subject-area'));
+                        $col = "course_id";
+                        $where = "(course_course_code='" . $holdpost["course_code"] . "' OR course_course_title='" .
+                                $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
+                                "' AND course_department='" . $info["user"]->professor_department . "' AND course_id !='" . $match_course . "'";
 
-                        $result = $this->Crud_model->update("course", $data, $where);
-                        if ($this->db->error()["code"] == 0) {      //means success
-                            redirect("Course");
-                        } else if ($this->db->error()["code"] == 1062) {        //should place error message
+                        if ($this->Crud_model->fetch_select("course", $col, $where)) {
+                            $error_message[] = "Course Code and Coude Title should be unique to other courses in your department. (Duplicate data)";
+                            $data = array(
+                                "error_message" => $error_message
+                            );
+                            $this->load->view('course/edit', $data);
+                        } else {            //no duplicate
+                            $c_id = $match_course;
+                            $dept = $info["user"]->professor_department;
+                            $this->update_subject($c_id, $dept);
+
+                            $where = array("course_id" => $match_course);
+                            $data = array(
+                                "course_course_code" => $holdpost["course_code"],
+                                "course_course_title" => $holdpost["course_title"],
+                                "year_level_id" => $hash_holder[$holdpost["subject-area"]]
+                            );
+
+                            $result = $this->Crud_model->update("course", $data, $where);
                             redirect("Course");
                         }
                     }
@@ -346,8 +358,75 @@ class Course extends CI_Controller {
         }
     }
 
-    private function update_subject($c_id, $yl_id) {
+    private function update_subject($c_id, $dept) {
+        $where = "course_id='" . $c_id . "'";
+        $result_subject_list = $this->Crud_model->fetch_select("subject", "subject_id", $where);
+        echo "<pre>";
+        foreach ($result_subject_list as $subsl) {
+            $subject_id = $subsl->subject_id;
+            $where = "subject_id='" . $subject_id . "'";
+            $this->db->delete('topic', $where);
+            $where = "subject_id='" . $subject_id . "'";
+            $this->db->delete('subject', $where);
+        }
+        $this->add_subject($c_id, $dept);
+//        $this->Crud_model->delete("course", array('course_id' => $c_id));
+    }
 
+    private function add_subject($c_id, $dept) {
+        $where = "course_id='" . $c_id . "'";
+        $result_course = $this->Crud_model->fetch_select("course", "year_level_id", $where)[0];
+
+        $year_level_id = $result_course->year_level_id;
+        $where = array(
+            "year_level_id" => $year_level_id,
+            "subject_list_department" => $dept,
+            "subject_list_is_active" => 1
+        );
+        $result_sl = $this->Crud_model->fetch_select("subject_list", "subject_list_id, subject_list_name, subject_list_description", $where);
+//        print_r($result_sl);
+
+        foreach ($result_sl as $res) {
+            $temp = array(
+                "subject_name" => $res->subject_list_name,
+                "subject_description" => $res->subject_list_description,
+                "lecturer_id" => NULL,
+                "course_id" => $c_id,
+                "subject_list_id" => $res->subject_list_id
+            );
+            $this->Crud_model->insert("subject", $temp);
+            $subject_id = $this->db->insert_id();
+
+            $where = array(
+                "sl.year_level_id" => $year_level_id,
+                "sl.subject_list_department" => $dept,
+                "sl.subject_list_id" => $res->subject_list_id,
+                "tl.topic_list_is_active" => 1,
+                "sl.subject_list_is_active" => 1
+            );
+            $col = "tl.topic_list_id, tl.topic_list_name, tl.topic_list_description";
+            $join = array(
+                array("subject_list_has_topic_list as slhtl", "slhtl.subject_list_id = sl.subject_list_id"),
+                array("topic_list as tl", "tl.topic_list_id = slhtl.topic_list_id")
+            );
+            $result_slhtl = $this->Crud_model->fetch_join2("subject_list as sl", NULL, $join, NULL, $where);
+//            print_r($result_slhtl);
+
+            foreach ($result_slhtl as $subres) {
+                $temp = array(
+                    "topic_name" => $subres->topic_list_name,
+                    "topic_description" => $subres->topic_list_description,
+                    "topic_done" => 0,
+                    "subject_id" => $subject_id,
+                    "topic_list_id" => $subres->topic_list_id
+                );
+                $topic_batch[] = $temp;
+            }
+//            print_r($topic_batch);
+            $this->Crud_model->insert_batch("topic", $topic_batch);
+            unset($topic_batch);
+        }
+//        $this->Crud_model->delete("course", array('course_id' => $c_id));
     }
 
     private function get_active_enrollment() {

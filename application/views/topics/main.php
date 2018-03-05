@@ -19,7 +19,30 @@
 </div>
 <div class="row container">
     <pre>
-        <?php print_r($info); ?>
+        <?php // print_r($topic_list); ?>
     </pre>
 
+    <?php if (isset($topic_list) && !empty($topic_list)): ?>
+        <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
+            <thead>
+                <tr>
+                    <th>Topic Name</th>
+                    <th>Topic Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($topic_list as $key => $res): ?>
+                    <tr class="bg-color-white">
+                        <td><?= $res->topic_list_name ?></td>
+                        <td><?= $res->topic_list_description ?></td>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+
+    <?php else: ?>
+        <center style="margin-top:20vh;">
+            <h3>No data to show</h3>
+        </center>
+    <?php endif; ?>
 </div>
