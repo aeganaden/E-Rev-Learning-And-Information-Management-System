@@ -23,6 +23,10 @@ class Crud_model extends CI_Model {
     public function fetch_last($table, $column) {
         $query = $this->db->order_by($column, "desc")->limit(1)->get($table)->row();
         return ($query) ? $query : FALSE;
+    } 
+    public function fetch_first($table, $column) {
+        $query = $this->db->order_by($column, "asc")->limit(1)->get($table)->row();
+        return ($query) ? $query : FALSE;
     }
 
     public function countResult($table, $where = NULL) {

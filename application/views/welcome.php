@@ -572,8 +572,6 @@ margin-bottom: 0 !important;">
 				<h5 class="">External Links</h5>
 				<ul>
 					<li><a class="color-black" href="#!">FEU - Institute of Technology</a></li>
-					<li><a class="color-black" href="#!">Somelink</a></li>
-					<li><a class="color-black" href="#!">Somelink</a></li>
 				</ul>
 			</div>
 		</div>

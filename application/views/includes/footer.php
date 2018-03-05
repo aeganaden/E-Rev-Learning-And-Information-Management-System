@@ -15,6 +15,8 @@
 
 <!-- charts.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<!-- percent.js -->
+<script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/master/dist/progressbar.js"></script>
 <!-- fittext.js -->
 <script src="<?=base_url()?>assets/js/jquery.fittext.js"></script>
 <!-- sticky.js -->
