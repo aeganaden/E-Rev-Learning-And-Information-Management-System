@@ -191,7 +191,7 @@
 									if (value === 0) {
 										circle.setText('0');
 									} else {
-										circle.setText(value);
+										circle.setText(value+"%");
 									}
 
 								}
