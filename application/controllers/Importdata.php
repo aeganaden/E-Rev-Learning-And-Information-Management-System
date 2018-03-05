@@ -123,8 +123,10 @@ class Importdata extends CI_Controller {
                                             $error_counter++;
                                             //break;
                                         }
-                                    } else if ($col_type == "varchar" || $col_type == "text") { //check data types
+                                    } else if (strtolower($col_type) == "varchar" || strtolower($col_type) == "text") { //check data types
                                         if (is_string($col_hold) == 1 && $col_length >= strlen($col_hold) && !empty($col_hold)) {
+                                            $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
+                                        } else if (strtolower($col_type) == "text") {
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
                                             echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " of table '$sheet', does not qualify to \"" . $col_type . "\"<br>";

@@ -29,7 +29,7 @@
                                     <p><?= $value->course_course_title ?>.</p>
                                 </div>
                                 <div class="card-action ">
-                                    <a href="<?= base_url() ?>Student_scores/importData/<?= $value->course_id ?>" class="valign-wrapper">View<i class="material-icons" style="padding-left: 5%">remove_red_eye</i></a>
+                                    <a href="<?= base_url() ?>Student_scores/view_sections/<?= $value->course_id ?>" class="valign-wrapper">View<i class="material-icons" style="padding-left: 5%">remove_red_eye</i></a>
                                 </div>
                             </div>
                         </div>

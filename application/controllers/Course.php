@@ -186,12 +186,25 @@ class Course extends CI_Controller {
                     "professor_id" => $info["user"]->professor_id,
                     "year_level_id" => $hold_key
                 );
-
                 $result = $this->Crud_model->insert("course", $data);
-                if ($this->db->error()["code"] == 0) {      //means success
+                if ($this->db->error()["code"] == 0 && false) {      //means success
                     redirect("Course");
                 } else if ($this->db->error()["code"] == 1062) {        //should place error message
-                    redirect("Course");
+                    $error_message[] = "Duplicate data";
+                    $data = array(
+                        "title" => "Course Management",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_c" => "",
+                        "s_f" => "",
+                        "s_s" => "",
+                        "s_co" => "selected-nav",
+                        "s_t" => "",
+                        "hold" => $hold,
+                        "error_message" => $error_message
+                    );
+                    $this->load->view('course/add', $data);
                 }
             }
             $this->load->view('includes/footer');
@@ -333,6 +346,10 @@ class Course extends CI_Controller {
         }
     }
 
+    private function update_subject($c_id, $yl_id) {
+
+    }
+
     private function get_active_enrollment() {
         $where = array("enrollment_is_active" => 1);
         if (count($result = $this->Crud_model->fetch_select("enrollment", NULL, $where)) != 1) {
@@ -346,10 +363,6 @@ class Course extends CI_Controller {
 
     private function hash_id($var) {
         return substr(sha1($var), 1, 10);
-    }
-
-    private function update_subject() {
-
     }
 
 }
