@@ -31,6 +31,7 @@ class Feedback extends CI_Controller {
                 "s_s" => "",
                 "s_co" => "",
                 "s_ss" => "",
+                "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
             if ($feedback_status == 1) {                //checks if feedback is open
@@ -77,6 +78,7 @@ class Feedback extends CI_Controller {
                             "s_s" => "",
                             "s_co" => "",
                             "s_ss" => "",
+                            "s_ga" => "",
                             'info' => $info,
                             'lect' => $lect,
                         );
@@ -148,6 +150,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_ga" => "",
                     'sections' => $sections,
                     'lecturers' => $lect
                 );
@@ -198,6 +201,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
                         'feedback' => $result
@@ -216,6 +220,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
                         'error' => "Invalid Input"
@@ -280,6 +285,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_ga" => "",
                     'sections' => $sections,
                     'lecturers' => $lecturers
                 );
@@ -317,6 +323,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
                         'feedback' => $result
@@ -335,6 +342,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
                         'error' => "Invalid Input"
@@ -368,6 +376,7 @@ class Feedback extends CI_Controller {
                 "s_s" => "",
                 "s_co" => "",
                 "s_ss" => "",
+                "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
@@ -383,6 +392,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_ga" => "",
                     'info' => $info
                 );
                 $segment = $this->uri->segment(3);
@@ -414,6 +424,7 @@ class Feedback extends CI_Controller {
                             "s_s" => "",
                             "s_co" => "",
                             "s_ss" => "",
+                            "s_ga" => "",
                             'info' => $info,
                             'lect' => $offering_id
                         );
@@ -437,6 +448,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_ga" => "",
                     'info' => $info
                 );
                 $this->load->view('feedback/error', $data);
@@ -529,6 +541,7 @@ class Feedback extends CI_Controller {
             "s_s" => "",
             "s_co" => "",
             "s_ss" => "",
+            "s_ga" => "",
         );
         $this->load->view('includes/header', $data);
         $this->load->view('feedback/feedback_prof_activation');

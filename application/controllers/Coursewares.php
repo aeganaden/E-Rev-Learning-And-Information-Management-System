@@ -28,6 +28,7 @@ class Coursewares extends CI_Controller {
 			"s_s" => "",
 			"s_co" => "",
 			"s_ss" => "",
+			"s_ga" => "",
 			
 		);
 		$this->load->view('includes/header', $data);
