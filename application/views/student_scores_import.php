@@ -43,8 +43,8 @@
 
                         <!--produces error message-->
                         <blockquote class="color-red">
-                            <h6><b>ERROR:</b></h6>
                             <?php if (isset($error_message)): ?>
+                                <h6><b>ERROR:</b></h6>
                                 <?php foreach ($error_message as $err): ?>
                                     <h6 class="color-red">
                                         <?php echo $err; ?>
@@ -85,18 +85,18 @@
                         <div class="col s1"></div>
                         <div class="col s9">
                             <div class="row">
-                                <div class="input-field col s2">
+                                <div class="input-field col s2 div_input">
                                     <input placeholder="" id="input_ts" name="total_score" type="number" min="1" class="validate" required>
                                     <label for="input_ts">Total Score</label>
                                 </div>
-                                <div class="input-field col s2">
+                                <div class="input-field col s2 div_input">
                                     <input placeholder="" id="input_ps" name="passing_score" type="number" min="1" class="validate" required>
                                     <label for="input_ps">Passing Score</label>
                                 </div>
                                 <div class="input-field col s2"></div>
 
                                 <div class="input-field col s6">
-                                    <div class="col s10">
+                                    <div class="col s10 div_input">
                                         <select id="select_ss" name="type_of_score" required>
                                             <option value="" disabled selected>Choose Type</option>
                                             <option value="1">Long Quiz</option>
@@ -203,7 +203,8 @@
                     if (data == true) {
                         var $toastContent = $('<span>Added Successfully </span>');
                         Materialize.toast($toastContent, 2000);
-
+                        $("#btn_submit_ss").remove();
+                        $(".div_input").remove();
                         $('#li_s3').fadeIn('fast', function () {
                             $("#li_s3").css('display', 'block');
                         });
@@ -221,7 +222,7 @@
          =            jQuery Animate Css            =
          ==========================================*/
 
-        $.fn.extend({
+         $.fn.extend({
             animateCss: function (animationName, callback) {
                 var animationEnd = (function (el) {
                     var animations = {
@@ -249,8 +250,8 @@
             },
         });
 
-        /*=====  End of jQuery Animate Css  ======*/
+         /*=====  End of jQuery Animate Css  ======*/
 
 
-    });
-</script>
+     });
+ </script>
