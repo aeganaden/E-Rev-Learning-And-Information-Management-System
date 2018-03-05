@@ -102,29 +102,21 @@ class Coursewares extends CI_Controller {
 		// print_r($data);
 
 		if ($this->Crud_model->insert("student_answer",$data)) {
-			$data = array(
-				"message_l" => "Successfully submitted answers!",
-				"message_r" => "Please check grade assessment navigation for the scores!",
-			);
+
 			$last = $this->Crud_model->fetch_last("student_answer","student_answer_id");
-			// if(!$last){
-			// 	$last = $obj = (object) array('student_answer_' => 'foo');
-			// }
-			// echo $last;
+
 			$count_correct = 0;
 			if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id,"choice_id"=>$answer,"choice_is_answer"=>1))) {
 				$this->Crud_model->update("student_answer",array("choice_is_correct"=>1),array("student_answer_id"=>$last->student_answer_id));
+
+
+			}else{
+				echo json_encode(false);
+
 			}
 
-			// echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
-
-		}else{
-			echo json_encode(false);
-
 		}
-		
 	}
-
 
 	public function updateAnswer()
 	{
@@ -137,7 +129,7 @@ class Coursewares extends CI_Controller {
 		// echo($answer[0]);
 		// print_r($q_id);
 
-		
+
 		$data_where = array(
 			"student_id"=> $info['user']->student_id, 
 			"courseware_id"=> $cw_id, 
@@ -167,23 +159,18 @@ class Coursewares extends CI_Controller {
 				}
 			}
 
-			$data = array(
-				"message_l" => "Successfully submitted answers!",
-				"message_r" => "Please check grade assessment navigation for the scores!",
-			);
+
 			// if(!$last){
 			// 	$last = $obj = (object) array('student_answer_' => 'foo');
 			// }
 			// echo $last;
-			
 
-			// echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
 
 		}else{
 			echo json_encode(false);
 
 		}
-		
+
 	}
 
 	public function countCorrect()
@@ -221,8 +208,45 @@ class Coursewares extends CI_Controller {
 
 	public function insertGrade()
 	{
-		// NA FETCH NA YUNG SCORE MAG IINSERT KA NALANG
-		# code...
+		$cw_id = $this->input->post("cw_id");
+		$student_id = $this->input->post("student_id");
+		$score = $this->input->post("score");
+		$time = $this->input->post("time");
+
+		// grade assessment total
+		$total = $this->Crud_model->countResult("courseware_question",array("courseware_id"=>$cw_id));
+
+		// data
+		$data = array(
+			"courseware_id"=>$cw_id,
+			"student_id"=>$student_id,
+			"grade_assessment_total"=>$total,
+			"grade_assessment_score"=>$score,
+		);
+
+		// insertion to grade assessment
+		if ($this->Crud_model->insert("grade_assessment",$data)) {
+			$last_g = $this->Crud_model->fetch_last("grade_assessment","grade_assessment_id");
+			$data_time = array(
+				"courseware_time_time"=>$time,
+				"grade_assessment_id"=>$last_g->grade_assessment_id,
+			);
+
+			if ($this->Crud_model->insert("courseware_time",$data_time)) {
+				
+				$data = array(
+					"message_l" => "Successfully submitted answers!",
+					"message_r" => "Please check grade assessment navigation for the scores!",
+				);
+				echo $this->load->view('chibi/suc-happy.php', array("data"=>$data), TRUE);
+			}else{
+				echo json_encode(false);
+			}
+		}else{
+			echo json_encode(false);
+		}
+
+
 	}
 
 

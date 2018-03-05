@@ -37,7 +37,6 @@
 	$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 	$offering = $offering[0];
 	$course = $this->Crud_model->fetch("course", array("course_department"=>$dep,"course_id"=>$offering->course_id));
-	
 	$count = 1;
 	?>
 	<?php foreach ($course as $key => $value): ?>
@@ -47,43 +46,43 @@
 			// $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
 			// $section = $section[0];
 			$subjects = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id));
-			$subjects = $subjects[0];
 			?>
 			<?php if ($subjects): ?>
-				<?php 
+				<?php foreach ($subjects as $key => $value): ?>
+					<?php 
+					$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$value->lecturer_id));
+					$lecturer = $lecturer[0];
+					?>	
+					<div class="col s3" >
+						<div class="card sticky-action" >
+							<div class="card-image waves-effect waves-block waves-light" >
+								<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
+							</div>
+							<div class="card-content bg-primary-yellow" >
+								<blockquote class="color-primary-green" style="margin-top: 0;">
+									<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$value->subject_name?><i class="material-icons right ">more_vert</i></span>
+								</blockquote>
+								<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+							</div>
+							<div class="card-reveal bg-primary-green">
+								<span class="card-title color-white ">ABOUT</span>
+								<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$value->subject_description?></span></p>
+							</div>
 
-				$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$subjects->lecturer_id));
-				$lecturer = $lecturer[0];
-				?>	
-				<div class="col s3" >
-					<div class="card sticky-action" >
-						<div class="card-image waves-effect waves-block waves-light" >
-							<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
-						</div>
-						<div class="card-content bg-primary-yellow" >
-							<blockquote class="color-primary-green" style="margin-top: 0;">
-								<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$subjects->subject_name?><i class="material-icons right ">more_vert</i></span>
-							</blockquote>
-							<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
-						</div>
-						<div class="card-reveal bg-primary-green">
-							<span class="card-title color-white ">ABOUT</span>
-							<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$subjects->subject_description?></span></p>
-						</div>
+							<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+								<div class="row ">
+									<div class="col s12 ">
 
-						<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-							<div class="row ">
-								<div class="col s12 ">
+										<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
-									<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$subjects->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
-
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
-				<?php $count++; ?>
+					<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
+					<?php $count++; ?>
+				<?php endforeach ?>
 			<?php endif ?>
 		<?php  endforeach ?>
 
@@ -186,7 +185,8 @@
 					for(var i = 0; i< data.length; i++){
 						$q_id.push(data[i].courseware_question_id);
 						$ans_id.push($("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id"));
-						if ($ans_id === undefined) {
+						$ans_id_chk = $("input[name=group"+data[i].courseware_question_id+"]:checked").next().data("id");
+						if ($ans_id_chk === undefined) {
 							$chkr_answer = true;
 							$q_id_error.push((i+1));
 						}
@@ -411,8 +411,6 @@ function insertAnswer(answer_id,q_id,cw_id) {
 				$('html, body').animate({
 					scrollTop: $("#top").offset().top
 				}, 500);
-			}else{
-				return false;
 			}
 		}
 	});
@@ -451,7 +449,8 @@ function updateAnswer(answer_id,q_id,cw_id) {
 }
 
 function grade_assessment(cw_id,student_id) {
-	
+	$time = timer.getTimeValues().toString();
+	console.log($time);	
 	$.ajax({
 		url: '<?=base_url()?>Coursewares/countCorrect',
 		type: 'post',
@@ -461,7 +460,30 @@ function grade_assessment(cw_id,student_id) {
 			student_id: student_id,
 		},
 		success: function(data){
-			console.log(data);	
+			// console.log(data);
+			$score = data;	
+			$.ajax({
+				url: '<?=base_url()?>Coursewares/insertGrade ',
+				type: 'post',
+				dataType: 'html',
+				data: {
+					cw_id: cw_id,
+					student_id: student_id,
+					score: $score,
+					time: $time,
+				},
+				success: function(data){
+					// console.log(data);	
+					if (data!=false) {
+						o_ex = false;
+						$("#question-section").html(data);
+						$('html, body').animate({
+							scrollTop: $("#top").offset().top
+						}, 500);
+					}
+				}
+			});
+
 		}
 	});
 
@@ -515,6 +537,7 @@ function fetchTopics(id) {
 
 function fetchCourseware(topic_id) { 
 	var courseware_content = "";
+	var time = "";
 	$.ajax({
 		url: '<?=base_url()?>Coursewares_fic/fetchCoursewares',
 		type: 'post',
@@ -527,6 +550,11 @@ function fetchCourseware(topic_id) {
 			$("#preloader").css('display', 'none');
 
 			for(var j = 0; j < i_data.length; j++){
+				if (!i_data[j].time) {
+					time = " -----";
+				}else{
+					time = i_data[j].time;
+				}
 				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
 				'<div class="col s6">'+
 				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
@@ -535,10 +563,9 @@ function fetchCourseware(topic_id) {
 				'</div>'+
 				'<div class="col s6">'+
 				'<div class="col s6"> '+ 
-				'<div class="col s12 valign-wrapper"><i class="material-icons">equalizer</i>'+
-				'35.6%</div>'+
 				'<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>'+
-				'13 Minutes, 25 Seconds</div>'+
+				time+ 
+				'</div>'+
 				'</div>'+
 				'<div class="col s6" id="btn_cw_question'+i_data[j].courseware_id+'"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>'+
 				'</div>'+
