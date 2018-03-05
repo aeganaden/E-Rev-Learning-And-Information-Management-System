@@ -194,7 +194,7 @@
           if($passing_s > $total_s){
             $toast = '<span>Passing Score must be less than Total Score</span>';
             Materialize.toast($toast, 2000);
-        }else if(!$total_s && !$passing_s && !$select) {
+        }else if(!$total_s || !$passing_s || $select == null ) {
          $toast = '<span>All values must not be null</span>'; 
          Materialize.toast($toast, 2000);
      }else{
@@ -208,15 +208,14 @@
           $total_s = $("#input_ts").val();
           $passing_s = $("#input_ps").val();
           $select = $("#select_ss").val();
-
           if($passing_s > $total_s){
             $toast = '<span>Passing Score must be less than Total Score</span>';
             Materialize.toast($toast, 2000);
             $('#li_s3').fadeOut('fast', function () {
                 $("#li_s3").css('display', 'none');
             });
-        }else{
-            $toast = '<span>All values must not be null</span>'; 
+        }else if(!$total_s) {
+            $toast = '<span>Total Score must not be null</span>'; 
             Materialize.toast($toast, 2000);
             $('#li_s3').fadeOut('fast', function () {
                 $("#li_s3").css('display', 'none');
@@ -224,8 +223,26 @@
         }
     });
         $("#input_ps").change(function(event) {
-          alert();
-      });
+
+           $total_s = $("#input_ts").val();
+           $passing_s = $("#input_ps").val();
+           $select = $("#select_ss").val();
+
+           if($passing_s > $total_s){
+            $toast = '<span>Passing Score must be less than Total Score</span>';
+            Materialize.toast($toast, 2000);
+            $('#li_s3').fadeOut('fast', function () {
+                $("#li_s3").css('display', 'none');
+            });
+        }else if( !$passing_s  ) {
+            $toast = '<span>Passing Score must not be null</span>'; 
+            Materialize.toast($toast, 2000);
+            $('#li_s3').fadeOut('fast', function () {
+                $("#li_s3").css('display', 'none');
+            });
+        }
+
+    });
 
 
         /*==========================================
