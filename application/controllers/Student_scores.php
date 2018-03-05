@@ -410,6 +410,16 @@ class Student_scores extends CI_Controller {
         }
     }
 
+    public function view_sections() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            $info = $this->session->userdata('userInfo');
+            $segment = $this->uri->segment(3);          //LAST
+            echo $segment;
+        } else {
+            redirect("Student_scores");
+        }
+    }
+
 }
 
 /* End of file Student_scores.php */
