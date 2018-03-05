@@ -7,8 +7,6 @@ class Home extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-
-
         $this->load->library('session');
         $this->load->model('Crud_model');
     }
@@ -29,9 +27,6 @@ class Home extends CI_Controller {
           }
       }
   }
-  // echo "<pre>";
-  // print_r($info);
-  // die();
 
   $ident = $info['identifier'];
   $ident.="_department";
@@ -69,6 +64,7 @@ if ($info['logged_in'] && $info['identifier'] != "administrator") {
         "s_s" => "",
         "s_co" => "",
         "s_ss" => "",
+        "s_ga" => "",
     );
     $this->load->view('includes/header', $data);
     $this->load->view('home');
@@ -129,6 +125,7 @@ public function Activity() {
             "s_s" => "",
             "s_co" => "",
             "s_ss" => "",
+            "s_ga" => "",
                     // "offering" => $offering
         );
         $this->load->view('includes/header', $data);
@@ -184,7 +181,7 @@ public function updateActivity() {
             "activity_schedule_end_time"=>$time_e,
         );
         if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
-         if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
+           if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
             echo json_encode(true);
         }else{
             echo json_encode("Update Activity Failed - Sched");

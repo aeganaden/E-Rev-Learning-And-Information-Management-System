@@ -7,6 +7,7 @@ $(document).ready(function() {
 	$('.modal').modal();
 	$('.collapsible').collapsible();
 	$('select').material_select();
+	$('ul.tabs').tabs();
 	$(".dropdown-button").dropdown();
 	$('.slider').slider({
 		indicators:false,

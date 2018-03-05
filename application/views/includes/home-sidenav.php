@@ -76,37 +76,18 @@ switch ($info['user']->$ident) {
         <div class="row">
             <!-- <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a> -->
         </div>
-    </div></li>
-    <li class="<?= $s_h ?>">
-        <a clas href="<?= base_url() ?>Home" class="color-black"><i class="material-icons color-black">home</i>Home</a> <!--mark - naglagay-->
-    </li>
-    <?php if ($info["identifier"] == "fic"): ?>
-        <li class="color-black <?= $s_a ?>">
-            <a href="<?= base_url() ?>Home/Activity" class="color-black"><i class="material-icons color-black">remove_from_queue</i>Activity</a>
-        </li>
-    <?php endif ?>
-    <?php if ($info["identifier"] == "fic"): ?>
-        <li class="no-padding <?= $s_c ?> ">
-            <ul class="collapsible collapsible-accordion">
-              <li>
-                <a class="collapsible-header">Coursewares<i class="material-icons" id="btn_click_feed_i">keyboard_arrow_right</i></a>
-                <div class="collapsible-body bg-color-white">
-                  <ul>
-                   <li class="color-black ">
-                    <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
-                </li>
-                <li>
-                    <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
-                        <i class="material-icons">hdr_strong</i>Toggle Courseware
-                    </a>
-                </li>   
-            </ul>
-        </div> 
-    </li>
-</ul>
+    </div>
 </li>
 
+<li class="<?= $s_h ?>">
+    <a clas href="<?= base_url() ?>Home" class="color-black"><i class="material-icons color-black">home</i>Home</a> <!--mark - naglagay-->
+</li>
+<?php if ($info["identifier"] == "fic"): ?>
+    <li class="color-black <?= $s_a ?>">
+        <a href="<?= base_url() ?>Home/Activity" class="color-black"><i class="material-icons color-black">remove_from_queue</i>Activity</a>
+    </li>
 <?php endif ?>
+
 
 <?php if ($info["identifier"] == "student"): ?>
     <li class="color-black <?= $s_c ?>">
@@ -132,6 +113,13 @@ switch ($info['user']->$ident) {
     </li>
 <?php endif ?>
 
+<?php if ($info['identifier'] == "student"): ?>
+    <li class="<?= $s_ga ?>">
+        <a href="<?= base_url() ?>GradeAssessment" class=" color-black"><i class="material-icons color-black">assessment</i>Grade Assessment</a> <!--mark - naglagay-->
+
+    </li>
+<?php endif ?>
+
 <?php if ($info["identifier"] == "professor"): ?>
     <li class="color-black <?= $s_co ?>">
         <a href="<?= base_url() ?>Course" class="color-black"><i class="material-icons color-black">format_list_bulleted</i>Courses</a>
@@ -148,6 +136,31 @@ switch ($info['user']->$ident) {
                 <li>
                     <a href="<?= base_url() ?>Feedback/activateFeedback">
                         <i class="material-icons">hdr_strong</i>Toggle Feedback Submission
+                    </a>
+                </li>   
+            </ul>
+        </div> 
+    </li>
+</ul>
+</li>
+<?php endif ?>
+<li>
+    <div class="divider"></div>
+</li>
+
+<?php if ($info["identifier"] == "fic"): ?>
+    <li class="no-padding <?= $s_c ?> " id="btn_click_feed_ss">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Coursewares<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
+            <div class="collapsible-body bg-color-white">
+              <ul>
+                 <li class="color-black ">
+                    <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
+                </li>
+                <li>
+                    <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
+                        <i class="material-icons">hdr_strong</i>Toggle Courseware
                     </a>
                 </li>   
             </ul>
@@ -195,10 +208,17 @@ switch ($info['user']->$ident) {
 
     jQuery(document).ready(function($) {
         $("#btn_click_feed").click(function(event) {
-           if ($("#btn_click_feed_i").html()=="keyboard_arrow_right") {
+         if ($("#btn_click_feed_i").html()=="keyboard_arrow_right") {
             $("#btn_click_feed_i").html("keyboard_arrow_down");
         }else{
             $("#btn_click_feed_i").html("keyboard_arrow_right");
+        }
+    });
+        $("#btn_click_feed_ss").click(function(event) {
+         if ($("#btn_click_feed_i_ss").html()=="keyboard_arrow_right") {
+            $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
+        }else{
+            $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
         }
     });
     }); 
