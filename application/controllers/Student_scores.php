@@ -227,13 +227,14 @@ class Student_scores extends CI_Controller {
 //                                        echo "<br>" . "stud num " . $val["A"];      //stud_id
 //                                        echo "<br>" . "stud score " . $val["B"];    //stud_score
 
-                                        $is_pass = $input["passing_score"] <= $val["B"] ? 1 : 0;
-                                        echo $is_pass . "<br>";
-//                                        $student_scores_table = array(
-//                                            array(
-//                                                "student_scores_is_failed" =>
-//                                            )
-//                                        );
+                                        $is_pass = $input["passing_score"] > $val["B"] ? 1 : 0;
+                                        $student_scores_table[] = array(
+                                            "student_scores_is_failed" => $is_pass,
+                                            "student_scores_score" => $val["B"],
+                                            "student_scores_student_num" => $val["A"],
+                                            "topic_topic_id" => '1,2,3',
+                                            "course_id" => $segment
+                                        );
                                     } else {
                                         $error_message[] = "Row " . $key . ": Make sure the student number has 9 digits and the score is not greater than the total score";
                                     }
@@ -275,7 +276,47 @@ class Student_scores extends CI_Controller {
                         if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
                             unlink($this->upload->data()["full_path"]);
                         }
-                    } else {                                        //insert to dbase
+                    } else {//insert to dbase
+                        //insert data_scores first
+                        $this->db->trans_begin();
+                        $temp = array(
+                            "data_scores_type" => $input["type_of_score"],
+                            "data_scores_score" => $input["total_score"],
+                            "data_scores_passing" => $input["passing_score"],
+                        );
+                        $this->Crud_model->insert('data_scores', $temp);
+                        $last_id = $this->db->insert_id();
+                        foreach ($student_scores_table as $key => $temp) {
+                            $student_scores_table[$key]["data_scores_id"] = $last_id;
+                        }
+//                        echo"<pre>";
+//                        print_r($student_scores_table);
+                        $this->Crud_model->insert_batch('student_scores', $student_scores_table);
+                        if ($this->db->trans_status() === FALSE) {
+                            $this->db->trans_rollback();
+                            $error_message[] = "There is an error uploading data to the database";
+                            $data = array(
+                                'title' => "Imported",
+                                "info" => $info,
+                                "s_h" => "",
+                                "s_a" => "",
+                                "s_f" => "",
+                                "s_c" => "",
+                                "s_t" => "",
+                                "s_s" => "",
+                                "s_co" => "",
+                                "s_ss" => "selected-nav",
+                                "error_message" => $error_message
+                            );
+                            $this->load->view('student_scores_import', $data);
+                            if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                                unlink($this->upload->data()["full_path"]);
+                            }
+                        } else {
+                            $this->db->trans_commit();
+//                            print_r($this->db->error());
+//                            redirect("Student_scores");
+                        }
                     }
                 } else {            //upload failed
                     $error_message[] = $this->upload->display_errors();
