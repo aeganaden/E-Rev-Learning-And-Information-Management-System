@@ -174,13 +174,15 @@ class Student_scores extends CI_Controller {
                     'title' => "Imported",
                     "info" => $info
                 );
-                $input = $this->input->post("total_score");
-                echo $input . "Test";
+
+//                die(var_dump($_POST["total_score"]));
+//                echo $_POST["total_score"];
+
                 $this->load->view('includes/header', $data);
                 if ($this->upload->do_upload('excel')) {       //success upload
                     $upload_data = $this->upload->data();
 
-//                    $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
+                    $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
 
                     /** Load $inputFileName to a Spreadsheet Object  * */
                     $spreadsheet = IOFactory::load($upload_data["full_path"]);
@@ -188,8 +190,12 @@ class Student_scores extends CI_Controller {
                     //topic: "Retrieving a range of cell values to an array"
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     //print_r($sheetData);
-                    $last_uppload = $this->Crud_model->fetch_last('student_scores', 'student_scores_upload_num');
-
+                    if ($last_upload = $this->Crud_model->fetch_last('student_scores', 'student_scores_upload_num')) {
+                        echo "success<br>";
+                        print_r($last_upload);
+                    } else {
+                        echo "error dbase " . $this->db->error()["message"] . "<br>";
+                    }
                     foreach ($sheetData as $key => $val) {
                         if ($key != 1) {        //row 2 and beyond
                             if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
@@ -198,8 +204,7 @@ class Student_scores extends CI_Controller {
                                         echo $input["type_of_score"] . "<br>";
                                         echo $input["total_score"] . "<br>";
                                         echo $input["passing_score"] . "<br>";
-                                        print_r($input);
-//                                        echo $last_uppload->student_scores_upload_num;
+                                        print_r($last_upload);
                                         echo "<br>" . "stud num " . $val["A"];
                                         echo "<br>" . "stud score " . $val["B"];
                                     } else {
