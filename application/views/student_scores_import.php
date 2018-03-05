@@ -116,7 +116,6 @@
                         <div class="col s2"></div>
                     </div>
                 </li>
-                <li class="collection-item white" id="li_s3" style="padding: 5%; margin-bottom: 1%;  display: block;">
                 <li class="collection-item white" id="li_s3" style="padding: 5%; margin-bottom: 1%;  display: none;">
                     <div class="row  ">
                         <h5 class="valign-wrapper">Step

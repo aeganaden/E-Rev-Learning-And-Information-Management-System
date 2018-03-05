@@ -215,9 +215,18 @@ class Student_scores extends CI_Controller {
 
                     $spreadsheet->setActiveSheetIndex(0);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                    $isit = true;
+                    $topic_list = $this->input->post("topic_list");
+                    foreach ($topic_list as $temp) {
+                        if (!is_numeric($temp)) {
+                            $isit = false;
+                            break;
+                        }
+                    }
+
                     //print_r($sheetData);
                     foreach ($sheetData as $key => $val) {
-                        if ($key != 1) {        //row 2 and beyond
+                        if ($key != 1 && $isit) {        //row 2 and beyond
                             if (!empty($val["A"]) && !empty($val["B"])) {       //checks if empty
                                 if (is_int((int) $val["A"]) && is_int((int) $val["B"])) {       //checks if int; store to new variable and do what you want
                                     if (strlen((string) $val["A"]) == 9 && (int) $input["total_score"] >= (int) $val["B"]) {
@@ -227,13 +236,12 @@ class Student_scores extends CI_Controller {
 //                                        echo "offering_id: " . $match_offering;     //offering_id
 //                                        echo "<br>" . "stud num " . $val["A"];      //stud_id
 //                                        echo "<br>" . "stud score " . $val["B"];    //stud_score
-
                                         $is_pass = $input["passing_score"] > $val["B"] ? 1 : 0;
                                         $student_scores_table[] = array(
                                             "student_scores_is_failed" => $is_pass,
                                             "student_scores_score" => $val["B"],
                                             "student_scores_stud_num" => $val["A"],
-                                            "student_scores_topic_id" => '1,2,3',
+                                            "student_scores_topic_id" => implode(",", $topic_list),
                                             "course_id" => $segment
                                         );
                                     } else {
