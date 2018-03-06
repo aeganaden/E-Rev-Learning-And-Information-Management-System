@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-//        $_POST['username'] = "riza";
-//        $_POST['password'] = "riza";
+        $_POST['username'] = "mgbabaran";
+        $_POST['password'] = "mark";
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
@@ -22,17 +22,17 @@ class Mobile extends CI_Controller {
             $result['result'][0]['identifier'] = "Student";
             $result['result'][0]['offering_id'];
 
-            /* GETS THE ENROLLMENT ID OF STUD'S ENROLLMENT ID */
-            $col = array('enrollment.enrollment_id', false);
-            $join2 = array('enrollment', 'enrollment.enrollment_id = course.enrollment_id');
-            $join1 = array('course', 'course.course_id = offering.course_id');
+            $col = 'enr.enrollment_id';
+            $join = array(
+                array("course as cou", "cou.course_id = off.course_id"),
+                array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id"),
+            );
             $jointype = "INNER";
-            $where = array('enrollment.enrollment_is_active' => 1, "offering.offering_id" => $result['result'][0]['offering_id']);
-            $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
+            $where = array("off.offering_id" => $result['result'][0]['offering_id'], 'enr.enrollment_is_active' => 1);
+            $result_hold = $this->Crud_model->fetch_join2('offering as off', $col, $join, $jointype, $where);
             $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
 //            echo "<pre>";
-//            print_r($result);
-
+//            print_r($result_hold);
             print_r(json_encode($result));
         } else if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
             if ($result['result'][0]['fic_status'] == 1) {
