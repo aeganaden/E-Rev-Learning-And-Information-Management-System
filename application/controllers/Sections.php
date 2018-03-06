@@ -47,7 +47,7 @@ class Sections extends CI_Controller {
         }
     }
 
-    public function view_sections() {           //LAST
+    public function view_sections() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
