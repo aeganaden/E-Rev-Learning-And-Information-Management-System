@@ -31,6 +31,7 @@ class Feedback extends CI_Controller {
                 "s_s" => "",
                 "s_co" => "",
                 "s_ss" => "",
+                "s_rc" => "",
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
@@ -78,6 +79,7 @@ class Feedback extends CI_Controller {
                             "s_s" => "",
                             "s_co" => "",
                             "s_ss" => "",
+                            "s_rc" => "",
                             "s_ga" => "",
                             'info' => $info,
                             'lect' => $lect,
@@ -150,6 +152,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_rc" => "",
                     "s_ga" => "",
                     'sections' => $sections,
                     'lecturers' => $lect
@@ -201,6 +204,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_rc" => "",
                         "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
@@ -220,6 +224,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_rc" => "",
                         "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lect,
@@ -285,6 +290,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_rc" => "",
                     "s_ga" => "",
                     'sections' => $sections,
                     'lecturers' => $lecturers
@@ -323,6 +329,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_rc" => "",
                         "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
@@ -342,6 +349,7 @@ class Feedback extends CI_Controller {
                         "s_s" => "",
                         "s_co" => "",
                         "s_ss" => "",
+                        "s_rc" => "",
                         "s_ga" => "",
                         'sections' => $sections,
                         'lecturers' => $lecturers,
@@ -376,6 +384,7 @@ class Feedback extends CI_Controller {
                 "s_s" => "",
                 "s_co" => "",
                 "s_ss" => "",
+                "s_rc" => "",
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
@@ -392,6 +401,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_rc" => "",
                     "s_ga" => "",
                     'info' => $info
                 );
@@ -424,6 +434,7 @@ class Feedback extends CI_Controller {
                             "s_s" => "",
                             "s_co" => "",
                             "s_ss" => "",
+                            "s_rc" => "",
                             "s_ga" => "",
                             'info' => $info,
                             'lect' => $offering_id
@@ -448,6 +459,7 @@ class Feedback extends CI_Controller {
                     "s_s" => "",
                     "s_co" => "",
                     "s_ss" => "",
+                    "s_rc" => "",
                     "s_ga" => "",
                     'info' => $info
                 );
@@ -541,6 +553,7 @@ class Feedback extends CI_Controller {
             "s_s" => "",
             "s_co" => "",
             "s_ss" => "",
+            "s_rc" => "",
             "s_ga" => "",
         );
         $this->load->view('includes/header', $data);

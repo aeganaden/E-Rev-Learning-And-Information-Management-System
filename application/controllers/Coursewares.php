@@ -28,6 +28,7 @@ class Coursewares extends CI_Controller {
 			"s_s" => "",
 			"s_co" => "",
 			"s_ss" => "",
+			"s_rc" => "",
 			"s_ga" => "",
 			
 		);
