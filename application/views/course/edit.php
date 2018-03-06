@@ -27,6 +27,16 @@
     <?php // echo form_open('form');   ?>
     <div class="row">
         <form action="<?= base_url() . "Course/edit/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
+            <blockquote class="color-red">
+                <?php if (isset($error_message)): ?>
+                    <h6><b>ERROR:</b></h6>
+                    <?php foreach ($error_message as $err): ?>
+                        <h6 class="color-red">
+                            <?php echo $err; ?>
+                        </h6>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </blockquote>
             <div class="row">
                 <div class="input-field col s6">
                     <?php if (!empty(form_error('course_code'))): ?>

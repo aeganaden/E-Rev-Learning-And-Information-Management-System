@@ -13,28 +13,10 @@ class Topics extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
 
-//            $col = array('', FALSE);
-//            $join = array(
-//                array(
-//                    "subject_list_has_topic_list as sltl", "sltl.topic_list_id = tl.topic_list_id"
-//                ),
-//                array(
-//                    "subject_list as sl", "sl.subject_list_id = sltl.subject_list_id"
-//                )
-//            );
-//            $where = array('sl.subject_list_is_active' => 1, 'sl.subject_list_department' => $info["user"]->fic_department);
-//            $result = $this->Crud_model->fetch_join2('topic_list as tl', NULL, $join, NULL, $where);
-//
-//            print_r($result);
-            $data = array(
-                "topic_list_name" => "alGebra",
-                "topic_list_is_active" => 1
-            );
-            $result = $this->Crud_model->insert("topic_list", $data);
-            print_r($result);
-            if ($result['code'] == 1062) {
-                echo "duplicate";
-            }
+            $col = "topic_list_name, topic_list_description";
+//            $this->db->group_by("year_level_name");
+            $result_topic_list = $this->Crud_model->fetch_select("topic_list", $col, NULL);
+
             $data = array(
                 "title" => "Topic Management",
                 'info' => $info,
@@ -46,6 +28,7 @@ class Topics extends CI_Controller {
                 "s_s" => "",
                 "s_co" => "",
                 "s_ss" => "",
+                "topic_list" => $result_topic_list
             );
             $this->load->view('includes/header', $data);
             $this->load->view('topics/main');

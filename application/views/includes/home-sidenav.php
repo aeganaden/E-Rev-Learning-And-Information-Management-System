@@ -90,7 +90,7 @@ switch ($info['user']->$ident) {
 
 
 <?php if ($info["identifier"] == "student"): ?>
- <?php if ($info['user']->student_is_blocked == 1): ?>
+   <?php if ($info['user']->student_is_blocked == 1): ?>
     <li class="color-black <?= $s_c ?> tooltipped" data-position="right" data-tooltip="Must take remedial courses first before unlocking this.">
         <a href="" class="color-black subheader grey color-grey">
             <i class="material-icons color-grey">not_interested</i>Coursewares
@@ -121,6 +121,11 @@ switch ($info['user']->$ident) {
         <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
     </li>
 <?php endif ?>
+<?php if ($info['identifier'] == "fic"): ?>
+    <li class="<?= $s_f ?>">
+        <a href="<?= base_url() ?>Sections" class=" color-black"><i class="material-icons color-black">format_list_bulleted</i>Sections</a> <!--mark - naglagay-->
+    </li>
+<?php endif ?>
 <?php if ($info['identifier'] != "professor"): ?>
     <li class="<?= $s_f ?>">
         <a href="<?= base_url() ?>Feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
@@ -129,7 +134,7 @@ switch ($info['user']->$ident) {
 <?php endif ?>
 
 <?php if ($info['identifier'] == "student"): ?>
- <li class="<?= $s_ga ?>">
+   <li class="<?= $s_ga ?>">
     <a href="<?=base_url()?>GradeAssessment " class="color-black "><i class="material-icons color-black">assessment</i>Grade Assessment</a> <!--mark - naglagay-->
 </li>
 <?php endif ?>
