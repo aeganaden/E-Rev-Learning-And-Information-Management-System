@@ -23,15 +23,17 @@
     </pre>
     <?php // echo form_open('form');   ?>
     <div class="row">
-        <form action="<?= base_url() . "Sections/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
+        <form enctype="multipart/form-data" action="<?= base_url() . "Sections/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <blockquote class="color-red">
-                <?php if (isset($error_message)): ?>
-                    <h6><b>ERROR:</b></h6>
-                    <?php foreach ($error_message as $err): ?>
-                        <h6 class="color-red">
-                            <?php echo $err; ?>
-                        </h6>
-                    <?php endforeach; ?>
+                <?php if (isset($_POST["submit"])): ?>
+                    <?php if (isset($error_message)): ?>
+                        <h6><b>ERROR:</b></h6>
+                        <?php foreach ($error_message as $err): ?>
+                            <h6 class="color-red">
+                                <?php echo $err; ?>
+                            </h6>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 <?php endif; ?>
             </blockquote>
             <div class="row">
@@ -48,13 +50,24 @@
             </div>
             <div class="row">
                 <div class="file-field input-field s12">
-                    <div class="btn">
-                        <span>File</span>
-                        <input type="file" id="input_excel" name="excel">
-                    </div>
-                    <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text">
-                    </div>
+                    <?php if ("" != form_error('excel') && !empty(form_error('excel'))): ?>
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" id="input_excel" name="excel">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input style="border-bottom: 1px solid #e24646;box-shadow: none;" class="file-path validate" type="text" name="excel_text" value="<?= set_value('excel_text') ?>">
+                        </div>
+                        <span class="red-text"><?php echo form_error('excel_text'); ?></span>
+                    <?php else: ?>
+                        <div class="btn">
+                            <span>File</span>
+                            <input type="file" id="input_excel" name="excel">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" name="excel_text">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="input-field">
