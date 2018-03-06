@@ -1,3 +1,4 @@
+<?php date_default_timezone_set("Asia/Manila"); ?>
 <!--====================================
 =            Navigation Top            =
 =====================================-->
@@ -68,6 +69,16 @@
                             <input class="file-path validate" type="text" name="excel_text" required>
                         </div>
                     <?php endif; ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <select name ="lect_id">
+                        <?php foreach ($lecturer as $lect): ?>
+                            <option value="<?php echo $lect->lecturer_id; ?>"><?= $lect->firstname . " " . $lect->midname . " " . $lect->lastname ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Materialize Select</label>
                 </div>
             </div>
             <div class="input-field">
