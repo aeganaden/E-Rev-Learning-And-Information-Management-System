@@ -57,9 +57,7 @@ class Sections extends CI_Controller {
                     "offering_department" => $info["user"]->fic_department
                 );
                 $result_offering = $this->Crud_model->fetch_select("offering", $col, $where);
-                print_r($result_offering);
-
-
+//                print_r($result_offering);
 
                 $data = array(
                     "title" => "Subject Area Management",
@@ -80,6 +78,31 @@ class Sections extends CI_Controller {
             } else {        //no segment
                 redirect("Sections");
             }
+        } else {
+            redirect();
+        }
+    }
+
+    public function add() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            $info = $this->session->userdata('userInfo');
+            echo "test";
+
+            $data = array(
+                "title" => "Subject Area Management",
+                'info' => $info,
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "selected-nav",
+                "s_co" => "",
+                "s_ss" => ""
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('sections/add');
+            $this->load->view('includes/footer');
         } else {
             redirect();
         }
