@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Section Management<a href="<?= base_url() ?>Sections/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Section</a></h3>
+            <h3 class="color-black">Section Management<a href="<?= base_url() ?>Sections/add/<?php echo $this->uri->segment(3); ?>" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Section</a></h3>
         </blockquote>
     </div>
     <div class="col s4"></div>

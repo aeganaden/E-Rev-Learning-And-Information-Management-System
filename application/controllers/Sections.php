@@ -7,6 +7,8 @@ class Sections extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('Crud_model');
+        $this->load->library('form_validation');
+        $this->load->helper(array('form', 'url'));
     }
 
     public function index() {
@@ -86,7 +88,9 @@ class Sections extends CI_Controller {
     public function add() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
-            echo "test";
+
+            $this->form_validation->set_rules('section_name', "Section Name", "required|alpha_numeric_spaces|min_length[2]|max_length[5]");
+            $this->form_validation->set_rules('excel', "Excel File", "required");
 
             $data = array(
                 "title" => "Subject Area Management",
@@ -101,7 +105,13 @@ class Sections extends CI_Controller {
                 "s_ss" => ""
             );
             $this->load->view('includes/header', $data);
-            $this->load->view('sections/add');
+            if ($this->form_validation->run() == FALSE) {       //wrong
+                $this->load->view('sections/add');
+            } else {
+                $this->load->view('sections/add');
+
+//                redirect("Sections");
+            }
             $this->load->view('includes/footer');
         } else {
             redirect();

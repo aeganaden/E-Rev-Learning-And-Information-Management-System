@@ -23,7 +23,7 @@
     </pre>
     <?php // echo form_open('form');   ?>
     <div class="row">
-        <form action="<?= base_url() . "Course/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
+        <form action="<?= base_url() . "Sections/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <blockquote class="color-red">
                 <?php if (isset($error_message)): ?>
                     <h6><b>ERROR:</b></h6>
@@ -35,40 +35,31 @@
                 <?php endif; ?>
             </blockquote>
             <div class="row">
-                <div class="input-field col s6">
-                    <?php if (!empty(form_error('course_code'))): ?>
-                        <label class="red-text" for="course_code">Course Code</label>
-                        <input style="border-bottom: 1px solid #e24646;box-shadow: none;" name="course_code" value="<?= set_value('course_code') ?>" type="text">
-                        <span class="red-text"><?php echo form_error('course_code'); ?></span>
+                <div class="input-field col s12">
+                    <?php if (!empty(form_error('section_name'))): ?>
+                        <label class="red-text" for="section_name">Course Code</label>
+                        <input style="border-bottom: 1px solid #e24646;box-shadow: none;" name="section_name" value="<?= set_value('section_name') ?>" type="text">
+                        <span class="red-text"><?php echo form_error('section_name'); ?></span>
                     <?php else: ?>
-                        <label for="course_code">Course Code</label>
-                        <input name="course_code" value="<?= set_value('course_code') ?>" type="text">
-                    <?php endif; ?>
-                </div>
-                <div class="input-field col s6">
-                    <?php if (!empty(form_error('course_title'))): ?>
-                        <label class="red-text" for="course_title">Course Title</label>
-                        <input style="border-bottom: 1px solid #e24646;box-shadow: none;" name="course_title" value="<?= set_value('course_title') ?>" type="text">
-                        <span class="red-text"><?php echo form_error('course_title'); ?></span>
-                    <?php else: ?>
-                        <label for="course_title">Course Title</label>
-                        <input name="course_title" value="<?= set_value('course_title') ?>" type="text">
+                        <label for="section_name">Section Name</label>
+                        <input name="section_name" value="<?= set_value('section_name') ?>" type="text">
                     <?php endif; ?>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s12">
-                    <select name="subject-area">
-                        <?php foreach ($hold as $key => $value): ?>
-                            <option value="<?= $key ?>"><?php echo $value[1]["year_level_name"] . ": " . implode("|", $value[0]); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <label>Year Level</label>
+                <div class="file-field input-field s12">
+                    <div class="btn">
+                        <span>File</span>
+                        <input type="file" id="input_excel" name="excel">
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                    </div>
                 </div>
             </div>
             <div class="input-field">
                 <button class="btn waves-effect waves-light right green" type="submit" name="submit">Add</button>
-                <a href="<?= base_url() ?>Course" class="waves-effect waves-light btn left red">Cancel</a>
+                <a href="<?= base_url() ?>Sections" class="waves-effect waves-light btn left red">Cancel</a>
             </div>
         </form>
     </div>

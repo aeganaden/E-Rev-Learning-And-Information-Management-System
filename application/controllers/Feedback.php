@@ -256,10 +256,10 @@ class Feedback extends CI_Controller {
             //******GET THE LECT ID**********
             $col = array('lecturer.lecturer_id, lecturer.image_path, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name', FALSE);
             $join2 = array('lecturer', 'lecturer.lecturer_id = subject.lecturer_id');
-            $join1 = array('subject', 'subject.offering_id = offering.offering_id');
+            $join1 = array('subject', 'subject.course_id = course.course_id');
             $jointype = "INNER";
-            $where = array('offering.offering_department' => $info["user"]->professor_department);
-            $lecturers = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where, TRUE);
+            $where = array('course.course_department' => $info["user"]->professor_department);
+            $lecturers = $this->Crud_model->fetch_join('course', $col, $join1, $jointype, $join2, $where, TRUE);
             //******GET THE LECT ID - END**********
 
             foreach ($sections as $sec) {
@@ -420,7 +420,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -524,20 +524,20 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'EEE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
         $data = array(
@@ -577,30 +577,27 @@ class Feedback extends CI_Controller {
         }
     }
 
-    public function check_status_feedback()
-    {
+    public function check_status_feedback() {
         $prof_id = $this->input->post("prof_id");
-        $data = $this->Crud_model->fetch("professor",array("professor_id"=>$prof_id));
+        $data = $this->Crud_model->fetch("professor", array("professor_id" => $prof_id));
         $data = $data[0];
         if ($data) {
             echo json_encode($data->professor_feedback_active);
         }
-
     }
 
-    public function update_status_feedback()
-    {
-      $prof_id = $this->input->post("prof_id");
-      $value = $this->input->post("value");
-      $data = array(
-        "professor_feedback_active"=>$value,
-    );
+    public function update_status_feedback() {
+        $prof_id = $this->input->post("prof_id");
+        $value = $this->input->post("value");
+        $data = array(
+            "professor_feedback_active" => $value,
+        );
 
-      if ($this->Crud_model->update("professor",$data,array("professor_id"=>$prof_id))) {
-          echo json_encode(true);
-      }else{
-        echo json_encode("Error Updating Feedback Module Status");
+        if ($this->Crud_model->update("professor", $data, array("professor_id" => $prof_id))) {
+            echo json_encode(true);
+        } else {
+            echo json_encode("Error Updating Feedback Module Status");
+        }
     }
-}
 
 }
