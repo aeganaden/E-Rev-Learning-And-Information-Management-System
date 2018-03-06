@@ -23,7 +23,7 @@ date_default_timezone_set('Asia/Manila');
 =            Features            =
 ===============================-->
 
-<div class="row" id="nav_features_sec">
+<div class="row" id="">
 	<div class="row">
 		<center><i class="material-icons small color-primary-green">clear_all</i></center>
 		<h4 class="center a-roboto-cond">Features</h4>
