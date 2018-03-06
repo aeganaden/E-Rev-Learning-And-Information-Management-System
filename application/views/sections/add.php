@@ -50,22 +50,22 @@
             </div>
             <div class="row">
                 <div class="file-field input-field s12">
-                    <?php if ("" != form_error('excel') && !empty(form_error('excel'))): ?>
+                    <?php if ("" == form_error('excel') && !empty(form_error('excel'))): ?>
                         <div class="btn">
                             <span>File</span>
-                            <input type="file" id="input_excel" name="excel">
+                            <input type="file" id="input_excel" name="excel_file" value="<?= set_value('excel_file') ?>" required>
                         </div>
                         <div class="file-path-wrapper">
-                            <input style="border-bottom: 1px solid #e24646;box-shadow: none;" class="file-path validate" type="text" name="excel_text" value="<?= set_value('excel_text') ?>">
+                            <input style="border-bottom: 1px solid #e24646;box-shadow: none;" class="file-path validate" type="text" name="excel_text" value="<?= set_value('excel_text') ?>" required>
                         </div>
                         <span class="red-text"><?php echo form_error('excel_text'); ?></span>
                     <?php else: ?>
                         <div class="btn">
                             <span>File</span>
-                            <input type="file" id="input_excel" name="excel">
+                            <input type="file" id="input_excel" name="excel_file" value="<?= set_value('excel_file') ?>" required>
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" name="excel_text">
+                            <input class="file-path validate" type="text" name="excel_text" required>
                         </div>
                     <?php endif; ?>
                 </div>
