@@ -1,1 +1,0 @@
-{"result":{"text":"open parentheses 2 over 3 minus 2 over 3 close parentheses space plus space open parentheses 1 half plus 1 third close parentheses"},"status":"ok"}

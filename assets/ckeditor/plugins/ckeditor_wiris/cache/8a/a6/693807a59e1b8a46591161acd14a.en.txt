@@ -1,1 +1,0 @@
-{"result":{"text":"root index 1 with bar on top of plus 2 to the power of 56 end root"},"status":"ok"}

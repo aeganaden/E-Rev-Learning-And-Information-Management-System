@@ -1,1 +1,0 @@
-{"result":{"text":"square root of H A H A H thin space T R Y end root"},"status":"ok"}

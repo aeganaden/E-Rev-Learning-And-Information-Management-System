@@ -16,9 +16,93 @@
 		<div class="row">
 			<div class="col s12"> 
 				<ul class="tabs tabs-fixed-width bg-primary-green">
-					<li class="tab"><a class="active color-white" href="#grades">Grades</a></li>
+					<li class="tab"><a class="color-white" href="#r_grades">Remedial Courseware Grades</a></li>
+					<li class="tab"><a class="active color-white" href="#grades">Courseware Grades</a></li>
 					<li class="tab"><a class="color-white" href="#saPercentage">Subject Area Percentage</a></li>
 				</ul>
+			</div>
+			<div id="r_grades" class="col s12">
+				<?php 
+				$active_enrollment = $this->Crud_model->fetch("enrollment",array("enrollment_is_active"=>1));
+				$active_enrollment = $active_enrollment[0];
+				$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
+				$cw_percentage_sa = array();
+				$cw_percentage = array();
+				$p_total_score = 0;
+				$p_scores = 0;
+				?> 
+				<?php if ($offering): ?>
+					<ul class="collapsible" data-collapsible="accordion">
+						<?php foreach ($offering as $key => $value): ?>
+							<?php $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id)) ?>
+							<?php foreach ($course as $key => $i_value): ?>
+								<?php $subject = $this->Crud_model->fetch("subject",array("course_id"=>$i_value->course_id));?>
+								<?php if ($subject): ?>
+									<?php foreach ($subject as $key => $j_value): ?>
+										<?php $topic = $this->Crud_model->fetch("topic",array("subject_id"=>$j_value->subject_id)) ?>
+										<?php if ($topic): ?>
+											<?php foreach ($topic as $key => $k_value): ?>
+												<?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$k_value->topic_id,"courseware_status"=>1)) ?>
+												<?php if ($courseware): ?>
+													<?php foreach ($courseware as $key => $l_value): ?>
+														<li>
+															<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?></div>
+
+															<div class="collapsible-body">
+																<?php 
+																$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+																?>
+																<?php if ($r_grade_assessment): ?>
+																	<table class="data-table">
+																		<thead>
+																			<tr>
+																				<th>Take #</th>
+																				<th>SCORE</th>
+																				<th>TOTAL SCORE</th>
+																				<th>PERCENTAGE</th>
+																				<th>TIME</th>
+																				<th>REMARKS</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
+																				<?php 
+																				$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%";
+																				$remarks = $percent >= 70 ? "passed" : "failed";
+																				$remarks_color = $percent >= 70 ? "" : "red";
+
+																				if ($m_value->remedial_grade_assessment_time) {
+																					$time = $m_value->remedial_grade_assessment_time;
+																				}else{
+																					$time ="-";
+																				}
+																				?>
+																				<tr>
+																					<td><?=$m_key+1?></td>
+																					<td><?=$m_value->remedial_grade_assessment_score?></td>
+																					<td><?=$m_value->remedial_grade_assessment_total?></td>
+																					<td><?=$percent?></td>
+																					<td><?=$time?></td>
+																					<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
+																				</tr>
+																			<?php endforeach ?>
+																		</tbody>
+																	</table>
+																<?php endif ?>
+
+															</div>
+														</li>		
+													<?php endforeach ?>
+												<?php endif ?>		
+											<?php endforeach ?>
+										<?php endif ?>
+									<?php endforeach ?>
+								<?php endif ?>
+							<?php endforeach ?>
+						<?php endforeach ?>				
+					</ul>
+				<?php endif ?>
+
 			</div>
 			<div id="grades" class="col s12">
 				<?php 
@@ -152,6 +236,10 @@
 						<?php endforeach ?>				
 					</ul>
 				<?php endif ?>
+				<blockquote class="color-primary-green">
+					<i class="color-black">Remedial Courseware Grades are not included in the computation</i>
+					
+				</blockquote>
 				<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
 				<?php foreach ($cw_percentage as $key => $value): ?>
 					<?php 
