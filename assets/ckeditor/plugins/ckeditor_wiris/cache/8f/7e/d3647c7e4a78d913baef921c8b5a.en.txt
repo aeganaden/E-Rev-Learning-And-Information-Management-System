@@ -1,1 +1,0 @@
-{"result":{"text":"square root of P a p a space c h u l o end root"},"status":"ok"}

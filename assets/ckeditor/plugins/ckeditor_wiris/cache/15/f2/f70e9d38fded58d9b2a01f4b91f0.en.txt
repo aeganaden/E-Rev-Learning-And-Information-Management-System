@@ -1,1 +1,0 @@
-{"result":{"text":"square root of A N O thin space B A end root"},"status":"ok"}

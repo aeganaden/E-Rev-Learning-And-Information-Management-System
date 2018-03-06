@@ -14,6 +14,8 @@ class Home extends CI_Controller {
     public function index() {
         $this->session->unset_userdata('insertion_info');
         $info = $this->session->userdata('userInfo');
+        // $info = $this
+
         // update date
         $ann_full = $this->Crud_model->fetch("announcement");
         if ($ann_full) {
@@ -28,11 +30,17 @@ class Home extends CI_Controller {
       }
   }
 
-  $ident = $info['identifier'];
-  $ident.="_department";
-  $program = 0;
+  if ($scores_upload = $this->Crud_model->fetch("student_scores",array("student_scores_is_failed"=>1))) {
+    foreach ($scores_upload as $key => $value) {
+        $this->Crud_model->update("student",array("student_is_blocked"=>1),array("student_id"=>$value->student_scores_stud_num));
+    }
+}
 
-  switch ($info['user']->$ident) {
+$ident = $info['identifier'];
+$ident.="_department";
+$program = 0;
+
+switch ($info['user']->$ident) {
     case 'CE':
     $program = 1;
     break;

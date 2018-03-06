@@ -99,9 +99,6 @@ class Coursewares extends CI_Controller {
 			"courseware_id"=> $cw_id, 
 		);
 
-		// echo "<pre>";
-		// print_r($data);
-
 		if ($this->Crud_model->insert("student_answer",$data)) {
 
 			$last = $this->Crud_model->fetch_last("student_answer","student_answer_id");
@@ -126,24 +123,15 @@ class Coursewares extends CI_Controller {
 		$q_id = json_decode(stripslashes($this->input->post("q_id")));
 		$cw_id = $this->input->post("cw_id");
 
-		echo "<pre>";
-		// echo($answer[0]);
-		// print_r($q_id);
 
 
 		$data_where = array(
 			"student_id"=> $info['user']->student_id, 
 			"courseware_id"=> $cw_id, 
 		);
-		// echo "<pre>";
-		// print_r($data);
 
 		if ($existing = $this->Crud_model->fetch("student_answer",$data_where)) {
-			// $existing = $existing[0];
-			// echo "<pre>";
-			// print_r($existing);
 			foreach ($existing as $key => $value) {
-				// echo $key;
 				$data = array(
 					"courseware_question_id"=>$q_id[$key],
 					"choice_id"=>$answer[$key],
@@ -151,20 +139,12 @@ class Coursewares extends CI_Controller {
 
 				if ($this->Crud_model->update("student_answer",$data,array("student_answer_id"=>$value->student_answer_id))) {
 					if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id[$key],"choice_id"=>$answer[$key],"choice_is_answer"=>1))) {
-						// echo "pasok shet";
 						$this->Crud_model->update("student_answer",array("choice_is_correct"=>1),array("student_answer_id"=>$value->student_answer_id));
 					}else{
-						// echo "mali";
 						$this->Crud_model->update("student_answer",array("choice_is_correct"=>0),array("student_answer_id"=>$value->student_answer_id));
 					}
 				}
 			}
-
-
-			// if(!$last){
-			// 	$last = $obj = (object) array('student_answer_' => 'foo');
-			// }
-			// echo $last;
 
 
 		}else{
