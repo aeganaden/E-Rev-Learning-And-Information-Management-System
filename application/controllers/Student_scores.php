@@ -27,20 +27,20 @@ class Student_scores extends CI_Controller {
             switch ($info['user']->$ident) {
                 case 'CE':
 
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'EEE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 
@@ -82,20 +82,20 @@ class Student_scores extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                        $program = 1;
-                        break;
+                    $program = 1;
+                    break;
                     case 'EEE':
-                        $program = 2;
-                        break;
+                    $program = 2;
+                    break;
                     case 'EE':
-                        $program = 3;
-                        break;
+                    $program = 3;
+                    break;
                     case 'ME':
-                        $program = 4;
-                        break;
+                    $program = 4;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
 
 
@@ -283,8 +283,8 @@ class Student_scores extends CI_Controller {
                         );
                         $this->load->view('student_scores_import', $data);
                         if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                            unlink($this->upload->data()["full_path"]);
-                        }
+                        unlink($this->upload->data()["full_path"]);
+                    }
                     } else {//insert to dbase
                         //insert data_scores first
                         $this->db->trans_begin();
@@ -320,33 +320,38 @@ class Student_scores extends CI_Controller {
                             );
                             $this->load->view('student_scores_import', $data);
                             if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                                unlink($this->upload->data()["full_path"]);
-                            }
-                        } else {
-                            $this->db->trans_commit();
-                            redirect("Student_scores");
+                            unlink($this->upload->data()["full_path"]);
                         }
-                    }
-                } else {            //upload failed
-                    $error_message[] = $this->upload->display_errors();
-                    $data = array(
-                        'title' => "Imported",
-                        "info" => $info,
-                        "s_h" => "",
-                        "s_a" => "",
-                        "s_f" => "",
-                        "s_c" => "",
-                        "s_t" => "",
-                        "s_s" => "",
-                        "s_co" => "",
-                        "s_ss" => "selected-nav",
-                        "error_message" => $error_message
-                    );
-                    $this->load->view('student_scores_import', $data);
-                    if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                        unlink($this->upload->data()["full_path"]);
+                    } else {
+                        $this->db->trans_commit();
+                        echo "<script>
+                        alert('Successfully added!');
+                        window.location.href='".base_url()."Student_scores';
+                        </script>";
+                        // echo '<script>alert("Successfully added!")</script>';
+                        // redirect("");
                     }
                 }
+            } else {            //upload failed
+                $error_message[] = $this->upload->display_errors();
+                $data = array(
+                    'title' => "Imported",
+                    "info" => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "selected-nav",
+                    "error_message" => $error_message
+                );
+                $this->load->view('student_scores_import', $data);
+                if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                unlink($this->upload->data()["full_path"]);
+            }
+        }
             } else {            //no segment
                 redirect("Student_scores");
             }
@@ -366,20 +371,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'EEE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 

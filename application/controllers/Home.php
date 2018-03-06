@@ -191,7 +191,7 @@ public function updateActivity() {
             "activity_schedule_end_time"=>$time_e,
         );
         if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
-           if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
+         if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
             echo json_encode(true);
         }else{
             echo json_encode("Update Activity Failed - Sched");
