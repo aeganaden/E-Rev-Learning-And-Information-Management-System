@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title><?= $title ?></title>
+	<link rel="shortcut icon" type="image/png" href="<?=base_url()?>assets/img/favicon.png"/>
 
 	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
