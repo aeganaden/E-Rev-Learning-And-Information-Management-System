@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+date_default_timezone_set("Asia/Manila");
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -103,6 +104,9 @@ class Sections extends CI_Controller {
                 $config["file_name"] = "section_" . time();
                 $this->load->library('upload', $config);
 
+                $lecturers = $this->Crud_model->fetch_select("lecturer");
+//                print_r($lecturers);
+
                 $data = array(
                     "title" => "Subject Area Management",
                     'info' => $info,
@@ -113,7 +117,8 @@ class Sections extends CI_Controller {
                     "s_t" => "",
                     "s_s" => "selected-nav",
                     "s_co" => "",
-                    "s_ss" => ""
+                    "s_ss" => "",
+                    "lecturer" => $lecturers
                 );
                 $this->load->view('includes/header', $data);
 
@@ -142,6 +147,7 @@ class Sections extends CI_Controller {
                         );
                         $col = "offering_id";
                         $temp = $this->Crud_model->fetch_select("offering", $col, $where);
+//                        print_r($sheetData);
                         if (!$temp) {                                                       //checks if there's already this name of section
                             $temp = array(
                                 "offering_name" => strtoupper($this->input->post("section_name")),
@@ -152,34 +158,94 @@ class Sections extends CI_Controller {
                             $this->Crud_model->insert('offering', $temp);
                             $section_id = $this->db->insert_id();
                             $sections = $this->get_sections();
-
-                            echo "<pre>";
+//                            echo "<pre>";
 //                            print_r($sheetData);
                             $isit = false;
+
                             //check if correct col name
                             foreach ($sections as $subsec) {
                                 if (strtolower((string) $sheetname[0]) == strtolower($subsec->offering_name) && strtolower($sheetname[1]) == "schedule") {
                                     $isit = true;
                                     if (strtolower($sheetData[1]["A"]) == "student number") {         //check first row col
-                                        for ($i = 2; $i <= count($sheetData); $i++) {
-                                            $stud_ids[] = $sheetData[$i]["A"];
+                                        for ($i = 2; $i < count($sheetData) - 1; $i++) {
+                                            if ($sheetData[$i]["A"] !== null) {
+                                                if (strlen($sheetData[$i]["A"]) == 9) {
+                                                    $stud_ids[] = $sheetData[$i]["A"];
+                                                } else {
+                                                    $error_message[] = "Make sure the student number is valid. Row $i";
+                                                    break;
+                                                }
+                                            }
                                         }
                                         $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_id", $stud_ids));
                                         foreach ($all_studs as $suball_studs) {
                                             $temp = array(
+                                                "student_id" => $suball_studs->student_id,
+                                                "firstname" => $suball_studs->firstname,
+                                                "midname" => $suball_studs->midname,
+                                                "lastname" => $suball_studs->lastname,
+                                                "username" => $suball_studs->username,
+                                                "password" => $suball_studs->password,
+                                                "email" => $suball_studs->email,
+                                                "student_department" => $suball_studs->department,
+                                                "image_path" => $suball_studs->image_path,
+                                                "offering_id" => $section_id
                                             );
+                                            $insert_batch_students[] = $temp;
                                         }
-                                        print_r($all_studs);
+                                        $this->Crud_model->insert_batch("student", $insert_batch_students);
+//                                        print_r($this->db->error());
                                     }
-
                                     break;
                                 }
                             }
-
                             if (!$isit) {
                                 $error_message[] = "This should be the format of your Excel:";
-                                $error_message[] = "&nbsp;First sheet's name: <section>";
-                                $error_message[] = "&nbsp;Second sheet's name: \'schedule\'";
+                                $error_message[] = "&emsp;-First sheet's name: *name of section*";
+                                $error_message[] = "&emsp;-Second sheet's name: 'schedule'";
+                            }
+                            //change to the second sheet
+                            $spreadsheet->setActiveSheetIndex(1);
+
+
+                            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+                            if (strtolower($sheetData[1]["A"]) == "day" && strtolower($sheetData[1]["B"]) == "start time" && strtolower($sheetData[1]["C"]) == "end time" && strtolower($sheetData[1]["D"]) == "venue") {
+                                if ((strlen(date("hia", strtotime($sheetData[2]["B"]))) == 6) && (strlen(date("hia", strtotime($sheetData[2]["C"]))) == 6) &&
+                                        (date("hia", strtotime($sheetData[2]["B"])) < date("hia", strtotime($sheetData[2]["C"]))) &&
+                                        (strtolower($sheetData[2]["A"]) == "monday" || strtolower($sheetData[2]["A"]) == "tuesday" ||
+                                        strtolower($sheetData[2]["A"]) == "wednesday" || strtolower($sheetData[2]["A"]) == "thursday" ||
+                                        strtolower($sheetData[2]["A"]) == "friday" || strtolower($sheetData[2]["A"]) == "saturday") &&
+                                        (strlen(strtolower($sheetData[2]["D"]) <= 5))) {
+
+                                    $start = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["B"]);
+                                    $end = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["C"]);
+                                    $venue = strtoupper($sheetData[2]["D"]);
+
+                                    $schedule = array(
+                                        "schedule_start_time" => $start,
+                                        "schedule_end_time" => $end,
+                                        "schedule_venue" => $venue,
+                                        "lecturer_id" => $this->input->post("lect_id"),
+                                        "offering_id" => $section_id
+                                    );
+
+                                    $this->Crud_model->insert("schedule", $schedule);
+                                } else {            //invalid time
+                                    $isit2 = true;
+                                    $error_message[] = "Make sure your schedule is valid. Check spellings and format of time:";
+                                    $error_message[] = "&emsp;-Day: *day in week*";
+                                    $error_message[] = "&emsp;-Start/End time: 00:00 am/pm";
+                                }
+                            } else {
+                                $error_message[] = "Check your row 1 in schedule sheet:";
+                                $error_message[] = "&emsp;-A: 'day'";
+                                $error_message[] = "&emsp;-B: 'start time'";
+                                $error_message[] = "&emsp;-C: 'end time'";
+                                $error_message[] = "&emsp;-C: 'venue'";
+                            }
+
+                            if (!empty($error_message)) {
                                 $data = array(
                                     "error_message" => $error_message
                                 );
@@ -187,12 +253,17 @@ class Sections extends CI_Controller {
                             } else {                                            //goods
                                 if ($this->db->trans_status() === FALSE) {          //error dbase
                                     $this->db->trans_rollback();
+                                    $error_message[] = "An error occured while processing the data.";
+//                                    print_r($this->db->error());
+                                    $data = array(
+                                        "error_message" => $error_message
+                                    );
+                                    $this->load->view('sections/add', $data);
                                 } else {                                            //success dbase
-                                    $this->db->trans_rollback();
+                                    $this->db->trans_commit();
+                                    redirect("Sections");
                                 }
                             }
-
-                            //GET VALUES OF SCHEDULE BELOW
                         } else {
                             $error_message[] = "Sections in a course should be unique to other. (Duplicate name)";
                             $data = array(
