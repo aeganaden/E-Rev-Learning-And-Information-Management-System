@@ -137,7 +137,11 @@
 											<?php endforeach ?>
 										<?php endif ?>
 										<?php 
-										$total = ($p_scores/$p_total_score)*100;
+										if ($p_scores && $p_total_score) {
+											$total = ($p_scores/$p_total_score)*100;
+										}else{
+											$total = 0;
+										}
 										$p_scores = 0;
 										$p_total_score = 0;
 										$cw_percentage[$j_value->subject_id] = $total;
