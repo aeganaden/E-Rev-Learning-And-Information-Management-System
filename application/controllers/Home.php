@@ -65,6 +65,7 @@ if ($info['logged_in'] && $info['identifier'] != "administrator") {
         "s_co" => "",
         "s_ss" => "",
         "s_ga" => "",
+        "s_rc" => "",
     );
     $this->load->view('includes/header', $data);
     $this->load->view('home');
@@ -125,6 +126,7 @@ public function Activity() {
             "s_s" => "",
             "s_co" => "",
             "s_ss" => "",
+            "s_rc" => "",
             "s_ga" => "",
                     // "offering" => $offering
         );

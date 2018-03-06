@@ -51,6 +51,7 @@ class GradeAssessment extends CI_Controller {
 				"s_s" => "",
 				"s_co" => "",
 				"s_ss" => "",
+				"s_rc" => "",
 				"s_ga" => "selected-nav",
 			);
 			$this->load->view('includes/header', $data);
