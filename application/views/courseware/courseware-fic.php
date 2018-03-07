@@ -199,29 +199,28 @@
 		<h4 style="border-bottom: 2px solid #F2A900; padding-bottom: 1%;">ADD COURSEWARE</h4>
 		<div class="row">
 			<div class="input-field col s6">
-				<blockquote class="color-primary-green"><h4 class="color-black">Title</h4></blockquote>
-				<input placeholder="" id="cw_title" type="text" class="validate"> 
+				<blockquote class="color-primary-green"><h5 class="color-black">Title</h5> <input placeholder="" id="cw_title" type="text" class="validate"/> </blockquote>
+				
 			</div>
 		</div>
 		<div class="row">
 			<form class="col s12">
-				<div class="row">
-					<div class="input-field col s12">
-						<blockquote class="color-primary-green"><h4 class="color-black">Description</h4></blockquote>
-						<textarea id="cw_des" class="materialize-textarea"></textarea>
+				<div class="input-field col s12">
+					<blockquote class="color-primary-green"><h5 class="color-black">Description</h5>
+						<textarea id="cw_des" class="materialize-textarea"></textarea></blockquote>
+
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
+
+
 		</div>
-
-
+		<div class="modal-footer bg-color-white">
+			<a href="#!" id="send_cw" class="modal-action modal-close waves-effect waves-green btn bg-primary-green">ADD</a>
+		</div>
 	</div>
-	<div class="modal-footer bg-color-white">
-		<a href="#!" id="send_cw" class="modal-action modal-close waves-effect waves-green btn bg-primary-green">ADD</a>
-	</div>
-</div>
 
-<!--====  End of MODAL COURSEWARE  ====-->
+	<!--====  End of MODAL COURSEWARE  ====-->
 
 
 

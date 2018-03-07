@@ -27,9 +27,11 @@ class Enrollment extends CI_Controller {
 		$this->load->view('includes/footer');
 	}
 
-	public function updateEnrollment()
+	public function updateEnrollment($id=NULL)
 	{
-		$id = $this->input->post("e_id");
+		if ($id == NULL) {
+			$id = $this->input->post("e_id");
+		}
 		$active_e = $this->Crud_model->fetch("enrollment",array("enrollment_is_active"=>1));
 		if ($active_e) {
 			$active_e = $active_e[0];
@@ -50,5 +52,36 @@ class Enrollment extends CI_Controller {
 			}
 		}
 	}
+
+	public function insertEnrollment()
+	{
+		$year = $this->input->post("year");
+		$term = $this->input->post("term");
+		$yearEnd = (int) $year + 1;
+		$yearStr = $year."-".$yearEnd;
+		$data = array(
+			"enrollment_sy"=>$yearStr,
+			"enrollment_term"=>$term,
+		);
+
+		if (!$this->Crud_model->fetch("enrollment",$data)) {
+			if ($this->Crud_model->insert("enrollment",$data)) {
+
+				$last = $this->Crud_model->fetch_last("enrollment","enrollment_id");
+
+			//update  
+				$this->updateEnrollment($last->enrollment_id);
+
+			}
+		}else{
+			echo json_encode("Enrollment already Exists");
+		}
+
+
+
+	}
+
+
+
 
 }
