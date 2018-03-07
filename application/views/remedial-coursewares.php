@@ -38,22 +38,25 @@
 											$r_grade_assessment = $this->Crud_model->fetch_last("remedial_grade_assessment","remedial_grade_assessment_score",
 												array("student_id"=>$info['user']->student_id,"courseware_id"=>$i_value->courseware_id));
 
+											if ($r_grade_assessment) {
+												
 											// computer passing score
-											$r_score = $r_grade_assessment->remedial_grade_assessment_score;
-											$r_total = $r_grade_assessment->remedial_grade_assessment_total;
-											$r_result = ($r_score / $r_total) * 100;
+												$r_score = $r_grade_assessment->remedial_grade_assessment_score;
+												$r_total = $r_grade_assessment->remedial_grade_assessment_total;
+												$r_result = ($r_score / $r_total) * 100;
 
 											// check if passed
-											$remarks = $r_result > 69 ? "passed" : "failed";
-											$color = $r_result > 69 ? "" : "red";	
+												$remarks = $r_result > 69 ? "passed" : "failed";
+												$color = $r_result > 69 ? "" : "red";	
 
 											// update is_done
-											if ($remarks == "passed") {
-												$this->Crud_model->update("remedial_coursewares",
-													array("is_done"=>1),array("remedial_coursewares_id",$i_value->remedial_coursewares_id));
-												
-												
-											}												
+												if ($remarks == "passed") {
+													$this->Crud_model->update("remedial_coursewares",
+														array("is_done"=>1),array("remedial_coursewares_id",$i_value->remedial_coursewares_id));
+													
+													
+												}												
+											}
 
 
 

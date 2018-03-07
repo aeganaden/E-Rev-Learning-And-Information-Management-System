@@ -100,8 +100,8 @@ class Feedback extends CI_Controller {
             $col = array('course_id');
             if ($temp = $this->Crud_model->fetch_select('course', $col, array('enrollment_id' => $info["active_enrollment"], 'course_department' => $info["user"]->fic_department))) {
 
-             $wherein[0] = 'course_id';
-             foreach ($temp as $temp2) {
+               $wherein[0] = 'course_id';
+               foreach ($temp as $temp2) {
                 $wherein[1][] = $temp2->course_id;
             }
 
@@ -592,7 +592,7 @@ public function activateFeedback() {
         case 'CE':
         $program = 1;
         break;
-        case 'EEE':
+        case 'ECE':
         $program = 2;
         break;
         case 'EE':

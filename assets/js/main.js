@@ -4,7 +4,20 @@ $(document).ready(function() {
 			$("#slide-out").css("display","block");
 		},
 	});
-	$('.modal').modal();
+	$('.modal').modal({
+		dismissible: true, 
+		complete: function() { 
+			if ($(this).attr("id") == "modal_cw") {
+				$("#cw_title").val("");
+				$("#cw_des").val("");
+			}
+			if ($(this).attr("id") == "modal_q") {
+				CKEDITOR.instances['q_editor'].setData(' ');
+				$("#answer_1, #answer_2, #answer_3, #answer_4").html("Click Here To Add Answer");
+			}
+       } // Callback for Modal close
+   }
+   );
 	$('.collapsible').collapsible();
 	$('select').material_select();
 	$('ul.tabs').tabs();

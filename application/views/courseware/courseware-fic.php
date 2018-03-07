@@ -143,45 +143,50 @@
 <div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
 		<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
-		<blockquote class="color-primary-yellow">
-			<h5 class="color-black">Content</h5>
-		</blockquote>
-		<!-- Editor -->
-		<textarea name="editor1" id="q_editor"></textarea>
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs bg-primary-green">
+					<li class="tab col s6"><a class="color-white active" href="#content">Question</a></li>
+					<li class="tab col s6"><a class="color-white" href="#answers">Answers</a></li>
+				</ul>
+			</div>
+			<div id="content" class="col s12">
+				<blockquote class="color-primary-yellow">
+					<h5 class="color-black">Content</h5>
+				</blockquote>
+				<!-- Editor -->
+				<textarea name="editor1" id="q_editor"></textarea>
+			</div>
+			<div id="answers" class="col s12">
+				
+				<blockquote class="color-primary-yellow">
+					<h5 class="color-black">Answers</h5>
+				</blockquote>
+
+				<blockquote class="color-primary-green" style="margin-left: 3%;">
+
+					<h5 class="valign-wrapper">Answer #1 <i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i></h5>
+					<textarea name="editor2" id="answer_1"></textarea>
+
+				</blockquote>
+				<blockquote class="color-primary-green" style="margin-left: 3%;">
+
+					<h5 class="valign-wrapper">Answer #2 <i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i></h5>
+					<textarea name="editor3" id="answer_2"></textarea>
+				</blockquote>
+				<blockquote class="color-primary-green" style="margin-left: 3%;">
+					<h5 class="valign-wrapper">Answer #3 <i class="material-icons" style="cursor: pointer;" id="i_answer_3">check_box_outline_blank</i></h5>
+					<textarea name="editor4" id="answer_3"></textarea>
+				</blockquote>
+				<blockquote class="color-primary-green" style="margin-left: 3%;">
+					<h5 class="valign-wrapper">Answer #4 <i class="material-icons" style="cursor: pointer;" id="i_answer_4">check_box_outline_blank</i></h5>
+					<textarea name="editor5" id="answer_4"></textarea>
+				</blockquote>
+			</div>
+		</div>
 
 
-		<blockquote class="color-primary-yellow">
-			<h5 class="color-black">Answers</h5>
-		</blockquote>
 
-		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			
-			<div class="col s12 bg-color-white color-black valign-wrapper">
-				<i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i>
-				<p style="display: inline; margin-left: 2%;"  id="answer_1" contenteditable="true">Click Here To Add Answer #1</p>
-			</div>
-		</blockquote>
-		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			
-			<div class="col s12 bg-color-white color-black valign-wrapper">
-				<i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i>
-				<p style="display: inline; margin-left: 2%;" id="answer_2" contenteditable="true">Click Here To Add Answer #2</p>
-			</div>
-		</blockquote>
-		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			
-			<div class="col s12 bg-color-white color-black valign-wrapper">
-				<i class="material-icons" style="cursor: pointer;" id="i_answer_3">check_box_outline_blank</i>
-				<p style="display: inline; margin-left: 2%;" id="answer_3" contenteditable="true">Click Here To Add Answer #3</p>
-			</div>
-		</blockquote>
-		<blockquote class="color-primary-green" style="margin-left: 3%;">
-			
-			<div class="col s12 bg-color-white color-black valign-wrapper">
-				<i class="material-icons" style="cursor: pointer;" id="i_answer_4">check_box_outline_blank</i>
-				<p style="display: inline; margin-left: 2%;" id="answer_4" contenteditable="true">Click Here To Add Answer #4</p>
-			</div>
-		</blockquote>
 	</div>
 	<div class="modal-footer bg-color-white	">
 		<a href="#!" id="send" class="waves-effect waves-green btn bg-primary-green ">ADD</a>
@@ -255,36 +260,41 @@
 		// 	return '>>>>>Before You Go<<<<<<<< \n Your custom message go here';
 		// });
 
-
+		
 		$('.tooltipped').tooltip({delay: 50});
 
 		jQuery(".sub_name").fitText();
-		CKEDITOR.replace( 'q_editor');
+		CKEDITOR.replace( 'q_editor', {
+			extraPlugins: 'imageuploader'
+		});
 
 		var answer1 = CKEDITOR.instances['answer_1'];
-		if (!answer1) { 
-			CKEDITOR.inline('answer_1');
-		}
-
+		if (!answer1) {  
+			CKEDITOR.replace( 'answer_1');
+		} 
 		var answer2 = CKEDITOR.instances['answer_2'];
-		if (!answer2) { 
-			CKEDITOR.inline('answer_2');
+		if (!answer2) {  
+			CKEDITOR.replace( 'answer_2');
 		}
 
 		var answer3 = CKEDITOR.instances['answer_3'];
-		if (!answer3) {  
-			CKEDITOR.inline('answer_3');
+		if (!answer3) {   
+			CKEDITOR.replace( 'answer_3');
 		}
 
 		var answer4 = CKEDITOR.instances['answer_4'];
-		if (!answer4) {   
-			CKEDITOR.inline('answer_4');
+		if (!answer4) {    
+			CKEDITOR.replace( 'answer_4');
 		}
+
+		
 
 		var i_a_1 = 1;
 		var i_a_2 = 0;
 		var i_a_3 = 0;
 		var i_a_4 = 0;
+
+
 
 		// Mark answer modal
 		$("#i_answer_1").click(function(event) {
@@ -372,11 +382,8 @@
 								swal("Question Added!", {
 									icon: "success",
 								}).then(function(){ 
-									CKEDITOR.instances['q_editor'].setData('');
-									$("#answer_1").html("Click Here To Add Answer #1");
-									$("#answer_2").html("Click Here To Add Answer #2");
-									$("#answer_3").html("Click Here To Add Answer #3");
-									$("#answer_4").html("Click Here To Add Answer #4");
+
+									$("#answer_1, #answer_2, #answer_3, #answer_4").html("Click Here To Add Answer");
 									$('#modal_q').modal('close');
 									unsavedChanges = true;
 							// fetch question

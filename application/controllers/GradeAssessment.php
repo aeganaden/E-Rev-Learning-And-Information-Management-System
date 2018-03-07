@@ -23,7 +23,7 @@ class GradeAssessment extends CI_Controller {
 			case 'CE':
 			$program = 1;
 			break;
-			case 'EEE':
+			case 'ECE':
 			$program = 2;
 			break;
 			case 'EE':

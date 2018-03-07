@@ -536,7 +536,7 @@ class Admin extends CI_Controller {
   public function charts_student() {
     $students = $this->Crud_model->fetch("student");
     $data = array();
-    $me = $ce = $ee = $eee = 0;
+    $me = $ce = $ee = $ece = 0;
     if ($students) {
       foreach ($students as $key => $value) {
         switch ($value->student_department) {
@@ -546,8 +546,8 @@ class Admin extends CI_Controller {
           case 'ME':
           $me++;
           break;
-          case 'EEE':
-          $eee++;
+          case 'ECE':
+          $ece++;
           break;
           case 'EE':
           $ee++;
@@ -559,7 +559,7 @@ class Admin extends CI_Controller {
         }
       }
     }
-    array_push($data, $me, $ce, $ee, $eee);
+    array_push($data, $me, $ce, $ee, $ece);
 
     echo json_encode($data);
   }
