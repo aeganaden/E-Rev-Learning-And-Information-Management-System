@@ -46,7 +46,7 @@
           <li>
             <div class="collapsible-header  bg-primary-green color-white"><i class="material-icons">people_outline</i><?=$value->offering_section?></div>
             <div>
-             <table id="tbl-<?=$value->offering_section?>" style="padding: 2%;">
+             <table id="tbl-<?=$value->offering_section?>" class="data-table" style="padding: 2%;">
               <thead >
                 <tr>
                   <th>Student ID</th>
