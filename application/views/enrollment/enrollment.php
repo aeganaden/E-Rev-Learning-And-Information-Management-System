@@ -6,7 +6,7 @@ $enrollment = $this->Crud_model->fetch("enrollment");
 <div class="container row">
 	<div class="col s12">
 		<blockquote class="color-primary-green" style="margin-top: 5%;"> 
-			<h5 class="color-black">Manage Term/Sy </h5>
+			<h5 class="color-black">Manage Term/Sy <i class="material-icons color-primary-green" style="padding-left: 1%; cursor: pointer;">add_circle</i></h5>
 		</blockquote>
 		<div class="row" style="padding-top: 5%;">
 			<?php if ($enrollment): ?>

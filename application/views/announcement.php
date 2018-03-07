@@ -113,12 +113,6 @@
                             }
                             ?>
                             <tr>
-                        <script type="text/javascript">
-                            jQuery(document).ready(function ($) {
-
-                                shorten_text("<?= $value->announcement_content ?>", "<?= $value->announcement_id ?>");
-                            });
-                        </script>
                         <td><?= $value->announcement_id ?></td>
                         <td><?= $value->announcement_title ?></td>
                         <td ><h6 class="ann_content_truncate<?= $value->announcement_id ?>"></h6></td>
@@ -309,7 +303,7 @@
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-            }).then((willDelete) = > {
+            }).then((willDelete)=> {
             if (willDelete) {
                 $.ajax({
                     url: "<?= base_url() ?>Admin/deleteAnnouncement ",
