@@ -1,6 +1,6 @@
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-  <li class="bg-color-white"><a href="<?=base_url()?>Enrollment" class="color-black">Enrollment</a></li>
+  <li class="bg-color-white"><a href="<?=base_url()?>Enrollment" class="color-black">Term/Sy</a></li>
   <li class="divider"></li>
   <li class="bg-color-white"><a href="<?=base_url()?>Login/logout " class="color-black">Log Out</a></li>
 </ul>
