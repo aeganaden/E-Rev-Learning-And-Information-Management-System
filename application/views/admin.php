@@ -54,7 +54,7 @@
                             <!-- FEEDBACK ADDED BY MARK -->
                             <div class="card" id="card-lf" onclick="store(this.id)">
                                 <div class="card-content bg-primary-green">
-                                    <h6 class="a-oswald color-white  valign-wrapper">Lecturers' Feedback<i class="material-icons">keyboard_arrow_right</i></h6>
+                                    <h6 class="a-oswald color-white  valign-wrapper"> Feedback<i class="material-icons">keyboard_arrow_right</i></h6>
                                 </div>
                             </div>
                             <!-- END: FEEDBACK ADDED BY MARK -->
@@ -134,7 +134,7 @@
             <!-- Lecturers' Feedback Account -->
             <div class="row" id="div-card-lf" style="display: none; ">
                 <blockquote class="color-primary-green">
-                    <h2>Lecturers' Feedback</h2>
+                    <h2> Feedback</h2>
                 </blockquote>
 
                 <?php if (isset($feedback) && !empty($feedback)): ?>
