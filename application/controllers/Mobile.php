@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-        $_POST['username'] = "mgbabaran";
-        $_POST['password'] = "mark";
+//        $_POST['username'] = "mgbabaran";
+//        $_POST['password'] = "mark";
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
@@ -111,10 +111,10 @@ class Mobile extends CI_Controller {
     }
 
     public function feedback() {
-//        $_POST['identifier'] = "FaCuLtY In cHarGe";
-//        $_POST['firstname'] = "rIza";
-//        $_POST['midname'] = "bLossOm";
-//        $_POST['lastname'] = "mAlaYa";
+//        $_POST['identifier'] = "faculty in charge";
+//        $_POST['firstname'] = "riza";
+//        $_POST['midname'] = "blossom";
+//        $_POST['lastname'] = "malaya";
 //        $_POST['id'] = '1';
 //        $_POST['department'] = "CE";
 //        $_POST['offering_id'] = 1;
@@ -151,54 +151,63 @@ class Mobile extends CI_Controller {
                 $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $department));
                 $feedback_status = $dept_temp[0]->professor_feedback_active;
                 if ($feedback_status == 1) {                //checks if feedback is open
-                    $col = array('lecturer.lecturer_id, lecturer.image_path, offering.offering_name, subject.subject_name, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name', false);
-                    $join2 = array('lecturer', 'lecturer.lecturer_id = subject.lecturer_id');
-                    $join1 = array('subject', 'subject.offering_id = offering.offering_id');
-                    $jointype = "INNER";
-                    $where = array('subject.offering_id' => $offering_id);
-                    $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
+                    $col = array('lec.lecturer_id, lec.image_path, off.offering_name, sub.subject_name, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', false);
+                    $join = array(
+                        array('course as cou', 'cou.course_id = off.course_id'),
+                        array('subject as sub', "sub.course_id = cou.course_id"),
+                        array('lecturer as lec', 'sub.lecturer_id = lec.lecturer_id')
+                    );
+                    $where = array('offering_id' => $offering_id);
+                    if ($result_hold = $this->Crud_model->fetch_join2('offering as off', $col, $join, NULL, $where)) {
 
-                    //get active enrollment
-                    $col = array("enrollment_id", FALSE);
-                    $enrollment = $this->Crud_model->fetch_select("enrollment", $col, array("enrollment_is_active" => 1));
+                        //get active enrollment
+                        $col = array("enrollment_id", FALSE);
+                        $enrollment = $this->Crud_model->fetch_select("enrollment", $col, array("enrollment_is_active" => 1));
 
-                    $counter = 0;
-                    foreach ($result_hold as $val) {              //checks if feedback already done and added to array if so
-                        $where = array("lecturer_feedback_department" => $department, "student_id" => $like[7], "lecturer_id" => $val->lecturer_id, "enrollment_id" => $enrollment[0]->enrollment_id);
-                        if ($this->Crud_model->fetch("lecturer_feedback", $where)) {
-                            $result_hold[$counter]->feedback_done = 1;
-                        } else {
-                            $result_hold[$counter]->feedback_done = 0;
+                        $counter = 0;
+                        foreach ($result_hold as $val) {              //checks if feedback already done and added to array if so
+                            $where = array("lecturer_feedback_department" => $department, "student_id" => $like[7], "lecturer_id" => $val->lecturer_id, "enrollment_id" => $enrollment[0]->enrollment_id);
+                            if ($this->Crud_model->fetch("lecturer_feedback", $where)) {
+                                $result_hold[$counter]->feedback_done = 1;
+                            } else {
+                                $result_hold[$counter]->feedback_done = 0;
+                            }
+                            $counter++;
                         }
-                        $counter++;
+                        $result["result"] = $result_hold;     //transfer
+                        print_r(json_encode($result));
+                    } else {
+                        $result['message'][0]['message'] = "An error occured fetching the list of your lecturers.";
+                        print_r(json_encode($result));
                     }
-                    $result["result"] = $result_hold;     //transfer
-                    print_r(json_encode($result));
                 } else {
                     $result['message'][0]['message'] = "Feedback is not yet activated";
                     print_r(json_encode($result));
                 }
             } else {                //stud's enrollment is inactive
+            
             $result['message'][0]['message'] = "No data";
             print_r(json_encode($result));
         }
     } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
-
         $department = $_POST['department'];
+        $current_enrollment = $this->get_active_enrollment()[0]->enrollment_id;
 
-        $col = array('lecturer.lecturer_id, lecturer.image_path, lecturer_expertise, CONCAT(lecturer.firstname, " ",lecturer.midname, " ",lecturer.lastname) AS full_name', FALSE);
-        $join2 = array('offering', 'offering.offering_id = subject.offering_id');
-        $join1 = array('subject', 'subject.lecturer_id = lecturer.lecturer_id');
-        $jointype = "INNER";
-        $where = array('offering.offering_department' => $department);
-        if ($result_hold = $this->Crud_model->fetch_join('lecturer', $col, $join1, $jointype, $join2, $where, TRUE)) {
+        $col = array('lec.lecturer_id, lec.image_path, lec.lecturer_expertise, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
+        $join = array(
+            array('subject as sub', 'sub.course_id = cou.course_id'),
+            array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
+        );
+        $where = array("cou.course_department" => $department, "cou.enrollment_id" => $current_enrollment);
+        if ($result_hold = $this->Crud_model->fetch_join2('course as cou', $col, $join, NULL, $where, TRUE)) {
             $result["result"] = $result_hold;
             print_r(json_encode($result));
         } else {
             $result['message'][0]['message'] = "No data";
             print_r(json_encode($result));
-        }
+        } 
     }
+}
 }
 
 public function feedback_fetch() {
@@ -297,6 +306,17 @@ public function feedback_fetch() {
         } else {
             $result['message'][0]['message'] = "Submitting failed";
             print_r(json_encode($result));
+        }
+    }
+
+    private function get_active_enrollment() {
+        $where = array("enrollment_is_active" => 1);
+        if (count($result = $this->Crud_model->fetch_select("enrollment", NULL, $where)) != 1) {
+            return "There are multiple active enrollment.";
+        } else if ($result) {
+            return $result;
+        } else {
+            return "There is no activated enrollment";
         }
     }
 
