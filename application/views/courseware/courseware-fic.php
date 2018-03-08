@@ -264,9 +264,7 @@
 		$('.tooltipped').tooltip({delay: 50});
 
 		jQuery(".sub_name").fitText();
-		CKEDITOR.replace( 'q_editor', {
-			extraPlugins: 'imageuploader'
-		});
+		CKEDITOR.replace( 'q_editor');
 
 		var answer1 = CKEDITOR.instances['answer_1'];
 		if (!answer1) {  

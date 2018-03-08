@@ -1,4 +1,4 @@
-<?php $x = 0; ?>
+<?php $x = 0; ?> 
 <?php foreach ($data as $key => $value): ?>
 	<div class="row">
 		<div class="col s12">
@@ -28,7 +28,7 @@
 							<?php if ($answers): ?>
 								<h5 class="color-black">Choices</h5>
 								<?php foreach ($answers as $key => $i_value): ?>
-									<div class="row">
+									<div class="row color-black">
 										<p>
 											<input name="group<?=$value->courseware_question_id?>" type="radio" id="s_a<?=$i_value->choice_id?>" />
 											<label for="s_a<?=$i_value->choice_id?>" data-id="<?=$i_value->choice_id?>" class="color-black"><?=$i_value->choice_choice?></label>
@@ -59,7 +59,14 @@
 	
 	jQuery(document).ready(function($) {
 		$('.tooltipped').tooltip({delay: 50});
-		
+
+		var images = document.getElementsByTagName("img");
+		var i;
+		for(i = 0; i < images.length; i++) {
+			images[i].className += "materialboxed";
+		}
+
+		$('.materialboxed').materialbox();
 
 	});
 </script>

@@ -4,7 +4,12 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here.
+	
+ config.extraPlugins = 'imageuploader';
+ // Add WIRIS to the plugin list
+    config.extraPlugins += (config.extraPlugins.length == 0 ? '' : ',') + 'ckeditor_wiris' ;
+
+// Define changes to default configuration here.
 	// For complete reference see:
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
@@ -23,8 +28,10 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'paragraph',   groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
 		{ name: 'styles' },
 		{ name: 'colors' },
-		{ name: 'about' }
+		{ name: 'about' },
+	
 	];
+
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.

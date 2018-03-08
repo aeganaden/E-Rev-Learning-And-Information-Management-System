@@ -51,21 +51,45 @@
 
 	<!-- ckeditor -->
 	<!-- <link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>'> -->
-	<script src="<?= base_url(); ?>assets/ckeditor/ckeditor.js?v=<?= time(); ?>"></script>
-	<script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/plugin.js"></script>
-	<script type="text/javascript" src="<?= base_url(); ?>assets/ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image"></script>
-
+	<script src="<?= base_url(); ?>ckeditor/ckeditor.js?v=<?= time(); ?>"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>ckeditor/plugins/ckeditor_wiris/plugin.js?v=<?= time(); ?>"></script>
+	<script type="text/javascript" src="<?= base_url(); ?>ckeditor/plugins/ckeditor_wiris/integration/WIRISplugins.js?viewer=image?v=<?= time(); ?>"></script>
+	
 	<script type="text/javascript">
 		var unsavedChanges = true;
+		function createCookie(name,value,days) {
+			if (days) {
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+				var expires = "; expires="+date.toUTCString();
+			}
+			else var expires = "";
+			document.cookie = name+"="+value+expires+"; path=/";
+		}
+
+		function readCookie(name) {
+			var nameEQ = name + "=";
+			var ca = document.cookie.split(';');
+			for(var i=0;i < ca.length;i++) {
+				var c = ca[i];
+				while (c.charAt(0)==' ') c = c.substring(1,c.length);
+				if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			}
+			return null;
+		}
+
+		function eraseCookie(name) {
+			createCookie(name,"",-1);
+		}
 
 		function store(id) {
 			ident = "div-" + id;
-			document.cookie = ident;
+			createCookie('div_visible', ident);
 		}
 		
 		jQuery(document).ready(function($) {
 
-			var x = document.cookie;
+			var x = readCookie('div_visible');
 			if (!x) {
 				$("#div-card-chart").css('display', 'block');
 			}else{

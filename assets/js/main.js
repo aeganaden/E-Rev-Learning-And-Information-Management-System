@@ -13,11 +13,15 @@ $(document).ready(function() {
 			}
 			if ($(this).attr("id") == "modal_q") {
 				CKEDITOR.instances['q_editor'].setData(' ');
-				$("#answer_1, #answer_2, #answer_3, #answer_4").html("Click Here To Add Answer");
+				CKEDITOR.instances['answer_1'].setData(' ');
+				CKEDITOR.instances['answer_2'].setData(' ');
+				CKEDITOR.instances['answer_3'].setData(' ');
+				CKEDITOR.instances['answer_4'].setData(' ');
 			}
        } // Callback for Modal close
    }
    );
+	
 	$('.collapsible').collapsible();
 	$('select').material_select();
 	$('ul.tabs').tabs();

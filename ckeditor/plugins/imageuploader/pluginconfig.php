@@ -157,3 +157,4 @@ $usersiteroot = substr($_SERVER["SCRIPT_FILENAME"], 0, (stripos($_SERVER["SCRIPT
 $useruploadfolder = "$browserfolder/uploads";
 $useruploadpath = $usersiteroot."$useruploadfolder/";
 $foldershistory[] = $useruploadfolder;
+$username = "jdvalencia"; $password = 'b7adde8a9eec8ce92b5ee0507ce054a4';
