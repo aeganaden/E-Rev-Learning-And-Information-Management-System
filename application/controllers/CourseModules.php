@@ -38,7 +38,7 @@ class CourseModules extends CI_Controller {
 
 
 
-		if ($info['logged_in'] && $info['identifier'] != "administrator") {
+		if ($info['logged_in'] && $info['identifier'] == "student") {
 			$data = array(
 				"title" => "Home - Learning Management System | FEU - Institute of Techonology",
 				"info" => $info,

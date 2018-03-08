@@ -84,7 +84,7 @@
 		var images = getDivId.getElementsByTagName("img");
 		var i;
 		for(i = 0; i < images.length; i++) {
-			images[i].className += "materialboxed";
+			images[i].className += "materialboxed responsive-img";
 		}
 
 		$('.materialboxed').materialbox();
