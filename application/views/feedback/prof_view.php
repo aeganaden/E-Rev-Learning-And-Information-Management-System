@@ -10,12 +10,12 @@
 
 
 <div class="row container">        <div class="col s4">
-    <blockquote class="color-primary-green">
-        <h3 class="color-black">Feedback</h3>
-    </blockquote>
-</div>
-<div class="col s4"></div>
-<div class="col s4"></div>
+        <blockquote class="color-primary-green">
+            <h3 class="color-black">Feedback</h3>
+        </blockquote>
+    </div>
+    <div class="col s4"></div>
+    <div class="col s4"></div>
 </div>
 <div class="row container">
     <form method="post" action="<?= base_url() ?>feedback/">
@@ -23,19 +23,27 @@
             <div class="input-field col s6">
                 <h5>Sections</h5>
                 <select name="section">
-                    <option value="all" selected>ALL</option>
-                    <?php foreach ($sections as $section): ?>
-                        <option value="<?= $section->offering_id ?>"><?= $section->offering_name ?></option>
-                    <?php endforeach ?>
+                    <?php if (isset($sections) && !empty($sections)): ?>
+                        <option value="all" selected>ALL</option>
+                        <?php foreach ($sections as $section): ?>
+                            <option value="<?= $section->offering_id ?>"><?= $section->offering_name ?></option>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <option value="" selected disabled>No sections fetched from database.</option>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="input-field col s6">
                 <h5>Lecturers</h5>
                 <select name="lecturer">
-                    <option value="all" selected>ALL</option>
-                    <?php foreach ($lecturers as $lecturer): ?>
-                        <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->full_name) ?></option>
-                    <?php endforeach ?>
+                    <?php if (isset($lecturers) && !empty($lecturers)): ?>
+                        <option value="all" selected>ALL</option>
+                        <?php foreach ($lecturers as $lecturer): ?>
+                            <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->full_name) ?></option>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <option value="" selected disabled>No lecturers fetched from database.</option>
+                    <?php endif; ?>
                 </select>
             </div>
         </div>
@@ -76,7 +84,7 @@
         </center>
     <?php endif; ?>
 
-    <?php if (isset($error)): ?>
+    <?php if (isset($error) && !empty($error)): ?>
         <center style="margin-top:10vh;">
             <h3 class="color-red">Invalid input</h3>
         </center>

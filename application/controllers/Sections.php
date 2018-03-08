@@ -36,7 +36,7 @@ class Sections extends CI_Controller {
 //            print_r($result_course);
 
             $data = array(
-                "title" => "Subject Area Management",
+                "title" => "Sections",
                 'info' => $info,
                 "s_h" => "",
                 "s_a" => "",
@@ -57,16 +57,27 @@ class Sections extends CI_Controller {
     }
 
     public function view_sections() {
+        //TYPE ON URL BAR, CAN ACCESS OTHER COURSES AND ADD SECTIONS
+
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
-            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
                 $col = "offering_id,offering_name";
                 $where = array(
                     "course_id" => $segment,
                     "offering_department" => $info["user"]->fic_department
                 );
                 $result_offering = $this->Crud_model->fetch_select("offering", $col, $where);
-//                print_r($result_offering);
+
+                //GET COURSE DETAILS
+                $col = "course_course_code,course_course_title";
+                $where = array(
+                    "course_id" => $segment,
+                    "course_department" => $info["user"]->fic_department,
+                    "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id         //enrollment id of active
+                );
+                $result_course = $this->Crud_model->fetch_select("course", $col, $where);
+                //END - COURSE DETAILS
 
                 $data = array(
                     "title" => "Subject Area Management",
@@ -79,7 +90,8 @@ class Sections extends CI_Controller {
                     "s_s" => "selected-nav",
                     "s_co" => "",
                     "s_ss" => "",
-                    "offering" => $result_offering
+                    "offering" => $result_offering,
+                    "course" => $result_course
                 );
                 $this->load->view('includes/header', $data);
                 $this->load->view('sections/course_view');
@@ -105,7 +117,17 @@ class Sections extends CI_Controller {
                 $this->load->library('upload', $config);
 
                 $lecturers = $this->Crud_model->fetch_select("lecturer");
-//                print_r($lecturers);
+
+                //GET COURSE DETAILS
+                $col = "course_course_code,course_course_title";
+                $where = array(
+                    "course_id" => $segment,
+                    "course_department" => $info["user"]->fic_department,
+                    "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id         //enrollment id of active
+                );
+                $result_course = $this->Crud_model->fetch_select("course", $col, $where);
+//                print_r($result_course);
+                //END - GET COURSE DETAILS
 
                 $data = array(
                     "title" => "Subject Area Management",
@@ -118,7 +140,8 @@ class Sections extends CI_Controller {
                     "s_s" => "selected-nav",
                     "s_co" => "",
                     "s_ss" => "",
-                    "lecturer" => $lecturers
+                    "lecturer" => $lecturers,
+                    "course2" => $result_course
                 );
                 $this->load->view('includes/header', $data);
 
@@ -147,7 +170,7 @@ class Sections extends CI_Controller {
                         );
                         $col = "offering_id";
                         $temp = $this->Crud_model->fetch_select("offering", $col, $where);
-//                        print_r($sheetData);
+
                         if (!$temp) {                                                       //checks if there's already this name of section
                             $temp = array(
                                 "offering_name" => strtoupper($this->input->post("section_name")),
@@ -158,8 +181,7 @@ class Sections extends CI_Controller {
                             $this->Crud_model->insert('offering', $temp);
                             $section_id = $this->db->insert_id();
                             $sections = $this->get_sections();
-//                            echo "<pre>";
-//                            print_r($sheetData);
+
                             $isit = false;
 
                             //check if correct col name
@@ -194,7 +216,7 @@ class Sections extends CI_Controller {
                                             $insert_batch_students[] = $temp;
                                         }
                                         $this->Crud_model->insert_batch("student", $insert_batch_students);
-//                                        print_r($this->db->error());
+                                        print_r($this->db->error());
                                     }
                                     break;
                                 }
@@ -245,6 +267,8 @@ class Sections extends CI_Controller {
                                 $error_message[] = "&emsp;-C: 'venue'";
                             }
 
+                            //LAST - SHOULD INCLUDE INSERTION OF TOPICS
+
                             if (!empty($error_message)) {
                                 $data = array(
                                     "error_message" => $error_message
@@ -254,14 +278,14 @@ class Sections extends CI_Controller {
                                 if ($this->db->trans_status() === FALSE) {          //error dbase
                                     $this->db->trans_rollback();
                                     $error_message[] = "An error occured while processing the data.";
-//                                    print_r($this->db->error());
+
                                     $data = array(
                                         "error_message" => $error_message
                                     );
                                     $this->load->view('sections/add', $data);
                                 } else {                                            //success dbase
                                     $this->db->trans_commit();
-                                    redirect("Sections");
+                                    redirect("Sections/view_sections/" . $segment);
                                 }
                             }
                         } else {
@@ -286,6 +310,30 @@ class Sections extends CI_Controller {
             } else {
                 redirect("Sections");
             }
+        } else {
+            redirect();
+        }
+    }
+
+    public function section_detail() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            $info = $this->session->userdata('userInfo');
+
+            $data = array(
+                "title" => "Sections",
+                'info' => $info,
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "selected-nav",
+                "s_co" => "",
+                "s_ss" => ""
+            );
+            $this->load->view('includes/header', $data);
+            $this->load->view('sections/section_detail');
+            $this->load->view('includes/footer');
         } else {
             redirect();
         }

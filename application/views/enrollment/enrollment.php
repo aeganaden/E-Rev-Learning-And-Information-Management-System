@@ -45,7 +45,7 @@ $enrollment = $this->Crud_model->fetch("enrollment");
                     </tbody>
                 </table>
             <?php else: ?>
-                <center>No data to show.</center>
+                <center><h3>No data to show.</h3></center>
             <?php endif; ?>
         </div>
     </div>

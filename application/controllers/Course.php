@@ -36,8 +36,7 @@ class Course extends CI_Controller {
                 $col = 'cou.course_id, cou.course_course_title, cou.course_course_code, cou.course_is_active';
                 $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department);
                 if ($result = $this->Crud_model->fetch_select("course as cou", $col, $where)) {
-//                echo"<pre>";
-//                print_r($result);
+
                     foreach ($result as $key => $res) {
                         $var = (string) $res->course_id;
                         $result[$key]->course_id_sha = $this->hash_id($var);
@@ -211,6 +210,7 @@ class Course extends CI_Controller {
                     redirect("Course");
                 }
             }
+
             $this->load->view('includes/footer');
         } else {
             redirect();

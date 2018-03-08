@@ -20,9 +20,8 @@
 </div>
 <div class="row container">
     <pre>
-        <?php // print_r($hold); ?>
+        <?php print_r($course2); ?>
     </pre>
-    <?php // echo form_open('form');   ?>
     <div class="row">
         <form enctype="multipart/form-data" action="<?= base_url() . "Sections/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <blockquote class="color-red">
@@ -78,7 +77,7 @@
                             <option value="<?php echo $lect->lecturer_id; ?>"><?= $lect->firstname . " " . $lect->midname . " " . $lect->lastname ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <label>Materialize Select</label>
+                    <label>Lecturers</label>
                 </div>
             </div>
             <div class="input-field">

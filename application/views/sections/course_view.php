@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Section Management<a href="<?= base_url() ?>Sections/add/<?php echo $this->uri->segment(3); ?>" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Section</a></h3>
+            <h3 class="color-black">View Sections<a href="<?= base_url() ?>Sections/add/<?php echo $this->uri->segment(3); ?>" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Section</a></h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
@@ -19,7 +19,7 @@
 </div>
 <div class="row container">
     <pre>
-        <?php // print_r($offering); ?>
+        <?php print_r($course); ?>
     </pre>
     <?php if (isset($offering) && !empty($offering)): ?>
         <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
@@ -49,7 +49,7 @@
     $(document).ready(function () {
         $(".btn_view").click(function () {
             $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "Sections/view_sections/" ?>" + $data;
+            window.location.href = "<?= base_url() . "Sections/section_detail/" ?>" + $data;
         });
 
     });
