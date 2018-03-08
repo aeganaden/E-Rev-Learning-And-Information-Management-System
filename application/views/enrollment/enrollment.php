@@ -11,7 +11,7 @@ $enrollment = $this->Crud_model->fetch("enrollment");
             </h5>
         </blockquote>
         <div class="row" style="padding-top: 5%;">
-            <?php if (isset($enrollment)): ?>
+            <?php if (isset($enrollment) && !empty($enrollment)): ?>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -44,7 +44,9 @@ $enrollment = $this->Crud_model->fetch("enrollment");
                         <?php endforeach ?>
                     </tbody>
                 </table>
-            <?php endif ?>
+            <?php else: ?>
+                <center>No data to show.</center>
+            <?php endif; ?>
         </div>
     </div>
 </div>

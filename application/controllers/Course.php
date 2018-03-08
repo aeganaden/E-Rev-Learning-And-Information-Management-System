@@ -20,16 +20,6 @@ class Course extends CI_Controller {
             if (is_array($hold = $this->get_active_enrollment())) {        //checks if this is array, else it is error coz multiple active enrollment
                 $enrollment_active = $hold[0]->enrollment_id;
 
-                $col = 'cou.course_id, cou.course_course_title, cou.course_course_code, cou.course_is_active';
-                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department);
-                $result = $this->Crud_model->fetch_select("course as cou", $col, $where);
-//                echo"<pre>";
-//                print_r($result);
-                foreach ($result as $key => $res) {
-                    $var = (string) $res->course_id;
-                    $result[$key]->course_id_sha = $this->hash_id($var);
-                }
-
                 $data = array(
                     "title" => "Section Management",
                     'info' => $info,
@@ -39,14 +29,29 @@ class Course extends CI_Controller {
                     "s_f" => "",
                     "s_s" => "",
                     "s_co" => "selected-nav",
-                    "s_t" => "",
-                    "result" => $result
+                    "s_t" => ""
                 );
                 $this->load->view('includes/header', $data);
-                $this->load->view('course/main');
+
+                $col = 'cou.course_id, cou.course_course_title, cou.course_course_code, cou.course_is_active';
+                $where = array('cou.enrollment_id' => $enrollment_active, 'cou.course_department' => $info["user"]->professor_department);
+                if ($result = $this->Crud_model->fetch_select("course as cou", $col, $where)) {
+//                echo"<pre>";
+//                print_r($result);
+                    foreach ($result as $key => $res) {
+                        $var = (string) $res->course_id;
+                        $result[$key]->course_id_sha = $this->hash_id($var);
+                    }
+                    $data = array(
+                        "result" => $result
+                    );
+                    $this->load->view('course/main', $data);
+                } else {
+                    $this->load->view('course/main');
+                }
                 $this->load->view('includes/footer');
             } else {
-                echo $hold;
+                redirect("Course");
             }
         } else {
             redirect("");
