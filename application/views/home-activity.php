@@ -6,10 +6,10 @@
 <div class="row container">
 	<blockquote class="color-primary-green">
 
-		<h3 class="color-black">Activity
+		<h5 class="color-black">Activity <br><br>
 			<a class="btn waves-effect waves-light bg-primary-green modal-trigger" 
 			data-id="<?=$info['user']->id?>" href="#modal_add_activity" id="btn_add_activity">Add Activity</a>
-		</h3>
+		</h5>
 	</blockquote>
 </div>
 
@@ -266,7 +266,7 @@ switch ($info['user']->$ident) {
 			$desc = $("#modal_desciption").val();
 			$venue = $("#modal_venue").val();
 			$type = $("#modal_type").val();
-			
+			console.log($type);	
 			$.ajax({
 				url: '<?=base_url()?>Home/addActivity',
 				type: 'post',

@@ -191,7 +191,7 @@ public function updateActivity() {
             "activity_schedule_end_time"=>$time_e,
         );
         if ($this->Crud_model->update("activity", $data, array("activity_id" => $id))) {
-           if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
+         if ($this->Crud_model->update("activity_schedule",$data_sched,array("activity_schedule_id"=>$sched_id))) {
             echo json_encode(true);
         }else{
             echo json_encode("Update Activity Failed - Sched");
@@ -224,9 +224,16 @@ public function addActivity()
     $date  = strtotime($this->input->post("date"));
     $s_time = strtotime($this->input->post("s_time")); 
     $e_time = strtotime($this->input->post("e_time"));
+    $s_ampm = date("a",$s_time);
+    $e_ampm = date("a",$e_time);
     $desc = strip_tags($this->input->post("desc"));
-    $venue =strtoupper( strip_tags($this->input->post("venue")));
-    $last = $this->Crud_model->fetch_last("activity_schedule","activity_schedule_id");
+    $venue =strtoupper( strip_tags(str_replace(' ','',$this->input->post("venue"))));
+    if($last = $this->Crud_model->fetch_last("activity_schedule","activity_schedule_id")){
+        $last = $last->activity_schedule_id+1;
+    }else{
+        $last = 1;
+    }
+
     $checker = false;
     $data = array(
         "activity_venue"=>$venue,
@@ -234,50 +241,63 @@ public function addActivity()
         "lecturer_id"=>$lecturer,
         "offering_id"=>$offering,
         "activity_details_id"=>$type,
-        "activity_schedule_id"=>($last->activity_schedule_id+1),
+        "activity_schedule_id"=>$last,
     );
     $data_sched = array(
         "activity_schedule_date"=>$date,
         "activity_schedule_start_time"=>$s_time,
         "activity_schedule_end_time"=>$e_time,
     );
+    if ($s_ampm == $e_ampm) {
+        if ($e_time < $s_time) {
+            echo json_encode("Start Time must be earlier than End Time");
+        }
+    }
     if (empty($type) ||empty($lecturer) || empty($offering) || empty($date) || empty($s_time) || empty($e_time) || empty(str_replace(' ','',$desc))  || empty(str_replace(' ','',$venue)) ){
         echo json_encode("All values must not be null");
-    }elseif ($e_time < $s_time) {
-        echo json_encode("Start Time must be earlier than End Time");
     }else{
 
         // fetch all duplicate venues
         $ven_chk = $this->Crud_model->fetch("activity",array("activity_venue"=>$venue,"activity_status"=>1));
 
         // check time and date
-        if ($ven_chk) {
+        if ($ven_chk) { 
+            $u_date = $date;
+            $u_time_s = $s_time;
+            $u_time_e = $e_time;
             foreach ($ven_chk as $key => $value) {
                 $date_ven_chk = $this->Crud_model->fetch("activity_schedule",array("activity_schedule_id"=>$value->activity_schedule_id));
                 $date_ven_chk = $date_ven_chk[0];
-                $vck_date = date("mdy",$date_ven_chk->activity_schedule_date);
-                $vck_time_s = date("hia",$date_ven_chk->activity_schedule_start_time);
-                $vck_time_e = date("hia",$date_ven_chk->activity_schedule_end_time);
-                $u_date = date("mdy",$date);
-                $u_time_s = date("hia",$s_time);
-                $u_time_e = date("hia",$e_time);
+                $vck_date = $date_ven_chk->activity_schedule_date;
+                $vck_time_s = $date_ven_chk->activity_schedule_start_time;
+                $vck_time_e =$date_ven_chk->activity_schedule_end_time;
+
+                // print_r($date_ven_chk);
+
                 if ($vck_date == $u_date && $vck_time_s == $u_time_s && $vck_time_e == $u_time_e) {
                     echo json_encode("Same time and date to an existing activity");
                     $checker = true;
                     break;
-                }elseif($u_time_s >= $vck_time_s && $u_time_s <= $vck_time_e && $vck_date == $u_date){
-                    echo json_encode("Start time is in range of a existing activity");
-                    $checker = true;
-                    break;
-                }elseif($u_time_e >= $vck_time_s && $u_time_e <= $vck_time_e && $vck_date == $u_date){
-                    echo json_encode("End time is in range of a existing activity");
-                    $checker = true;
-                    break;
-                }elseif(($u_time_s < $vck_time_s) && ($u_time_e > $vck_time_e) && $vck_date == $u_date){
-                    echo json_encode("Your range of time affects other activity on that same date");
-                    $checker = true;
-                    break;
+                }elseif($vck_date == $u_date){ 
+                    if($u_time_s >= $vck_time_s && $u_time_s <= $vck_time_e){
+                        echo json_encode("Start time is in range of a existing activity");
+                        $checker = true;    
+                        break;
+                    }elseif($u_time_e >= $vck_time_s && $u_time_e <= $vck_time_e){
+                        echo json_encode("End time is in range of a existing activity");
+                        $checker = true;
+                        break;
+                    }elseif($u_time_s < $vck_time_s && $u_time_e < $vck_time_e){
+                        echo json_encode("Your range of time is in between of an existing activity");
+                        $checker = true;
+                        break;
+                    }elseif($u_time_s < $vck_time_s && $u_time_e > $vck_time_e){
+                        echo json_encode("Your range of time is in ovarlaps an existing activity");
+                        $checker = true;
+                        break;
+                    }
                 }
+
             } 
         }
 
