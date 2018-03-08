@@ -1,6 +1,8 @@
-
+</div>
 </body>
-
+<script type="text/javascript">
+	$("#body").css("display","block");
+</script>
 <!-- main js -->
 <script type="text/javascript" src="<?=base_url()?>assets/js/main.js?v=<?=time();?>"></script>
 

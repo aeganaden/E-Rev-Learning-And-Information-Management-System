@@ -32,8 +32,6 @@
 	<!-- Data tables CSS-->
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
 
-
-
 	<!-- MARK'S CSS!!! -->
 	<link rel="stylesheet" type="text/css" href='<?= base_url(); ?>assets/css/mark_css.css?v=<?= time(); ?>'>
 
@@ -102,6 +100,13 @@
 	</script>
 </head>
 <body>
+	<noscript>
+		<h1>Your browser does not support JavaScript.</h1>
+	</noscript>
+
+
 	<div class="progress bg-primary-yellow" style="margin: 0; padding: 0; display: none;" id="preloader">
 		<div class="indeterminate bg-primary-green"></div>
 	</div>
+
+	<div id="body" style="display: none;"> 
