@@ -20,8 +20,17 @@
 </div>
 <div class="row container">
     <pre>
-        <?php print_r($course2); ?>
+        <?php // print_r($course2); ?>
     </pre>
+    <center><h5><?= $course2[0]->course_course_title ?> (<?= $course2[0]->course_course_code ?>)</h5></center>
+    <br>
+    <?php
+    echo "<h6>" . $subject_year_course[0]->year_level_name . ":</h6>";
+    foreach ($subject_year_course as $syc) {
+        echo "<h6>—" . $syc->subject_list_name . "</h6>";
+    }
+    ?>
+    <br>
     <div class="row">
         <form enctype="multipart/form-data" action="<?= base_url() . "Sections/add/" . $this->uri->segment(3) ?>" method="POST" class="col s12">
             <blockquote class="color-red">

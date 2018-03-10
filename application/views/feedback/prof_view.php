@@ -29,7 +29,7 @@
                             <option value="<?= $section->offering_id ?>"><?= $section->offering_name ?></option>
                         <?php endforeach ?>
                     <?php else: ?>
-                        <option value="" selected disabled>No sections fetched from database.</option>
+                        <option value="" selected disabled>No sections.</option>
                     <?php endif; ?>
                 </select>
             </div>
@@ -42,7 +42,7 @@
                             <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->full_name) ?></option>
                         <?php endforeach ?>
                     <?php else: ?>
-                        <option value="" selected disabled>No lecturers fetched from database.</option>
+                        <option value="" selected disabled>No lecturers.</option>
                     <?php endif; ?>
                 </select>
             </div>

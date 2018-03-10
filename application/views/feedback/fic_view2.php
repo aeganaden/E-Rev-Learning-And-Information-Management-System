@@ -23,19 +23,27 @@
             <div class="input-field col s6">
                 <h5>Sections</h5>
                 <select name="section">
-                    <option value="all" selected>ALL</option>
-                    <?php foreach ($sections as $section): ?>
-                        <option value="<?= $section->offering_id ?>"><?= $section->offering_name ?></option>
-                    <?php endforeach ?>
+                    <?php if (isset($sections) && !empty($sections)): ?>
+                        <option value="all" selected>ALL</option>
+                        <?php foreach ($sections as $section): ?>
+                            <option value="<?= $section->offering_id ?>"><?= $section->offering_name ?></option>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <option value="" selected disabled>No sections.</option>
+                    <?php endif; ?>
                 </select>
             </div>
             <div class="input-field col s6">
                 <h5>Lecturers</h5>
                 <select name="lecturer">
-                    <option value="all" selected>ALL</option>
-                    <?php foreach ($lecturers as $lecturer): ?>
-                        <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->firstname . ' ' . $lecturer->midname . ' ' . $lecturer->lastname) ?></option>
-                    <?php endforeach ?>
+                    <?php if (isset($lecturers) && !empty($lecturers)): ?>
+                        <option value="all" selected>ALL</option>
+                        <?php foreach ($lecturers as $lecturer): ?>
+                            <option value="<?= $lecturer->lecturer_id ?>" data-icon="<?= base_url() . $lecturer->image_path ?>" class="left circle"><?= ucwords($lecturer->firstname . ' ' . $lecturer->midname . ' ' . $lecturer->lastname) ?></option>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <option value="" selected disabled>No lecturers.</option>
+                    <?php endif; ?>
                 </select>
             </div>
         </div>

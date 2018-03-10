@@ -202,6 +202,7 @@ class Course extends CI_Controller {
                         "professor_id" => $info["user"]->professor_id,
                         "year_level_id" => $hold_key
                     );
+                    $this->db->trans_begin();
                     $result = $this->Crud_model->insert("course", $data);
                     $c_id = $this->db->insert_id();
                     $dept = $info["user"]->professor_department;
@@ -366,7 +367,7 @@ class Course extends CI_Controller {
     private function update_subject($c_id, $dept) {
         $where = "course_id='" . $c_id . "'";
         $result_subject_list = $this->Crud_model->fetch_select("subject", "subject_id", $where);
-        echo "<pre>";
+//        echo "<pre>";
         foreach ($result_subject_list as $subsl) {
             $subject_id = $subsl->subject_id;
             $where = "subject_id='" . $subject_id . "'";
@@ -388,8 +389,8 @@ class Course extends CI_Controller {
             "subject_list_department" => $dept,
             "subject_list_is_active" => 1
         );
-        $result_sl = $this->Crud_model->fetch_select("subject_list", "subject_list_id, subject_list_name, subject_list_description", $where);
-//        print_r($result_sl);
+        $col = "subject_list_id, subject_list_name, subject_list_description";
+        $result_sl = $this->Crud_model->fetch_select("subject_list", $col, $where);
 
         foreach ($result_sl as $res) {
             $temp = array(
@@ -427,11 +428,14 @@ class Course extends CI_Controller {
                 );
                 $topic_batch[] = $temp;
             }
-//            print_r($topic_batch);
             $this->Crud_model->insert_batch("topic", $topic_batch);
             unset($topic_batch);
         }
-//        $this->Crud_model->delete("course", array('course_id' => $c_id));
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_commit();
+        }
     }
 
     private function get_active_enrollment() {
