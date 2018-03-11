@@ -248,7 +248,7 @@ class Sections extends CI_Controller {
                                             $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_id", $stud_ids));
                                             foreach ($all_studs as $suball_studs) {
                                                 $temp = array(
-                                                    "student_id" => $suball_studs->student_id,
+                                                    "student_num" => $suball_studs->student_id,
                                                     "firstname" => $suball_studs->firstname,
                                                     "midname" => $suball_studs->midname,
                                                     "lastname" => $suball_studs->lastname,
@@ -262,7 +262,9 @@ class Sections extends CI_Controller {
                                                 $insert_batch_students[] = $temp;
                                             }
                                             $this->Crud_model->insert_batch("student", $insert_batch_students);
-                                            $error_message[] = $this->db->error()["message"];
+                                            if (!empty($this->db->error()["message"]) && $this->db->error()["message"] != null) {
+                                                $error_message[] = $this->db->error()["message"];
+                                            }
                                         }
                                         break;
                                     }
@@ -312,7 +314,7 @@ class Sections extends CI_Controller {
                                     $error_message[] = "&emsp;-C: 'venue'";
                                 }
 
-                                $this->Crud_model->fetch_join2("subject_id");
+//                                $this->Crud_model->fetch_join2("subject_id");
 
                                 if (!empty($error_message)) {
                                     $data = array(
