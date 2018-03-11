@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 11, 2018 at 03:45 PM
+-- Generation Time: Mar 11, 2018 at 04:12 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -94,7 +94,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
-(999999999, 'admin', 'admin', 'admin', 'admin', 'admin', 'adad');
+(999999999, 'admin', 'admin', 'admin', 'admin', 'admin', 'ad');
 
 -- --------------------------------------------------------
 
@@ -191,8 +191,8 @@ INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, 
 (2, 'CECORREL2', 'CE CORRELATION COURSE 2', 'CE', 1, 1, 201111111, 3),
 (3, 'MECORREL1', 'ME CORRELATION 1', 'ME', 1, 1, 201122222, 2),
 (4, 'MECORREL2', 'ME CORRELATION COURSE 2', 'ME', 1, 1, 201122222, 3),
-(5, 'EECORREL1', 'EE CORRELATION COURSE 1', 'EE', 1, 1, 201144444, 2),
-(6, 'EECORREL2', 'EE CORRELATION COURSE 2', 'EE', 1, 1, 201144444, 3);
+(5, 'ECECORREL1', 'ECE CORRELATION COURSE 1', 'ECE', 1, 1, 201133333, 2),
+(6, 'ECECORREL2', 'ECE CORRELATION COURSE 2', 'ECE', 1, 1, 201133333, 3);
 
 -- --------------------------------------------------------
 
@@ -242,9 +242,10 @@ CREATE TABLE `courseware_time` (
 --
 
 CREATE TABLE `course_modules` (
-  `courseware_file_id` int(20) NOT NULL,
-  `courseware_file_path` varchar(100) NOT NULL,
-  `subject_id` int(20) NOT NULL
+  `course_modules_id` int(20) NOT NULL,
+  `course_modules_path` varchar(200) NOT NULL,
+  `course_modules_name` text NOT NULL,
+  `topic_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -406,14 +407,12 @@ CREATE TABLE `log` (
 --
 
 INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log_content_id`) VALUES
-(1, 201111111, 1520778580, 1, 1),
-(2, 201122222, 1520778627, 1, 1),
-(3, 201144444, 1520778663, 1, 1),
-(4, 1, 1520778755, 1, 1),
-(5, 999999999, 1520778935, 1, 1),
-(6, 1, 1520778986, 1, 1),
-(7, 2, 1520779300, 1, 1),
-(8, 4, 1520779414, 1, 1);
+(1, 201111111, 1520780753, 1, 1),
+(2, 201122222, 1520780793, 1, 1),
+(3, 201133333, 1520780822, 1, 1),
+(4, 1, 1520780845, 1, 1),
+(5, 2, 1520780967, 1, 1),
+(6, 3, 1520781033, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -453,12 +452,12 @@ CREATE TABLE `offering` (
 --
 
 INSERT INTO `offering` (`offering_id`, `offering_name`, `offering_department`, `course_id`, `fic_id`) VALUES
-(3, 'V21', 'CE', 1, 1),
-(4, 'V22', 'CE', 1, 1),
-(5, 'K21', 'ME', 3, 2),
-(6, 'K22', 'ME', 3, 2),
-(7, 'F21', 'EE', 5, 4),
-(8, 'F22', 'EE', 5, 4);
+(1, 'V21', 'CE', 1, 1),
+(2, 'V22', 'CE', 1, 1),
+(3, 'K21', 'ME', 3, 2),
+(4, 'K22', 'ME', 3, 2),
+(5, 'F21', 'ECE', 5, 3),
+(6, 'F22', 'ECE', 5, 3);
 
 -- --------------------------------------------------------
 
@@ -553,12 +552,12 @@ CREATE TABLE `schedule` (
 --
 
 INSERT INTO `schedule` (`schedule_id`, `schedule_start_time`, `schedule_end_time`, `schedule_venue`, `lecturer_id`, `offering_id`) VALUES
-(3, 1520809200, 1520816400, 'T607', 1, 3),
-(4, 1520816400, 1520823600, 'T607', 1, 4),
-(5, 1520902800, 1520910000, 'T607', 2, 5),
-(6, 1520895600, 1520902800, 'T607', 2, 6),
-(7, 1520982000, 1520989200, 'T607', 3, 7),
-(8, 1520989200, 1520996400, 'T607', 3, 8);
+(1, 1520809200, 1520816400, 'T607', 1, 1),
+(2, 1520816400, 1520823600, 'T607', 1, 2),
+(3, 1520895600, 1520902800, 'T607', 2, 3),
+(4, 1520902800, 1520910000, 'T607', 2, 4),
+(5, 1520982000, 1520989200, 'T607', 3, 5),
+(6, 1520989200, 1520996400, 'T607', 3, 6);
 
 -- --------------------------------------------------------
 
@@ -586,24 +585,24 @@ CREATE TABLE `student` (
 --
 
 INSERT INTO `student` (`student_id`, `student_num`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `student_department`, `image_path`, `student_is_blocked`, `offering_id`) VALUES
-(7, 201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 3),
-(8, 201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 3),
-(9, 201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 3),
-(10, 201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 4),
-(11, 201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 4),
-(12, 201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 4),
-(13, 201311355, 'JUSTIN', 'BRUN', 'NEBRIJA', 'BRUN', 'BRUN', 'BRUN@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 5),
-(14, 201311694, 'JOHN HENRY', 'BELLO', 'SABAN', 'BELLO', 'BELLO', 'BELLO@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 5),
-(15, 201412123, 'WILLIAM', 'BUENAVENTURA', 'GENESE', 'BUENAVENTURA', 'BUENAVENTURA', 'BUENAVENTURA@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 5),
-(16, 201410704, 'VEA DENISSE', 'CUEVAS', 'LITAN', 'CUEVAS', 'CUEVAS', 'CUEVAS@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 6),
-(17, 201410821, 'SHAIRA MAE', 'COSTALES', 'BUNAO', 'COSTALES', 'COSTALES', 'COSTALES@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 6),
-(18, 201412224, 'ROGER', 'CAJES JR.', 'DATALIO', 'CAJES JR.', 'CAJES JR.', 'CAJES JR.@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 6),
-(19, 201310916, 'JOSE GABRIEL', 'QUEDDENG', 'SUÑGA', 'QUEDDENG', 'QUEDDENG', 'QUEDDENG@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 7),
-(20, 201410367, 'JENNY LIZA', 'SUNGA', 'BATALLA', 'SUNGA', 'SUNGA', 'SUNGA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 7),
-(21, 201512691, 'MARCO JERIC', 'ROSALES', 'NAVARRO', 'ROSALES', 'ROSALES', 'ROSALES@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 7),
-(22, 201710074, 'MARK JOHNNEL', 'BALEN', 'ALORO', 'BALEN', 'BALEN', 'BALEN@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 8),
-(23, 201710424, 'HANS PETER KARL', 'BRUNNER', 'FERRERA', 'BRUNNER', 'BRUNNER', 'BRUNNER@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 8),
-(24, 201710447, 'MARTIN DAVE', 'BADINAS', 'TOBIAS', 'BADINAS', 'BADINAS', 'BADINAS@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 8);
+(1, 201411491, 'BERNADETTE', 'ALCARAZ', 'ANGELES', 'baangeles', 'baangeles', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 1),
+(2, 201511281, 'Mark Denver', 'Gatan', 'Babaran', 'mgbabaran', 'mark', 'mgbabaran@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 1),
+(3, 201511438, 'CHRISTIAN JOSEPH', 'BACULI', 'ADRE', 'cbadre', 'cbadre', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 1),
+(4, 201410215, 'MIKE LUIS', 'AMIS', 'BOTE', 'mabote', 'mabote', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 2),
+(5, 201420096, 'SHIELA', 'PAZ', 'BUSTAMANTE', 'spbustamante', 'spbustamante', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 2),
+(6, 201512590, 'VIRGILIO MIGUEL', 'ZORNOSA', 'CASTELO IV', 'vzcastelo', 'vzcastelo', 'adre@fit.edu.ph', 'CE', 'assets/img/profiles/profile.jpg', 0, 2),
+(7, 201311355, 'JUSTIN', 'BRUN', 'NEBRIJA', 'BRUN', 'BRUN', 'BRUN@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 3),
+(8, 201311694, 'JOHN HENRY', 'BELLO', 'SABAN', 'BELLO', 'BELLO', 'BELLO@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 3),
+(9, 201412123, 'WILLIAM', 'BUENAVENTURA', 'GENESE', 'BUENAVENTURA', 'BUENAVENTURA', 'BUENAVENTURA@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 3),
+(10, 201410704, 'VEA DENISSE', 'CUEVAS', 'LITAN', 'CUEVAS', 'CUEVAS', 'CUEVAS@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
+(11, 201410821, 'SHAIRA MAE', 'COSTALES', 'BUNAO', 'COSTALES', 'COSTALES', 'COSTALES@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
+(12, 201412224, 'ROGER', 'CAJES JR.', 'DATALIO', 'CAJES JR.', 'CAJES JR.', 'CAJES JR.@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
+(13, 201310916, 'JOSE GABRIEL', 'QUEDDENG', 'SUÑGA', 'QUEDDENG', 'QUEDDENG', 'QUEDDENG@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
+(14, 201410367, 'JENNY LIZA', 'SUNGA', 'BATALLA', 'SUNGA', 'SUNGA', 'SUNGA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
+(15, 201512691, 'MARCO JERIC', 'ROSALES', 'NAVARRO', 'ROSALES', 'ROSALES', 'ROSALES@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
+(16, 201710074, 'MARK JOHNNEL', 'BALEN', 'ALORO', 'BALEN', 'BALEN', 'BALEN@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
+(17, 201710424, 'HANS PETER KARL', 'BRUNNER', 'FERRERA', 'BRUNNER', 'BRUNNER', 'BRUNNER@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
+(18, 201710447, 'MARTIN DAVE', 'BADINAS', 'TOBIAS', 'BADINAS', 'BADINAS', 'BADINAS@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6);
 
 -- --------------------------------------------------------
 
@@ -761,10 +760,12 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lec
 (2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', NULL, NULL, 2, 2),
 (3, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', NULL, NULL, 2, 4),
 (4, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', NULL, NULL, 3, 21),
-(6, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', NULL, NULL, 4, 21),
-(7, 'MATHEMATICS', NULL, NULL, 5, 7),
-(8, 'MATHEMATICS', NULL, NULL, 6, 8),
-(9, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', NULL, NULL, 6, 10);
+(5, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', NULL, NULL, 4, 22),
+(6, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', NULL, NULL, 4, 24),
+(7, 'MATHEMATICS', NULL, NULL, 5, 13),
+(8, 'MATHEMATICS', NULL, NULL, 6, 14),
+(9, 'ELECTRONICS ENGINEERING', NULL, NULL, 6, 16),
+(10, 'GENERAL ENGINEERING AND APPLIED SCIENCES', NULL, NULL, 6, 18);
 
 -- --------------------------------------------------------
 
@@ -1153,49 +1154,60 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 (46, 'Trigonometry', NULL, 0, 4, 74),
 (47, 'Solid Mensuration', NULL, 0, 4, 75),
 (48, 'Statics and Dynamics', NULL, 0, 4, 76),
-(61, 'Algebra', NULL, 0, 6, 1),
-(62, 'Analytic Geometry', NULL, 0, 6, 4),
-(63, 'Differential Calculus', NULL, 0, 6, 5),
-(64, 'Integral Calculus', NULL, 0, 6, 6),
-(65, 'Differential Equation', NULL, 0, 6, 7),
-(66, 'Advance Math', NULL, 0, 6, 34),
-(67, 'Probability and Statistics', NULL, 0, 6, 35),
-(68, 'Chemistry', NULL, 0, 6, 36),
-(69, 'Physics', NULL, 0, 6, 37),
-(70, 'Trigonometry', NULL, 0, 6, 74),
-(71, 'Solid Mensuration', NULL, 0, 6, 75),
-(72, 'Statics and Dynamics', NULL, 0, 6, 76),
-(73, 'Algebra', NULL, 0, 7, 1),
-(74, 'Plane and Spherical Geometry', NULL, 0, 7, 2),
-(75, 'Plane and Spherical Trigo', NULL, 0, 7, 3),
-(76, 'Analytic Geometry', NULL, 0, 7, 4),
-(77, 'Differential Calculus', NULL, 0, 7, 5),
-(78, 'Integral Calculus', NULL, 0, 7, 6),
-(79, 'Differential Equation', NULL, 0, 7, 7),
-(80, 'Advance Math', NULL, 0, 7, 34),
-(81, 'Probability and Statistics', NULL, 0, 7, 35),
-(82, 'Chemistry', NULL, 0, 7, 36),
-(83, 'Physics', NULL, 0, 7, 37),
-(84, 'Algebra', NULL, 0, 8, 1),
-(85, 'Plane and Spherical Geometry', NULL, 0, 8, 2),
-(86, 'Plane and Spherical Trigo', NULL, 0, 8, 3),
-(87, 'Analytic Geometry', NULL, 0, 8, 4),
-(88, 'Differential Calculus', NULL, 0, 8, 5),
-(89, 'Integral Calculus', NULL, 0, 8, 6),
-(90, 'Differential Equation', NULL, 0, 8, 7),
-(91, 'Advance Math', NULL, 0, 8, 34),
-(92, 'Probability and Statistics', NULL, 0, 8, 35),
-(93, 'Chemistry', NULL, 0, 8, 36),
-(94, 'Physics', NULL, 0, 8, 37),
-(95, 'Mechanics', NULL, 0, 9, 38),
-(96, 'Strength of Materials', NULL, 0, 9, 39),
-(97, 'Thermodynamics', NULL, 0, 9, 40),
-(98, 'Hydraulics', NULL, 0, 9, 41),
-(99, 'Fluid Mechanics', NULL, 0, 9, 42),
-(100, 'Engineering Econmy', NULL, 0, 9, 43),
-(101, 'Philippine Electrical Code', NULL, 0, 9, 44),
-(102, 'Laws and Ethics', NULL, 0, 9, 45),
-(103, 'Computer Fundamentals', NULL, 0, 9, 46);
+(49, 'Algebra', NULL, 0, 5, 1),
+(50, 'Analytic Geometry', NULL, 0, 5, 4),
+(51, 'Differential Calculus', NULL, 0, 5, 5),
+(52, 'Integral Calculus', NULL, 0, 5, 6),
+(53, 'Differential Equation', NULL, 0, 5, 7),
+(54, 'Advance Math', NULL, 0, 5, 34),
+(55, 'Probability and Statistics', NULL, 0, 5, 35),
+(56, 'Chemistry', NULL, 0, 5, 36),
+(57, 'Physics', NULL, 0, 5, 37),
+(58, 'Trigonometry', NULL, 0, 5, 74),
+(59, 'Solid Mensuration', NULL, 0, 5, 75),
+(60, 'Statics and Dynamics', NULL, 0, 5, 76),
+(61, 'Strength of Materials', NULL, 0, 6, 39),
+(62, 'Thermodynamics', NULL, 0, 6, 40),
+(63, 'Fluid Mechanics', NULL, 0, 6, 42),
+(64, 'Heat Transfer', NULL, 0, 6, 77),
+(65, 'Combustion Engineering', NULL, 0, 6, 78),
+(66, 'Machine Elements', NULL, 0, 6, 79),
+(67, 'Machine Shop Theory', NULL, 0, 6, 80),
+(68, 'Material Science Engineering', NULL, 0, 6, 81),
+(69, 'Algebra', NULL, 0, 7, 1),
+(70, 'Plane and Spherical Geometry', NULL, 0, 7, 2),
+(71, 'Plane and Spherical Trigo', NULL, 0, 7, 3),
+(72, 'Analytic Geometry', NULL, 0, 7, 4),
+(73, 'Differential Calculus', NULL, 0, 7, 5),
+(74, 'Integral Calculus', NULL, 0, 7, 6),
+(75, 'Differential Equation', NULL, 0, 7, 7),
+(76, 'Advance Math', NULL, 0, 7, 34),
+(77, 'Probability and Statistics', NULL, 0, 7, 35),
+(78, 'Chemistry', NULL, 0, 7, 36),
+(79, 'Physics', NULL, 0, 7, 37),
+(80, 'Algebra', NULL, 0, 8, 1),
+(81, 'Plane and Spherical Geometry', NULL, 0, 8, 2),
+(82, 'Plane and Spherical Trigo', NULL, 0, 8, 3),
+(83, 'Analytic Geometry', NULL, 0, 8, 4),
+(84, 'Differential Calculus', NULL, 0, 8, 5),
+(85, 'Integral Calculus', NULL, 0, 8, 6),
+(86, 'Differential Equation', NULL, 0, 8, 7),
+(87, 'Advance Math', NULL, 0, 8, 34),
+(88, 'Probability and Statistics', NULL, 0, 8, 35),
+(89, 'Chemistry', NULL, 0, 8, 36),
+(90, 'Physics', NULL, 0, 8, 37),
+(91, 'Mechanics', NULL, 0, 9, 38),
+(92, 'Strength of Materials', NULL, 0, 9, 39),
+(93, 'Thermodynamics', NULL, 0, 9, 40),
+(94, 'Vector Analysis and Electromagnets', NULL, 0, 9, 58),
+(95, 'Engineering Economy', NULL, 0, 9, 59),
+(96, 'Electrical Elements', NULL, 0, 10, 60),
+(97, 'DC and AC circuits', NULL, 0, 10, 61),
+(98, 'Electricity and Magnetism', NULL, 0, 10, 62),
+(99, 'Microelectronics', NULL, 0, 10, 63),
+(100, 'Semiconductor Devices', NULL, 0, 10, 64),
+(101, 'Logic Circuits', NULL, 0, 10, 65),
+(102, 'Industrial Electronics and Power Supply', NULL, 0, 10, 66);
 
 -- --------------------------------------------------------
 
@@ -1440,8 +1452,8 @@ ALTER TABLE `courseware_time`
 -- Indexes for table `course_modules`
 --
 ALTER TABLE `course_modules`
-  ADD PRIMARY KEY (`courseware_file_id`),
-  ADD KEY `fk_course_modules_subject1_idx` (`subject_id`);
+  ADD PRIMARY KEY (`course_modules_id`),
+  ADD KEY `fk_course_modules_topic1_idx` (`topic_id`);
 
 --
 -- Indexes for table `data_scores`
@@ -1708,7 +1720,7 @@ ALTER TABLE `courseware_time`
 -- AUTO_INCREMENT for table `course_modules`
 --
 ALTER TABLE `course_modules`
-  MODIFY `courseware_file_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `course_modules_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `data_scores`
@@ -1744,7 +1756,7 @@ ALTER TABLE `lecturer_feedback`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `log_content`
@@ -1756,7 +1768,7 @@ ALTER TABLE `log_content`
 -- AUTO_INCREMENT for table `offering`
 --
 ALTER TABLE `offering`
-  MODIFY `offering_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `offering_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `remedial_coursewares`
@@ -1780,13 +1792,13 @@ ALTER TABLE `remedial_student_answer`
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `student_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `student_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `student_answer`
@@ -1804,7 +1816,7 @@ ALTER TABLE `student_scores`
 -- AUTO_INCREMENT for table `subject`
 --
 ALTER TABLE `subject`
-  MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `subject_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `subject_list`
@@ -1816,7 +1828,7 @@ ALTER TABLE `subject_list`
 -- AUTO_INCREMENT for table `topic`
 --
 ALTER TABLE `topic`
-  MODIFY `topic_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `topic_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `topic_list`
@@ -1903,7 +1915,7 @@ ALTER TABLE `courseware_time`
 -- Constraints for table `course_modules`
 --
 ALTER TABLE `course_modules`
-  ADD CONSTRAINT `fk_course_modules_subject1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_course_modules_topic1` FOREIGN KEY (`topic_id`) REFERENCES `topic` (`topic_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `grade_assessment`
