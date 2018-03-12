@@ -4,7 +4,7 @@
 
 <div class="row container" id="top">		
 	<blockquote class="color-primary-green">
-		<h5 class="color-black">Coursewares</h5>
+		<h5 class="color-black">Practice Exams</h5>
 	</blockquote>
 </div>
 </div>

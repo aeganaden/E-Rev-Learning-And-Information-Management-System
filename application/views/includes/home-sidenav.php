@@ -104,12 +104,12 @@ switch ($info['user']->$ident) {
         <?php if ($info['user']->student_is_blocked == 1): ?>
             <li class="color-black <?= $s_c ?> tooltipped" data-position="right" data-tooltip="Must take remedial courses first before unlocking this.">
                 <a href="" class="color-black subheader grey color-grey">
-                    <i class="material-icons color-grey">not_interested</i>Coursewares
+                    <i class="material-icons color-grey">not_interested</i>Practice Exams
                 </a>
             </li>
         <?php else: ?>
             <li class="color-black <?= $s_c ?>">
-                <a href="<?= base_url() ?>Coursewares" class="color-black "><i class="material-icons color-black">book</i>Coursewares</a>
+                <a href="<?= base_url() ?>Coursewares" class="color-black "><i class="material-icons color-black">book</i>Practice Exams</a>
             </li>
         <?php endif ?>
 
@@ -117,7 +117,7 @@ switch ($info['user']->$ident) {
 
     <?php if ($info['identifier'] == "student" && $info['user']->student_is_blocked == 1): ?>
         <li class="<?= $s_rc ?>">
-            <a href="<?= base_url() ?>RemedialCoursewares" class=" color-black"><i class="material-icons color-black">book</i>Remedial Coursewares</a> <!--mark - naglagay-->
+            <a href="<?= base_url() ?>RemedialCoursewares" class=" color-black"><i class="material-icons color-black">book</i>Remedial Practice Exams</a> <!--mark - naglagay-->
         </li>
     <?php endif ?>
 
@@ -200,15 +200,15 @@ switch ($info['user']->$ident) {
         <li class="no-padding <?= $s_c ?> " id="btn_click_feed_ss">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header">Coursewares<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
+                    <a class="collapsible-header">Practice Exams<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
                     <div class="collapsible-body bg-color-white">
                         <ul>
                             <li class="color-black ">
-                                <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
+                                <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Practice Exams</a>
                             </li>
                             <li>
                                 <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
-                                    <i class="material-icons">hdr_strong</i>Toggle Courseware
+                                    <i class="material-icons">hdr_strong</i>Toggle Practice Exams
                                 </a>
                             </li>
                         </ul>
