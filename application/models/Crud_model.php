@@ -20,7 +20,10 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
-    public function fetch_last($table, $column) {
+    public function fetch_last($table, $column,$where=NULL) {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
         $query = $this->db->order_by($column, "desc")->limit(1)->get($table)->row();
         return ($query) ? $query : FALSE;
     } 
