@@ -9,9 +9,12 @@
 		<?php   
 		$enrollment = $this->Crud_model->fetch("enrollment",array("enrollment_is_active"=>1));
 		$enrollment = $enrollment[0];
+
+		$ident = $info['identifier'];
+		$ident.="_department"; 
 		// fetch course
 		$course = $this->Crud_model->fetch("course",
-			array("course_department"=>$info['user']->fic_department,
+			array("course_department"=>$info['user']->$ident,
 				"enrollment_id"=>$enrollment->enrollment_id));
 				?> 
 				<?php if ($course): ?>

@@ -115,7 +115,7 @@ class ManageCourseModules extends CI_Controller {
 					"topic"=>$topic
 				);
 				$this->load->view('includes/header', $data);
-				$this->load->view('course_modules/fic_course_modules');
+				$this->load->view('course_modules/mview_course_modules');
 				$this->load->view('includes/footer');
 			} elseif ($info['identifier'] == "administrator") {
 				redirect('Admin');

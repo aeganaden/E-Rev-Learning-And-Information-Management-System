@@ -94,7 +94,7 @@ switch ($info['user']->$ident) {
             <a href="<?= base_url() ?>CourseModules" class="color-black"><i class="material-icons color-black">import_contacts</i>Course Modules</a>
         </li>
     <?php endif ?>
-    <?php if ($info["identifier"] == "fic"): ?>
+    <?php if ($info["identifier"] == "fic" || $info["identifier"] == "professor" ): ?>
         <li class="color-black <?= $s_a ?>">
             <a href="<?= base_url() ?>ManageCourseModules" class="color-black"><i class="material-icons color-black">import_contacts</i>Manage Course Modules</a>
         </li>
