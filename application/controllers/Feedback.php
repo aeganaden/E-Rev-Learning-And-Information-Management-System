@@ -252,20 +252,20 @@ class Feedback extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                        $program = 1;
-                        break;
+                    $program = 1;
+                    break;
                     case 'ECE':
-                        $program = 2;
-                        break;
+                    $program = 2;
+                    break;
                     case 'EE':
-                        $program = 3;
-                        break;
+                    $program = 3;
+                    break;
                     case 'ME':
-                        $program = 4;
-                        break;
+                    $program = 4;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
 
 
@@ -335,7 +335,7 @@ class Feedback extends CI_Controller {
                 foreach ($temp as $temp2) {
                     $wherein[1][] = $temp2->course_id;
                 }
-                $sections = $this->Crud_model->fetch_select('OFFERING', $col, $where, NULL, NULL, $wherein);
+                $sections = $this->Crud_model->fetch_select('offering', $col, $where, NULL, NULL, $wherein);
                 unset($temp);
 
                 //******GET THE SECTION - END**********
@@ -476,7 +476,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -568,20 +568,20 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-                $program = 1;
-                break;
+            $program = 1;
+            break;
             case 'ECE':
-                $program = 2;
-                break;
+            $program = 2;
+            break;
             case 'EE':
-                $program = 3;
-                break;
+            $program = 3;
+            break;
             case 'ME':
-                $program = 4;
-                break;
+            $program = 4;
+            break;
 
             default:
-                break;
+            break;
         }
 
         $data = array(
