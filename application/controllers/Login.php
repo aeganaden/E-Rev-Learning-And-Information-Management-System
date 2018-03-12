@@ -38,8 +38,22 @@ class Login extends CI_Controller {
 			}
 		}elseif ($this->Crud_model->fetch("admin",$where)) {
 			$bool = sha1("administrator");
-		}elseif ($this->Crud_model->fetch("student",$where)) {
-			$bool = sha1("student");
+		}elseif ($data = $this->Crud_model->fetch_last("student","student_id",$where)) {
+
+			// fetch offering 
+			$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$data->offering_id));
+			$offering = $offering[0];
+			// fetch course
+			$course = $this->Crud_model->fetch("course",array("course_id"=>$offering->course_id));
+			$course = $course[0];
+			// fetch enrollment 
+			$enrollment = $this->Crud_model->fetch("enrollment",array("enrollment_id"=>$course->enrollment_id));
+			$enrollment = $enrollment[0];
+			if ($enrollment->enrollment_is_active == 1) {
+				$bool = sha1("student"); 
+			}else{
+				$bool = "You're not currently enrolled in this term."; 
+			}
 		}elseif ($data = $this->Crud_model->fetch("fic",$where)) {
 			if ($data[0]->fic_status == 1) {
 				$bool = sha1("fic");

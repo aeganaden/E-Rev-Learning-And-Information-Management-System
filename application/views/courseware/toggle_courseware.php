@@ -2,7 +2,7 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <div class="row container">
   <blockquote class="color-primary-green">
-    <h3 class="color-black">Toggle Coursewares</h3>
+    <h3 class="color-black">Toggle Practice Exams</h3>
   </blockquote>
 </div>
 
@@ -20,7 +20,7 @@
           <?php if ($subject_area): ?>
             <?php foreach ($subject_area as $key => $i_value): ?>
               <li>
-                <div class="collapsible-header bg-primary-green color-white"><i class="material-icons">aspect_ratio</i><?= $i_value->subject_name ?></div>
+                <div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-primary-yellow">aspect_ratio</i><?= $i_value->subject_name ?></div>
                 <div class="collapsible-body">
 
                   <h5>Topics</h5>
@@ -30,11 +30,11 @@
                     <?php if ($topics): ?>
                       <?php foreach ($topics as $key => $j_value): ?>
                         <li>
-                          <div class="collapsible-header bg-primary-green color-white"><i class="material-icons">title</i><?=$j_value->topic_name?></div>
+                          <div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-primary-yellow">title</i><?=$j_value->topic_name?></div>
                           <div class="collapsible-body">
 
                             <ul class="collection with-header">
-                              <li class="collection-header bg-color-white"><h5><i class="material-icons">book</i>Coursewares</h5></li>
+                              <li class="collection-header bg-color-white"><h5><i class="material-icons">book</i>Practice Exams</h5></li>
                               <?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$j_value->topic_id)) ?>
                               <?php if ($courseware): ?>
                                 <?php foreach ($courseware as $key => $j2_value): ?>

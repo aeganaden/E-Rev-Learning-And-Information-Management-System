@@ -10,21 +10,21 @@ $program = "";
 
 switch ($info['user']->$ident) {
     case 'CE':
-        $program = "Civil Engineering";
-        break;
+    $program = "Civil Engineering";
+    break;
     case 'EE':
-        $program = "Electrical Engineering";
-        break;
+    $program = "Electrical Engineering";
+    break;
     case 'ECE':
-        $program = "Electronics and Electrical Engineering";
-        break;
+    $program = "Electronics and Electrical Engineering";
+    break;
     case 'ME':
-        $program = "Mechanical Engineering";
-        break;
+    $program = "Mechanical Engineering";
+    break;
 
     default:
         # code...
-        break;
+    break;
 }
 // echo "<pre>";
 // print_r($info);
@@ -94,7 +94,7 @@ switch ($info['user']->$ident) {
             <a href="<?= base_url() ?>CourseModules" class="color-black"><i class="material-icons color-black">import_contacts</i>Course Modules</a>
         </li>
     <?php endif ?>
-    <?php if ($info["identifier"] == "fic"): ?>
+    <?php if ($info["identifier"] == "fic" || $info["identifier"] == "professor" ): ?>
         <li class="color-black <?= $s_a ?>">
             <a href="<?= base_url() ?>ManageCourseModules" class="color-black"><i class="material-icons color-black">import_contacts</i>Manage Course Modules</a>
         </li>
@@ -104,12 +104,12 @@ switch ($info['user']->$ident) {
         <?php if ($info['user']->student_is_blocked == 1): ?>
             <li class="color-black <?= $s_c ?> tooltipped" data-position="right" data-tooltip="Must take remedial courses first before unlocking this.">
                 <a href="" class="color-black subheader grey color-grey">
-                    <i class="material-icons color-grey">not_interested</i>Coursewares
+                    <i class="material-icons color-grey">not_interested</i>Practice Exams
                 </a>
             </li>
         <?php else: ?>
             <li class="color-black <?= $s_c ?>">
-                <a href="<?= base_url() ?>Coursewares" class="color-black "><i class="material-icons color-black">book</i>Coursewares</a>
+                <a href="<?= base_url() ?>Coursewares" class="color-black "><i class="material-icons color-black">book</i>Practice Exams</a>
             </li>
         <?php endif ?>
 
@@ -117,7 +117,7 @@ switch ($info['user']->$ident) {
 
     <?php if ($info['identifier'] == "student" && $info['user']->student_is_blocked == 1): ?>
         <li class="<?= $s_rc ?>">
-            <a href="<?= base_url() ?>RemedialCoursewares" class=" color-black"><i class="material-icons color-black">book</i>Remedial Coursewares</a> <!--mark - naglagay-->
+            <a href="<?= base_url() ?>RemedialCoursewares" class=" color-black"><i class="material-icons color-black">book</i>Remedial Practice Exams</a> <!--mark - naglagay-->
         </li>
     <?php endif ?>
 
@@ -200,15 +200,15 @@ switch ($info['user']->$ident) {
         <li class="no-padding <?= $s_c ?> " id="btn_click_feed_ss">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header">Coursewares<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
+                    <a class="collapsible-header">Practice Exams<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
                     <div class="collapsible-body bg-color-white">
                         <ul>
                             <li class="color-black ">
-                                <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Coursewares</a>
+                                <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Practice Exams</a>
                             </li>
                             <li>
                                 <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
-                                    <i class="material-icons">hdr_strong</i>Toggle Courseware
+                                    <i class="material-icons">hdr_strong</i>Toggle Practice Exams
                                 </a>
                             </li>
                         </ul>
@@ -231,42 +231,42 @@ switch ($info['user']->$ident) {
                             <li class="color-black ">
                                 <a href="<?= base_url() ?>Student_scores/view_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
                             </li>
-                    </div>
-                </li>
-            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        <?php endif ?>
+
+        <li>
+            <div class="divider"></div>
         </li>
-    <?php endif ?>
-
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li>
-        <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
-    </li>
-</ul>
+        <li>
+            <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
+        </li>
+    </ul>
 
 
-<!--====  End of Side-Nav Section  ====-->
+    <!--====  End of Side-Nav Section  ====-->
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    jQuery(document).ready(function ($) {
+        jQuery(document).ready(function ($) {
 
-        $("#btn_click_feed").click(function (event) {
-            if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i").html("keyboard_arrow_right");
-            }
+            $("#btn_click_feed").click(function (event) {
+                if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
+                    $("#btn_click_feed_i").html("keyboard_arrow_down");
+                } else {
+                    $("#btn_click_feed_i").html("keyboard_arrow_right");
+                }
+            });
+            $("#btn_click_feed_ss").click(function (event) {
+                if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
+                    $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
+                } else {
+                    $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
+                }
+            });
         });
-        $("#btn_click_feed_ss").click(function (event) {
-            if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
-            }
-        });
-    });
-</script>
+    </script>
