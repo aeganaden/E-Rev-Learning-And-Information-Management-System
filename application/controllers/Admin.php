@@ -11,7 +11,6 @@ class Admin extends CI_Controller {
         $this->load->library('session');
         $this->load->model('Crud_model');
     }
-
     public function active_enrollment() {
         $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
         $active_enrollment = $active_enrollment[0];

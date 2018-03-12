@@ -255,11 +255,7 @@
 	// 	console.log('hello');
 	// }
 
-	jQuery(document).ready(function($) {
-		// $(window).bind('beforeunload', function(){
-		// 	return '>>>>>Before You Go<<<<<<<< \n Your custom message go here';
-		// });
-
+	jQuery(document).ready(function($) { 
 		
 		$('.tooltipped').tooltip({delay: 50});
 
@@ -285,7 +281,7 @@
 			CKEDITOR.replace( 'answer_4');
 		}
 
-		
+
 
 		var i_a_1 = 1;
 		var i_a_2 = 0;
