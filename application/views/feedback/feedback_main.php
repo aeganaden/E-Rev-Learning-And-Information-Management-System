@@ -25,31 +25,35 @@
             <?php if (empty($lect)): ?>
                 <h4 id="message_area" class="center-align" style="margin-top: 20vh;">No list of lecturers to be show<br>(Feedback is not activated or inactive enrollment)</h4>
             <?php else: ?>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Topic</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($lect as $hold): ?>
-                            <tr class="bg-color-white">
-                                <td><?= $hold->firstname ?> <?= $hold->lastname ?></td>
-                                <td><?= $hold->topic ?></td>
-                                <td>
-                                    <?php if ($hold->sent_feedback == 1): ?>
-                                        <a class="waves-effect waves-light btn bg-primary-green" disabled>feedback</a>
-                                    <?php else: ?>
-                                        <a class="waves-effect waves-light btn bg-primary-green" onclick="window.location = '<?= base_url() ?>feedback/content/<?= $hold->lecturer_id ?>'">feedback</a>
-                                    <?php endif ?>
-                                </td>
+                <?php if ($lect == "no lect"): ?>
+                    <h4 id="message_area" class="center-align" style="margin-top: 20vh;">No list of lecturers to be show</h4>
+                <?php else: ?>
+                    <table >
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Subject Area</th>
+                                <th></th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif ?>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($lect as $hold): ?>
+                                <tr class="bg-color-white">
+                                    <td><?= $hold->firstname ?> <?= $hold->lastname ?></td>
+                                    <td><?= $hold->topic ?></td>
+                                    <td>
+                                        <?php if ($hold->sent_feedback == 1): ?>
+                                            <a class="waves-effect waves-light btn bg-primary-green" disabled>feedback</a>
+                                        <?php else: ?>
+                                            <a class="waves-effect waves-light btn bg-primary-green" onclick="window.location = '<?= base_url() ?>feedback/content/<?= $hold->lecturer_id ?>'">feedback</a>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
