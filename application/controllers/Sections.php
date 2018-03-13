@@ -143,7 +143,7 @@ class Sections extends CI_Controller {
                     require "./application/vendor/autoload.php";
                     $config['upload_path'] = "./assets/uploads/";
                     $config['allowed_types'] = 'xls|csv|xlsx';
-                    $config['max_size'] = '10000';
+                    $config['max_size'] = '2048000';
                     $config["file_name"] = "section_" . time();
                     $this->load->library('upload', $config);
 
@@ -315,7 +315,6 @@ class Sections extends CI_Controller {
                                             "lecturer_id" => $this->input->post("lect_id"),
                                             "offering_id" => $section_id
                                         );
-
                                         $this->Crud_model->insert("schedule", $schedule);
                                     } else {            //invalid time
                                         $isit2 = true;
@@ -330,7 +329,13 @@ class Sections extends CI_Controller {
                                     $error_message[] = "&emsp;-C: 'end time'";
                                     $error_message[] = "&emsp;-C: 'venue'";
                                 }
-
+                                $where = array(
+                                    "course_id" => $segment
+                                );
+                                $changes = array(
+                                    "lecturer_id" => $this->input->post("lect_id")
+                                );
+                                $this->Crud_model->update("subject", $changes, $where); //updates subject table
                                 if (!empty($error_message)) {
                                     $data = array(
                                         "error_message" => $error_message
@@ -346,12 +351,8 @@ class Sections extends CI_Controller {
                                         );
                                         $this->load->view('sections/add', $data);
                                     } else {                                            //success dbase
-//                                        $this->db->trans_commit();
-//                                        redirect("Sections/view_sections/" . $segment);
-                                        $this->db->trans_rollback();
-//                                        echo "<pre>";
-//                                        print_r($error_message);
-//                                        echo "</pre>";
+                                        $this->db->trans_commit();
+                                        redirect("Sections/view_sections/" . $segment);
                                     }
                                 }
                             } else {

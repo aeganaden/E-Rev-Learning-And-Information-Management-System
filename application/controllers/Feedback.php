@@ -228,20 +228,20 @@ class Feedback extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                    $program = 1;
-                    break;
+                        $program = 1;
+                        break;
                     case 'ECE':
-                    $program = 2;
-                    break;
+                        $program = 2;
+                        break;
                     case 'EE':
-                    $program = 3;
-                    break;
+                        $program = 3;
+                        break;
                     case 'ME':
-                    $program = 4;
-                    break;
+                        $program = 4;
+                        break;
 
                     default:
-                    break;
+                        break;
                 }
 
 
@@ -399,7 +399,7 @@ class Feedback extends CI_Controller {
         $this->load->view('includes/footer');
     }
 
-    public function content() {
+    public function content() {         //gonna remake this one
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $info = $this->session->userdata('userInfo');
             $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course id from stud
@@ -434,7 +434,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -511,20 +511,20 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'ECE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
         $data = array(
