@@ -245,11 +245,11 @@ class Sections extends CI_Controller {
                                                     }
                                                 }
                                             }
-                                            $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_num", $stud_ids));
+                                            $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_id", $stud_ids));
                                             foreach ($all_studs as $suball_studs) {
                                                 $list_of_id[] = $suball_studs->student_id;
                                                 $temp = array(
-                                                    "student_num" => $suball_studs->student_num,
+                                                    "student_id" => $suball_studs->student_id,
                                                     "firstname" => $suball_studs->firstname,
                                                     "midname" => $suball_studs->midname,
                                                     "lastname" => $suball_studs->lastname,
@@ -263,7 +263,7 @@ class Sections extends CI_Controller {
                                                 $insert_batch_students[] = $temp;
                                             }
                                             //CHECKS IF STUD IS ALREADY ENROLLED
-                                            $col = array("stud.student_num, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
+                                            $col = array("stud.student_id, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
                                             $where = array(
                                                 "cou.enrollment_id" => $enrollment_active
                                             );
@@ -272,13 +272,13 @@ class Sections extends CI_Controller {
                                                 array("student as stud", "stud.offering_id = off.offering_id")
                                             );
                                             $wherein = array(
-                                                "stud.student_num",
+                                                "stud.student_id",
                                                 $list_of_id
                                             );
                                             $temp = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
                                             if (!empty($temp)) {
                                                 $temp = $temp[0];
-                                                $error_message[] = $temp->student_num . " - " . $temp->full_name . " is already enrolled in " . $temp->offering_name;
+                                                $error_message[] = $temp->student_id . " - " . $temp->full_name . " is already enrolled in " . $temp->offering_name;
                                             } else {
                                                 $this->Crud_model->insert_batch("student", $insert_batch_students);
                                             }

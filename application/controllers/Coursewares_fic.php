@@ -48,10 +48,10 @@ class Coursewares_fic extends CI_Controller {
 				$value->date_added = date("M d, Y",$value->courseware_date_added);
 				$value->date_edited = date("M d, Y h:i A",$value->courseware_date_edited);
 				// fetch time
-				if (isset($info['user']->student_num)) {
-					$stud_num = $info['user']->student_num;
+				if (isset($info['user']->student_id)) {
+					$stud_num = $info['user']->student_id;
 				}
-				if ($ga = $this->Crud_model->fetch("grade_assessment",array("courseware_id"=>$value->courseware_id,"student_num"=>$stud_num))) {
+				if ($ga = $this->Crud_model->fetch("grade_assessment",array("courseware_id"=>$value->courseware_id,"student_id"=>$stud_num))) {
 					if ($time = $this->Crud_model->fetch_first("courseware_time","courseware_time_time")) {
 						$value->time = $time->courseware_time_time;
 					}

@@ -127,13 +127,13 @@ class Mobile extends CI_Controller {
         $like[5] = $_POST['lastname'];
         $identifier = $_POST['identifier'];
         if (strtolower($identifier) == "student") {
-            $like[6] = "student_num";
+            $like[6] = "student_id";
         } else if (strtolower($identifier) == "faculty in charge") {
             $like[6] = "fic_id";
         }
         $like[7] = $_POST['id'];
 
-        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_num", $like)) {
+        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
             //INITIALIZATION
             $department = $_POST['department'];
             $offering_id = $_POST['offering_id'];
@@ -166,7 +166,7 @@ class Mobile extends CI_Controller {
 
                         $counter = 0;
                         foreach ($result_hold as $val) {              //checks if feedback already done and added to array if so
-                            $where = array("lecturer_feedback_department" => $department, "student_num" => $like[7], "lecturer_id" => $val->lecturer_id, "enrollment_id" => $enrollment[0]->enrollment_id);
+                            $where = array("lecturer_feedback_department" => $department, "student_id" => $like[7], "lecturer_id" => $val->lecturer_id, "enrollment_id" => $enrollment[0]->enrollment_id);
                             if ($this->Crud_model->fetch("lecturer_feedback", $where)) {
                                 $result_hold[$counter]->feedback_done = 1;
                             } else {
@@ -228,7 +228,7 @@ public function feedback_fetch() {
         $enrollment_id = $_POST['enrollment_id'];
         $offering_id = $_POST['offering_id'];
 
-        $where = array("lecturer_feedback_department" => $department, "student_num" => $stud_id, "lecturer_id" => $lect_id, "enrollment_id" => $enrollment_id, "offering_id" => $offering_id);
+        $where = array("lecturer_feedback_department" => $department, "student_id" => $stud_id, "lecturer_id" => $lect_id, "enrollment_id" => $enrollment_id, "offering_id" => $offering_id);
         $result_hold = $this->Crud_model->fetch("lecturer_feedback", $where);
             if ($this->Crud_model->fetch("lecturer_feedback", $where)) {      //already submitted
                 $result['message'][0]['message'] = "Feedback already submitted";
@@ -293,7 +293,7 @@ public function feedback_fetch() {
             "lecturer_feedback_timedate" => time(),
             "lecturer_feedback_department" => $department,
             "lecturer_feedback_comment" => $content,
-            "student_num" => $stud_id,
+            "student_id" => $stud_id,
             "lecturer_id" => $lect_id,
             "enrollment_id" => $enrollment_id,
             "offering_id" => $offering_id
