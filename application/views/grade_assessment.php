@@ -50,7 +50,7 @@
 
 															<div class="collapsible-body">
 																<?php 
-																$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+																$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_num"=>$info['user']->student_num,"courseware_id"=>$l_value->courseware_id));
 																?>
 																<?php if ($r_grade_assessment): ?>
 																	<table class="data-table">
@@ -133,7 +133,7 @@
 
 															<div class="collapsible-body">
 																<?php 
-																$grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+																$grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_num"=>$info['user']->student_num,"courseware_id"=>$l_value->courseware_id));
 																?>
 																<?php if ($grade_assessment): ?>
 																	<table class="data-table">
@@ -204,7 +204,7 @@
 												<?php if ($courseware): ?>
 													<?php foreach ($courseware as $key => $l_value): ?>
 
-														<?php $grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+														<?php $grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_num"=>$info['user']->student_num,"courseware_id"=>$l_value->courseware_id));
 														?>
 														<?php if ($grade_assessment): ?>
 															<?php foreach ($grade_assessment as $m_key => $m_value): ?>

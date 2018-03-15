@@ -16,7 +16,7 @@
 	<div class="col s11">
 		<div class="row" id="topics-section">
 			<?php 
-			$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_id));
+			$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_num));
 			?>
 			<?php if ($student_scores): ?>
 				<?php foreach ($student_scores as $key => $value): ?>
@@ -36,7 +36,7 @@
 											<?php 
 											// fetch grade assessment
 											$r_grade_assessment = $this->Crud_model->fetch_last("remedial_grade_assessment","remedial_grade_assessment_score",
-												array("student_id"=>$info['user']->student_id,"courseware_id"=>$i_value->courseware_id));
+												array("student_num"=>$info['user']->student_num,"courseware_id"=>$i_value->courseware_id));
 
 											if ($r_grade_assessment) {
 												
@@ -246,18 +246,18 @@
 									dataType: 'json',
 									data: {
 										cw_id: cw_id,
-										student_id: <?=$info['user']->student_id?>,
+										student_num: <?=$info['user']->student_num?>,
 									},
 									success:function(existing){
 										if (existing == true) {
 											updateAnswer($ans_id,$q_id,cw_id);
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_num?>);
 											
 										}else{
 											for(var i = 0; i< data.length; i++){ 
 												insertAnswer($ans_id[i],$q_id[i],cw_id);
 											}
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_num?>);
 										}
 									}
 								});
@@ -329,7 +329,7 @@
 		}
 
 
-		function grade_assessment(cw_id,student_id) {
+		function grade_assessment(cw_id,student_num) {
 			$time = timer.getTimeValues().toString();
 			console.log($time);	
 			$.ajax({
@@ -338,7 +338,7 @@
 				dataType: 'json',
 				data: {
 					cw_id: cw_id,
-					student_id: student_id,
+					student_num: student_num,
 				},
 				success: function(data){
 					$score = data;	
@@ -348,7 +348,7 @@
 						dataType: 'html',
 						data: {
 							cw_id: cw_id,
-							student_id: student_id,
+							student_num: student_num,
 							score: $score,
 							time: $time,
 						},

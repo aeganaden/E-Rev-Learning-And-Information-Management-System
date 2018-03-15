@@ -227,18 +227,18 @@
 									dataType: 'json',
 									data: {
 										cw_id: cw_id,
-										student_id: <?=$info['user']->student_id?>,
+										student_num: <?=$info['user']->student_num?>,
 									},
 									success:function(existing){
 										if (existing == true) {
 											updateAnswer($ans_id,$q_id,cw_id);
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_num?>);
 											
 										}else{
 											for(var i = 0; i< data.length; i++){ 
 												insertAnswer($ans_id[i],$q_id[i],cw_id);
 											}
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_num?>);
 										}
 									}
 								});
@@ -454,7 +454,7 @@ function updateAnswer(answer_id,q_id,cw_id) {
 	});
 }
 
-function grade_assessment(cw_id,student_id) {
+function grade_assessment(cw_id,student_num) {
 	$time = timer.getTimeValues().toString();
 	console.log($time);	
 	$.ajax({
@@ -463,7 +463,7 @@ function grade_assessment(cw_id,student_id) {
 		dataType: 'json',
 		data: {
 			cw_id: cw_id,
-			student_id: student_id,
+			student_num: student_num,
 		},
 		success: function(data){
 			// console.log(data);
@@ -474,7 +474,7 @@ function grade_assessment(cw_id,student_id) {
 				dataType: 'html',
 				data: {
 					cw_id: cw_id,
-					student_id: student_id,
+					student_num: student_num,
 					score: $score,
 					time: $time,
 				},

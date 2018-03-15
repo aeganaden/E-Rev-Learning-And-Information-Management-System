@@ -61,7 +61,7 @@
               <tbody class="bg-color-white">
                 <?php foreach ($student as $key => $value_inner): ?>
                   <tr class="bg-color-white">
-                    <td><?= $value_inner->student_id ?></td>
+                    <td><?= $value_inner->student_num ?></td>
                     <td><?= ucwords($value_inner->firstname) ?></td>
                     <td><?= ucwords($value_inner->midname) ?></td>
                     <td><?= ucwords($value_inner->lastname) ?></td>

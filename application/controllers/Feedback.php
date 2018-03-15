@@ -59,7 +59,7 @@ class Feedback extends CI_Controller {
                             $lect_id = $subject->lecturer_id;
                             $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
                             $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
-                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
+                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_num' => $user_hold->student_num))[0]) {
                                 $lect_hold->sent_feedback = 1;
                             } else {
                                 $lect_hold->sent_feedback = 0;
@@ -445,7 +445,7 @@ class Feedback extends CI_Controller {
             );
             $this->load->view('includes/header', $data);
             if ($enrollment_active == 1) {
-                $stud_id = $this->session->userdata('userInfo')['user']->student_id;
+                $stud_id = $this->session->userdata('userInfo')['user']->student_num;
                 $data = array(
                     'title' => "Feedback",
                     "s_h" => "",
@@ -465,7 +465,7 @@ class Feedback extends CI_Controller {
                 $subject_hold2 = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->offering_id; //get offering_id on subject table from lecturer
                 $subject_hold = $this->Crud_model->fetch('offering', array('offering_id' => $subject_hold2))[0]->course_id; //get course_id on offering table
                 $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
-                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //there is already record
+                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_num' => $stud_id))[0]) {         //there is already record
 //                    echo"<pre>";
                     //                    print_r($this->Crud_model->fetch('offering', array('course_id' => $subject_hold2))[0]);
 //                    echo"</pre>";
@@ -541,7 +541,7 @@ class Feedback extends CI_Controller {
                     'lecturer_feedback_timedate' => time(),
                     'lecturer_feedback_comment' => $feedback,
                     'lecturer_feedback_department' => $this->session->userdata('userInfo')['user']->student_department,
-                    'student_id' => $this->session->userdata('userInfo')['user']->student_id,
+                    'student_num' => $this->session->userdata('userInfo')['user']->student_num,
                     'lecturer_id' => $temp,
                     'enrollment_id' => $enrollment_id,
                     'offering_id' => $this->session->userdata('userInfo')['user']->offering_id

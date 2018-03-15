@@ -1,21 +1,6 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <?php $this->load->view('includes/home-sidenav'); ?>
 
-<!--==================================================================
-=            READ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!            =
-===================================================================-->
-
-<!--
-
-1. Yung course_id nasa uri segment
-2. Para makuha mo yung upload number, ifetch mo muna last column tas kunin mo last upload number, then increment ka isa.
-
-
-
--->
-
-<!--====  End of READ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  ====-->
-
 
 <div class="container row">
     <div class="col s1"></div>
@@ -199,53 +184,57 @@
                                         $topic = $this->Crud_model->fetch("topic", array("subject_id" => $i_value->subject_id));
                                         ?>
                                         <?php if ($topic): ?>
+                                            <?php $count = 1; ?>
                                             <?php foreach ($topic as $key => $j_value): ?>
-                                                <div class="col s3">
-                                                    <p><input type="checkbox" value="<?= $j_value->topic_id ?>" class="filled-in topic_list_c" name="topic_list[]" id="<?= $j_value->topic_id ?>" />
-                                                        <label id="lbl_t_<?= $j_value->topic_id ?>" for="<?= $j_value->topic_id ?>"><?= $j_value->topic_name ?></label>
-                                                    </p>
-                                                </div>
-                                            <?php endforeach ?>
-                                        <?php endif ?>
-                                    <?php endforeach ?>
-                                <?php endif ?>
-                            <?php endforeach ?>
-                        <?php endif ?>
+                                                <?= $count%4 == 0 ? "<div class='row'>": '' ?>
+                                                    <div class="col s3">
+                                                        <p><input type="checkbox" value="<?= $j_value->topic_id ?>" class="filled-in topic_list_c" name="topic_list[]" id="<?= $j_value->topic_id ?>" />
+                                                            <label id="lbl_t_<?= $j_value->topic_id ?>" for="<?= $j_value->topic_id ?>"><?= $j_value->topic_name ?></label>
+                                                        </p>
+                                                    </div>
+                                                    <?= $count%4 == 0 ? "</div>": '' ?>
+                                                    <?php $count = $count + 1; ?>
+                                                <?php endforeach ?>
+                                            <?php endif ?>
+                                        <?php endforeach ?>
+                                    <?php endif ?>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" type="button" id="btn_add_topic" class="modal-action modal-close waves-effect waves-light btn bg-primary-green ">Agree</a>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <a href="#!" type="button" id="btn_add_topic" class="modal-action modal-close waves-effect waves-light btn bg-primary-green ">Agree</a>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
 
 
-<script type="text/javascript">
-    jQuery(document).ready(function ($) {
-        var o_ex = false;
-        window.onbeforeunload = function () {
-            if (o_ex == true) {
-                return 'Leave the exam? This exam will not be recorded if you leave.';
+    <script type="text/javascript">
+        jQuery(document).ready(function ($) {
+            var o_ex = false;
+            window.onbeforeunload = function () {
+                if (o_ex == true) {
+                    return 'Leave the exam? This exam will not be recorded if you leave.';
+                }
             }
-        }
 
 
-        $("#btn_add_ss").click(function (event) {
-            if ($("#add_ss_div").css('display') == "none") {
-                $(this).html("remove");
-                $("#add_ss_div").fadeIn('slow', function () {
-                    $("#add_ss_div").css('display', 'block');
-                });
-            } else {
-                $(this).html("add_circle");
-                $("#add_ss_div").fadeOut('slow', function () {
-                    $("#add_ss_div").css('display', 'none');
-                });
-            }
-        });
+            $("#btn_add_ss").click(function (event) {
+                if ($("#add_ss_div").css('display') == "none") {
+                    $(this).html("remove");
+                    $("#add_ss_div").fadeIn('slow', function () {
+                        $("#add_ss_div").css('display', 'block');
+                    });
+                } else {
+                    $(this).html("add_circle");
+                    $("#add_ss_div").fadeOut('slow', function () {
+                        $("#add_ss_div").css('display', 'none');
+                    });
+                }
+            });
 
         // onchange file input
 
@@ -356,7 +345,7 @@
          =            jQuery Animate Css            =
          ==========================================*/
 
-        $.fn.extend({
+         $.fn.extend({
             animateCss: function (animationName, callback) {
                 var animationEnd = (function (el) {
                     var animations = {
@@ -384,8 +373,8 @@
             },
         });
 
-        /*=====  End of jQuery Animate Css  ======*/
+         /*=====  End of jQuery Animate Css  ======*/
 
 
-    });
-</script>
+     });
+ </script>

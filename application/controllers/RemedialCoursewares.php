@@ -14,7 +14,7 @@ class RemedialCoursewares extends CI_Controller {
 	{
 		// remedial coursewares insertion
 		$info = $this->session->userdata('userInfo');
-		$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_id,"student_scores_is_failed"=>1));
+		$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_num,"student_scores_is_failed"=>1));
 		$checker = 0;
 
 		if ($student_scores) {
@@ -44,7 +44,7 @@ class RemedialCoursewares extends CI_Controller {
 					}
 					if ($checker == 0) {
 						$info = $this->session->userdata('userInfo');
-						if ($this->Crud_model->update("student",array("student_is_blocked"=>0),array("student_id"=>$info['user']->student_id))) {
+						if ($this->Crud_model->update("student",array("student_is_blocked"=>0),array("student_num"=>$info['user']->student_num))) {
 							$info['user']->student_is_blocked = 0;
 							redirect('Home','refresh');
 						}
@@ -134,10 +134,10 @@ class RemedialCoursewares extends CI_Controller {
 	public function isExisting()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$where = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id
+			"student_num"=>$student_num
 		);
 
 		if ($this->Crud_model->fetch("remedial_student_answer",$where)) {
@@ -157,7 +157,7 @@ class RemedialCoursewares extends CI_Controller {
 		$data = array(
 			"courseware_question_id"=>$q_id,
 			"choice_id"=>$answer, 
-			"student_id"=> $info['user']->student_id, 
+			"student_num"=> $info['user']->student_num, 
 			"courseware_id"=> $cw_id, 
 		);
 
@@ -186,7 +186,7 @@ class RemedialCoursewares extends CI_Controller {
 		$cw_id = $this->input->post("cw_id");
 
 		$data_where = array(
-			"student_id"=> $info['user']->student_id, 
+			"student_num"=> $info['user']->student_num, 
 			"courseware_id"=> $cw_id, 
 		);
 		if ($existing = $this->Crud_model->fetch("student_answer",$data_where)) {
@@ -216,10 +216,10 @@ class RemedialCoursewares extends CI_Controller {
 	public function countCorrect()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$where = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id,
+			"student_num"=>$student_num,
 			"choice_is_correct"=>1
 		);
 
@@ -233,7 +233,7 @@ class RemedialCoursewares extends CI_Controller {
 	public function insertGrade()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$score = $this->input->post("score");
 		$time = $this->input->post("time");
 
@@ -243,7 +243,7 @@ class RemedialCoursewares extends CI_Controller {
 		// data
 		$data = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id,
+			"student_num"=>$student_num,
 			"remedial_grade_assessment_total"=>$total,
 			"remedial_grade_assessment_score"=>$score,
 			"remedial_grade_assessment_time"=>$time,

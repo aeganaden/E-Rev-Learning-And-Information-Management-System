@@ -95,7 +95,7 @@ class Coursewares extends CI_Controller {
 		$data = array(
 			"courseware_question_id"=>$q_id,
 			"choice_id"=>$answer, 
-			"student_id"=> $info['user']->student_id, 
+			"student_num"=> $info['user']->student_num, 
 			"courseware_id"=> $cw_id, 
 		);
 
@@ -126,7 +126,7 @@ class Coursewares extends CI_Controller {
 
 
 		$data_where = array(
-			"student_id"=> $info['user']->student_id, 
+			"student_num"=> $info['user']->student_num, 
 			"courseware_id"=> $cw_id, 
 		);
 
@@ -157,10 +157,10 @@ class Coursewares extends CI_Controller {
 	public function countCorrect()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$where = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id,
+			"student_num"=>$student_num,
 			"choice_is_correct"=>1
 		);
 
@@ -173,10 +173,10 @@ class Coursewares extends CI_Controller {
 	public function isExisting()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$where = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id
+			"student_num"=>$student_num
 		);
 
 		if ($this->Crud_model->fetch("student_answer",$where)) {
@@ -190,7 +190,7 @@ class Coursewares extends CI_Controller {
 	public function insertGrade()
 	{
 		$cw_id = $this->input->post("cw_id");
-		$student_id = $this->input->post("student_id");
+		$student_num = $this->input->post("student_num");
 		$score = $this->input->post("score");
 		$time = $this->input->post("time");
 
@@ -200,7 +200,7 @@ class Coursewares extends CI_Controller {
 		// data
 		$data = array(
 			"courseware_id"=>$cw_id,
-			"student_id"=>$student_id,
+			"student_num"=>$student_num,
 			"grade_assessment_total"=>$total,
 			"grade_assessment_score"=>$score,
 		);

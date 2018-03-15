@@ -38,7 +38,7 @@ class Login extends CI_Controller {
 			}
 		}elseif ($this->Crud_model->fetch("admin",$where)) {
 			$bool = sha1("administrator");
-		}elseif ($data = $this->Crud_model->fetch_last("student","student_id",$where)) {
+		}elseif ($data = $this->Crud_model->fetch_last("student","student_num",$where)) {
 
 			// fetch offering 
 			$offering = $this->Crud_model->fetch("offering",array("offering_id"=>$data->offering_id));
@@ -100,7 +100,7 @@ class Login extends CI_Controller {
 				break;
 				case 'student':
 				$log_data = array(
-					"log_user_id"=>$data['user']->student_id,
+					"log_user_id"=>$data['user']->student_num,
 					"log_timedate"=>time(),
 					"log_platform"=>1,
 					"log_content_id"=>1
