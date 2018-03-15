@@ -115,6 +115,7 @@ class Importdata extends CI_Controller {
 
                                     $col_type = $col_data_hold['type'];
                                     $col_length = $col_data_hold['max_length'];
+
                                     if ($col_type === "bigint" || $col_type === "tinyint" || $col_type === "int") {    //check data types
                                         if (($this->is_this_string_an_integer($col_hold) && $col_length >= strlen($col_hold) && !empty($col_hold)) || $col_hold == 0) { //kapag tinanggal rightmost, bawal ang 0
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
@@ -129,6 +130,9 @@ class Importdata extends CI_Controller {
                                         } else if (strtolower($col_type) == "text") {
                                             $inner_counter == 0 ? $stack_hold = array($col_data_hold['name'] => $col_hold) : $stack_hold = $stack_hold + array($col_data_hold['name'] => $col_hold);
                                         } else {
+                                            if ($col_hold === null) {
+                                                echo"this is empty";
+                                            }
                                             echo "The value \"" . $col_hold . "\", located at " . ($z + 1) . $alphas[$inner_counter] . " of table '$sheet', does not qualify to \"" . $col_type . "\"<br>";
                                             $error_counter++;
                                             //break;

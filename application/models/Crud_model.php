@@ -26,25 +26,26 @@ class Crud_model extends CI_Model {
         }
         $query = $this->db->order_by($column, "desc")->limit(1)->get($table)->row();
         return ($query) ? $query : FALSE;
-    } 
-    public function fetch_first($table, $column,$where=NULL) {
-      if (!empty($where)) {
-        $this->db->where($where);
     }
-    $query = $this->db->order_by($column, "asc")->limit(1)->get($table)->row();
-    return ($query) ? $query : FALSE;
-}
 
-public function countResult($table, $where = NULL) {
-    if (!empty($where)) {
-        $this->db->where($where);
+    public function fetch_first($table, $column, $where = NULL) {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        $query = $this->db->order_by($column, "asc")->limit(1)->get($table)->row();
+        return ($query) ? $query : FALSE;
     }
-    $query = $this->db->get($table);
-    return $query->num_rows();
-}
 
-public function insert($table, $data) {
-    if (!$this->db->insert($table, $data)) {
+    public function countResult($table, $where = NULL) {
+        if (!empty($where)) {
+            $this->db->where($where);
+        }
+        $query = $this->db->get($table);
+        return $query->num_rows();
+    }
+
+    public function insert($table, $data) {
+        if (!$this->db->insert($table, $data)) {
             return $this->db->error(); // Has keys 'code' and 'message'
         } else {
             return $this->db->affected_rows();
@@ -202,7 +203,7 @@ public function insert($table, $data) {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
-    public function fetch_join2($table, $col = NULL, $join = NULL, $jointype = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL) {
+    public function fetch_join2($table, $col = NULL, $join = NULL, $jointype = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL, $wherein = NULL) {
         if (!empty($where)) {
             $this->db->where($where);
         }
@@ -216,6 +217,9 @@ public function insert($table, $data) {
         }
         if (!empty($table)) {
             $this->db->from($table);
+        }
+        if (!empty($wherein)) {
+            $this->db->where_in($wherein[0], $wherein[1]);
         }
         if (!empty($join) && !empty($jointype)) {
             foreach ($join as $val) {

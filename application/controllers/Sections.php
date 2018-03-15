@@ -143,7 +143,7 @@ class Sections extends CI_Controller {
                     require "./application/vendor/autoload.php";
                     $config['upload_path'] = "./assets/uploads/";
                     $config['allowed_types'] = 'xls|csv|xlsx';
-                    $config['max_size'] = '10000';
+                    $config['max_size'] = '2048000';
                     $config["file_name"] = "section_" . time();
                     $this->load->library('upload', $config);
 
@@ -235,7 +235,7 @@ class Sections extends CI_Controller {
                                 if (strtolower((string) $sheetname[0]) == strtolower($subsec->offering_name) && strtolower($sheetname[1]) == "schedule") {
                                     $isit = true;
                                         if (strtolower($sheetData[1]["A"]) == "student number") {         //check first row col
-                                            for ($i = 2; $i < count($sheetData) - 1; $i++) {
+                                            for ($i = 2; $i <= count($sheetData); $i++) {
                                                 if ($sheetData[$i]["A"] !== null) {
                                                     if (strlen($sheetData[$i]["A"]) == 9) {
                                                         $stud_ids[] = $sheetData[$i]["A"];
@@ -247,6 +247,7 @@ class Sections extends CI_Controller {
                                             }
                                             $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_num", $stud_ids));
                                             foreach ($all_studs as $suball_studs) {
+                                                $list_of_id[] = $suball_studs->student_id;
                                                 $temp = array(
                                                     "student_num" => $suball_studs->student_num,
                                                     "firstname" => $suball_studs->firstname,
@@ -261,9 +262,25 @@ class Sections extends CI_Controller {
                                                 );
                                                 $insert_batch_students[] = $temp;
                                             }
-                                            $this->Crud_model->insert_batch("student", $insert_batch_students);
-                                            if (!empty($this->db->error()["message"]) && $this->db->error()["message"] != null) {
-                                                $error_message[] = $this->db->error()["message"];
+                                            //CHECKS IF STUD IS ALREADY ENROLLED
+                                            $col = array("stud.student_num, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
+                                            $where = array(
+                                                "cou.enrollment_id" => $enrollment_active
+                                            );
+                                            $join = array(
+                                                array("offering as off", "off.course_id = cou.course_id"),
+                                                array("student as stud", "stud.offering_id = off.offering_id")
+                                            );
+                                            $wherein = array(
+                                                "stud.student_num",
+                                                $list_of_id
+                                            );
+                                            $temp = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
+                                            if (!empty($temp)) {
+                                                $temp = $temp[0];
+                                                $error_message[] = $temp->student_num . " - " . $temp->full_name . " is already enrolled in " . $temp->offering_name;
+                                            } else {
+                                                $this->Crud_model->insert_batch("student", $insert_batch_students);
                                             }
                                         }
                                         break;
@@ -287,7 +304,7 @@ class Sections extends CI_Controller {
                                             strtolower($sheetData[2]["A"]) == "friday" || strtolower($sheetData[2]["A"]) == "saturday") &&
                                         (strlen(strtolower($sheetData[2]["D"]) <= 5))) {
 
-                                        $start = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["B"]);
+                                        $start = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["B"]); 
                                     $end = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["C"]);
                                     $venue = strtoupper($sheetData[2]["D"]);
 
@@ -299,7 +316,7 @@ class Sections extends CI_Controller {
                                         "offering_id" => $section_id
                                     );
 
-                                    $this->Crud_model->insert("schedule", $schedule);
+                                    $this->Crud_model->insert("schedule", $schedule); 
                                     } else {            //invalid time
                                         $isit2 = true;
                                         $error_message[] = "Make sure your schedule is valid. Check spellings and format of time:";
@@ -313,9 +330,13 @@ class Sections extends CI_Controller {
                                     $error_message[] = "&emsp;-C: 'end time'";
                                     $error_message[] = "&emsp;-C: 'venue'";
                                 }
-
-//                                $this->Crud_model->fetch_join2("subject_id");
-
+                                $where = array(
+                                    "course_id" => $segment
+                                );
+                                $changes = array(
+                                    "lecturer_id" => $this->input->post("lect_id")
+                                );
+                                $this->Crud_model->update("subject", $changes, $where); //updates subject table
                                 if (!empty($error_message)) {
                                     $data = array(
                                         "error_message" => $error_message
