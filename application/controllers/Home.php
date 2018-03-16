@@ -30,9 +30,9 @@ class Home extends CI_Controller {
       }
   }
 
-  if ($scores_upload = $this->Crud_model->fetch("student_scores",array("student_scores_is_failed"=>1))) {
+  if ($scores_upload = $this->Crud_model->fetch("student_scores",array("student_scores_is_failed"=>1))) { 
     foreach ($scores_upload as $key => $value) {
-        $this->Crud_model->update("student",array("student_is_blocked"=>1),array("student_id"=>$value->student_scores_stud_num));
+        $this->Crud_model->update("student",array("student_is_blocked"=>1),array("student_num"=>$value->student_scores_stud_num));
     }
 }
 

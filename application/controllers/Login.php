@@ -215,6 +215,9 @@ class Login extends CI_Controller {
 				# fic
         	$info = $this->Crud_model->fetch("fic",array("username"=>$this->input->post("username")));
         	$info = $info[0];
+        	// echo "<pre>";
+        	// print_r($info);
+        	// die();
         	$userData = array(
         		'user'=> $info,
         		'logged_in' => TRUE,

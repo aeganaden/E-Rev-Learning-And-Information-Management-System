@@ -52,6 +52,8 @@ class Coursewares extends CI_Controller {
 		$courseware_id = $this->input->post("cw_id");
 
 		if ($data = $this->Crud_model->fetch("courseware_question",array("courseware_id"=>$courseware_id,"courseware_question_status"=>1))) {
+			// echo "<pre>";
+			// print_r($data);
 			echo $this->load->view('courseware/load_questions_student', array("data"=>$data), TRUE);
 		}else{
 			$data = array(

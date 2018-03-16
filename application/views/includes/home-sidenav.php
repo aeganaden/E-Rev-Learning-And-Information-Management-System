@@ -211,6 +211,11 @@ switch ($info['user']->$ident) {
                                     <i class="material-icons">hdr_strong</i>Toggle Practice Exams
                                 </a>
                             </li>
+                            <li>
+                                <a href="<?= base_url() ?>ImportQuestions">
+                                    <i class="material-icons">backup</i>Import Questions
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

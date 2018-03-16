@@ -2,11 +2,11 @@
 <?php $this->load->view('includes/home-sidenav'); ?>
 
 
-<div class="container row">
+<div class="container row" id="top">
 	<div class="col s1"></div>
 	<div class="col s11">
 		<blockquote class="color-primary-green">
-			<h5 class="color-black">Remedial Coursewares </h5>
+			<h5 class="color-black">Remedial Practice Exams </h5>
 		</blockquote>
 	</div>
 </div>
@@ -16,8 +16,9 @@
 	<div class="col s11">
 		<div class="row" id="topics-section">
 			<?php 
-			$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_id));
+			$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_num));
 			?>
+
 			<?php if ($student_scores): ?>
 				<?php foreach ($student_scores as $key => $value): ?>
 					<?php 
@@ -27,19 +28,29 @@
 					<ul class="collapsible " data-collapsible="accordion"> 
 						<li class="">
 							<div class="collapsible-header bg-primary-green color-white">
-								<i class="material-icons color-white">book</i>Remedial Coursewares #<?=$key+1?>
+								<i class="material-icons color-white">book</i>Remedial Practice Exams #<?=$key+1?>
 							</div>
 							<div class="collapsible-body">
 								<ul class="collection "> 
 									<?php if ($remedial_coursewares): ?>
 										<?php foreach ($remedial_coursewares as $i_key => $i_value): ?>
-											<?php 
-											// fetch grade assessment
-											$r_grade_assessment = $this->Crud_model->fetch_last("remedial_grade_assessment","remedial_grade_assessment_score",
-												array("student_id"=>$info['user']->student_id,"courseware_id"=>$i_value->courseware_id));
 
+											<?php 
+											$remarks = "Not yet graded";
+											$color = "";
+											// fetch grade assessment
+											$r_grade_assessment = $this->Crud_model->fetch_last(
+												"remedial_grade_assessment","remedial_grade_assessment_score",
+												array(
+													"student_id"=>$info['user']->student_id,
+													"remedial_coursewares_id"=>$i_value->remedial_coursewares_id
+												));
+
+											// echo "<pre>"; 
+
+												// echo $i_value->courseware_id;
 											if ($r_grade_assessment) {
-												
+												// print_r($r_grade_assessment);
 											// computer passing score
 												$r_score = $r_grade_assessment->remedial_grade_assessment_score;
 												$r_total = $r_grade_assessment->remedial_grade_assessment_total;
@@ -50,14 +61,14 @@
 												$color = $r_result > 69 ? "" : "red";	
 
 											// update is_done
-												if ($remarks == "passed") {
+												if ($remarks == "passed") {  
 													$this->Crud_model->update("remedial_coursewares",
-														array("is_done"=>1),array("remedial_coursewares_id",$i_value->remedial_coursewares_id));
-													
-													
+														array("is_done"=>1),
+														array("remedial_coursewares_id"=>$i_value->remedial_coursewares_id),
+														array("student_scores_id"=>$i_value->student_scores_id)); 
+													// echo $i_value->remedial_coursewares_id;
 												}												
 											}
-
 
 
 											$courseware = $this->Crud_model->fetch("courseware",array("courseware_id"=>$i_value->courseware_id));
@@ -85,20 +96,22 @@
 															</span>
 														<?php else: ?>
 
+															<span href="#!" class="badge new <?=$color?>" data-badge-caption="<?=$remarks?>">
+															</span> 
 
-															<span href="#!" class="badge new" data-badge-caption="<?=$remarks?>">
-															</span>
+
+
 															<span href="#!" class="badge">
 																<i class="material-icons color-primary-green btn_take_exam tooltipped" 
 																data-tooltip="TAKE EXAM" style="cursor: pointer" data-position="left"
-																data-id="<?=$courseware->courseware_id?>">
+																data-id="<?=$courseware->courseware_id?>"
+																data-rcwid="<?=$i_value->remedial_coursewares_id?>"
+																>
 																send
 															</i>
 														</span>
 													<?php endif ?>
-												<?php endif ?>
-
-
+												<?php endif ?> 
 											</div>
 										</li>
 									<?php endforeach ?>
@@ -160,6 +173,7 @@
 
 		$(".btn_take_exam").click(function(event) {
 			$cw_id = $(this).data("id");
+			$r_cw_id = $(this).data("rcwid"); 
 
 			swal({
 				title: "Take this exam?",
@@ -184,7 +198,7 @@
 					}
 
 
-					fetchQuestion($cw_id);			
+					fetchQuestion($cw_id,$r_cw_id);			
 
 				}
 			});
@@ -195,6 +209,7 @@
 		$("#btn_submit_answers").click(function() {
 
 			var cw_id = $(this).data('id');
+			var r_cw_id = $(this).data('rcwid');
 
 			$chkr_answer = false;
 			$q_id_error = [];
@@ -251,13 +266,13 @@
 									success:function(existing){
 										if (existing == true) {
 											updateAnswer($ans_id,$q_id,cw_id);
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_id?>,r_cw_id);
 											
 										}else{
 											for(var i = 0; i< data.length; i++){ 
 												insertAnswer($ans_id[i],$q_id[i],cw_id);
 											}
-											grade_assessment(cw_id,<?=$info['user']->student_id?>);
+											grade_assessment(cw_id,<?=$info['user']->student_id?>,r_cw_id);
 										}
 									}
 								});
@@ -315,6 +330,7 @@
 					cw_id: cw_id,
 				},
 				success: function(data){
+					console.log(data)
 					if (data!=false) {
 						o_ex = false;
 						$("#question-section").html(data);
@@ -329,7 +345,7 @@
 		}
 
 
-		function grade_assessment(cw_id,student_id) {
+		function grade_assessment(cw_id,student_id,rcwid) {
 			$time = timer.getTimeValues().toString();
 			console.log($time);	
 			$.ajax({
@@ -349,6 +365,7 @@
 						data: {
 							cw_id: cw_id,
 							student_id: student_id,
+							rcwid: rcwid,
 							score: $score,
 							time: $time,
 						},
@@ -371,8 +388,9 @@
 
 
 
-		function fetchQuestion(id) {
+		function fetchQuestion(id,rcwid) {
 			$("#btn_submit_answers").attr('data-id', id);
+			$("#btn_submit_answers").attr('data-rcwid', rcwid);
 
 
 			$.ajax({
