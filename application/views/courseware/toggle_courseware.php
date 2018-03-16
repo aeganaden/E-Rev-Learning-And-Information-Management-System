@@ -2,7 +2,7 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <div class="row container">
   <blockquote class="color-primary-green">
-    <h3 class="color-black">Toggle Practice Exams</h3>
+    <h5 class="color-black">Toggle Practice Exams</h5>
   </blockquote>
 </div>
 

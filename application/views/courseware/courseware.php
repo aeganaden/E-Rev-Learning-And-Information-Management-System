@@ -6,8 +6,7 @@
 	<blockquote class="color-primary-green">
 		<h5 class="color-black">Practice Exams</h5>
 	</blockquote>
-</div>
-</div>
+</div> 
 
 <!--=================================
 =            Breadcrumbs            =
