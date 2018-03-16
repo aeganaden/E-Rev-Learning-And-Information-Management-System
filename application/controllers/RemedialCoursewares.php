@@ -14,21 +14,23 @@ class RemedialCoursewares extends CI_Controller {
 	{
 		// remedial coursewares insertion
 		$info = $this->session->userdata('userInfo');
-		$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_id,"student_scores_is_failed"=>1));
+		$student_scores = $this->Crud_model->fetch("student_scores",array("student_scores_stud_num"=>$info['user']->student_num,"student_scores_is_failed"=>1));
 		$checker = 0;
 
 		if ($student_scores) {
 
 			foreach ($student_scores as $key => $value) {
-			// check if exists in remedial_courseware
-				if ($check = $this->Crud_model->fetch("remedial_coursewares",array("student_scores_id"=>$value->student_scores_id))) {
+			// check if exists in remedial_courseware 
+
+				if ($check = $this->Crud_model->fetch("remedial_coursewares",array("student_scores_id"=>$value->student_scores_id))) { 
 					foreach ($check as $c_key => $c_value) {
 						if ($c_value->is_done == 0) {
 							$checker = 1;
 							// explode topic
 							$topics = explode(",", $value->student_scores_topic_id);
-
-							foreach ($topics as $i_key => $i_value) {
+							// echo "<pre>";
+							// print_r($topics);
+							foreach ($topics as $i_key => $i_value) { 
 							// fetch courseware
 								$courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$topics[$i_key]));
 								$courseware = $courseware[0];	
@@ -37,7 +39,7 @@ class RemedialCoursewares extends CI_Controller {
 										"student_scores_id"=>$value->student_scores_id,
 										"courseware_id"=>$courseware->courseware_id,
 									);
-									$this->Crud_model->update("remedial_coursewares",$data,array("remedial_coursewares_id"=>$check[$key]->remedial_coursewares_id));
+									$this->Crud_model->update("remedial_coursewares",$data,array("remedial_coursewares_id"=>$check[$i_key]->remedial_coursewares_id));
 								}
 							}
 						}
@@ -46,9 +48,11 @@ class RemedialCoursewares extends CI_Controller {
 						$info = $this->session->userdata('userInfo');
 						if ($this->Crud_model->update("student",array("student_is_blocked"=>0),array("student_id"=>$info['user']->student_id))) {
 							$info['user']->student_is_blocked = 0;
-							redirect('Home','refresh');
+							echo "<script>
+							alert('Remedial Practice Exams has been completed, you may now take other practice exams');
+							window.location.href='".base_url()."Home';
+							</script>";
 						}
-
 					}
 				}else{
 					// explode topic
@@ -74,10 +78,6 @@ class RemedialCoursewares extends CI_Controller {
 
 
 		}
-
-
-
-
 
 
 		$ident = $info['identifier'];
@@ -180,6 +180,8 @@ class RemedialCoursewares extends CI_Controller {
 
 	public function updateAnswer()
 	{
+
+
 		$info = $this->session->userdata('userInfo');
 		$answer = json_decode(stripslashes($this->input->post("answer")));
 		$q_id = json_decode(stripslashes($this->input->post("q_id")));
@@ -189,18 +191,18 @@ class RemedialCoursewares extends CI_Controller {
 			"student_id"=> $info['user']->student_id, 
 			"courseware_id"=> $cw_id, 
 		);
-		if ($existing = $this->Crud_model->fetch("student_answer",$data_where)) {
+		if ($existing = $this->Crud_model->fetch("remedial_student_answer",$data_where)) {
+
 			foreach ($existing as $key => $value) {
 				$data = array(
 					"courseware_question_id"=>$q_id[$key],
 					"choice_id"=>$answer[$key],
-				);
-
-				if ($this->Crud_model->update("remedial_student_answer",$data,array("remedial_student_answer_id"=>$value->student_answer_id))) {
+				); 
+				if ($this->Crud_model->update("remedial_student_answer",$data,array("remedial_student_answer_id"=>$value->remedial_student_answer_id))) {
 					if ($correct_choices = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$q_id[$key],"choice_id"=>$answer[$key],"choice_is_answer"=>1))) {
-						$this->Crud_model->update("remedial_student_answer",array("choice_is_correct"=>1),array("remedial_student_answer_id"=>$value->student_answer_id));
+						$this->Crud_model->update("remedial_student_answer",array("choice_is_correct"=>1),array("remedial_student_answer_id"=>$value->remedial_student_answer_id));
 					}else{
-						$this->Crud_model->update("remedial_student_answer",array("choice_is_correct"=>0),array("remedial_student_answer_id"=>$value->student_answer_id));
+						$this->Crud_model->update("remedial_student_answer",array("choice_is_correct"=>0),array("remedial_student_answer_id"=>$value->remedial_student_answer_id));
 					}
 				}
 			}
@@ -233,6 +235,7 @@ class RemedialCoursewares extends CI_Controller {
 	public function insertGrade()
 	{
 		$cw_id = $this->input->post("cw_id");
+		$rcwid = $this->input->post("rcwid");
 		$student_id = $this->input->post("student_id");
 		$score = $this->input->post("score");
 		$time = $this->input->post("time");
@@ -243,6 +246,7 @@ class RemedialCoursewares extends CI_Controller {
 		// data
 		$data = array(
 			"courseware_id"=>$cw_id,
+			"remedial_coursewares_id"=>$rcwid,
 			"student_id"=>$student_id,
 			"remedial_grade_assessment_total"=>$total,
 			"remedial_grade_assessment_score"=>$score,

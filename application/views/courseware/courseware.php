@@ -65,7 +65,9 @@
 									<blockquote class="color-primary-green" style="margin-top: 0;">
 										<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$value->subject_name?><i class="material-icons right ">more_vert</i></span>
 									</blockquote>
-									<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+									<?php if ($lecturer): ?>
+										<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+									<?php endif ?>
 								</div>
 								<div class="card-reveal bg-primary-green">
 									<span class="card-title color-white ">ABOUT</span>

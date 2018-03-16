@@ -49,7 +49,7 @@
 															<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?></div>
 
 															<div class="collapsible-body">
-																<?php 
+																<?php  
 																$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
 																?>
 																<?php if ($r_grade_assessment): ?>
