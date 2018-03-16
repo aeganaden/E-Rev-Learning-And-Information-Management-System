@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2018 at 08:28 AM
+-- Generation Time: Mar 16, 2018 at 03:06 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -49,16 +49,6 @@ CREATE TABLE `activity_details` (
   `activity_details_id` int(20) NOT NULL,
   `activity_details_name` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `activity_details`
---
-
-INSERT INTO `activity_details` (`activity_details_id`, `activity_details_name`) VALUES
-(1, 'Lecture'),
-(2, 'Seatwork'),
-(3, 'Quiz'),
-(4, 'Other');
 
 -- --------------------------------------------------------
 
@@ -416,7 +406,8 @@ INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log
 (6, 3, 1520925497, 1, 1),
 (7, 201133333, 1520925860, 1, 1),
 (8, 2, 1520925869, 1, 1),
-(9, 3, 1520925997, 1, 1);
+(9, 3, 1520925997, 1, 1),
+(10, 1, 1520926391, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -518,7 +509,8 @@ CREATE TABLE `remedial_grade_assessment` (
   `remedial_grade_assessment_total` int(10) NOT NULL,
   `remedial_grade_assessment_time` varchar(255) NOT NULL,
   `student_id` int(20) NOT NULL,
-  `courseware_id` int(50) NOT NULL
+  `courseware_id` int(50) NOT NULL,
+  `remedial_coursewares_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -761,7 +753,7 @@ CREATE TABLE `student_scores` (
 CREATE TABLE `subject` (
   `subject_id` int(20) NOT NULL,
   `subject_name` text NOT NULL,
-  `subject_description` varchar(800) DEFAULT NULL,
+  `subject_description` text,
   `lecturer_id` int(20) DEFAULT NULL,
   `course_id` int(20) NOT NULL,
   `subject_list_id` int(20) DEFAULT NULL
@@ -1563,7 +1555,8 @@ ALTER TABLE `remedial_coursewares`
 ALTER TABLE `remedial_grade_assessment`
   ADD PRIMARY KEY (`remedial_grade_assessment_id`),
   ADD KEY `fk_grade_assessment_student1_idx` (`student_id`),
-  ADD KEY `fk_grade_assessment_courseware1_idx` (`courseware_id`);
+  ADD KEY `fk_grade_assessment_courseware1_idx` (`courseware_id`),
+  ADD KEY `fk_remedial_grade_assessment_remedial_coursewares1_idx` (`remedial_coursewares_id`);
 
 --
 -- Indexes for table `remedial_student_answer`
@@ -1682,7 +1675,7 @@ ALTER TABLE `activity`
 -- AUTO_INCREMENT for table `activity_details`
 --
 ALTER TABLE `activity_details`
-  MODIFY `activity_details_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `activity_details_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `activity_schedule`
@@ -1772,7 +1765,7 @@ ALTER TABLE `lecturer_feedback`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `log_content`
@@ -1982,7 +1975,8 @@ ALTER TABLE `remedial_coursewares`
 --
 ALTER TABLE `remedial_grade_assessment`
   ADD CONSTRAINT `fk_grade_assessment_courseware10` FOREIGN KEY (`courseware_id`) REFERENCES `courseware` (`courseware_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_grade_assessment_student10` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_grade_assessment_student10` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_remedial_grade_assessment_remedial_coursewares1` FOREIGN KEY (`remedial_coursewares_id`) REFERENCES `remedial_coursewares` (`remedial_coursewares_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `remedial_student_answer`
