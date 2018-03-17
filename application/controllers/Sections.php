@@ -57,8 +57,6 @@ class Sections extends CI_Controller {
     }
 
     public function view_sections() {
-        //TYPE ON URL BAR, CAN ACCESS OTHER COURSES AND ADD SECTIONS
-
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
@@ -218,22 +216,22 @@ class Sections extends CI_Controller {
                             $temp = $this->Crud_model->fetch_select("offering", $col, $where);
 
                             if (!$temp) {                                                       //checks if there's already this name of section
-                            $temp = array(
-                                "offering_name" => strtoupper($this->input->post("section_name")),
-                                "offering_department" => $info["user"]->fic_department,
-                                "course_id" => $segment,
-                                "fic_id" => $info["user"]->fic_id
-                            );
-                            $this->Crud_model->insert('offering', $temp);
-                            $section_id = $this->db->insert_id();
-                            $sections = $this->get_sections();
+                                $temp = array(
+                                    "offering_name" => strtoupper($this->input->post("section_name")),
+                                    "offering_department" => $info["user"]->fic_department,
+                                    "course_id" => $segment,
+                                    "fic_id" => $info["user"]->fic_id
+                                );
+                                $this->Crud_model->insert('offering', $temp);
+                                $section_id = $this->db->insert_id();
+                                $sections = $this->get_sections();
 
-                            $isit = false;
+                                $isit = false;
 
                                 //check if correct col name
-                            foreach ($sections as $subsec) {
-                                if (strtolower((string) $sheetname[0]) == strtolower($subsec->offering_name) && strtolower($sheetname[1]) == "schedule") {
-                                    $isit = true;
+                                foreach ($sections as $subsec) {
+                                    if (strtolower((string) $sheetname[0]) == strtolower($subsec->offering_name) && strtolower($sheetname[1]) == "schedule") {
+                                        $isit = true;
                                         if (strtolower($sheetData[1]["A"]) == "student number") {         //check first row col
                                             for ($i = 2; $i <= count($sheetData); $i++) {
                                                 if ($sheetData[$i]["A"] !== null) {
@@ -298,25 +296,25 @@ class Sections extends CI_Controller {
 
                                 if (strtolower($sheetData[1]["A"]) == "day" && strtolower($sheetData[1]["B"]) == "start time" && strtolower($sheetData[1]["C"]) == "end time" && strtolower($sheetData[1]["D"]) == "venue") {
                                     if ((strlen(date("hia", strtotime($sheetData[2]["B"]))) == 6) && (strlen(date("hia", strtotime($sheetData[2]["C"]))) == 6) &&
-                                        (date("hia", strtotime($sheetData[2]["B"])) < date("hia", strtotime($sheetData[2]["C"]))) &&
-                                        (strtolower($sheetData[2]["A"]) == "monday" || strtolower($sheetData[2]["A"]) == "tuesday" ||
+                                            (date("hia", strtotime($sheetData[2]["B"])) < date("hia", strtotime($sheetData[2]["C"]))) &&
+                                            (strtolower($sheetData[2]["A"]) == "monday" || strtolower($sheetData[2]["A"]) == "tuesday" ||
                                             strtolower($sheetData[2]["A"]) == "wednesday" || strtolower($sheetData[2]["A"]) == "thursday" ||
                                             strtolower($sheetData[2]["A"]) == "friday" || strtolower($sheetData[2]["A"]) == "saturday") &&
-                                        (strlen(strtolower($sheetData[2]["D"]) <= 5))) {
+                                            (strlen(strtolower($sheetData[2]["D"]) <= 5))) {
 
-                                        $start = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["B"]); 
-                                    $end = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["C"]);
-                                    $venue = strtoupper($sheetData[2]["D"]);
+                                        $start = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["B"]);
+                                        $end = strtotime(strtoupper($sheetData[2]["A"]) . " " . $sheetData[2]["C"]);
+                                        $venue = strtoupper($sheetData[2]["D"]);
 
-                                    $schedule = array(
-                                        "schedule_start_time" => $start,
-                                        "schedule_end_time" => $end,
-                                        "schedule_venue" => $venue,
-                                        "lecturer_id" => $this->input->post("lect_id"),
-                                        "offering_id" => $section_id
-                                    );
+                                        $schedule = array(
+                                            "schedule_start_time" => $start,
+                                            "schedule_end_time" => $end,
+                                            "schedule_venue" => $venue,
+                                            "lecturer_id" => $this->input->post("lect_id"),
+                                            "offering_id" => $section_id
+                                        );
 
-                                    $this->Crud_model->insert("schedule", $schedule); 
+                                        $this->Crud_model->insert("schedule", $schedule);
                                     } else {            //invalid time
                                         $isit2 = true;
                                         $error_message[] = "Make sure your schedule is valid. Check spellings and format of time:";
@@ -371,10 +369,10 @@ class Sections extends CI_Controller {
                         );
                         $this->load->view('sections/add', $data);
                         if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                        unlink($this->upload->data()["full_path"]);
+                            unlink($this->upload->data()["full_path"]);
+                        }
                     }
-                }
-                $this->load->view('includes/footer');
+                    $this->load->view('includes/footer');
                 } else {            //wrong course
                     redirect("Sections");
                 }

@@ -22,7 +22,6 @@
         <?php // print_r($result); ?>
     </pre>
 
-    <?php // echo '<script>alert("Successful insertion");</script>';        //LAST LAST ?>
     <?php if (isset($result) && !empty($result)): ?>
         <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
