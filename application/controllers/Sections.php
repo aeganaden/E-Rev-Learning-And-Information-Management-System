@@ -247,7 +247,7 @@ class Sections extends CI_Controller {
                                             foreach ($all_studs as $suball_studs) {
                                                 $list_of_id[] = $suball_studs->student_id;
                                                 $temp = array(
-                                                    "student_id" => $suball_studs->student_id,
+                                                    "student_num" => $suball_studs->student_id, //binago ko from student_id to student_num
                                                     "firstname" => $suball_studs->firstname,
                                                     "midname" => $suball_studs->midname,
                                                     "lastname" => $suball_studs->lastname,
@@ -261,7 +261,8 @@ class Sections extends CI_Controller {
                                                 $insert_batch_students[] = $temp;
                                             }
                                             //CHECKS IF STUD IS ALREADY ENROLLED
-                                            $col = array("stud.student_id, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
+                                            //binago ko from stud.student_id to stud.student_num
+                                            $col = array("stud.student_num, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
                                             $where = array(
                                                 "cou.enrollment_id" => $enrollment_active
                                             );

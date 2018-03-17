@@ -16,9 +16,6 @@ class Feedback extends CI_Controller {
     public function index() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
             $info = $this->session->userdata('userInfo');
-            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
-            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
-            $feedback_status = $dept_temp[0]->professor_feedback_active;
             $data = array(
                 'title' => "Feedback - Learning Management System | FEU - Institute of Techonology",
                 'info' => $info,
@@ -35,75 +32,101 @@ class Feedback extends CI_Controller {
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
-            if ($feedback_status == 1) {                //checks if feedback is open
-                $error = true;          //error holder
-                $user_hold = $this->session->userdata('userInfo')['user'];
-                $user_id = $user_hold->offering_id;
-                $course_hold2 = $this->Crud_model->fetch('offering', array('offering_id' => $user_id))[0]->course_id;
-                $course_hold = $this->Crud_model->fetch('course', array('course_id' => $course_hold2))[0];
-                $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
-                if (empty($enrollment_hold) != 1) {       //check the fetched table and if it is active
-                    if ($enrollment_hold->enrollment_is_active == 0) {
-                        $error = false;
-                        $this->load->view('feedback/feedback_main', $data);
-                        include('./application/views/feedback/custom1.php');
-                    }
-                }
 
-                if ($error) { 
-                    $subject_hold = $this->Crud_model->fetch('subject', array('offering_id' => $user_id)); //error
-                    $lect = array();
-                    $inner_counter = 0;
-                    if (empty($subject_hold) != 1) {
-                        foreach ($subject_hold as $subject) {
-                            $lect_id = $subject->lecturer_id;
-                            $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
-                            $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
-                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
-                                $lect_hold->sent_feedback = 1;
-                            } else {
-                                $lect_hold->sent_feedback = 0;
-                            }
-                            array_push($lect, $lect_hold);
-                            $inner_counter++; 
-                        }
-                    }
-                    if ($isit) {
-                        $lect = array();
-                        $inner_counter = 0;
-                        if (empty($subject_hold) != 1) {
-                            foreach ($subject_hold as $subject) {
-                                $lect_id = $subject->lecturer_id;
-                                $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
-                                $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
-                                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
-                                    $lect_hold->sent_feedback = 1;
-                                } else {
-                                    $lect_hold->sent_feedback = 0;
-                                }
-                                array_push($lect, $lect_hold);
-                                $inner_counter++;
-                            }
+            $col = "";
+            $where = array();
+            $join = array();
+            $this->Crud_model->fetch_join2("lecturer", $col, $join, NULL, $where, $distinct);
 
-                            $data = array(
-                                'lect' => $lect
-                            );
-                            $this->load->view('feedback/feedback_main', $data);
-                        } else {
-                            $this->load->view('feedback/feedback_main', $data);
-                            include('./application/views/feedback/custom3.php');
-                        }
-                    } else {
-                        $data = array(
-                            'lect' => "no lect"
-                        );
-                        $this->load->view('feedback/feedback_main', $data);
-                    }
-                }
-            } else {
-                $this->load->view('feedback/error', $data);
-                $this->load->view('feedback/custom4');
-            }
+//            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
+//            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
+//            $feedback_status = $dept_temp[0]->professor_feedback_active;
+//            $data = array(
+//                'title' => "Feedback - Learning Management System | FEU - Institute of Techonology",
+//                'info' => $info,
+//                "s_h" => "",
+//                "s_a" => "",
+//                "s_c" => "",
+//                "s_f" => "selected-nav",
+//                "s_c" => "",
+//                "s_t" => "",
+//                "s_s" => "",
+//                "s_co" => "",
+//                "s_ss" => "",
+//                "s_rc" => "",
+//                "s_ga" => "",
+//            );
+//            $this->load->view('includes/header', $data);
+//            if ($feedback_status == 1) {                //checks if feedback is open
+//                $error = true;          //error holder
+//                $user_hold = $this->session->userdata('userInfo')['user'];
+//                $user_id = $user_hold->offering_id;
+//                $course_hold2 = $this->Crud_model->fetch('offering', array('offering_id' => $user_id))[0]->course_id;
+//                $course_hold = $this->Crud_model->fetch('course', array('course_id' => $course_hold2))[0];
+//                $enrollment_hold = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $course_hold->enrollment_id))[0];
+//                if (empty($enrollment_hold) != 1) {       //check the fetched table and if it is active
+//                    if ($enrollment_hold->enrollment_is_active == 0) {
+//                        $error = false;
+//                        $this->load->view('feedback/feedback_main', $data);
+//                        include('./application/views/feedback/custom1.php');
+//                    }
+//                }
+//
+//                if ($error) {
+////                    $subject_hold = $this->Crud_model->fetch('subject', array('offering_id' => $user_id)); //error
+//                    $subject_hold = $this->Crud_model->fetch('subject', array('course_id' => $course_hold2)); //error
+//                    $lect = array();
+//                    $inner_counter = 0;
+//                    if (empty($subject_hold) != 1) {
+//                        foreach ($subject_hold as $subject) {
+//                            $lect_id = $subject->lecturer_id;
+//                            $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
+//                            $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
+//                            if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
+//                                $lect_hold->sent_feedback = 1;
+//                            } else {
+//                                $lect_hold->sent_feedback = 0;
+//                            }
+//                            array_push($lect, $lect_hold);
+//                            $inner_counter++;
+//                        }
+//                    }
+//                    if ($isit) {
+//                        $lect = array();
+//                        $inner_counter = 0;
+//                        if (empty($subject_hold) != 1) {
+//                            foreach ($subject_hold as $subject) {
+//                                $lect_id = $subject->lecturer_id;
+//                                $lect_hold = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $lect_id))[0];
+//                                $lect_hold->topic = $subject_hold[$inner_counter]->subject_name;
+//                                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $lect_id, 'student_id' => $user_hold->student_id))[0]) {
+//                                    $lect_hold->sent_feedback = 1;
+//                                } else {
+//                                    $lect_hold->sent_feedback = 0;
+//                                }
+//                                array_push($lect, $lect_hold);
+//                                $inner_counter++;
+//                            }
+//
+//                            $data = array(
+//                                'lect' => $lect
+//                            );
+//                            $this->load->view('feedback/feedback_main', $data);
+//                        } else {
+//                            $this->load->view('feedback/feedback_main', $data);
+//                            include('./application/views/feedback/custom3.php');
+//                        }
+//                    } else {
+//                        $data = array(
+//                            'lect' => "no lect"
+//                        );
+//                        $this->load->view('feedback/feedback_main', $data);
+//                    }
+//                }
+//            } else {
+//                $this->load->view('feedback/error', $data);
+//                $this->load->view('feedback/custom4');
+//            }
         } else if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") { //show to fic
             $info = $this->session->userdata('userInfo');
             $data = array(
@@ -236,20 +259,20 @@ class Feedback extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                    $program = 1;
-                    break;
+                        $program = 1;
+                        break;
                     case 'ECE':
-                    $program = 2;
-                    break;
+                        $program = 2;
+                        break;
                     case 'EE':
-                    $program = 3;
-                    break;
+                        $program = 3;
+                        break;
                     case 'ME':
-                    $program = 4;
-                    break;
+                        $program = 4;
+                        break;
 
                     default:
-                    break;
+                        break;
                 }
 
 
@@ -428,7 +451,7 @@ class Feedback extends CI_Controller {
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
-            if ($enrollment_active == 1) { 
+            if ($enrollment_active == 1) {
                 $stud_id = $this->session->userdata('userInfo')['user']->student_id;
                 $data = array(
                     'title' => "Feedback",
@@ -444,15 +467,15 @@ class Feedback extends CI_Controller {
                     "s_rc" => "",
                     "s_ga" => "",
                     'info' => $info
-                ); 
+                );
                 $segment = $this->uri->segment(3);
                 $subject_hold2 = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->offering_id; //get offering_id on subject table from lecturer
                 $subject_hold = $this->Crud_model->fetch('offering', array('offering_id' => $subject_hold2))[0]->course_id; //get course_id on offering table
-                $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student 
+                $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
                 if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //there is already record
 //                    echo"<pre>";
                     //                    print_r($this->Crud_model->fetch('offering', array('course_id' => $subject_hold2))[0]);
-//                    echo"</pre>"; 
+//                    echo"</pre>";
                     $this->load->view('feedback/error', $data);
                     if ($subject_hold == $offering_hold) {                      //END OF VERIFYING, STUDENT ALREADY SUBMITTED
                         $this->load->view('feedback\submitted2.php');
@@ -460,7 +483,7 @@ class Feedback extends CI_Controller {
                         $this->load->view('feedback\submitted.php');
                     }
                 } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
                     if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
                         $data = array(
@@ -473,7 +496,7 @@ class Feedback extends CI_Controller {
                         include('./application/views/feedback/custom5.php');
                     }
                 } else {
-                    redirect();
+                    redirect("Feedback");
                 }
             } else {
                 $this->load->view('feedback/error', $data);
@@ -537,20 +560,20 @@ class Feedback extends CI_Controller {
 
         switch ($info['user']->$ident) {
             case 'CE':
-            $program = 1;
-            break;
+                $program = 1;
+                break;
             case 'ECE':
-            $program = 2;
-            break;
+                $program = 2;
+                break;
             case 'EE':
-            $program = 3;
-            break;
+                $program = 3;
+                break;
             case 'ME':
-            $program = 4;
-            break;
+                $program = 4;
+                break;
 
             default:
-            break;
+                break;
         }
 
         $data = array(
