@@ -55,6 +55,61 @@ class ImportQuestions extends CI_Controller {
 				"s_rc" => "",
 			);
 			$this->load->view('includes/header', $data);
+			$this->load->view('courseware/initial_import_questions');
+			$this->load->view('includes/footer');
+		} elseif ($info['identifier'] == "administrator") {
+			redirect('Admin');
+		} else {
+			redirect('Welcome', 'refresh');
+		}
+	}
+
+	public function viewCoursewares()
+	{
+		$info = $this->session->userdata('userInfo');
+		
+
+		$ident = $info['identifier'];
+		$ident.="_department";
+		$program = 0;
+
+		switch ($info['user']->$ident) {
+			case 'CE':
+			$program = 1;
+			break;
+			case 'ECE':
+			$program = 2;
+			break;
+			case 'EE':
+			$program = 3;
+			break;
+			case 'ME':
+			$program = 4;
+			break;
+
+			default:
+			break;
+		}
+
+
+
+		if ($info['logged_in'] && $info['identifier'] != "administrator") {
+			$data = array(
+				"title" => "Home - Learning Management System | FEU - Institute of Techonology",
+				"info" => $info,
+				"program" => $program,
+				"s_h" => "",
+				"s_a" => "",
+				"s_f" => "",
+				"s_c" => "selected-nav",
+				"s_t" => "",
+				"s_s" => "",
+				"s_co" => "",
+				"s_ss" => "",
+				"s_ga" => "",
+				"s_rc" => "",
+			);
+			$this->load->view('includes/header', $data);
 			$this->load->view('courseware/import_questions');
 			$this->load->view('includes/footer');
 		} elseif ($info['identifier'] == "administrator") {

@@ -10,7 +10,7 @@
 	<div class="col s1"></div>
 	<div class="col s11">
 
-		<?php  $course = $this->Crud_model->fetch("course",array("course_department"=>$info['user']->fic_department));  ?>
+		<?php  $course = $this->Crud_model->fetch("course",array("course_id"=>$this->uri->segment(3)));  ?>
 		<?php if ($course): ?>
 			<h5>Subject Area</h5>
 			<ul class="collapsible" data-collapsible="accordion">
