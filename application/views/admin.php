@@ -178,13 +178,13 @@
                 <?php if ($fic): ?>
                     <table class="data-table">
                         <thead>
-                        <th>ID</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Department</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                            <th>ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </thead>
                         <tbody >
                             <?php foreach ($fic as $key => $value): ?>
@@ -453,13 +453,13 @@
                 <?php if ($professor): ?>
                     <table class="data-table">
                         <thead>
-                        <th>ID</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Middle Name</th>
-                        <th>Department</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                            <th>ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Department</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </thead>
                         <tbody >
                             <?php foreach ($professor as $key => $value): ?>
@@ -574,8 +574,8 @@
                 <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks - <span><?= $t ?>T <?= $sy ?></span></h4>
                 <table id="tbl-mdl-feedback">
                     <thead>
-                    <th>Date</th>
-                    <th>Message</th>
+                        <th>Date</th>
+                        <th>Message</th>
                     </thead>
                     <tbody id="mdl_lec_content">
 
@@ -618,14 +618,14 @@
 
     jQuery(document).ready(function ($) {
 // fittext
-        jQuery("#mdl_lec_div").fitText();
+jQuery("#mdl_lec_div").fitText();
 
         /*==============================
          =            Charts            =
          ==============================*/
 
-        var ctx = document.getElementById('myChart').getContext('2d');
-        $.ajax({
+         var ctx = document.getElementById('myChart').getContext('2d');
+         $.ajax({
             url: base_url + 'Admin/charts_student',
             type: 'post',
             dataType: 'json',
@@ -635,25 +635,25 @@
                     data: {
                         labels: ["Mechanical Engineering", "Civil Engineering", "Electrical Engineering", "Electronics and Communication Engineering"],
                         datasets: [{
-                                backgroundColor: [
-                                    "#5A87FF",
-                                    "#f44336",
-                                    "#F2A900",
-                                    "#007A33",
-                                ],
-                                data: [res[0], res[1], res[2], res[3]]
-                            }]
+                            backgroundColor: [
+                            "#5A87FF",
+                            "#f44336",
+                            "#F2A900",
+                            "#007A33",
+                            ],
+                            data: [res[0], res[1], res[2], res[3]]
+                        }]
                     }
                 });
             }
 
         });
 
-        /*=====  End of Charts  ======*/
+         /*=====  End of Charts  ======*/
 
 
 // show feedbacks
-        $(".btn_mdl_feedback").click(function (event) {
+$(".btn_mdl_feedback").click(function (event) {
             // alert($(this).data('id'));
             $id = $(this).data('id');
             var html_content = "";
@@ -681,9 +681,9 @@
 
                                 for (var i = 0; i < data.length; i++) {
                                     html_content += ' <tr>' +
-                                            '<td>' + data[i].date + '</td>' +
-                                            '<td><blockquote>' + data[i].lecturer_feedback_comment + '</blockquote></td>' +
-                                            '</tr>';
+                                    '<td>' + data[i].date + '</td>' +
+                                    '<td><blockquote>' + data[i].lecturer_feedback_comment + '</blockquote></td>' +
+                                    '</tr>';
                                 }
                                 $("#mdl_lec_content").html(html_content);
                             } else {
@@ -800,44 +800,44 @@
         $(".btn_delete_com").click(function (event) {
 
             swal({
-            title: "Are you sure?",
-                    text: "This may cause inconsistency of data in the system!",
-                    icon: "error",
-                    buttons: true,
-                    dangerMode: true,
-            }).then((willDelete) = > {
-            if (willDelete) {
-                $.ajax({
-                    url: "<?= base_url() ?>Admin/deleteOffering ",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        id: $(this).attr("data-id")
-                    },
-                    success: function (data) {
-                        swal("Poof! Offering has been deleted!", {
-                            icon: "success",
-                        }).then(function () {
-                            window.location.reload(true);
-                        });
-                    },
-                    error: function (data) {
+                title: "Are you sure?",
+                text: "This may cause inconsistency of data in the system!",
+                icon: "error",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete)=>{
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url() ?>Admin/deleteOffering ",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $(this).attr("data-id")
+                        },
+                        success: function (data) {
+                            swal("Poof! Offering has been deleted!", {
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        },
+                        error: function (data) {
 
-                    }
+                        }
 
-                });
-            }
+                    });
+                }
+            });
         });
     });
-    });
-            function shorten_text(text, id) {
-                var ret = text;
-                if (ret.length > 20) {
-                    ret = ret.substr(0, 20 - 3) + "...";
-                }
+function shorten_text(text, id) {
+    var ret = text;
+    if (ret.length > 20) {
+        ret = ret.substr(0, 20 - 3) + "...";
+    }
 
-                $(".title_trunc" + id).html(ret);
-            }
+    $(".title_trunc" + id).html(ret);
+}
 
 </script>
 

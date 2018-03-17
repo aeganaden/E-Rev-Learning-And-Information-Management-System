@@ -35,27 +35,32 @@ elseif ($data_id == 4) $score_type = "Exam";
 					</thead>
 
 					<tbody>
-						<tr>
-							<?php foreach ($data_scores as $key => $value): ?>
-								<?php 
-								$student_scores = $this->Crud_model->fetch("student_scores",array("data_scores_id"=>$value->data_scores_id));
-								$student_scores = $student_scores[0]; 
+						<?php foreach ($data_scores as $key => $value): ?>
+							<tr>
+								<?php  
+								if ($student_scores = $this->Crud_model->fetch("student_scores",array("data_scores_id"=>$value->data_scores_id))) {
+									$student_scores = $student_scores[0];   
+									$topics = explode(",",$student_scores->student_scores_topic_id);
+								}else{
+									$topics = "";
+								}
 								?>
 								<td><?=$value->data_scores_id?></td>
 								<td><?=$score_type?></td>
 								<td>
-									<?php 
-									$topics = explode(",",$student_scores->student_scores_topic_id);
-									?>
-									<?php foreach ($topics as $i_key => $i_value): ?>
-										<?php 
-										$topic_i  = $this->Crud_model->fetch("topic",array("topic_id"=>$i_value));
-										$topic_i = $topic_i[0];
-										?>
-										<blockquote class="color-primary-green">
-											<h6 class="color-black"><?=$topic_i->topic_name?></h6>
-										</blockquote> 
-									<?php endforeach ?>
+									<?php if ($topics): ?>
+										<?php foreach ($topics as $i_key => $i_value): ?>
+											<?php 
+											$topic_i  = $this->Crud_model->fetch("topic",array("topic_id"=>$i_value));
+											$topic_i = $topic_i[0];
+											?>
+											<blockquote class="color-primary-green">
+												<h6 class="color-black"><?=$topic_i->topic_name?></h6>
+											</blockquote> 
+										<?php endforeach ?>
+									<?php else: ?>
+										<h1></h1>
+									<?php endif ?>
 								</td>
 								<td><?=$value->data_scores_score?></td>
 								<td><?=$value->data_scores_passing?></td>  
@@ -65,8 +70,8 @@ elseif ($data_id == 4) $score_type = "Exam";
 									<i class="material-icons right">visibility</i>View
 								</a>
 							</td>
-						<?php endforeach ?>
-					</tr>
+						</tr>
+					<?php endforeach ?>
 				</tbody>
 			</table>
 		<?php else: ?>
