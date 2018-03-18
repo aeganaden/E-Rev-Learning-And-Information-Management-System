@@ -19,7 +19,6 @@
 <div class="row">
 	<div class="col s12">
 
-
 		<?php if ($attendance == false): ?>
 
 			<h1 class="center">No Attendance Recorded Yet</h1>
@@ -31,6 +30,7 @@
 						<td>Date</td>
 						<td>Schedule Start</td>
 						<td>Schedule End</td>
+						<td>Hours Rendered</td>
 						<td>Time In</td>
 						<td>Time Out</td>
 						<td>Remarks</td>					</tr>
@@ -44,6 +44,7 @@
 								<td><?=date("M d, Y - l", $value['lecturer_attendance_date'])?></td>	
 								<td><?=date("h:i A", $value['sched_start'])?></td>	
 								<td><?=date("h:i A", $value['sched_end'])?></td>	
+								<td><?=str_replace(":",".",$value['hours_rendered'])?> Hours</td>
 								<td><?=date("h:i A", $value['lecturer_attendance_in'])?></td>	
 								<td><?=date("h:i A", $value['lecturer_attendance_out'])?></td>
 								<td>

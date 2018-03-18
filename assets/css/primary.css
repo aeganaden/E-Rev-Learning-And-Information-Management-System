@@ -195,7 +195,13 @@ a{
 .tabs .indicator{
 	background-color: #F2A900;
 
+}
 
+#modal_q{
+	max-height: 100% !important;
+	width: 100% !important;
+	height: 100% !important;
+}
 
 /*================================
 =            Home CSS            =

@@ -166,13 +166,10 @@
 				</blockquote>
 
 				<blockquote class="color-primary-green" style="margin-left: 3%;">
-
 					<h5 class="valign-wrapper">Answer #1 <i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i></h5>
 					<textarea name="editor2" id="answer_1"></textarea>
-
 				</blockquote>
 				<blockquote class="color-primary-green" style="margin-left: 3%;">
-
 					<h5 class="valign-wrapper">Answer #2 <i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i></h5>
 					<textarea name="editor3" id="answer_2"></textarea>
 				</blockquote>
