@@ -226,12 +226,12 @@ class Coursewares_fic extends CI_Controller {
 				}
 				$data_ans = array(
 					array(
-						"choice_choice"=>"True", 
+						"choice_choice"=>"<p>True</p>", 
 						"courseware_question_id"=>$q_id,
 						"choice_is_answer"=>$t_ia
 					),
 					array(
-						"choice_choice"=>"False", 
+						"choice_choice"=>"<p>False</p>", 
 						"courseware_question_id"=>$q_id,
 						"choice_is_answer"=>$f_ia
 					),
