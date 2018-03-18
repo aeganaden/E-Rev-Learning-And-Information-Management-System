@@ -50,7 +50,22 @@ class Login extends CI_Controller {
 			$enrollment = $this->Crud_model->fetch("enrollment",array("enrollment_id"=>$course->enrollment_id));
 			$enrollment = $enrollment[0];
 			if ($enrollment->enrollment_is_active == 1) {
-				$bool = sha1("student"); 
+				// check if user has an active session
+				$session = $this->Crud_model->fetch("login_sessions",array(
+					"login_sessions_identifier"=>$data->student_num,
+					"login_sessions_status"=>1
+				));
+				$data = array(
+					"login_sessions_identifier"=>$data->student_num,
+					"login_sessions_status"=>1
+				);
+				$session = $session[0];
+				if ($session) {
+					$this->Crud_model->update("login_sessions",array("login_sessions_status"=>0),array("login_sessions_id"=>$session->login_sessions_id));
+				} 
+				if ($this->Crud_model->insert("login_sessions",$data)) {
+					$bool = sha1("student"); 
+				};
 			}else{
 				$bool = "You're not currently enrolled in this term."; 
 			}
@@ -103,7 +118,7 @@ class Login extends CI_Controller {
 					"log_user_id"=>$data['user']->student_id,
 					"log_timedate"=>time(),
 					"log_platform"=>1,
-					"log_content_id"=>1
+					"log_content_id"=>1,
 				);
 				$this->Crud_model->insert("log",$log_data);
 				redirect('Home');
@@ -200,12 +215,15 @@ class Login extends CI_Controller {
         	case '204036a1ef6e7360e536300ea78c6aeb4a9333dd':
 				# student
         	$info = $this->Crud_model->fetch("student",array("username"=>$this->input->post("username")));
+        	$sess_id = $this->Crud_model->fetch_last("login_sessions","login_sessions_identifier",array("login_sessions_identifier"=>$info[0]->student_num));
+
         	$info = $info[0];
         	$userData = array(
         		'user'=> $info,
         		'logged_in' => TRUE,
         		"identifier" => "student",
-        		"active_enrollment"=>$active_enrollment ? $active_enrollment->enrollment_id : "none" 
+        		"active_enrollment"=>$active_enrollment ? $active_enrollment->enrollment_id : "none",
+        		"sess_id"=>$sess_id->login_sessions_id,
         	);
         	$this->session->set_userdata('userInfo',$userData);
         	echo json_encode(base_url()."Login/redirect_page");

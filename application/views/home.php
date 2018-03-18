@@ -13,7 +13,7 @@
 <?php echo "<pre>" ?>
   <?php print_r($info) ?> -->
   <div class="row">
-    <div class="row">
+    <div class="row"> 
          <!--==========================================
         =            Announcement Section            =
         ===========================================-->

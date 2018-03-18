@@ -144,7 +144,14 @@
 
 <div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
-		<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
+		<div class="row">
+			<div class="col s6">
+				<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
+			</div>
+			<div class="col s6">
+				<button class="btn red right modal-trigger modal-close"><i class="material-icons">highlight_off</i></button>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col s12">
 				<ul class="tabs bg-primary-green">
@@ -161,26 +168,54 @@
 			</div>
 			<div id="answers" class="col s12">
 				
-				<blockquote class="color-primary-yellow">
-					<h5 class="color-black">Answers</h5>
-				</blockquote>
+				<div class="row">
+					<div class="col s6">
+						<blockquote class="color-primary-yellow">
+							<h5 class="color-black">Answers</h5> 
+						</blockquote>
+					</div>
+					<div class="col s6">
+						<div class="input-field col s12">
+							<select id="sl_choices">
+								<option value="" disabled >Choices Type</option>
+								<option value="1" selected>Multiple Choice</option>
+								<option value="2">True or False</option> 
+							</select>
+							<label>Choice Type Options</label>
+						</div>
+					</div>
+				</div>
 
-				<blockquote class="color-primary-green" style="margin-left: 3%;">
-					<h5 class="valign-wrapper">Answer #1 <i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i></h5>
-					<textarea name="editor2" id="answer_1"></textarea>
-				</blockquote>
-				<blockquote class="color-primary-green" style="margin-left: 3%;">
-					<h5 class="valign-wrapper">Answer #2 <i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i></h5>
-					<textarea name="editor3" id="answer_2"></textarea>
-				</blockquote>
-				<blockquote class="color-primary-green" style="margin-left: 3%;">
-					<h5 class="valign-wrapper">Answer #3 <i class="material-icons" style="cursor: pointer;" id="i_answer_3">check_box_outline_blank</i></h5>
-					<textarea name="editor4" id="answer_3"></textarea>
-				</blockquote>
-				<blockquote class="color-primary-green" style="margin-left: 3%;">
-					<h5 class="valign-wrapper">Answer #4 <i class="material-icons" style="cursor: pointer;" id="i_answer_4">check_box_outline_blank</i></h5>
-					<textarea name="editor5" id="answer_4"></textarea>
-				</blockquote>
+				<div class="row" id="mul_choice" >
+					<blockquote class="color-primary-green" style="margin-left: 3%;">
+						<h5 class="valign-wrapper">Answer #1 <i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i></h5>
+						<textarea name="editor2" id="answer_1"></textarea>
+					</blockquote>
+					<blockquote class="color-primary-green" style="margin-left: 3%;">
+						<h5 class="valign-wrapper">Answer #2 <i class="material-icons" style="cursor: pointer;" id="i_answer_2">check_box_outline_blank</i></h5>
+						<textarea name="editor3" id="answer_2"></textarea>
+					</blockquote>
+					<blockquote class="color-primary-green" style="margin-left: 3%;">
+						<h5 class="valign-wrapper">Answer #3 <i class="material-icons" style="cursor: pointer;" id="i_answer_3">check_box_outline_blank</i></h5>
+						<textarea name="editor4" id="answer_3"></textarea>
+					</blockquote>
+					<blockquote class="color-primary-green" style="margin-left: 3%;">
+						<h5 class="valign-wrapper">Answer #4 <i class="material-icons" style="cursor: pointer;" id="i_answer_4">check_box_outline_blank</i></h5>
+						<textarea name="editor5" id="answer_4"></textarea>
+					</blockquote>
+				</div>
+				<div class="row" id="tfchoice" style="display: none">
+					<blockquote class="color-primary-green" style="margin-left: 3%;">
+						<p>
+							<input class="with-gap" value="True" name="ans_tfchoice" checked type="radio" id="ans_true"  />
+							<label for="ans_true" style="font-size: 2.5vw;">True</label>
+						</p>
+						<p>
+							<input class="with-gap" value="False" name="ans_tfchoice" type="radio" id="ans_false"  />
+							<label for="ans_false" style="font-size: 2.5vw;">False</label>
+						</p>
+					</blockquote>
+				</div>
 			</div>
 		</div>
 
@@ -286,8 +321,19 @@
 		var i_a_2 = 0;
 		var i_a_3 = 0;
 		var i_a_4 = 0;
+		var choice_type = 0;
 
-
+		$("#sl_choices").change(function(event) {
+			if ($(this).val()==1) {
+				choice_type = 1;
+				$("#mul_choice").css('display', 'block');
+				$("#tfchoice").css('display', 'none');
+			}else{
+				choice_type = 2;
+				$("#tfchoice").css('display', 'block');
+				$("#mul_choice").css('display', 'none');
+			}
+		});
 
 		// Mark answer modal
 		$("#i_answer_1").click(function(event) {
@@ -337,60 +383,75 @@
 		// ADD QUESTION
 		$("#send").click(function(event) {
 			$q_id = 0;
-			$.ajax({
-				url: '<?=base_url()?>Coursewares_fic/fetchLastQuestion',
-				type: 'post',
-				dataType: 'json',
-				success: function(data){
-					$q_id = data; 
-					var cw_id = $("#q_id_num").data("cwid");
-					var content = CKEDITOR.instances['q_editor'].getData();
+			$checker = true;
+			if (choice_type == 2) {
+				var radioValue = $("input[name='ans_tfchoice']:checked").val();
+				if (!radioValue) {
+					$toastContent = $('<span>Select either true of false</span>');
+					Materialize.toast($toastContent, 2000);
+					$checker = false;
+				}
+			} 
+			if ($checker == true) {
+				$.ajax({
+					url: '<?=base_url()?>Coursewares_fic/fetchLastQuestion',
+					type: 'post',
+					dataType: 'json',
+					success: function(data){
+						$q_id = data; 
+						var cw_id = $("#q_id_num").data("cwid");
+						var content = CKEDITOR.instances['q_editor'].getData();
 
-					content = "<div>"+content+"</div>";
-					console.log(content);	
-					var answer1 = CKEDITOR.instances['answer_1'].getData();
-					var answer2 = CKEDITOR.instances['answer_2'].getData();
-					var answer3 = CKEDITOR.instances['answer_3'].getData();
-					var answer4 = CKEDITOR.instances['answer_4'].getData();
+						content = "<div>"+content+"</div>";
+						console.log(content);	
+						var answer1 = CKEDITOR.instances['answer_1'].getData();
+						var answer2 = CKEDITOR.instances['answer_2'].getData();
+						var answer3 = CKEDITOR.instances['answer_3'].getData();
+						var answer4 = CKEDITOR.instances['answer_4'].getData();
 
-					$.ajax({
-						url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
-						type: 'post',
-						dataType: 'json',
-						data: {
-							content:content,
-							answer1:answer1,
-							answer2:answer2,
-							answer3:answer3,
-							answer4:answer4,
-							i_a_1:i_a_1,
-							i_a_2:i_a_2,
-							i_a_3:i_a_3,
-							i_a_4:i_a_4,
-							q_id:$q_id,
-							cw_id:cw_id
-						},
-						success: function(data){
-							if(data==true){
-								swal("Question Added!", {
-									icon: "success",
-								}).then(function(){ 
-
-									$("#answer_1, #answer_2, #answer_3, #answer_4").html("Click Here To Add Answer");
-									$('#modal_q').modal('close');
-									unsavedChanges = true;
+						$.ajax({
+							url: '<?=base_url()?>Coursewares_fic/insertQuestion ',
+							type: 'post',
+							dataType: 'json',
+							data: {
+								content:content,
+								answer1:answer1,
+								answer2:answer2,
+								answer3:answer3,
+								answer4:answer4,
+								i_a_1:i_a_1,
+								i_a_2:i_a_2,
+								i_a_3:i_a_3,
+								i_a_4:i_a_4,
+								choice_type:choice_type,
+								tfchoice:radioValue,
+								q_id:$q_id,
+								cw_id:cw_id
+							},
+							success: function(data){
+								if(data==true){
+									swal("Question Added!", {
+										icon: "success",
+									}).then(function(){ 
+										$("#answer_1, #answer_2, #answer_3, #answer_4").html("Click Here To Add Answer");
+										$('#modal_q').modal('close');
+										unsavedChanges = true;
 							// fetch question
 							fetchQuestion(cw_id);
 							$("html, body").animate({ scrollTop: $(document).height() }, 1000);
 						});
-							}else{
-								$toastContent = $('<span>'+data+'</span>');
-								Materialize.toast($toastContent, 2000);
+								}else{
+									$toastContent = $('<span>'+data+'</span>');
+									Materialize.toast($toastContent, 2000);
+								}
 							}
-						}
-					});
-				}
-			});
+						});
+					}
+				});
+			}
+			
+
+			
 			
 			
 

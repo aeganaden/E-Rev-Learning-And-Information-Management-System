@@ -1,4 +1,16 @@
 </div>
+<?php 
+$info = $this->session->userdata('userInfo');
+
+if ($info['identifier']=='student') {
+	$sess = $this->Crud_model->fetch('login_sessions',array("login_sessions_id"=>$info['sess_id']));
+	$sess = $sess[0];
+	if ($sess->login_sessions_status == 0) {
+		session_destroy();
+		redirect('Welcome','refresh');
+	}
+}
+?>
 </body>
 <script type="text/javascript">
 	$("#body").css("display","block");

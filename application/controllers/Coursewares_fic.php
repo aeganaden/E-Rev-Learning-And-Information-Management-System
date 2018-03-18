@@ -155,6 +155,8 @@ class Coursewares_fic extends CI_Controller {
 		$i_a_2 = $this->input->post("i_a_2");
 		$i_a_3 = $this->input->post("i_a_3");
 		$i_a_4 = $this->input->post("i_a_4");
+		$choice_type = $this->input->post("choice_type");
+		$tf_choice = $this->input->post("tf_choice");
 		$content_c = str_replace(' ', '', $content);
 		$answer1_c = str_replace(' ', '', $answer1);
 		$answer2_c = str_replace(' ', '', $answer2);
@@ -166,48 +168,75 @@ class Coursewares_fic extends CI_Controller {
 		if ($i_a_1 == 0 &&$i_a_2 == 0 &&$i_a_3 == 0 &&$i_a_4 == 0 ) {
 			$check_i = false;
 		}
+		$data_q = array(
+			"courseware_question_question"=>$content,
+			"courseware_id"=>$cw_id
+		);
 
 
-		if (empty($content_c) || empty($answer1) || empty($answer2) || empty($answer3) || empty($answer4)) {
-			echo json_encode("Question and Answers Must Not Be Empty");
-		}elseif ($check_i == false) {
-			echo json_encode("One answer must be mark");
+		if ($choice_type == 1) {
+			if (empty($content_c) || empty($answer1) || empty($answer2) || empty($answer3) || empty($answer4)) {
+				echo json_encode("Question and Answers Must Not Be Empty");
+			}elseif ($check_i == false) {
+				echo json_encode("One answer must be mark");
+			}else{
+
+
+				$data_a = array(
+					array(
+						"choice_choice"=>$answer1, 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$i_a_1
+					),
+					array(
+						"choice_choice"=>$answer2, 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$i_a_2
+					),
+					array(
+						"choice_choice"=>$answer3, 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$i_a_3
+					),
+					array(
+						"choice_choice"=>$answer4, 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$i_a_4
+					),
+				);
+
+				if ($this->Crud_model->insert("courseware_question",$data_q)) {
+					if ($this->Crud_model->insert_batch("choice",$data_a)) {
+						echo json_encode(true);
+					}else{
+						echo json_encode("Err - Answer Insertion Failed");
+					}
+				}else{
+					echo json_encode("Err - Question Insertion Failed");
+				}
+			}
 		}else{
-
-			$data_q = array(
-				"courseware_question_question"=>$content,
-				"courseware_id"=>$cw_id
-			);
-
-			$data_a = array(
-				array(
-					"choice_choice"=>$answer1,
-					"choice_is_answer"=>0,
-					"courseware_question_id"=>$q_id,
-					"choice_is_answer"=>$i_a_1
-				),
-				array(
-					"choice_choice"=>$answer2,
-					"choice_is_answer"=>0,
-					"courseware_question_id"=>$q_id,
-					"choice_is_answer"=>$i_a_2
-				),
-				array(
-					"choice_choice"=>$answer3,
-					"choice_is_answer"=>0,
-					"courseware_question_id"=>$q_id,
-					"choice_is_answer"=>$i_a_3
-				),
-				array(
-					"choice_choice"=>$answer4,
-					"choice_is_answer"=>0,
-					"courseware_question_id"=>$q_id,
-					"choice_is_answer"=>$i_a_4
-				),
-			);
-
 			if ($this->Crud_model->insert("courseware_question",$data_q)) {
-				if ($this->Crud_model->insert_batch("choice",$data_a)) {
+				if ($tf_choice=="True") {
+					$t_ia = 1;
+					$f_ia = 0;
+				}else{
+					$t_ia = 0;
+					$f_ia = 1;
+				}
+				$data_ans = array(
+					array(
+						"choice_choice"=>"True", 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$t_ia
+					),
+					array(
+						"choice_choice"=>"False", 
+						"courseware_question_id"=>$q_id,
+						"choice_is_answer"=>$f_ia
+					),
+				);
+				if ($this->Crud_model->insert_batch("choice",$data_ans)) {
 					echo json_encode(true);
 				}else{
 					echo json_encode("Err - Answer Insertion Failed");
