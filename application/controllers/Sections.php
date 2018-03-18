@@ -3,10 +3,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set("Asia/Manila");
 
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class Sections extends CI_Controller {
@@ -244,10 +240,13 @@ class Sections extends CI_Controller {
                                                 }
                                             }
                                             $all_studs = $this->Crud_model->fetch_select("student_list", NULL, NULL, NULL, NULL, array("student_id", $stud_ids));
+                                            echo "<pre>";
+                                            print_r($all_studs);
+                                            echo "</pre>";
                                             foreach ($all_studs as $suball_studs) {
                                                 $list_of_id[] = $suball_studs->student_id;
                                                 $temp = array(
-                                                    "student_num" => $suball_studs->student_id, //binago ko from student_id to student_num
+                                                    "student_id" => $suball_studs->student_id, //binago ko from student_id to student_num
                                                     "firstname" => $suball_studs->firstname,
                                                     "midname" => $suball_studs->midname,
                                                     "lastname" => $suball_studs->lastname,
@@ -262,7 +261,7 @@ class Sections extends CI_Controller {
                                             }
                                             //CHECKS IF STUD IS ALREADY ENROLLED
                                             //binago ko from stud.student_id to stud.student_num
-                                            $col = array("stud.student_num, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
+                                            $col = array("stud.student_id, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
                                             $where = array(
                                                 "cou.enrollment_id" => $enrollment_active
                                             );
@@ -351,8 +350,10 @@ class Sections extends CI_Controller {
                                         );
                                         $this->load->view('sections/add', $data);
                                     } else {                                            //success dbase
-                                        $this->db->trans_commit();
-                                        redirect("Sections/view_sections/" . $segment);
+                                        print_r($error_message);
+                                        $this->db->trans_rollback();
+//                                        $this->db->trans_commit();
+//                                        redirect("Sections/view_sections/" . $segment);
                                     }
                                 }
                             } else {

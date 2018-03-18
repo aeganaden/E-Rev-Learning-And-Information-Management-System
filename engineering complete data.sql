@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2018 at 03:06 AM
+-- Generation Time: Mar 18, 2018 at 10:03 AM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -408,6 +408,18 @@ INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log
 (8, 2, 1520925869, 1, 1),
 (9, 3, 1520925997, 1, 1),
 (10, 1, 1520926391, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `login_sessions`
+--
+
+CREATE TABLE `login_sessions` (
+  `login_sessions_id` int(20) NOT NULL,
+  `login_sessions_identifier` int(45) NOT NULL,
+  `login_sessions_status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1522,6 +1534,12 @@ ALTER TABLE `log`
   ADD KEY `fk_log_log_content1_idx` (`log_content_id`);
 
 --
+-- Indexes for table `login_sessions`
+--
+ALTER TABLE `login_sessions`
+  ADD PRIMARY KEY (`login_sessions_id`);
+
+--
 -- Indexes for table `log_content`
 --
 ALTER TABLE `log_content`
@@ -1766,6 +1784,12 @@ ALTER TABLE `lecturer_feedback`
 --
 ALTER TABLE `log`
   MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `login_sessions`
+--
+ALTER TABLE `login_sessions`
+  MODIFY `login_sessions_id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `log_content`

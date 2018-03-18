@@ -178,13 +178,13 @@
                 <?php if ($fic): ?>
                     <table class="data-table">
                         <thead>
-                            <th>ID</th>
-                            <th>Last Name</th>
-                            <th>First Name</th>
-                            <th>Middle Name</th>
-                            <th>Department</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                        <th>ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                         </thead>
                         <tbody >
                             <?php foreach ($fic as $key => $value): ?>
@@ -353,156 +353,155 @@
                                         <?php endif ?>
                                     </td>
                                     <td>
-                                        <a href="<?= base_url() ?>Admin/viewAttendance/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect ">View</a> 
-                                        <button class="btn bg-primary-green waves-effect">Download</button></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            <?php endif ?>
-                        </tbody>
-                    </table>
-
-                </div>
-                <!-- Lecturers' Class List -->
-                <div class="row" id="div-card-lcl" style="display: none;">
-                    <blockquote class="color-primary-green">
-                        <h2>Lecturers' Class List</h2>
-                    </blockquote>
-                    <table id="tbl-card-lahr" class="data-table">
-                        <thead >
-                            <tr>
-                                <th>School ID</th>
-                                <th>Last Name</th>
-                                <th>First Name</th>
-                                <th>Middle Name</th>
-                                <th>Expertise</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody class="bg-color-white">
-                            <?php if ($lecturer): ?>
-                                <?php foreach ($lecturer as $key => $value): ?>
-                                    <tr class="bg-color-white">
-                                        <td><?= $value->id_number ?></td>
-                                        <td><?= ucwords($value->firstname) ?></td>
-                                        <td><?= ucwords($value->midname) ?></td>
-                                        <td><?= ucwords($value->lastname) ?></td>
-                                        <td><?= ucwords($value->lecturer_expertise) ?></td>
-                                        <td>
-                                            <?php if ($value->lecturer_status == 1): ?>
-                                                <p class="color-green">Active</p>
-                                            <?php else: ?>
-                                                <p class="color-red">Inactive</p>
-                                            <?php endif ?>
-                                        </td>
-                                        <td>
-                                            <a href="<?= base_url() ?>Admin/viewClassList/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect">View</a> 
-                                            <button class="btn bg-primary-green waves-effect">Download</button></td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- Course Offering -->
-                    <div class="row" id="div-card-clof" style="display: none;">
-                        <blockquote class="color-primary-green">
-                            <h2>Course Offering | <u><?= $t ?>T <?= $sy ?></u></h2>
-                        </blockquote>
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <td>ID</td>
-                                    <td>Course Code</td>
-                                    <td>Course Title</td>
-                                    <td>Program</td>
-                                    <td>Actions</td>
+                                        <a href="<?= base_url() ?>Admin/viewAttendance/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect ">View</a>
+                                        <a href="<?= base_url() ?>Admin/downloadAttendance/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect ">Download</a>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php if ($course): ?>
-
-                                    <?php foreach ($course as $key => $value): ?>
-                                        <tr class="bg-color-white">
-
-                                            <td><?= $value->course_id ?></td>
-                                            <td><?= strtoupper($value->course_course_code) ?></td>
-                                            <td class="truncate" style="text-transform: capitalize;"><?= $value->course_course_title ?></td>
-                                            <td><?= strtoupper($value->course_department) ?></td>
-                                            <td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?= $value->course_id ?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
-
-                                        </tr>
-                                    <?php endforeach ?>
-                                <?php endif ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Manage Professors Account -->
-                    <div class="row" id="div-card-mpa" style="display: none; ">
-                        <?php
-                        $professor = $this->Crud_model->fetch("professor");
-                        ?>
-
-                        <blockquote class="color-primary-green">
-                            <h2>Professors</h2>
-                        </blockquote>
-                        <?php if ($professor): ?>
-                            <table class="data-table">
-                                <thead>
-                                    <th>ID</th>
-                                    <th>Last Name</th>
-                                    <th>First Name</th>
-                                    <th>Middle Name</th>
-                                    <th>Department</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </thead>
-                                <tbody >
-                                    <?php foreach ($professor as $key => $value): ?>
-                                        <?php
-                                        $status = $value->professor_status == 1 ? "Active" : "Not Active";
-                                        $status_color = $value->professor_status == 1 ? "color-green" : "color-red";
-                                        $status_chk_prof = $value->professor_status == 1 ? "checked" : "color-red";
-                                        ?>
-                                        <tr class="bg-color-white">
-                                            <td><?= $value->professor_id ?></td>
-                                            <td><?= $value->lastname ?></td>
-                                            <td><?= $value->firstname ?></td>
-                                            <td><?= $value->midname ?></td>
-                                            <td><?= $value->professor_department ?></td>
-                                            <td class="statProf<?= $value->professor_id ?> <?= $status_color ?>"><?= $status ?></td>
-                                            <td>
-                                                <div class="switch">
-                                                    <label>
-                                                        Deactivated
-                                                        <input <?= $status_chk_prof ?> type="checkbox" data-id="<?= $value->professor_id ?>"  class="chk_prof_status">
-                                                        <span class="lever" ></span>
-                                                        Activated
-                                                    </label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <?php
-                            $data = array(
-                                "message_l" => "Uh oh",
-                                "message_r" => "No data yet",
-                            );
-                            echo $this->load->view('chibi/err-sad.php', array("data" => $data), TRUE);
-                            ?>
+                            <?php endforeach ?>
                         <?php endif ?>
-                    </div>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Lecturers' Class List -->
+            <div class="row" id="div-card-lcl" style="display: none;">
+                <blockquote class="color-primary-green">
+                    <h2>Lecturers' Class List</h2>
+                </blockquote>
+                <table id="tbl-card-lahr" class="data-table">
+                    <thead >
+                        <tr>
+                            <th>School ID</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Expertise</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
+                    <tbody class="bg-color-white">
+                        <?php if ($lecturer): ?>
+                            <?php foreach ($lecturer as $key => $value): ?>
+                                <tr class="bg-color-white">
+                                    <td><?= $value->id_number ?></td>
+                                    <td><?= ucwords($value->firstname) ?></td>
+                                    <td><?= ucwords($value->midname) ?></td>
+                                    <td><?= ucwords($value->lastname) ?></td>
+                                    <td><?= ucwords($value->lecturer_expertise) ?></td>
+                                    <td>
+                                        <?php if ($value->lecturer_status == 1): ?>
+                                            <p class="color-green">Active</p>
+                                        <?php else: ?>
+                                            <p class="color-red">Inactive</p>
+                                        <?php endif ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?= base_url() ?>Admin/viewClassList/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect">View</a>
+                                        <button class="btn bg-primary-green waves-effect">Download</button></td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Course Offering -->
+            <div class="row" id="div-card-clof" style="display: none;">
+                <blockquote class="color-primary-green">
+                    <h2>Course Offering | <u><?= $t ?>T <?= $sy ?></u></h2>
+                </blockquote>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td>Course Code</td>
+                            <td>Course Title</td>
+                            <td>Program</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($course): ?>
 
-                </div>
+                            <?php foreach ($course as $key => $value): ?>
+                                <tr class="bg-color-white">
+
+                                    <td><?= $value->course_id ?></td>
+                                    <td><?= strtoupper($value->course_course_code) ?></td>
+                                    <td class="truncate" style="text-transform: capitalize;"><?= $value->course_course_title ?></td>
+                                    <td><?= strtoupper($value->course_department) ?></td>
+                                    <td><i class="material-icons color-primary-green btn_modal_com modal-trigger" data-id="<?= $value->course_id ?>" href="#modal_com" style="cursor: pointer;">edit</i></td>
+
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif ?>
+                    </tbody>
+                </table>
             </div>
 
-            <!--====  End of Cards  ====-->
+            <!-- Manage Professors Account -->
+            <div class="row" id="div-card-mpa" style="display: none; ">
+                <?php
+                $professor = $this->Crud_model->fetch("professor");
+                ?>
+
+                <blockquote class="color-primary-green">
+                    <h2>Professors</h2>
+                </blockquote>
+                <?php if ($professor): ?>
+                    <table class="data-table">
+                        <thead>
+                        <th>ID</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Department</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                        </thead>
+                        <tbody >
+                            <?php foreach ($professor as $key => $value): ?>
+                                <?php
+                                $status = $value->professor_status == 1 ? "Active" : "Not Active";
+                                $status_color = $value->professor_status == 1 ? "color-green" : "color-red";
+                                $status_chk_prof = $value->professor_status == 1 ? "checked" : "color-red";
+                                ?>
+                                <tr class="bg-color-white">
+                                    <td><?= $value->professor_id ?></td>
+                                    <td><?= $value->lastname ?></td>
+                                    <td><?= $value->firstname ?></td>
+                                    <td><?= $value->midname ?></td>
+                                    <td><?= $value->professor_department ?></td>
+                                    <td class="statProf<?= $value->professor_id ?> <?= $status_color ?>"><?= $status ?></td>
+                                    <td>
+                                        <div class="switch">
+                                            <label>
+                                                Deactivated
+                                                <input <?= $status_chk_prof ?> type="checkbox" data-id="<?= $value->professor_id ?>"  class="chk_prof_status">
+                                                <span class="lever" ></span>
+                                                Activated
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <?php
+                    $data = array(
+                        "message_l" => "Uh oh",
+                        "message_r" => "No data yet",
+                    );
+                    echo $this->load->view('chibi/err-sad.php', array("data" => $data), TRUE);
+                    ?>
+                <?php endif ?>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!--====  End of Cards  ====-->
 
     <!--===========================================
     =            Modal Course Offering            =
@@ -572,8 +571,8 @@
                 <h4 class="center" style="border-bottom: 3px solid #F2A900;">Feedbacks - <span><?= $t ?>T <?= $sy ?></span></h4>
                 <table id="tbl-mdl-feedback">
                     <thead>
-                        <th>Date</th>
-                        <th>Message</th>
+                    <th>Date</th>
+                    <th>Message</th>
                     </thead>
                     <tbody id="mdl_lec_content">
 
@@ -616,14 +615,14 @@
 
     jQuery(document).ready(function ($) {
 // fittext
-jQuery("#mdl_lec_div").fitText();
+        jQuery("#mdl_lec_div").fitText();
 
         /*==============================
          =            Charts            =
          ==============================*/
 
-         var ctx = document.getElementById('myChart').getContext('2d');
-         $.ajax({
+        var ctx = document.getElementById('myChart').getContext('2d');
+        $.ajax({
             url: base_url + 'Admin/charts_student',
             type: 'post',
             dataType: 'json',
@@ -633,25 +632,25 @@ jQuery("#mdl_lec_div").fitText();
                     data: {
                         labels: ["Mechanical Engineering", "Civil Engineering", "Electrical Engineering", "Electronics and Communication Engineering"],
                         datasets: [{
-                            backgroundColor: [
-                            "#5A87FF",
-                            "#f44336",
-                            "#F2A900",
-                            "#007A33",
-                            ],
-                            data: [res[0], res[1], res[2], res[3]]
-                        }]
+                                backgroundColor: [
+                                    "#5A87FF",
+                                    "#f44336",
+                                    "#F2A900",
+                                    "#007A33",
+                                ],
+                                data: [res[0], res[1], res[2], res[3]]
+                            }]
                     }
                 });
             }
 
         });
 
-         /*=====  End of Charts  ======*/
+        /*=====  End of Charts  ======*/
 
 
 // show feedbacks
-$(".btn_mdl_feedback").click(function (event) {
+        $(".btn_mdl_feedback").click(function (event) {
             // alert($(this).data('id'));
             $id = $(this).data('id');
             var html_content = "";
@@ -679,9 +678,9 @@ $(".btn_mdl_feedback").click(function (event) {
 
                                 for (var i = 0; i < data.length; i++) {
                                     html_content += ' <tr>' +
-                                    '<td>' + data[i].date + '</td>' +
-                                    '<td><blockquote>' + data[i].lecturer_feedback_comment + '</blockquote></td>' +
-                                    '</tr>';
+                                            '<td>' + data[i].date + '</td>' +
+                                            '<td><blockquote>' + data[i].lecturer_feedback_comment + '</blockquote></td>' +
+                                            '</tr>';
                                 }
                                 $("#mdl_lec_content").html(html_content);
                             } else {
@@ -798,44 +797,44 @@ $(".btn_mdl_feedback").click(function (event) {
         $(".btn_delete_com").click(function (event) {
 
             swal({
-                title: "Are you sure?",
-                text: "This may cause inconsistency of data in the system!",
-                icon: "error",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete)=>{
-                if (willDelete) {
-                    $.ajax({
-                        url: "<?= base_url() ?>Admin/deleteOffering ",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            id: $(this).attr("data-id")
-                        },
-                        success: function (data) {
-                            swal("Poof! Offering has been deleted!", {
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        },
-                        error: function (data) {
+            title: "Are you sure?",
+                    text: "This may cause inconsistency of data in the system!",
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
+            }).then((willDelete) = > {
+            if (willDelete) {
+                $.ajax({
+                    url: "<?= base_url() ?>Admin/deleteOffering ",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: $(this).attr("data-id")
+                    },
+                    success: function (data) {
+                        swal("Poof! Offering has been deleted!", {
+                            icon: "success",
+                        }).then(function () {
+                            window.location.reload(true);
+                        });
+                    },
+                    error: function (data) {
 
-                        }
+                    }
 
-                    });
-                }
-            });
+                });
+            }
         });
     });
-function shorten_text(text, id) {
-    var ret = text;
-    if (ret.length > 20) {
-        ret = ret.substr(0, 20 - 3) + "...";
-    }
+    });
+            function shorten_text(text, id) {
+                var ret = text;
+                if (ret.length > 20) {
+                    ret = ret.substr(0, 20 - 3) + "...";
+                }
 
-    $(".title_trunc" + id).html(ret);
-}
+                $(".title_trunc" + id).html(ret);
+            }
 
 </script>
 
