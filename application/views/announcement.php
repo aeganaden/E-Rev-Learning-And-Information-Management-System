@@ -95,21 +95,21 @@
 
                                     switch ($aud) {
                                         case '1':
-                                            $str_aud .= "CE" . $c;
-                                            break;
+                                        $str_aud .= "CE" . $c;
+                                        break;
                                         case '2':
-                                            $str_aud .= "ECE" . $c;
-                                            break;
+                                        $str_aud .= "ECE" . $c;
+                                        break;
                                         case '3':
-                                            $str_aud .= "EE" . $c;
-                                            break;
+                                        $str_aud .= "EE" . $c;
+                                        break;
                                         case '4':
-                                            $str_aud .= "ME" . $c;
-                                            break;
+                                        $str_aud .= "ME" . $c;
+                                        break;
 
                                         default:
                                             # code...
-                                            break;
+                                        break;
                                     }
                                     $i++;
                                 }
@@ -129,8 +129,8 @@
                                 </tr>
                             <?php endforeach ?>
                         <?php else: ?>
-                        <td colspan="10"><h4 class="center">No data, add some.</h4></td>
-                    <?php endif ?>
+                            <td colspan="10"><h4 class="center">No data, add some.</h4></td>
+                        <?php endif ?>
                     </tbody>
                 </table>
             </div>
@@ -220,18 +220,18 @@
 <script type="text/javascript">
 
     // determine checkbox status = ($('input.checkbox_check').is(':checked')) {
-    jQuery(document).ready(function ($) {
+        jQuery(document).ready(function ($) {
 
-        $(".ann-modal-btn").click(function (event) {
-            $("#btn_modal_update").attr("data-id", $(this).attr("data-id"));
-            $.ajax({
-                url: "<?= base_url() ?>Admin/fetchAnnouncement",
-                type: "post",
-                dataType: "json",
-                data: {
-                    id: $(this).attr("data-id"),
-                },
-                success: function (data) {
+            $(".ann-modal-btn").click(function (event) {
+                $("#btn_modal_update").attr("data-id", $(this).attr("data-id"));
+                $.ajax({
+                    url: "<?= base_url() ?>Admin/fetchAnnouncement",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: $(this).attr("data-id"),
+                    },
+                    success: function (data) {
                     // console.log(data);
                     var aud = data.announcement_audience;
                     var result = aud.split(',');
@@ -251,106 +251,106 @@
 
                 }
             });
-        });
-        $("#btn_add_ann").click(function (event) {
-            checked = $("input[type=checkbox]:checked").length;
-            $date = $("#date_pick_ann").val();
-            if (!checked) {
-                alert("You must check at least one checkbox.");
-                return false;
-            } else if (!$date) {
-                alert("Announcement deadline is required");
-                return false;
-            }
-
-
-        });
-        $('form').one('submit', function (e) {
-            e.preventDefault();
-            swal("Poof! announcement has been added!", {
-                icon: "success",
-            }).then(function () {
-                $("#form_ann").submit();
             });
-        });
-        $("#btn_modal_update").click(function (event) {
-            $title = $("#ann_modal_title").val();
-            $content = $("#ann_modal_content").val();
-            $date = $("#modal_end_time").val();
-            $audience = "";
-            var x = ",";
-            $("input:checkbox[name=modal_audience]:checked").each(function (index, value) {
-                var isLastElement = index == $("input:checkbox[name=modal_audience]:checked").length - 1;
-                if (isLastElement) {
-                    x = "";
+            $("#btn_add_ann").click(function (event) {
+                checked = $("input[type=checkbox]:checked").length;
+                $date = $("#date_pick_ann").val();
+                if (!checked) {
+                    alert("You must check at least one checkbox.");
+                    return false;
+                } else if (!$date) {
+                    alert("Announcement deadline is required");
+                    return false;
                 }
 
-                $audience += $(this).val() + x;
+
             });
-            console.log($audience);
-            $.ajax({
-                url: "<?= base_url() ?>Admin/updateAnnouncement",
-                type: "post",
-                dataType: "json",
-                data: {
-                    title: $title,
-                    content: $content,
-                    audience: $audience,
-                    id: $(this).attr("data-id"),
-                    date: $date
-                },
-                success: function (data) {
-                    if (data) {
-                        swal("Done!", "Successfully edited", "success").then(function () {
-                            window.location.reload(true);
-                        });
+            $('form').one('submit', function (e) {
+                e.preventDefault();
+                swal("Poof! announcement has been added!", {
+                    icon: "success",
+                }).then(function () {
+                    $("#form_ann").submit();
+                });
+            });
+            $("#btn_modal_update").click(function (event) {
+                $title = $("#ann_modal_title").val();
+                $content = $("#ann_modal_content").val();
+                $date = $("#modal_end_time").val();
+                $audience = "";
+                var x = ",";
+                $("input:checkbox[name=modal_audience]:checked").each(function (index, value) {
+                    var isLastElement = index == $("input:checkbox[name=modal_audience]:checked").length - 1;
+                    if (isLastElement) {
+                        x = "";
                     }
-                },
-                error: function (data) {
 
-                }
+                    $audience += $(this).val() + x;
+                });
+                console.log($audience);
+                $.ajax({
+                    url: "<?= base_url() ?>Admin/updateAnnouncement",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        title: $title,
+                        content: $content,
+                        audience: $audience,
+                        id: $(this).attr("data-id"),
+                        date: $date
+                    },
+                    success: function (data) {
+                        if (data) {
+                            swal("Done!", "Successfully edited", "success").then(function () {
+                                window.location.reload(true);
+                            });
+                        }
+                    },
+                    error: function (data) {
+
+                    }
+                });
             });
-        });
-        $(".btn_modal_delete").click(function (event) {
-            swal({
-            title: "Are you sure?",
+            $(".btn_modal_delete").click(function (event) {
+                swal({
+                    title: "Are you sure?",
                     text: "Once deleted, you will not be able to recover this announcement!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
-            }).then((willDelete) = > {
-            if (willDelete) {
-                $.ajax({
-                    url: "<?= base_url() ?>Admin/deleteAnnouncement ",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        id: $(this).attr("data-id")
-                    },
-                    success: function (data) {
-                        swal("Poof! announcement has been deleted!", {
-                            icon: "success",
-                        }).then(function () {
-                            window.location.reload(true);
-                        });
-                    },
-                    error: function (data) {
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "<?= base_url() ?>Admin/deleteAnnouncement ",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: $(this).attr("data-id")
+                            },
+                            success: function (data) {
+                                swal("Poof! announcement has been deleted!", {
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload(true);
+                                });
+                            },
+                            error: function (data) {
                         // console.log(data);
                     }
 
                 });
-            }
+                    }
+                });
+            });
         });
-    });
-    });
-            function shorten_text(text, id) {
-                var ret = text;
-                if (ret.length > 20) {
-                    ret = ret.substr(0, 20 - 3) + "...";
-                }
+function shorten_text(text, id) {
+    var ret = text;
+    if (ret.length > 20) {
+        ret = ret.substr(0, 20 - 3) + "...";
+    }
 
-                $(".ann_content_truncate" + id).html(ret);
-            }
+    $(".ann_content_truncate" + id).html(ret);
+}
 
 </script>
 
