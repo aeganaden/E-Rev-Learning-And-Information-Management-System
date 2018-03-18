@@ -32,24 +32,71 @@ class Feedback extends CI_Controller {
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
-            echo "<pre>";
-            print_r($info);
 
-            $col = array('lec.lecturer_id, lec.image_path, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
-            $join = array(
-                array("offering as off", "stud.offering_id = off.offering_id"),
-                array("course as cou", "cou.course_id = off.course_id"),
-                array("subject as sub", "sub.course_id = cou.course_id"),
-                array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
-            );
+            $col = "professor_feedback_active";
             $where = array(
-                "off.offering_id" => $info["user"]->offering_id,
-                "stud.student_num" => $info["user"]->student_num,
-                "cou.enrollment_id" => $info["active_enrollment"]
+                "professor_department" => $info["user"]->student_department
             );
-            $distinct = TRUE;
-            $result = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, $distinct);
-            print_r($result);
+            $feedback_is_active = $this->Crud_model->fetch_select("professor", $col, $where);
+
+            //check if active feedback
+            if ($feedback_is_active[0]->professor_feedback_active == 1) {
+                $col = array('sub.subject_name, sub.subject_id, lec.id_number, lec.firstname, lec.midname, lec.lastname, lec.lecturer_id, lec.image_path, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
+                $join = array(
+                    array("offering as off", "stud.offering_id = off.offering_id"),
+                    array("course as cou", "cou.course_id = off.course_id"),
+                    array("subject as sub", "sub.course_id = cou.course_id"),
+                    array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
+                );
+                $where = array(
+                    "off.offering_id" => $info["user"]->offering_id,
+                    "stud.student_num" => $info["user"]->student_num,
+                    "cou.enrollment_id" => $info["active_enrollment"]
+                );
+                $lecturers = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where);
+                if (!empty($lecturers)) {
+                    foreach ($lecturers as $sublect) {
+                        $lect_ids[] = $sublect->lecturer_id;
+                    }
+                    $col = "lecturer_id";
+                    $where = array(
+                        "lecturer_feedback_department" => $info["user"]->student_department,
+                        "enrollment_id" => $info["active_enrollment"],
+                        "student_id" => $info["user"]->student_id,
+                        "offering_id" => $info["user"]->offering_id
+                    );
+                    $wherein[0] = "lecturer_id";
+                    $wherein[1] = $lect_ids;
+                    $already_submitted = $this->Crud_model->fetch_select("lecturer_feedback", $col, $where, NULL, NULL, $wherein);
+
+                    //checks if stud already submitted
+                    if (!empty($already_submitted)) {   //not yet submitted
+                        foreach ($already_submitted as $subalready_submitted) {
+                            $counter = 0;
+                            if (array_search($subalready_submitted->lecturer_id, $lect_ids)) {
+                                $already_submitted[$counter]->sent_feedback = 1;
+
+                                foreach ($lecturers as $sublecturers) {
+                                    $lecturers[$counter]->sent_feedback = 1;
+                                    $counter++;
+                                }
+                            }
+                        }
+                    }
+                    $data = array(
+                        "lect" => $lecturers
+                    );
+                    $this->load->view('feedback/feedback_main', $data);
+                } else {
+                    $data = array(
+                        "lect" => "no lect"
+                    );
+                    $this->load->view('feedback/feedback_main', $data);
+                }
+            } else {                        //not active feedback
+                $this->load->view('feedback/error');
+                $this->load->view('feedback/custom4');
+            }
 //            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
 //            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
 //            $feedback_status = $dept_temp[0]->professor_feedback_active;
@@ -442,30 +489,12 @@ class Feedback extends CI_Controller {
         $this->load->view('includes/footer');
     }
 
-    public function content() {         //gonna remake this one
+    public function content() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
-            $info = $this->session->userdata('userInfo');
-            $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course id from stud
-            $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id; //get enrollment id from course
-            $enrollment_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $enrollment_id))[0]->enrollment_is_active; //get enrollment id from course
-            $data = array(//gonna need to put this for header
-                'title' => "Feedback",
-                "s_h" => "",
-                "s_a" => "",
-                "s_c" => "",
-                "s_f" => "selected-nav",
-                "s_c" => "",
-                "s_t" => "",
-                "s_s" => "",
-                "s_co" => "",
-                "s_ss" => "",
-                "s_rc" => "",
-                "s_ga" => "",
-            );
-            $this->load->view('includes/header', $data);
-            if ($enrollment_active == 1) {
-                $stud_id = $this->session->userdata('userInfo')['user']->student_id;
-                $data = array(
+            $segment = $this->uri->segment(3);
+            if (!empty($segment) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $data = array(//gonna need to put this for header
                     'title' => "Feedback",
                     "s_h" => "",
                     "s_a" => "",
@@ -478,42 +507,113 @@ class Feedback extends CI_Controller {
                     "s_ss" => "",
                     "s_rc" => "",
                     "s_ga" => "",
-                    'info' => $info
                 );
-                $segment = $this->uri->segment(3);
-                $subject_hold2 = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->offering_id; //get offering_id on subject table from lecturer
-                $subject_hold = $this->Crud_model->fetch('offering', array('offering_id' => $subject_hold2))[0]->course_id; //get course_id on offering table
-                $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
-                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //there is already record
-//                    echo"<pre>";
-                    //                    print_r($this->Crud_model->fetch('offering', array('course_id' => $subject_hold2))[0]);
-//                    echo"</pre>";
-                    $this->load->view('feedback/error', $data);
-                    if ($subject_hold == $offering_hold) {                      //END OF VERIFYING, STUDENT ALREADY SUBMITTED
-                        $this->load->view('feedback\submitted2.php');
-                    } else {
-                        $this->load->view('feedback\submitted.php');
-                    }
-                } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
-                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
 
-                    if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
-                        $data = array(
-                            'info' => $info,
-                            'lect' => $offering_id
-                        );
-                        $this->load->view('feedback/feedback_content', $data);
-                    } else {                                //unknown section
-                        $this->load->view('feedback/error', $data);
-                        include('./application/views/feedback/custom5.php');
+                $this->load->view('includes/header', $data);
+                $col = "professor_feedback_active";
+                $where = array(
+                    "professor_department" => $info["user"]->student_department
+                );
+                $feedback_is_active = $this->Crud_model->fetch_select("professor", $col, $where);
+
+                //check if active feedback
+                if ($feedback_is_active[0]->professor_feedback_active == 1) {
+                    $col = array('sub.subject_name, sub.subject_id, lec.id_number, lec.firstname, lec.midname, lec.lastname, lec.lecturer_id, lec.image_path, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
+                    $join = array(
+                        array("offering as off", "stud.offering_id = off.offering_id"),
+                        array("course as cou", "cou.course_id = off.course_id"),
+                        array("subject as sub", "sub.course_id = cou.course_id"),
+                        array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
+                    );
+                    $where = array(
+                        "off.offering_id" => $info["user"]->offering_id,
+                        "stud.student_num" => $info["user"]->student_num,
+                        "cou.enrollment_id" => $info["active_enrollment"],
+                        "lec.lecturer_id" => $segment
+                    );
+                    $lecturers = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where);
+                    if (!empty($lecturers)) {
+
+                    } else {                    //wrong segment
+                        redirect("Feedback");
                     }
                 } else {
                     redirect("Feedback");
                 }
             } else {
-                $this->load->view('feedback/error', $data);
-                include('./applications/views/feedback/custom1.php');
+                $this->load->view('feedback/error');
+                $this->load->view('feedback/custom4');
             }
+
+//            $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course id from stud
+//            $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id; //get enrollment id from course
+//            $enrollment_active = $this->Crud_model->fetch('enrollment', array('enrollment_id' => $enrollment_id))[0]->enrollment_is_active; //get enrollment id from course
+//            $data = array(//gonna need to put this for header
+//                'title' => "Feedback",
+//                "s_h" => "",
+//                "s_a" => "",
+//                "s_c" => "",
+//                "s_f" => "selected-nav",
+//                "s_c" => "",
+//                "s_t" => "",
+//                "s_s" => "",
+//                "s_co" => "",
+//                "s_ss" => "",
+//                "s_rc" => "",
+//                "s_ga" => "",
+//            );
+//            $this->load->view('includes/header', $data);
+//            if ($enrollment_active == 1) {
+//                $stud_id = $this->session->userdata('userInfo')['user']->student_id;
+//                $data = array(
+//                    'title' => "Feedback",
+//                    "s_h" => "",
+//                    "s_a" => "",
+//                    "s_c" => "",
+//                    "s_f" => "selected-nav",
+//                    "s_c" => "",
+//                    "s_t" => "",
+//                    "s_s" => "",
+//                    "s_co" => "",
+//                    "s_ss" => "",
+//                    "s_rc" => "",
+//                    "s_ga" => "",
+//                    'info' => $info
+//                );
+//                $segment = $this->uri->segment(3);
+//                $subject_hold2 = $this->Crud_model->fetch('subject', array('lecturer_id' => $segment))[0]->offering_id; //get offering_id on subject table from lecturer
+//                $subject_hold = $this->Crud_model->fetch('offering', array('offering_id' => $subject_hold2))[0]->course_id; //get course_id on offering table
+//                $offering_hold = $this->Crud_model->fetch('offering', array('offering_id' => $info["user"]->offering_id))[0]->course_id; //get course_id from student
+//                if ($this->Crud_model->fetch('lecturer_feedback', array('lecturer_id' => $segment, 'student_id' => $stud_id))[0]) {         //there is already record
+////                    echo"<pre>";
+//                    //                    print_r($this->Crud_model->fetch('offering', array('course_id' => $subject_hold2))[0]);
+////                    echo"</pre>";
+//                    $this->load->view('feedback/error', $data);
+//                    if ($subject_hold == $offering_hold) {                      //END OF VERIFYING, STUDENT ALREADY SUBMITTED
+//                        $this->load->view('feedback\submitted2.php');
+//                    } else {
+//                        $this->load->view('feedback\submitted.php');
+//                    }
+//                } else if ($subject_hold == $offering_hold) {                                            //didn't find anything on database
+//                    $offering_id = $this->Crud_model->fetch('lecturer', array('lecturer_id' => $segment))[0];
+//
+//                    if (empty($offering_id) != 1) {             //found offering_id, WHERE THE STUDENT SUBMITS THE FEEDBACK
+//                        $data = array(
+//                            'info' => $info,
+//                            'lect' => $offering_id
+//                        );
+//                        $this->load->view('feedback/feedback_content', $data);
+//                    } else {                                //unknown section
+//                        $this->load->view('feedback/error', $data);
+//                        include('./application/views/feedback/custom5.php');
+//                    }
+//                } else {
+//                    redirect("Feedback");
+//                }
+//            } else {
+//                $this->load->view('feedback/error', $data);
+//                include('./applications/views/feedback/custom1.php');
+//            }
             $this->load->view('includes/footer');
         } else {
             redirect();

@@ -19,6 +19,9 @@
 </div>
 
 <div class="row container">
+    <pre>
+        <?php // print_r($lect); ?>
+    </pre>
     <div class="col s1"></div>
     <div class="col s11">
         <div class="row">
@@ -40,9 +43,9 @@
                             <?php foreach ($lect as $hold): ?>
                                 <tr class="bg-color-white">
                                     <td><?= $hold->firstname ?> <?= $hold->lastname ?></td>
-                                    <td><?= $hold->topic ?></td>
+                                    <td><?= $hold->subject_name ?></td>
                                     <td>
-                                        <?php if ($hold->sent_feedback == 1): ?>
+                                        <?php if (isset($hold->sent_feedback) && $hold->sent_feedback == 1): ?>
                                             <a class="waves-effect waves-light btn bg-primary-green" disabled>feedback</a>
                                         <?php else: ?>
                                             <a class="waves-effect waves-light btn bg-primary-green" onclick="window.location = '<?= base_url() ?>feedback/content/<?= $hold->lecturer_id ?>'">feedback</a>
