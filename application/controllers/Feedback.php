@@ -32,13 +32,24 @@ class Feedback extends CI_Controller {
                 "s_ga" => "",
             );
             $this->load->view('includes/header', $data);
+            echo "<pre>";
+            print_r($info);
 
-            $col = "";
-            $join = array();
-            $where = array();
+            $col = array('lec.lecturer_id, lec.image_path, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
+            $join = array(
+                array("offering as off", "stud.offering_id = off.offering_id"),
+                array("course as cou", "cou.course_id = off.course_id"),
+                array("subject as sub", "sub.course_id = cou.course_id"),
+                array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
+            );
+            $where = array(
+                "off.offering_id" => $info["user"]->offering_id,
+                "stud.student_num" => $info["user"]->student_num,
+                "cou.enrollment_id" => $info["active_enrollment"]
+            );
             $distinct = TRUE;
-            $this->Crud_model->fetch_join2("lecturer", $col, $join, NULL, $where, $distinct);
-
+            $result = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, $distinct);
+            print_r($result);
 //            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
 //            $dept_temp = $this->Crud_model->fetch('professor', array('professor_department' => $student_temp));
 //            $feedback_status = $dept_temp[0]->professor_feedback_active;

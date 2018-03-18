@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class testing extends CI_Controller {
@@ -10,38 +11,30 @@ class testing extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->library('form_validation');
+        $this->load->helper('download');
     }
 
-    private function index() {
+    public function index() {
         $data = array("title" => "testing");
         $this->load->view('includes/header', $data);
-        $this->load->view('test/main');
-        $this->load->view('includes/footer');
+
+        require "./application/vendor/autoload.php";
+
+        $spreadsheet = new Spreadsheet();
+
+        $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A1', 'Hello')
+                ->setCellValue('B2', 'world!')
+                ->setCellValue('C1', 'Hello')
+                ->setCellValue('D2', 'world!');
+
+        $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save("05featuredemo.xlsx");
+        force_download('./05featuredemo.xlsx', NULL);
     }
 
     private function testing_upload() {
-//        excel_file
-        require "./application/vendor/autoload.php";
 
-        $config['upload_path'] = "./assets/uploads/";
-        $config['allowed_types'] = 'xls|csv|xlsx';
-        $config['max_size'] = '10000';
-        $config["file_name"] = "testing_" . time();
-
-        $this->load->library('upload', $config);
-        $data = array(
-            'title' => "Imported"
-        );
-        $this->load->view('includes/header', $data);
-        if ($this->upload->do_upload('excel_file')) {
-            $upload_data = $this->upload->data();
-            echo"<pre>";
-            print_r($upload_data);
-            echo"<br>";
-            $spreadsheet = IOFactory::load($upload_data["full_path"]);
-            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-            print_r($sheetData);
-        }
     }
 
 }
