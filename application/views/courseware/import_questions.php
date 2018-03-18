@@ -2,7 +2,7 @@
 <?php $this->load->view('includes/home-navbar'); ?>
 <div class="row container">
     <blockquote class="color-primary-green">
-        <h3 class="color-black">Import Questions<br><a href="<?= base_url() ?>ImportQuestions/uploadquestions" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Upload Question</a></h3>
+        <h4 class="color-black">Import Questions</h4>
     </blockquote>
 </div>
 
@@ -53,29 +53,21 @@
                                                                 <?php endforeach ?>
                                                             <?php else: ?>
                                                                 <li class="collection-item bg-color-white">No courseware</li>
-
                                                             <?php endif ?>
                                                         </ul>
-
                                                     </div>
                                                 </li>
                                             <?php endforeach ?>
-
                                         <?php else: ?>
                                             <h5 class="center" style="padding: 2%;">No topics</h5>
                                         <?php endif ?>
-
                                     </ul>
-
                                 </div>
                             </li>
                         <?php endforeach ?>
                     <?php endif ?>
                 <?php endforeach ?>
-
             </ul>
         <?php endif ?>
-
-
     </div>
 </div>

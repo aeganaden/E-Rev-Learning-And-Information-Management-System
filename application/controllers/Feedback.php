@@ -34,8 +34,9 @@ class Feedback extends CI_Controller {
             $this->load->view('includes/header', $data);
 
             $col = "";
-            $where = array();
             $join = array();
+            $where = array();
+            $distinct = TRUE;
             $this->Crud_model->fetch_join2("lecturer", $col, $join, NULL, $where, $distinct);
 
 //            $student_temp = $this->session->userdata('userInfo')["user"]->student_department;
