@@ -457,16 +457,17 @@ class Admin extends CI_Controller {
                                     $lec_out = date("o-m-d h:i", $l_a_e->attendance_out_time);
                                     $stend = date("o-m-d h:i", $schedule->schedule_end_time); 
                                     $interval = $this->diff($lec_in, $lec_out);
-                                    if ($remarks_e == "Absent") {
-                                       $interval = $this->diff($lec_in, $stend);
-                                   }
-                                   
-                                   $sum = $interval['h'] . ":" . $interval['i']; 
-                                   $attendance_data['hours_rendered'] = $sum;
+                                    if ($remarks_e == "Absent" && $remarks_s != "Absent") {
+                                     $interval = $this->diff($lec_in, $stend);
+                                 }
 
-                                   if ($remarks_s == "Absent") { 
+                                 $sum = $interval['h'] . ":" . $interval['i']; 
+                                 $attendance_data['hours_rendered'] = $sum;
+
+                                 if ($remarks_s == "Absent") { 
                                     $remarks_e = "Absent";
                                     $attendance_data['hours_rendered'] = 0; 
+                                    $sum = "0:0";
                                 }
                                 $attendance[] = $attendance_data;
                                 array_push($total_time, $sum);
