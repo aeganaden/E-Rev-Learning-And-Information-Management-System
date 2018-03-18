@@ -132,7 +132,6 @@ switch ($info['user']->$ident) {
     <?php if ($info['identifier'] != "professor"): ?>
         <li class="<?= $s_f ?>">
             <a href="<?= base_url() ?>Feedback" class=" color-black"><i class="material-icons color-black">feedback</i>Feedback</a> <!--mark - naglagay-->
-
         </li>
     <?php endif ?>
 

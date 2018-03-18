@@ -27,6 +27,16 @@
 								<?php 
 								$answers = $this->Crud_model->fetch("choice",array("courseware_question_id"=>$value->courseware_question_id));
 								?>
+								<?php 
+								// echo "<pre>"; 
+								// print_r($answers);
+								$arr = (array)$answers;
+								shuffle($arr);
+								$answers = (object) $arr;
+								// echo "<pre>"; 
+								// print_r($answers);
+
+								?>
 								<?php if ($answers): ?>
 									<h5 class="color-black">Choices</h5>
 									<?php foreach ($answers as $key => $i_value): ?>
@@ -42,8 +52,7 @@
 									<h5 class="color-black valign-wrapper">No Answers</h5>
 									<!-- id="div_answer_<?=$value->courseware_question_id?>" -->
 								<?php endif ?>
-
-
+								
 							</div>
 
 						</div>
