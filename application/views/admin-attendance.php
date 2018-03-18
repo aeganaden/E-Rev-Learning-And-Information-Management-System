@@ -11,16 +11,11 @@
             <h6>Expertise: <?= ucwords($lecturer->lecturer_expertise) ?></h6>
             <h5  class="<?= $status_color ?>"><?= $status ?></h5>
         </blockquote>
-
     </div>
-
 </div>
-
 <div class="row">
     <div class="col s12">
-
         <?php if ($attendance == false): ?>
-
             <h1 class="center">No Attendance Recorded Yet</h1>
         <?php else: ?>
             <table class="data-table">

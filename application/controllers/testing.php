@@ -14,7 +14,7 @@ class testing extends CI_Controller {
         $this->load->helper('download');
     }
 
-    public function index() {
+    private function index() {
         $data = array("title" => "testing");
         $this->load->view('includes/header', $data);
 
