@@ -48,7 +48,7 @@
                                         <?php if (isset($hold->sent_feedback) && $hold->sent_feedback == 1): ?>
                                             <a class="waves-effect waves-light btn bg-primary-green" disabled>feedback</a>
                                         <?php else: ?>
-                                            <a class="waves-effect waves-light btn bg-primary-green" onclick="window.location = '<?= base_url() ?>feedback/content/<?= $hold->lecturer_id ?>'">feedback</a>
+                                            <a class="waves-effect waves-light btn bg-primary-green" onclick="window.location = '<?= base_url() ?>Feedback/content/<?= $hold->lecturer_id ?>'">feedback</a>
                                         <?php endif ?>
                                     </td>
                                 </tr>
