@@ -18,7 +18,7 @@
     <div class="col s4"></div>
 </div>
 <div class="row container">
-    <form enctype="multipart/form-data" action="<?= base_url() ?>ImportQuestions/uploadquestions" method="POST">
+    <form enctype="multipart/form-data" action="<?= base_url() ?>ImportQuestions/checkimport/<?= $this->uri->segment(3) ?>" method="POST">
         <blockquote class="color-red">
             <?php if (isset($error_message)): ?>
                 <h6><b>ERROR:</b></h6>
