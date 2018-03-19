@@ -260,7 +260,7 @@ class Sections extends CI_Controller {
                                                 $insert_batch_students[] = $temp;
                                             }
                                             //CHECKS IF STUD IS ALREADY ENROLLED
-                                            //binago ko from stud.student_id to stud.student_num
+
                                             $col = array("stud.student_num, off.offering_name, CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name", FALSe);
                                             $where = array(
                                                 "cou.enrollment_id" => $enrollment_active
@@ -388,23 +388,356 @@ class Sections extends CI_Controller {
 
     public function section_detail() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
-            $info = $this->session->userdata('userInfo');
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $data = array(
+                    "title" => "Sections",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "selected-nav",
+                    "s_co" => "",
+                    "s_ss" => ""
+                );
+                $this->load->view('includes/header', $data);
 
-            $data = array(
-                "title" => "Sections",
-                'info' => $info,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "",
-                "s_c" => "",
-                "s_t" => "",
-                "s_s" => "selected-nav",
-                "s_co" => "",
-                "s_ss" => ""
-            );
-            $this->load->view('includes/header', $data);
-            $this->load->view('sections/section_detail');
-            $this->load->view('includes/footer');
+                $col = "off.offering_name, off.offering_id, cou.course_course_code";
+                $where = array(
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "off.offering_id" => $segment,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.enrollment_id" => $info["active_enrollment"]
+                );
+                $join = array(
+                    array("course as cou", "cou.course_id = off.course_id")
+                );
+                $offering = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
+                if (!empty($offering)) {
+                    $col = array("student_num, CONCAT(firstname,' ',midname,' ',lastname) as full_name", FALSe);
+                    $where = array(
+                        "student_department" => $info["user"]->fic_department,
+                        "offering_id" => $offering[0]->offering_id
+                    );
+                    $studs = $this->Crud_model->fetch_select("student", $col, $where);
+
+                    $data = array(
+                        "section" => $offering,
+                        "student" => $studs
+                    );
+                    $this->load->view('sections/section_detail', $data);
+                } else {                                                    //wrong segment
+                    redirect("Sections");
+                }
+                $this->load->view('includes/footer');
+            } else {
+                redirect("Sections");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function add_student() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $col = "off.offering_name, off.offering_id, cou.course_course_code";
+                $where = array(
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "off.offering_id" => $segment,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.enrollment_id" => $info["active_enrollment"]
+                );
+                $join = array(
+                    array("course as cou", "cou.course_id = off.course_id")
+                );
+                $offering = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
+
+                if (!empty($offering)) {
+                    $col = "stud.student_num";
+                    $where = array(
+                        "off.offering_department" => $info["user"]->fic_department,
+                        "cou.course_department" => $info["user"]->fic_department,
+                        "cou.enrollment_id" => $info["active_enrollment"],
+                        "stud.student_department" => $info["user"]->fic_department
+                    );
+                    $join = array(
+                        array("offering as off", "off.offering_id = stud.offering_id"),
+                        array("course as cou", "cou.course_id = off.course_id")
+                    );
+                    $studs = $this->Crud_model->fetch_join2("student as stud", $col, $join, "left", $where);
+                    foreach ($studs as $substuds) {
+                        $stud_list[] = $substuds->student_num;
+                    }
+                    $col = array("student_id, CONCAT(firstname,' ',midname,' ',lastname) as full_name", FALSE);
+                    $where = array(
+                        "department" => $info["user"]->fic_department
+                    );
+                    $wherenotin = array("student_id", $stud_list);
+                    $not_enrolled = $this->Crud_model->fetch_select("student_list", $col, $where, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $wherenotin);
+
+                    $data = array(
+                        "title" => "Sections",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "selected-nav",
+                        "s_co" => "",
+                        "s_ss" => "",
+                        "section" => $offering,
+                        "not_enrolled" => $not_enrolled
+                    );
+                    $this->load->view('includes/header', $data);
+
+                    $this->load->view("sections/add_student");
+                    $this->load->view('includes/footer');
+                } else {
+                    redirect("Sections");
+                }
+            } else {
+                redirect("Sections");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function add_student_process_by_one() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($offering_id = $this->uri->segment(3)) && !empty($stud_id = $this->uri->segment(4)) && is_numeric($offering_id) && is_numeric($stud_id)) {
+                $info = $this->session->userdata('userInfo');
+                $this->load->view("includes/header");
+
+                $col = "stud.*";
+                $where = array(
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.enrollment_id" => $info["active_enrollment"],
+                    "stud.student_num" => $stud_id,
+                    "stud.student_department" => $info["user"]->fic_department
+                );
+                $join = array(
+                    array("offering as off", "off.offering_id = stud.offering_id"),
+                    array("course as cou", "cou.course_id = off.course_id")
+                );
+                $offering = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where);
+
+                if (empty($offering)) {
+                    $where = array(
+                        "student_id" => $stud_id
+                    );
+                    $student_info = (array) $this->Crud_model->fetch("student_list", $where)[0];
+                    $student_info["student_num"] = $student_info["student_id"];
+                    $student_info["student_department"] = $student_info["department"];
+                    $student_info["offering_id"] = $offering_id;
+                    $student_info["student_is_blocked"] = 0;
+
+                    unset($student_info["student_id"]);
+                    unset($student_info["department"]);
+                    $this->Crud_model->insert("student", $student_info);
+                    if ($this->db->affected_rows() > 0) {
+                        $this->load->view("includes/footer");
+                        $data = array(
+                            "offering" => $offering_id
+                        );
+                        $this->load->view("sections/success_add", $data);
+                    } else {
+                        echo "<script>window.history.back();</script>";
+                    }
+                } else {                    //already enrolled
+                    echo "<script> window.history.back();</script>";
+                }
+            } else {
+                redirect("Sections");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function add_student_process_by_batch() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $col = "off.offering_name, off.offering_id, cou.course_course_code";
+                $where = array(
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "off.offering_id" => $segment,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.enrollment_id" => $info["active_enrollment"]
+                );
+                $join = array(
+                    array("course as cou", "cou.course_id = off.course_id")
+                );
+                $offering = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
+                $data = array(
+                    "title" => "Sections",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "selected-nav",
+                    "s_co" => "",
+                    "s_ss" => "",
+                    "section" => $offering
+                );
+                $this->load->view('includes/header', $data);
+                require "./application/vendor/autoload.php";
+                $config['upload_path'] = "./assets/uploads/";
+                $config['allowed_types'] = 'xls|csv|xlsx';
+                $config['max_size'] = '2048000';
+                $config["file_name"] = "add_student_" . time();
+                $this->load->library('upload', $config);
+                //error to, diko magawan ng paraan
+//                $this->form_validation->set_rules('excel_file', "file", "required");
+//                $this->form_validation->set_rules('excel_text', "excel location", "required");
+                /* INITIALIZE ABOVE */
+
+                $col = "off.offering_name, off.offering_id, cou.course_course_code";
+                $where = array(
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "off.offering_id" => $segment,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.enrollment_id" => $info["active_enrollment"]
+                );
+                $join = array(
+                    array("course as cou", "cou.course_id = off.course_id")
+                );
+                $offering = $this->Crud_model->fetch_join2("offering as off", $col, $join, NULL, $where);
+                if (!empty($offering)) {                //confirm yung segment
+                    $error_message = null;
+                    if ($this->upload->do_upload('excel_file')) {            //success upload
+                        $upload_data = $this->upload->data();
+                        //SPREADSHEET SETUP
+                        $spreadsheet = IOFactory::load($upload_data["full_path"]);
+                        $spreadsheet->setActiveSheetIndex(0);
+                        $sheetname = $spreadsheet->getSheetNames();
+                        $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                        //END - SPREADSHEET SETUP
+                        echo "<pre>";
+//                        print_r($sheetData);
+                        echo "</pre>";
+                        $counter = 0;
+                        if ($sheetData[1]["A"] != "student number") {
+                            $error_message[] = "Cell 1A should be 'student number'";
+                        }
+                        if (strtolower($sheetname[0]) != strtolower($offering[0]->offering_name)) {
+                            $error_message[] = "Sheet name must match to the section where you are adding. (" . $sheetname[0] . " should be $offering[0]->offering_name)";
+                        }
+                        for ($i = 2; $i <= count($sheetData); $i++) {
+                            if (!empty($sheetData[$i]["A"]) && "" != trim($sheetData[$i]["A"])) {
+                                if (strlen($sheetData[$i]["A"]) == 9) {
+                                    $stud_ids[] = $sheetData[$i]["A"];
+                                } else {
+                                    $error_message[] = "Student numbers should have 9 digits. Error at: " . $i . "A";
+                                    break;
+                                }
+                            }
+                        }
+                        if (!empty($stud_ids)) {
+                            $where = array("department" => $info["user"]->fic_department);
+                            $wherein = array("student_id", $stud_ids);
+                            $all_studs = $this->Crud_model->fetch_select("student_list", NULL, $where, NULL, NULL, $wherein);
+                            if (!empty($all_studs)) {
+
+                                /* CHECK IF THERE IS ALREADY ENROLLED IN THAT LIST */
+                                $col = array("stud.student_num,CONCAT(stud.firstname,' ',stud.midname,' ',stud.lastname) as full_name, off.offering_name", FALSE);
+                                $where = array(
+                                    "stud.student_department" => $info["user"]->fic_department,
+                                    "off.offering_department" => $info["user"]->fic_department
+                                );
+                                $wherein = array("stud.student_num", $stud_ids);
+                                $join = array(
+                                    array("offering as off", "off.offering_id = stud.offering_id")
+                                );
+                                $already_enrolled = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, NULL, $wherein);
+                                if (!empty($already_enrolled)) {
+                                    foreach ($already_enrolled as $subalready_enrolled) {
+                                        $error_message[] = $subalready_enrolled->full_name . "(" . $subalready_enrolled->student_num . ") is already enrolled in " . $subalready_enrolled->offering_name;
+                                    }
+                                }
+                            } else {
+                                $error_message[] = "Make sure the student numbers are from your department";
+                            }
+                        } else {
+                            $error_message[] = "Student numbers cannot be blank";
+                        }
+                    } else {
+                        $error_message[] = $this->upload->display_errors();
+                    }
+                    if (empty($error_message)) {
+                        foreach ($all_studs as $suball_studs) {
+                            $insert_batch[] = array(
+                                "student_num" => $suball_studs->student_id, //binago ko from student_id to student_num
+                                "firstname" => $suball_studs->firstname,
+                                "midname" => $suball_studs->midname,
+                                "lastname" => $suball_studs->lastname,
+                                "username" => $suball_studs->username,
+                                "password" => $suball_studs->password,
+                                "email" => $suball_studs->email,
+                                "student_department" => $suball_studs->department,
+                                "image_path" => $suball_studs->image_path,
+                                "offering_id" => $segment
+                            );
+                        }
+                        $this->db->trans_begin();
+                        $this->Crud_model->insert_batch("student", $insert_batch);
+                        if ($this->db->trans_status() === FALSE) {
+                            $this->db->trans_rollback();
+                            $error_message[] = $this->db->error()["message"];
+                        } else {
+                            $this->db->trans_commit();
+                            echo '<script>window.location.href = "' . base_url() . "Sections/section_detail/" . $segment . '";</script>';
+                        }
+                    }
+                    $not_enrolled = $this->get_unenrolled();
+                    $data = array(
+                        "not_enrolled", $not_enrolled,
+                        "error_message", $error_message
+                    );
+                    $this->load->view('sections/add_student', $data);
+                    $this->load->view('includes/footer');
+                } else {
+                    redirect("Seciton");
+                }
+            } else {
+                redirect("Seciton");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function remove_student() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($offering_id = $this->uri->segment(3)) && !empty($stud_id = $this->uri->segment(4)) &&
+                    is_numeric($offering_id) && is_numeric($stud_id)) {
+                $this->load->view("includes/header");
+                $where = array(
+                    "offering_id" => $offering_id,
+                    "student_num" => $stud_id
+                );
+                $this->Crud_model->delete("student", $where);
+                if ($this->db->affected_rows() > 0) {
+                    $this->load->view("includes/footer");
+                    $data = array(
+                        "offering" => $offering_id
+                    );
+                    $this->load->view("sections/success", $data);
+                } else {
+                    echo "<script> window.history.back();</script>";
+                }
+            } else {
+                redirect("Sections");
+            }
         } else {
             redirect();
         }
@@ -444,6 +777,33 @@ class Sections extends CI_Controller {
         $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
         /* END - GETTING ALL OFFERINGS */
         return $sections;
+    }
+
+    private function get_unenrolled() {
+        $info = $this->session->userdata('userInfo');
+        $col = "stud.student_num";
+        $where = array(
+            "off.offering_department" => $info["user"]->fic_department,
+            "cou.course_department" => $info["user"]->fic_department,
+            "cou.enrollment_id" => $info["active_enrollment"],
+            "stud.student_department" => $info["user"]->fic_department
+        );
+        $join = array(
+            array("offering as off", "off.offering_id = stud.offering_id"),
+            array("course as cou", "cou.course_id = off.course_id")
+        );
+        $studs = $this->Crud_model->fetch_join2("student as stud", $col, $join, "left", $where);
+
+        foreach ($studs as $substuds) {
+            $stud_list[] = $substuds->student_num;
+        }
+        $col = array("student_id, CONCAT(firstname,' ',midname,' ',lastname) as full_name", FALSE);
+        $where = array(
+            "department" => $info["user"]->fic_department
+        );
+        $wherenotin = array("student_id", $stud_list);
+        $not_enrolled = $this->Crud_model->fetch_select("student_list", $col, $where, NULL, NULL, NULL, NULL, NULL, NULL, NULL, $wherenotin);
+        return $not_enrolled;
     }
 
 }

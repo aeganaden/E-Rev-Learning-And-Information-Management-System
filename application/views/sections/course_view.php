@@ -18,6 +18,7 @@
     <div class="col s4"></div>
 </div>
 <div class="row container">
+    <a href="<?= base_url() ?>Sections" class="waves-effect waves-light btn red"><i class="material-icons left">arrow_back</i>BACK</a>
     <pre>
         <?php // print_r($course); ?>
     </pre>
@@ -35,14 +36,14 @@
             <thead>
                 <tr>
                     <th>Section</th>
-                    <th class="right"></th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($offering as $key => $res): ?>
                     <tr class="bg-color-white">
                         <td><?= $res->offering_name ?></td>
-                        <td class="right"><a data-id="<?= $res->offering_id ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
+                        <td><a data-id="<?= $res->offering_id ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>

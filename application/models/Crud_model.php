@@ -20,7 +20,7 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
-    public function fetch_last($table, $column,$where=NULL) {
+    public function fetch_last($table, $column, $where = NULL) {
         if (!empty($where)) {
             $this->db->where($where);
         }
@@ -101,7 +101,7 @@ class Crud_model extends CI_Model {
         return $this->db->get($table)->result();
     }
 
-    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL, $orderby = NULL, $limit = NULL) { //wherein used only to replace orwherein if it is not used
+    public function fetch_select($table, $col = NULL, $where = NULL, $orwherein = NULL, $distinct = NULL, $wherein = NULL, $like = NULL, $resultinarray = NULL, $orderby = NULL, $limit = NULL, $wherenotin = NULL) { //wherein used only to replace orwherein if it is not used
         if ($distinct == TRUE) {
             $this->db->distinct();
         }
@@ -127,6 +127,9 @@ class Crud_model extends CI_Model {
             $this->db->limit($limit[0], $limit[1]);
         } else if (!empty($limit) && !is_array($limit)) {
             $this->db->limit($limit);
+        }
+        if (!empty($wherenotin)) {
+            $this->db->where_not_in($wherenotin[0], $wherenotin[1]);
         }
 
         $query = $this->db->get($table);
@@ -230,7 +233,6 @@ class Crud_model extends CI_Model {
                 $this->db->join($val[0], $val[1]);
             }
         }
-
         $query = $this->db->get();
 
         if (!empty($resultinarray) && $resultinarray == TRUE) {             //changed to if-else for compatibility issues - mark
