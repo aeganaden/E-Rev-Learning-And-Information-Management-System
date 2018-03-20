@@ -20,7 +20,7 @@
 <div class="row container">
     <a href="<?= base_url() ?>Sections/section_detail/<?= $this->uri->segment(3) ?>" class="waves-effect waves-light btn red"><i class="material-icons left">arrow_back</i>BACK</a>
     <pre>
-        <?php // print_r($not_enrolled); ?>
+        <?php print_r($not_enrolled); ?>
     </pre>
     <blockquote class="color-red">
         <?php if (isset($error_message) && !empty($error_message)): ?>

@@ -622,9 +622,6 @@ class Sections extends CI_Controller {
                         $sheetname = $spreadsheet->getSheetNames();
                         $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                         //END - SPREADSHEET SETUP
-                        echo "<pre>";
-//                        print_r($sheetData);
-                        echo "</pre>";
                         $counter = 0;
                         if ($sheetData[1]["A"] != "student number") {
                             $error_message[] = "Cell 1A should be 'student number'";
@@ -674,6 +671,7 @@ class Sections extends CI_Controller {
                         $error_message[] = $this->upload->display_errors();
                     }
                     if (empty($error_message)) {
+
                         foreach ($all_studs as $suball_studs) {
                             $insert_batch[] = array(
                                 "student_num" => $suball_studs->student_id, //binago ko from student_id to student_num
@@ -699,11 +697,14 @@ class Sections extends CI_Controller {
                         }
                     }
                     $not_enrolled = $this->get_unenrolled();
-                    $data = array(
+
+                    $hold = array(
                         "not_enrolled", $not_enrolled,
                         "error_message", $error_message
                     );
-                    $this->load->view('sections/add_student', $data);
+//                    echo "<pre>";
+//                    print_r($not_enrolled);
+                    $this->load->view('sections/add_student', $hold);
                     $this->load->view('includes/footer');
                 } else {
                     redirect("Seciton");

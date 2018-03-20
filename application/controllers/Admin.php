@@ -634,14 +634,6 @@ class Admin extends CI_Controller {
                 $attendance = false;
             }
             // end fetch active
-
-            $data = array(
-                "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
-                "lecturer" => $lec_data,
-                "attendance" => $attendance,
-                "hours_rendered" => $this->totalRenderedHours($total_time),
-                "total_time_array" => $total_time,
-            );
 //        echo "<pre>";
 //        print_r($attendance);
 //        echo "</pre>";
@@ -654,7 +646,6 @@ class Admin extends CI_Controller {
             $doc = $spreadsheet->getActiveSheet();
             $number = 6;
             date_default_timezone_set("Asia/Manila");
-            $attendance = null;
             if (!empty($attendance)) {
                 $doc->setCellValue("A1", 'Name:')
                         ->setCellValue("B1", ucwords($lec_data->firstname . " " . $lec_data->lastname))

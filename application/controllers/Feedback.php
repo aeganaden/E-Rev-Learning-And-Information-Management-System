@@ -140,83 +140,86 @@ class Feedback extends CI_Controller {
                     $col = 'lecturer_id';
                     $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
                     $lect_id = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where, $hold[0], TRUE);
+                    if (!empty($lect_id)) {
+//******FETCH THE LECTS USING ID**********
+                        unset($hold);       //erase the data fetched from above
+                        $hold[0] = 'lecturer_id';
+                        foreach ($lect_id as $temp) {
+                            $hold[1][] = $temp->lecturer_id;           //recreate $hold
+                        }
+                        $validation[1] = $hold[1];   //lecturer_id
+                        $validation[1][] = "all";
+                        $col = array('lecturer_id', 'firstname', 'midname', 'lastname', 'image_path');
+                        $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
+                        $lect = $this->Crud_model->fetch_select('lecturer', $col, NULL, $hold);
 
-                    //******FETCH THE LECTS USING ID**********
-                    unset($hold);       //erase the data fetched from above
-                    $hold[0] = 'lecturer_id';
-                    foreach ($lect_id as $temp) {
-                        $hold[1][] = $temp->lecturer_id;           //recreate $hold
-                    }
-                    $validation[1] = $hold[1];   //lecturer_id
-                    $validation[1][] = "all";
-                    $col = array('lecturer_id', 'firstname', 'midname', 'lastname', 'image_path');
-                    $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'enrollment_id' => $info['active_enrollment']);
-                    $lect = $this->Crud_model->fetch_select('lecturer', $col, NULL, $hold);
+                        $counter = 0;
+                        $temp = $validation;
 
-                    $counter = 0;
-                    $temp = $validation;
-
-                    if (!isset($_POST['section']) && !isset($_POST['lecturer'])) {
-                        $data = array(
-                            'sections' => $sections,
-                            'lecturers' => $lect
-                        );
-                        $this->load->view('feedback/fic_view2', $data);
-                    } else if (isset($_POST['section']) && isset($_POST['lecturer'])) {         //kung nakaselect na
-                        if (in_array($_POST['section'], $temp[0]) && in_array($_POST['lecturer'], $temp[1])) {
-                            $sel_section = $_POST['section'];
-                            $sel_lecturer = $_POST['lecturer'];
+                        if (!isset($_POST['section']) && !isset($_POST['lecturer'])) {
+                            $data = array(
+                                'sections' => $sections,
+                                'lecturers' => $lect
+                            );
+                            $this->load->view('feedback/fic_view2', $data);
+                        } else if (isset($_POST['section']) && isset($_POST['lecturer'])) {         //kung nakaselect na
+                            if (in_array($_POST['section'], $temp[0]) && in_array($_POST['lecturer'], $temp[1])) {
+                                $sel_section = $_POST['section'];
+                                $sel_lecturer = $_POST['lecturer'];
 //                    $result = array();
-                            if (strcasecmp("all", $sel_section) == 0 && strcasecmp("all", $sel_lecturer) == 0) {
-                                $where = array('lecturer_feedback_department' => $info["user"]->fic_department);
-                            } else if (strcasecmp("all", $sel_section) == 0) {
-                                $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'lecturer_id' => $sel_lecturer);
-                            } else if (strcasecmp("all", $sel_lecturer) == 0) {
-                                $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section);
-                            } else {
-                                $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section, 'lecturer_id' => $sel_lecturer);
-                            }
-                            $col = array('lecturer_feedback_timedate', 'lecturer_feedback_comment', 'lecturer_id', 'offering_id');
-                            $result = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where);
-                            if (!empty($result)) {
-                                $result_hold = array();
-                                foreach ($result as $res) {
-                                    foreach ($sections as $section) {
-                                        if ($section->offering_id == $res->offering_id) {
-                                            $res->offering_id = $section->offering_name;
-                                            foreach ($lect as $lect2) {
-                                                if ($lect2->lecturer_id == $res->lecturer_id) {
-                                                    $res->lecturer_id = $lect2->firstname . " " . $lect2->midname . " " . $lect2->lastname;
-                                                    $res->image_path = $lect2->image_path;
+                                if (strcasecmp("all", $sel_section) == 0 && strcasecmp("all", $sel_lecturer) == 0) {
+                                    $where = array('lecturer_feedback_department' => $info["user"]->fic_department);
+                                } else if (strcasecmp("all", $sel_section) == 0) {
+                                    $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'lecturer_id' => $sel_lecturer);
+                                } else if (strcasecmp("all", $sel_lecturer) == 0) {
+                                    $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section);
+                                } else {
+                                    $where = array('lecturer_feedback_department' => $info["user"]->fic_department, 'offering_id' => $sel_section, 'lecturer_id' => $sel_lecturer);
+                                }
+                                $col = array('lecturer_feedback_timedate', 'lecturer_feedback_comment', 'lecturer_id', 'offering_id');
+                                $result = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where);
+                                if (!empty($result)) {
+                                    $result_hold = array();
+                                    foreach ($result as $res) {
+                                        foreach ($sections as $section) {
+                                            if ($section->offering_id == $res->offering_id) {
+                                                $res->offering_id = $section->offering_name;
+                                                foreach ($lect as $lect2) {
+                                                    if ($lect2->lecturer_id == $res->lecturer_id) {
+                                                        $res->lecturer_id = $lect2->firstname . " " . $lect2->midname . " " . $lect2->lastname;
+                                                        $res->image_path = $lect2->image_path;
+                                                    }
                                                 }
+                                                $result_hold[] = $res;
+                                                break;              //just for faster iteration
                                             }
-                                            $result_hold[] = $res;
-                                            break;              //just for faster iteration
                                         }
                                     }
-                                }
 
-                                $data = array(
-                                    'sections' => $sections,
-                                    'lecturers' => $lect,
-                                    'feedback' => $result
-                                );
-                                $this->load->view('feedback/fic_view2', $data);
+                                    $data = array(
+                                        'sections' => $sections,
+                                        'lecturers' => $lect,
+                                        'feedback' => $result
+                                    );
+                                    $this->load->view('feedback/fic_view2', $data);
+                                } else {
+                                    $data = array(
+                                        'sections' => $sections,
+                                        'lecturers' => $lect,
+                                        'feedback' => $result
+                                    );
+                                    $this->load->view('feedback/fic_view2', $data);
+                                }
                             } else {
                                 $data = array(
                                     'sections' => $sections,
                                     'lecturers' => $lect,
-                                    'feedback' => $result
+                                    'error' => "Invalid Input"
                                 );
                                 $this->load->view('feedback/fic_view2', $data);
                             }
                         } else {
-                            $data = array(
-                                'sections' => $sections,
-                                'lecturers' => $lect,
-                                'error' => "Invalid Input"
-                            );
-                            $this->load->view('feedback/fic_view2', $data);
+                            redirect("Feedback");
                         }
                     } else {
                         redirect("Feedback");
