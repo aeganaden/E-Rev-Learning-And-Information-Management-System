@@ -25,6 +25,7 @@
 <div class="row container" id="subject-section">
 	<?php 
 	$course = $this->Crud_model->fetch("course",array("course_department"=>$info['user']->fic_department));
+	$count = 0;
 	?>
 	<?php if ($course): ?>
 		<?php foreach ($course as $key => $value): ?>
@@ -34,62 +35,59 @@
 			?>
 			<?php if ($subject): ?>
 				<?php foreach ($subject as $key => $i_value): ?>
+					<?php $count++; ?> 
+					<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?> 
 
-					<?php  
-					$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
-					$lecturer = $lecturer[0];
-					?>
-					<div class="col s3" >
-						<div class="card sticky-action" >
-							<div class="card-image waves-effect waves-block waves-light" >
-								<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
-							</div>
-							<div class="card-content bg-primary-yellow" >
-								<blockquote class="color-primary-green" style="margin-top: 0;">
-									<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$i_value->subject_name?><i class="material-icons right ">more_vert</i></span>
-								</blockquote>
-								<?php if ($lecturer): ?>
-									<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
-								<?php endif ?>
-							</div>
-							<div class="card-reveal bg-primary-green">
-								<span class="card-title color-white ">ABOUT</span>
-								<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$i_value->subject_description?></span></p>
-							</div>
+						<?php  
+						$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
+						$lecturer = $lecturer[0];
+						?>
+						<div class="col s3" >
+							<div class="card sticky-action" >
+								<div class="card-image waves-effect waves-block waves-light" >
+									<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
+								</div>
+								<div class="card-content bg-primary-yellow" >
+									<blockquote class="color-primary-green" style="margin-top: 0;">
+										<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$i_value->subject_name?><i class="material-icons right ">more_vert</i></span>
+									</blockquote>
+									<?php if ($lecturer): ?>
+										<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+									<?php endif ?>
+								</div>
+								<div class="card-reveal bg-primary-green">
+									<span class="card-title color-white ">ABOUT</span>
+									<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$i_value->subject_description?></span></p>
+								</div>
 
-							<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-								<div class="row ">
-									<div class="col s12 ">
+								<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+									<div class="row ">
+										<div class="col s12 ">
 
-										<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
+											<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-
-				<?php endforeach ?>
-			<?php endif ?>
-		<?php endforeach ?>
-	<?php else: ?>
-
-		<div class="row">				
-			<img src="<?=base_url()?>assets/img/chibi/Chibi_crying.svg" alt="">
-			<h1 class="color-primary-green center">204 No Content</h1>
-			<p class="zoom-area color-primary-green center">Contact the <b>CSO-MIS </b>regarding this error</p>
-			<section class="error-container">
-				<span><span>2</span></span>
-				<span>0</span>
-				<span><span>4</span></span>
-			</section>
-
-			<div class="link-container">
-				<a target="_blank" href="!#" class="more-link bg-primary-green">Report to Administrator</a>
+						<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
+					<?php endforeach ?>
+				<?php endif ?>
+			<?php endforeach ?>
+		<?php else: ?>
+			<div class="row valign-wrapper">
+				<div class="col s4 ">
+					<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No Courses Yet</h3>
+				</div>
+				<div class="col s4">
+					<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
+				</div>	
+				<div class="col s4"> 
+				</div>
 			</div>
-		</div>
-	<?php endif ?>
-</div>
+		<?php endif ?>
+	</div>
 <!--========================================
 =            DIV TOPICS SECTION            =
 =========================================-->
