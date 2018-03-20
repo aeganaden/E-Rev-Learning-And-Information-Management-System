@@ -133,7 +133,7 @@ class Coursewares_fic extends CI_Controller {
 	public function deleteQuestion()
 	{
 		$id = $this->input->post("id");
-		if ($this->Crud_model->update("courseware_question",array("courseware_question_status"=>0),array("courseware_question_id"=>$id))) {
+		if ($this->Crud_model->where("courseware_question",array("courseware_question_id"=>$id))) {
 			echo json_encode(true);
 		}else{
 			echo json_encode("Failed to delete Question");
