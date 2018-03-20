@@ -22,12 +22,12 @@
     <pre>
         <?php // print_r($course); ?>
     </pre>
-    <center><h5><?= $course[0]->course_course_title ?> (<?= $course[0]->course_course_code ?>)</h5></center>
+    <center><h4><?= $course[0]->course_course_title ?> (<?= $course[0]->course_course_code ?>)</h4></center>
     <br>
     <?php
-    echo "<h6>" . $subject_year_course[0]->year_level_name . ":</h6>";
+    echo "<h5>" . $subject_year_course[0]->year_level_name . ":</h5>";
     foreach ($subject_year_course as $syc) {
-        echo "<h6>—" . $syc->subject_list_name . "</h6>";
+        echo "<h5>—" . $syc->subject_list_name . "</h5>";
     }
     ?>
     <br>
