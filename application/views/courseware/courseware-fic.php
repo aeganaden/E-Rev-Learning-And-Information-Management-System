@@ -25,18 +25,19 @@
 <div class="row container" id="subject-section">
 	<?php 
 	$course = $this->Crud_model->fetch("course",array("course_department"=>$info['user']->fic_department));
+	$count = 0;
 	?>
 	<?php if ($course): ?>
 		<?php foreach ($course as $key => $value): ?>
 
 			<?php
 			$subject = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id));
-			$count = 0;
 			?>
 			<?php if ($subject): ?>
 				<?php foreach ($subject as $key => $i_value): ?>
+					<?php $count++; ?> 
+					<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?> 
 
-					<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?>
 						<?php  
 						$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
 						$lecturer = $lecturer[0];
@@ -70,8 +71,7 @@
 								</div>
 							</div>
 						</div>
-						<?php $count++; ?>
-						<?php if ($count == 3): ?><?= "</div>" ?><?php endif ?>
+						<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
 					<?php endforeach ?>
 				<?php endif ?>
 			<?php endforeach ?>
