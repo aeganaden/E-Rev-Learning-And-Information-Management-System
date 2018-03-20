@@ -28,7 +28,8 @@
                         <td>Hours Rendered</td>
                         <td>Time In</td>
                         <td>Time Out</td>
-                        <td>Remarks</td>					</tr>
+                        <td>Remarks</td>
+                    </tr>
                 </thead>
                 <tbody>
                     <?php

@@ -14,8 +14,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema engineering
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `u586422956_erev` DEFAULT CHARACTER SET utf8 ;
-USE `u586422956_erev` ;
+CREATE SCHEMA IF NOT EXISTS `engineering` DEFAULT CHARACTER SET utf8 ;
+USE `engineering` ;
 
 -- -----------------------------------------------------
 -- Table `engineering`.`lecturer`
