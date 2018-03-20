@@ -13,33 +13,29 @@
 		$course = $this->Crud_model->fetch("course",
 			array("course_department"=>$info['user']->student_department,
 				"enrollment_id"=>$enrollment->enrollment_id));
-				?> 
-				<?php if ($course): ?>
-					<?php foreach ($course as $key => $value): ?>
-						<!-- fetch subject -->
-						<?php $subject = $this->Crud_model->fetch("subject",array("course_id"=>$value->course_id)); ?>
-						<?php if ($subject): ?>
-							<?php $counter = 0; ?>
-							<?php foreach ($subject as $key => $i_value): ?>
-								<?php $counter == 2 ? "<div class='row'>" : "" ?>
-									<div class="col s12 m6">
-										<div class="card bg-primary-green">
-											<div class="card-content white-text">
-												<span class="card-title "><?=$i_value->subject_name?></span>
-												<p><?=$i_value->subject_description?></p>
-											</div>
-											<div class="card-action">
-												<a href="<?=base_url()?>CourseModules/viewCourseModules/<?=$i_value->subject_id?>" class="valign-wrapper"> <i class="material-icons left">visibility</i>View</a>
-											</div>
-										</div>
+		$count = 0;
+		?> 
+		<?php if ($course): ?>
+			<?php foreach ($course as $key => $value): ?>
+				<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?>
+					<div class="col s4" >
+						<div class="row">
+							<div class="col s12">
+								<div class="card bg-primary-green">
+									<div class="card-content white-text">
+										<span class="card-title"><?= $value->course_course_code ?></span>
+										<p><?= $value->course_course_title ?>.</p>
 									</div>
-									<?php $counter == 2 ? "</div>" : "" ?>
-									<?php $counter = $counter + 1; ?>
-								<?php endforeach ?>
-
-							<?php endif ?>
-						<?php endforeach ?>
-					<?php endif ?>
-				</div>
-			</div>
-			
+									<div class="card-action ">
+										<a href="<?= base_url() ?>CourseModules/viewModules/<?= $value->course_id ?>" class="valign-wrapper">View<i class="material-icons" style="padding-left: 5%">remove_red_eye</i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php if ($count == 3): ?><?= "</div>" ?><?php endif ?>
+					<?php $count++; ?>
+				<?php endforeach ?>
+			<?php endif ?>
+		</div>
+	</div>
