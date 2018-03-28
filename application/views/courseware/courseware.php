@@ -15,7 +15,7 @@
 <div class="row container">
     <nav  style="background-color: transparent; box-shadow: none;">
         <div class="nav-wrapper">
-            <div class="col s12" id="div-bread">
+            <div class=" col s12 col m12" id="div-bread">
                 <a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subject Area</a>
             </div>
         </div>
@@ -54,7 +54,7 @@
                         $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $value->lecturer_id));
                         $lecturer = $lecturer[0];
                         ?>
-                        <div class="col s3" >
+                        <div class=" col s12 col m3" >
                             <div class="card sticky-action" >
                                 <div class="card-image waves-effect waves-block waves-light" >
                                     <img class="activator" src="<?= base_url() ?>assets/img/background-2.jpg">
@@ -74,7 +74,7 @@
 
                                 <div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
                                     <div class="row ">
-                                        <div class="col s12 ">
+                                        <div class=" col s12 col m12 ">
 
                                             <a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?= $value->subject_id ?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
@@ -106,12 +106,12 @@
 
     <!-- DIV FOR TOPICS -->
     <div class="row" id="topics">
-        <div class="col s1"></div>
-        <div class="col s11">
+        <div class=" col s12 col m1"></div>
+        <div class=" col s12 col m11">
             <ul class="collapsible" id="topic_content" data-collapsible="accordion">
 
             </ul>
-            <div class="col s12" style="display: none" id="div-topics"></div>
+            <div class=" col s12 col m12" style="display: none" id="div-topics"></div>
         </div>
     </div>
 
@@ -125,13 +125,13 @@
 ======================================================-->
 
 <div class="row" id="question-section" style="display: none;">
-    <div class="col s2">
+    <div class=" col s12 col m2">
     </div>
-    <div class="col s8" id="div-q-sec">
+    <div class=" col s12 col m8" id="div-q-sec">
 
 
     </div>
-    <div class="col s2" id="timer_div">
+    <div class=" col s12 col m2" id="timer_div">
         <div  id="sticky" class="bg-color-black" style="padding: 1%; padding-left: 2%; border-radius: 10px;">
             <p class=" valign-wrapper">
                 <i class="material-icons color-white" style="margin-right: 5%;">access_time</i>
@@ -472,8 +472,8 @@ function fetchTopics(id) {
                 for (var i = 0; i < data.length; i++){
                     $topic_id = data[i].topic_id;
                     html_content += '<li>' +
-                    '<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>' + data[i].topic_name + '</div>' +
-                    '<div class="col s6"></div></div>' +
+                    '<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class=" col s12 col m6"><i class="material-icons color-primary-green">navigate_next</i>' + data[i].topic_name + '</div>' +
+                    '<div class=" col s12 col m6"></div></div>' +
                     '<div class="collapsible-body" id="courseware_' + data[i].topic_id + '">' +
                     '</div>' +
                     '</li>';
@@ -513,18 +513,18 @@ function fetchCourseware(topic_id) {
                     time = i_data[j].time;
                 }
                 courseware_content += '<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">' +
-                '<div class="col s6">' +
+                '<div class=" col s12 col m6">' +
                 '<p id="cw_t_' + i_data[j].courseware_id + '"><b>' + i_data[j].courseware_name + '</b></p>' +
                 '<p style="font-size: 0.8vw">Date added: ' + i_data[j].date_added + ' | Edited:<span id="cw_te_' + i_data[j].courseware_id + '">' + i_data[j].date_edited + '</span><p>' +
                 '<blockquote class="color-primary-green"><span class="color-black" id="cw_d_' + i_data[j].courseware_id + '">' + i_data[j].courseware_description + '</span> </blockquote>' +
                 '</div>' +
-                '<div class="col s6">' +
-                '<div class="col s6"> ' +
-                '<div class="col s12 valign-wrapper"><i class="material-icons">access_time</i>' +
+                '<div class=" col s12 col m6">' +
+                '<div class=" col s12 col m6"> ' +
+                '<div class=" col s12 col m12 valign-wrapper"><i class="material-icons">access_time</i>' +
                 time +
                 '</div>' +
                 '</div>' +
-                '<div class="col s6" id="btn_cw_question' + i_data[j].courseware_id + '"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="' + i_data[j].courseware_id + '" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>' +
+                '<div class=" col s12 col m6" id="btn_cw_question' + i_data[j].courseware_id + '"><a class=" waves-effect waves-light btn right color-black btn_cw_question"  data-cwid="' + i_data[j].courseware_id + '" style="background-color: transparent; box-shadow: none !important;">Take Exam<i class="material-icons right ">launch</i></a></div>' +
                 '</div>' +
                 '</div>';
                 countQuestion(i_data[j].courseware_id);

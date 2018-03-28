@@ -9,13 +9,13 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class="col s4">
+    <div class=" col s12  col m4">
         <blockquote class="color-primary-green">
             <h3 class="color-black">Course Management <a href="<?= base_url() ?>Course/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Course</a></h3>
         </blockquote>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
+    <div class=" col s12  col m4"></div>
+    <div class=" col s12  col m4"></div>
 </div>
 <div class="row container">
     <pre>

@@ -136,7 +136,7 @@ class ManageCourseModules extends CI_Controller {
 
 
 		$config['upload_path']          = './assets/modules/';
-		$config['allowed_types']        = 'pdf';
+		$config['allowed_types']        = 'pdf|doc|docx';
 		$config['max_size']             = 20000; 
 
 		$this->load->library('upload', $config);
@@ -264,6 +264,14 @@ class ManageCourseModules extends CI_Controller {
 		} else {
 			redirect('Welcome', 'refresh');
 		}
+	}
+
+	public function downloadFile()
+	{
+		$filePath = $this->uri->segment(3);
+		$pth    =   file_get_contents(base_url()."assets/modules"+$filePath);
+		$nme    =   $filePath;
+		force_download($nme, $pth);
 	}
 }
 /* End of file ManageCourseModules.php */

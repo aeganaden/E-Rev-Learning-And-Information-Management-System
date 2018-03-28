@@ -18,7 +18,7 @@
         =            Announcement Section            =
         ===========================================-->
 
-        <div class="col s4">
+        <div class="col s12 col m4">
           <blockquote class="color-primary-green">
 
             <h5 class="color-black">Announcement </h5>
@@ -91,7 +91,7 @@
         </div>
 
         <!--====  End of Announcement Section  ====-->
-        <div class="col s8">
+        <div class="col s12 col m8">
          <blockquote class="color-primary-green">
           <h5 class="color-black">Activities </h5>
         </blockquote>
@@ -121,10 +121,10 @@
              ?>
              <?php if ($x == 2) { echo '<div class="row">';} ?>
 
-              <div class="card bg-primary-green col s8" style="margin-left: 10%;">
+              <div class="card bg-primary-green col s12  col m8" style="margin-left: 10%;">
                 <div class="card-content white-text">
                   <div class="row" style="margin-bottom: 0 !important;">
-                    <div class="col s8">
+                    <div class="col s12 col m8">
                       <blockquote class="color-primary-yellow">
                         <span class="card-title color-white"><?=$details->activity_details_name?> 
                         </span>

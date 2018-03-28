@@ -12,7 +12,7 @@
 <div class="row container">
 	<nav  style="background-color: transparent; box-shadow: none;">
 		<div class="nav-wrapper">
-			<div class="col s12" id="div-bread">
+			<div class=" col s12  col s12" id="div-bread">
 				<a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subject Area</a>
 			</div>
 		</div>
@@ -42,7 +42,7 @@
 						$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
 						$lecturer = $lecturer[0];
 						?>
-						<div class="col s3" >
+						<div class=" col s12  col s3" >
 							<div class="card sticky-action" >
 								<div class="card-image waves-effect waves-block waves-light" >
 									<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
@@ -62,7 +62,7 @@
 
 								<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
 									<div class="row ">
-										<div class="col s12 ">
+										<div class=" col s12  col s12 ">
 
 											<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
@@ -77,13 +77,13 @@
 			<?php endforeach ?>
 		<?php else: ?>
 			<div class="row valign-wrapper">
-				<div class="col s4 ">
+				<div class=" col s12  col s4 ">
 					<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No Courses Yet</h3>
 				</div>
-				<div class="col s4">
+				<div class=" col s12  col s4">
 					<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
 				</div>	
-				<div class="col s4"> 
+				<div class=" col s12  col s4"> 
 				</div>
 			</div>
 		<?php endif ?>
@@ -95,12 +95,12 @@
 <div id="topics-section" class="row container" style="display: none;">
 
 	<!-- DIV FOR TOPICS -->
-	<div class="col s1"></div>
-	<div class="col s11">
+	<div class=" col s12  col s1"></div>
+	<div class=" col s12  col s11">
 		<ul class="collapsible" id="topic_content" data-collapsible="accordion">
 
 		</ul>
-		<div class="col s12" style="display: none" id="div-topics"></div>
+		<div class=" col s12  col s12" style="display: none" id="div-topics"></div>
 	</div>
 
 </div>
@@ -112,8 +112,8 @@
 ======================================================-->
 
 <div class="row container" id="question-section" style="display: none;">
-	<div class="col s1"></div>
-	<div class="col s11" id="div-q-sec">
+	<div class=" col s12  col s1"></div>
+	<div class=" col s12  col s11" id="div-q-sec">
 		
 
 	</div>
@@ -143,37 +143,37 @@
 <div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
 		<div class="row">
-			<div class="col s6">
+			<div class=" col s12  col s6">
 				<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
 			</div>
-			<div class="col s6">
+			<div class=" col s12  col s6">
 				<button class="btn red right modal-trigger modal-close"><i class="material-icons">highlight_off</i></button>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col s12">
+			<div class=" col s12  col s12">
 				<ul class="tabs bg-primary-green">
-					<li class="tab col s6"><a class="color-white active" href="#content">Question</a></li>
-					<li class="tab col s6"><a class="color-white" href="#answers">Answers</a></li>
+					<li class="tab  col s12  col s6"><a class="color-white active" href="#content">Question</a></li>
+					<li class="tab  col s12  col s6"><a class="color-white" href="#answers">Answers</a></li>
 				</ul>
 			</div>
-			<div id="content" class="col s12">
+			<div id="content" class=" col s12  col s12">
 				<blockquote class="color-primary-yellow">
 					<h5 class="color-black">Content</h5>
 				</blockquote>
 				<!-- Editor -->
 				<textarea name="editor1" id="q_editor"></textarea>
 			</div>
-			<div id="answers" class="col s12">
+			<div id="answers" class=" col s12  col s12">
 				
 				<div class="row">
-					<div class="col s6">
+					<div class=" col s12  col s6">
 						<blockquote class="color-primary-yellow">
 							<h5 class="color-black">Answers</h5> 
 						</blockquote>
 					</div>
-					<div class="col s6">
-						<div class="input-field col s12">
+					<div class=" col s12  col s6">
+						<div class="input-field  col s12  col s12">
 							<select id="sl_choices">
 								<option value="" disabled >Choices Type</option>
 								<option value="1" selected>Multiple Choice</option>
@@ -235,14 +235,14 @@
 	<div class="modal-content">
 		<h4 style="border-bottom: 2px solid #F2A900; padding-bottom: 1%;">ADD COURSEWARE</h4>
 		<div class="row">
-			<div class="input-field col s6">
+			<div class="input-field  col s12  col s6">
 				<blockquote class="color-primary-green"><h5 class="color-black">Title</h5> <input placeholder="" id="cw_title" type="text" class="validate"/> </blockquote>
 				
 			</div>
 		</div>
 		<div class="row">
-			<form class="col s12">
-				<div class="input-field col s12">
+			<form class=" col s12  col s12">
+				<div class="input-field  col s12  col s12">
 					<blockquote class="color-primary-green"><h5 class="color-black">Description</h5>
 						<textarea id="cw_des" class="materialize-textarea"></textarea></blockquote>
 
@@ -266,8 +266,8 @@
 ========================================-->
 
 <!-- <div class="row container">
-	<div class="col s1"></div>
-	<div class="col s11">
+	<div class=" col s12  col s1"></div>
+	<div class=" col s12  col s11">
 		<textarea name="editor1" id="q_editor"></textarea>
 		<input id="send" type="button" value="Send">
 	</div>
@@ -778,18 +778,18 @@ function fetchCourseware(topic_id) {
 
 			for(var j = 0; j < i_data.length; j++){
 				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
-				'<div class="col s6">'+
+				'<div class=" col s12  col s6">'+
 				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
 				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
 				'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
 				'</div>'+
-				'<div class="col s6">'+
-				'<div class="col s6">'+
+				'<div class=" col s12  col s6">'+
+				'<div class=" col s12  col s6">'+
 				'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
 				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
 				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failing remarks">mood_bad</i>46</span>'+
 				'</div>'+
-				'<div class="col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
+				'<div class=" col s12  col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 				'</div>'+
 				'</div>';
 			}
@@ -822,8 +822,8 @@ function fetchTopics(id) {
 					$topic_id = data[i].topic_id;
 
 					html_content += '<li>'+
-					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class="col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-					'<div class="col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
+					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class=" col s12  col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+					'<div class=" col s12  col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+
 					'</li>';
