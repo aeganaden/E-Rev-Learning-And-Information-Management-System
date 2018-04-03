@@ -11,6 +11,7 @@ class Feedback extends CI_Controller {
         $this->load->model('Crud_model');
         $this->load->helper('date');
         $this->load->library('form_validation');
+        $this->load->helper('security');
     }
 
     public function index() {
@@ -178,9 +179,21 @@ class Feedback extends CI_Controller {
                                 }
                                 $col = array('lecturer_feedback_timedate', 'lecturer_feedback_comment', 'lecturer_id', 'offering_id');
                                 $result = $this->Crud_model->fetch_select('lecturer_feedback', $col, $where);
+
+                                $counter = 0;
                                 if (!empty($result)) {
                                     $result_hold = array();
                                     foreach ($result as $res) {
+                                        //checks xss
+                                        if (strpos(strtolower($res->lecturer_feedback_comment), '<script>') !== false &&
+                                                strpos(strtolower($res->lecturer_feedback_comment), '</script>') !== false) {
+                                            $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($res->lecturer_feedback_comment) .
+                                                    "<br><span class='red-text'>(Possible Cross-Site Scripting attack)</span>";
+                                        } else {
+                                            $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($res->lecturer_feedback_comment);
+                                        }
+                                        $counter++;
+
                                         foreach ($sections as $section) {
                                             if ($section->offering_id == $res->offering_id) {
                                                 $res->offering_id = $section->offering_name;
@@ -373,6 +386,18 @@ class Feedback extends CI_Controller {
                             $jointype = "INNER";
                             $result = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
 
+                            $counter = 0;
+                            foreach ($result as $subresult) {
+                                if (strpos(strtolower($subresult->lecturer_feedback_comment), '<script>') !== false &&
+                                        strpos(strtolower($subresult->lecturer_feedback_comment), '</script>') !== false) {
+                                    $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment) .
+                                            "<br><span class='red-text'>(Possible Cross-Site Scripting attack)</span>";
+                                } else {
+                                    $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment);
+                                }
+
+                                $counter++;
+                            }
                             $data = array(
                                 'sections' => $sections,
                                 'lecturers' => $lecturers,
@@ -544,46 +569,6 @@ class Feedback extends CI_Controller {
         } else {
             redirect();
         }
-//        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "student") {
-//            /*  CHECKS THE CONNECTION TO THE ENROLLMEN  */
-//            $offering_id = $this->session->userdata('userInfo')['user']->offering_id;
-//            $course_id = $this->Crud_model->fetch('offering', array('offering_id' => $offering_id))[0]->course_id;
-//            $enrollment_id = $this->Crud_model->fetch('course', array('course_id' => $course_id))[0]->enrollment_id;
-//            $hold = $this->session->userdata('userInfo')["active_enrollment"];      //stored the enrollment_id of active
-//            /*  END */
-//            $data = array('title' => 'Feedback');
-//            $this->load->view('includes/header', $data);
-//            if ($this->session->userdata('userInfo')["active_enrollment"] == $enrollment_id) {   //checks if enrollment active is equals to involve student
-//                /*  student is qualified to submit  */
-//                date_default_timezone_set('Asia/Manila');
-//                $feedback = $this->input->post('feedback_content');
-//                /*  end     */
-//                /*  gets lecturer_id from url previous page */
-//                $url = $_SERVER['HTTP_REFERER'];
-//                $hold = array();
-//                $hold = explode("/", $url);
-//                $temp = $hold[count($hold) - 1];
-//                /*  end     */
-//                $data = array(
-//                    'lecturer_feedback_timedate' => time(),
-//                    'lecturer_feedback_comment' => $feedback,
-//                    'lecturer_feedback_department' => $this->session->userdata('userInfo')['user']->student_department,
-//                    'student_id' => $this->session->userdata('userInfo')['user']->student_id,
-//                    'lecturer_id' => $temp,
-//                    'enrollment_id' => $enrollment_id,
-//                    'offering_id' => $this->session->userdata('userInfo')['user']->offering_id
-//                );
-//                $this->Crud_model->insert('lecturer_feedback', $data);
-//                redirect('feedback');
-//            } else {    //the student is in an inactive enrollment; theoretically should work; not yet tested
-//                $this->load->view('feedback/error', $data);
-//                include(APPPATH . 'views\feedback\custom1.php');
-//            }
-//            $this->load->view('includes/footer');
-////
-//        } else {
-//            redirect("Home");
-//        }
     }
 
     public function activateFeedback() {
