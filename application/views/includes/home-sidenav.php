@@ -124,9 +124,9 @@ switch ($info['user']->$ident) {
 
 
     <?php if ($info["identifier"] == "professor"): ?>
-    <!--        <li class="color-black <?= $s_s ?>">
-                <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
-            </li>-->
+        <li class="color-black <?= $s_s ?>">
+            <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
+        </li>
     <?php endif ?>
 
     <?php if ($info['identifier'] != "professor"): ?>
@@ -160,9 +160,9 @@ switch ($info['user']->$ident) {
                     <div class="collapsible-body bg-color-white">
                         <ul>
                             <?php if ($info["identifier"] == "fic"): ?>
-            <!--                                <li class="color-black <?= $s_t ?>">
-                                            <a href="<?= base_url() ?>Topics" class="color-black"><i class="material-icons color-black">title</i>Topics</a>
-                                        </li>-->
+                                <li class="color-black <?= $s_t ?>">
+                                    <a href="<?= base_url() ?>Topics" class="color-black"><i class="material-icons color-black">title</i>Topics</a>
+                                </li>
                             <?php endif ?>
                             <?php if ($info['identifier'] == "fic"): ?>
                                 <li class="<?= $s_f ?>">
