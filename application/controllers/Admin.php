@@ -416,7 +416,7 @@ class Admin extends CI_Controller {
                                     } elseif ($d_in_f > 0 && $d_in_f < $padding_start_late) {
                                         $remarks_s = "Late Time In";
                                     } else {
-                                        $remarks_s = "Absent";
+                                        $remarks_s = "-";
                                     }
 
                                     $laout = str_replace("%", "", $l_a_out->format("%h%i"));
@@ -435,6 +435,10 @@ class Admin extends CI_Controller {
                                     } else {
                                         $remarks_e = "Overtime";
                                     }
+
+                                    if ($remarks_s == "-") { 
+                                        $remarks_e = ""; 
+                                    } 
                                     $attendance_data['lecturer_attendance_id'] = $lec->lecturer_attendance_id;
                                     $attendance_data['lecturer_attendance_date'] = $lec->lecturer_attendance_date;
                                     $attendance_data['lecturer_attendance_in'] = $value->attendance_in_time;
@@ -446,21 +450,21 @@ class Admin extends CI_Controller {
                                     // echo "<pre>";
                                     // print_r($attendance);
 
-                                    $lec_in = date("o-m-d h:i", $value->attendance_in_time);
-                                    $lec_out = date("o-m-d h:i", $l_a_e->attendance_out_time);
-                                    $stend = date("o-m-d h:i", $schedule->schedule_end_time);
+                                    $lec_in = date("h:i", $value->attendance_in_time);
+                                    $lec_out = date("h:i", $l_a_e->attendance_out_time);
+                                    $stend = date("h:i", $schedule->schedule_end_time);
                                     $interval = $this->diff($lec_in, $lec_out);
-                                    if ($remarks_e == "Absent" && $remarks_s != "Absent") {
+                                    if ($remarks_e == "Overtime" && $remarks_s != "-") { 
                                         $interval = $this->diff($lec_in, $stend);
+                                        // echo $lec_in."---".$stend."<br>";
                                     }
                                     $sum = $interval['h'] . ":" . $interval['i'];
                                     $attendance_data['hours_rendered'] = $sum;
 
-                                    if ($remarks_s == "Absent") {
-                                        $remarks_e = "Absent";
+                                    if ($remarks_s == "-") {  
                                         $attendance_data['hours_rendered'] = 0;
                                         $sum = "0:0";
-                                    }
+                                    } 
                                     $attendance[] = $attendance_data;
                                     array_push($total_time, $sum);
                                 }
