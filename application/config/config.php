@@ -435,7 +435,7 @@ $config['composer_autoload'] = TRUE;          //set value to true by mark; for c
   |          for backwards compatibility purposes!
   |
  */
-  $config['global_xss_filtering'] = TRUE;
+  $config['global_xss_filtering'] = FALSE;
 
 /*
   |--------------------------------------------------------------------------
