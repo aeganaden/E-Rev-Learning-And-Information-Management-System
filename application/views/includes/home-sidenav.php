@@ -90,7 +90,7 @@ switch ($info['user']->$ident) {
     <?php endif ?>
 
     <?php if ($info["identifier"] == "student"): ?>
-        <li class="color-black <?= $s_a ?>">
+        <li class="color-black">
             <a href="<?= base_url() ?>CourseModules" class="color-black"><i class="material-icons color-black">import_contacts</i>Course Modules</a>
         </li>
     <?php endif ?>
@@ -172,105 +172,103 @@ switch ($info['user']->$ident) {
                         </ul>
                     </div>
                 </li>
-            </ul>
-        </li>
-    <?php endif ?>
+            <?php endif ?>
 
-    <?php if ($info["identifier"] == "professor"): ?>
-        <li class="no-padding <?= $s_f ?>"  id="btn_click_feed">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header">Feedback<i class="material-icons" id="btn_click_feed_i"  >keyboard_arrow_right</i></a>
-                    <div class="collapsible-body bg-color-white">
-                        <ul>
-                            <li><a href="<?= base_url() ?>Feedback "><i class="material-icons">visibility</i>View Feedback</a></li>
-                            <li>
-                                <a href="<?= base_url() ?>Feedback/activateFeedback">
-                                    <i class="material-icons">hdr_strong</i>Toggle Feedback Submission
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <?php if ($info["identifier"] == "professor"): ?>
+                <li class="no-padding <?= $s_f ?>"  id="btn_click_feed">
+                    <ul class="collapsible collapsible-accordion">
+                        <li>
+                            <a class="collapsible-header">Feedback<i class="material-icons" id="btn_click_feed_i"  >keyboard_arrow_right</i></a>
+                            <div class="collapsible-body bg-color-white">
+                                <ul>
+                                    <li><a href="<?= base_url() ?>Feedback "><i class="material-icons">visibility</i>View Feedback</a></li>
+                                    <li>
+                                        <a href="<?= base_url() ?>Feedback/activateFeedback">
+                                            <i class="material-icons">hdr_strong</i>Toggle Feedback Submission
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-    <?php endif ?>
-    <?php if ($info["identifier"] == "fic"): ?>
-        <li class="no-padding <?= $s_c ?> " id="btn_click_feed_ss">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header">Practice Exams<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
-                    <div class="collapsible-body bg-color-white">
-                        <ul>
-                            <li class="color-black ">
-                                <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Practice Exams</a>
-                            </li>
-                            <li>
-                                <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
-                                    <i class="material-icons">hdr_strong</i>Toggle Practice Exams
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= base_url() ?>ImportQuestions">
-                                    <i class="material-icons">backup</i>Import Questions
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+            <?php endif ?>
+            <?php if ($info["identifier"] == "fic"): ?>
+                <li class="no-padding <?= $s_c ?> " id="btn_click_feed_ss">
+                    <ul class="collapsible collapsible-accordion">
+                        <li>
+                            <a class="collapsible-header">Practice Exams<i class="material-icons" id="btn_click_feed_i_ss">keyboard_arrow_right</i></a>
+                            <div class="collapsible-body bg-color-white">
+                                <ul>
+                                    <li class="color-black ">
+                                        <a href="<?= base_url() ?>Coursewares_fic" class="color-black"><i class="material-icons color-black">book</i>Practice Exams</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url() ?>Coursewares_fic/ToggleCourseware">
+                                            <i class="material-icons">hdr_strong</i>Toggle Practice Exams
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= base_url() ?>ImportQuestions">
+                                            <i class="material-icons">backup</i>Import Questions
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-    <?php endif ?>
+            <?php endif ?>
 
-    <?php if ($info["identifier"] == "fic"): ?>
-        <li class="no-padding <?= $s_ss ?>"  id="btn_click_feed">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header">Student Scores<i class="material-icons" id="btn_click_feed_i">keyboard_arrow_right</i></a>
-                    <div class="collapsible-body bg-color-white">
-                        <ul>
-                            <li class="color-black ">
-                                <a href="<?= base_url() ?>Student_scores" class="color-black"><i class="material-icons color-black">description</i>Import Scores</a>
-                            </li>
-                            <li class="color-black ">
-                                <a href="<?= base_url() ?>Student_scores/view_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
-                            </li>
-                    </div>
+            <?php if ($info["identifier"] == "fic"): ?>
+                <li class="no-padding <?= $s_ss ?>"  id="btn_click_feed">
+                    <ul class="collapsible collapsible-accordion">
+                        <li>
+                            <a class="collapsible-header">Student Scores<i class="material-icons" id="btn_click_feed_i">keyboard_arrow_right</i></a>
+                            <div class="collapsible-body bg-color-white">
+                                <ul>
+                                    <li class="color-black ">
+                                        <a href="<?= base_url() ?>Student_scores" class="color-black"><i class="material-icons color-black">description</i>Import Scores</a>
+                                    </li>
+                                    <li class="color-black ">
+                                        <a href="<?= base_url() ?>Student_scores/view_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
+                                    </li>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
-            </ul>
-        </li>
-    <?php endif ?>
+            <?php endif ?>
 
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li>
-        <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
-    </li>
-</ul>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li>
+                <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
+            </li>
+        </ul>
 
 
-<!--====  End of Side-Nav Section  ====-->
+        <!--====  End of Side-Nav Section  ====-->
 
 
 
-<script type="text/javascript">
+        <script type="text/javascript">
 
-    jQuery(document).ready(function ($) {
+            jQuery(document).ready(function ($) {
 
-        $("#btn_click_feed").click(function (event) {
-            if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i").html("keyboard_arrow_right");
-            }
-        });
-        $("#btn_click_feed_ss").click(function (event) {
-            if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
-            }
-        });
-    });
-</script>
+                $("#btn_click_feed").click(function (event) {
+                    if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
+                        $("#btn_click_feed_i").html("keyboard_arrow_down");
+                    } else {
+                        $("#btn_click_feed_i").html("keyboard_arrow_right");
+                    }
+                });
+                $("#btn_click_feed_ss").click(function (event) {
+                    if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
+                        $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
+                    } else {
+                        $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
+                    }
+                });
+            });
+        </script>

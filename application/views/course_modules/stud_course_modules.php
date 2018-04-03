@@ -9,7 +9,7 @@
 	</blockquote>
 	<div class="row"> 
 		<div class="row">
-			<div class="col s12">
+			<div class=" col s12 col m12">
 				<?php 
 				$subject = $this->Crud_model->fetch("subject",array("subject_id"=>$this->uri->segment(3)));
 				$subject = $subject[0];
@@ -88,13 +88,13 @@
 					</ul>
 				<?php else: ?>
 					<div class="row valign-wrapper">
-						<div class="col s4 ">
+						<div class=" col s12 col m4 ">
 							<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No </h3>
 						</div>
-						<div class="col s4">
+						<div class=" col s12 col m4">
 							<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
 						</div>	
-						<div class="col s4">
+						<div class=" col s12 col m4">
 							<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">Data</h3>
 						</div>
 					</div>

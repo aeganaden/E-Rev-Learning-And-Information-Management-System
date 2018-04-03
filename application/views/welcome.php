@@ -134,16 +134,13 @@ date_default_timezone_set('Asia/Manila');
 					<p style="text-transform: uppercase;">FEU - Tech engineering students</p>
 				</center>
 			</h4>
-			<!-- Hisham -->
-			<div class="row">
-				<div class="row ">
-					<center>
-						<img  class="circle responsive-img" style="width: 100px;
-						height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/profile.jpg" >
 
-					</center>
+			<div class="row">
+				<div class="center row">
+					<img  class="circle responsive-img" style="width: 100px;
+					height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/hisham.jpg" >
 				</div>
-				<div class="row" style="text-align: justify;">
+				<div class="row">
 					<h5 class="">Engr. Hisham Sacar</h5>
 					<blockquote class="color-primary-green">
 						<h5 class="color-black">1st Placer 2017 CE Board Exam</h5>
@@ -154,22 +151,34 @@ date_default_timezone_set('Asia/Manila');
 			</div>
 			<!-- David Flores -->
 			<div class="row">
-				<div class="row ">
-					<center>
-						<img  class="circle responsive-img" style="width: 100px;
-						height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/profile.jpg" >
-
-					</center>
+				<div class="center row">
+					<img  class="circle responsive-img" style="width: 100px;
+					height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/david.jpg" >
 				</div>
-				<div class="row" style="text-align: justify;">
+				<div class="row">
 					<h5 class="">Engr. David Flores</h5>
 					<blockquote class="color-primary-green">
-						<h5 class="color-black">1st Placer 2017 CE Board Exam</h5>
+						<h5 class="color-black">2nd Placer 2017 CE Board Exam</h5>
 					</blockquote>
 					<p>Hisham, 21, a graduate from Quirino High School, emerged No. 1 among the 2,514 board passers nationwide. His excellent academic performance has enabled him to get a full-academic scholarship from FEU Tech. </p>
 					<a href="www.feutech.edu.ph"><i> - https://www.feutech.edu.ph</i></a>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="center row">
+					<img  class="circle responsive-img" style="width: 100px;
+					height: 100px; object-fit: cover;" src="<?=base_url()?>assets/img/profiles/kenneth.jpg" >
+				</div>
+				<div class="row">
+					<h5 class="">Engr. Danielle Kenneth A. Tuzon</h5>
+					<blockquote class="color-primary-green">
+						<h5 class="color-black">10th place in the November 2017 Civil Engineering Board Exams</h5>
+					</blockquote>
+					<p>Continue embodying FEU's core value of excellence and the legacy of our institution in the field of Engineering! We are proud of you, iTamaraw!</p>
+					<a href="www.feutech.edu.ph"><i> - https://www.feutech.edu.ph</i></a>
+				</div>
+			</div>  
 		</div>
 		<div class="col s2"></div>
 	</div>
@@ -463,9 +472,7 @@ date_default_timezone_set('Asia/Manila');
 				<p>Continue embodying FEU's core value of excellence and the legacy of our institution in the field of Engineering! We are proud of you, iTamaraw!</p>
 				<a href="www.feutech.edu.ph"><i> - https://www.feutech.edu.ph</i></a>
 			</div>
-		</div>
-		
-		
+		</div> 
 	</div>
 	<div class="col s2"></div>
 </div>
@@ -531,15 +538,17 @@ margin-bottom: 0 !important;">
 
 				<!--====  End of Login Section  ====-->
 
-				<button  onclick="login_verify();" class="waves-effect waves-light btn bg-primary-green right color-white">LOG IN</button>
-
-				<a href="#!" class="modal-effect modal-close waves-effect waves-light btn red left color-white">Return</a>
 			</div>
 			<div class="col s2"></div>
 		</div>
 	</div>
 	<div class="modal-footer bg-primary-green">
-		<p class="center"> FEU - INSTITUTE OF TECHONOLOGY | &copy; 2017</p>
+		<button  onclick="login_verify();" class="waves-effect waves-light btn bg-primary-yellow right color-white">LOG IN</button>
+
+		<a href="#!" class="modal-effect modal-close waves-effect waves-light btn red left color-white">Return</a>
+		<div>
+			<!-- <p class="center"> FEU - INSTITUTE OF TECHONOLOGY | &copy; 2017</p> -->
+		</div>
 	</div>
 </div>
 

@@ -9,13 +9,13 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class="col s4">
+    <div class=" col s12  col m4">
         <blockquote class="color-primary-green">
             <h3 class="color-black">View Course</h3>
         </blockquote>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
+    <div class=" col s12  col m4"></div>
+    <div class=" col s12  col m4"></div>
 </div>
 <div class="row container">
     <a onclick="window.location.replace('<?= base_url() ?>Course');" class="waves-effect waves-light btn red"><i class="material-icons left">keyboard_backspace</i>Back</a>
