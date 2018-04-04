@@ -78,15 +78,13 @@
                 <?php endforeach ?>
             </tbody>
         </table>
+    <?php elseif (isset($error)): ?>
+        <center style="margin-top:10vh;">
+            <h3 class="color-red"><?= $error ?></h3>
+        </center>
     <?php else: ?>
         <center style="margin-top:20vh;">
             <h3>No data to show</h3>
-        </center>
-    <?php endif; ?>
-
-    <?php if (isset($error) && !empty($error)): ?>
-        <center style="margin-top:10vh;">
-            <h3 class="color-red">Invalid input</h3>
         </center>
     <?php endif; ?>
 </div>

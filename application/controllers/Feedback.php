@@ -188,7 +188,7 @@ class Feedback extends CI_Controller {
                                         if (strpos(strtolower($res->lecturer_feedback_comment), '<script>') !== false &&
                                                 strpos(strtolower($res->lecturer_feedback_comment), '</script>') !== false) {
                                             $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($res->lecturer_feedback_comment) .
-                                                    "<br><span class='red-text'>(Possible Cross-Site Scripting attack)</span>";
+                                                    "<br><span class='red-text'>(possible XSS)</span>";
                                         } else {
                                             $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($res->lecturer_feedback_comment);
                                         }
@@ -234,8 +234,13 @@ class Feedback extends CI_Controller {
                         } else {
                             redirect("Feedback");
                         }
-                    } else {
-                        redirect("Feedback");
+                    } else {            // from redirect to this code. there's no feedback so put null
+                        $data = array(
+                            'sections' => null,
+                            'lecturers' => null,
+                            'error' => "There is no submitted feedbacks yet"
+                        );
+                        $this->load->view('feedback/fic_view2', $data);
                     }
                 } else {
                     $data = array(
@@ -304,7 +309,6 @@ class Feedback extends CI_Controller {
                 } else {
                     redirect('Welcome', 'refresh');
                 }
-
 
                 $this->load->view('includes/footer');
             }
@@ -385,23 +389,31 @@ class Feedback extends CI_Controller {
                             $join2 = array('offering', 'offering.offering_id = lecturer_feedback.offering_id');
                             $jointype = "INNER";
                             $result = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where);
+                            $error = null;
+                            if (!empty($result)) {
+                                $counter = 0;
+                                foreach ($result as $subresult) {
+                                    if (strpos(strtolower($subresult->lecturer_feedback_comment), '<script>') !== false &&
+                                            strpos(strtolower($subresult->lecturer_feedback_comment), '</script>') !== false) {
+                                        $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment) .
+                                                "<br><span class='red-text'>(possible XSS)</span>";
+                                    } else {
+                                        $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment);
+                                    }
 
-                            $counter = 0;
-                            foreach ($result as $subresult) {
-                                if (strpos(strtolower($subresult->lecturer_feedback_comment), '<script>') !== false &&
-                                        strpos(strtolower($subresult->lecturer_feedback_comment), '</script>') !== false) {
-                                    $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment) .
-                                            "<br><span class='red-text'>(Possible Cross-Site Scripting attack)</span>";
-                                } else {
-                                    $result[$counter]->lecturer_feedback_comment = $this->security->xss_clean($subresult->lecturer_feedback_comment);
+                                    $counter++;
                                 }
-
-                                $counter++;
+                            } else {
+                                $sections = null;
+                                $lecturers = null;
+                                $result = null;
+                                $error = "There is no submitted feedbacks yet";
                             }
                             $data = array(
                                 'sections' => $sections,
                                 'lecturers' => $lecturers,
-                                'feedback' => $result
+                                'feedback' => $result,
+                                'error' => $error
                             );
                             $this->load->view('feedback/prof_view', $data);
                         } else {
@@ -430,7 +442,7 @@ class Feedback extends CI_Controller {
                 $this->load->view('feedback/prof_view', $data);
             }
         } else {
-            redirect("");
+            redirect();
         }
 
         $this->load->view('includes/footer');
