@@ -11,7 +11,7 @@
 <div class="row container">
     <div class="col s4">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">View Subject Area</h3>
+            <h3 class="color-black">View Topics</h3>
         </blockquote>
     </div>
     <div class="col s4"></div>
@@ -19,28 +19,23 @@
 </div>
 <div class="row container">
     <pre>
-        <?php print_r($topic_list); ?>
+        <?php // print_r($topic_list); ?>
     </pre>
     <?php if (isset($topic_list) && !empty($topic_list)): ?>
         <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
-                    <th>Year Level</th>
-                    <th>Subject Area</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>Topic</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!--LAST - TOPIC FORMAT-->
                 <?php foreach ($topic_list as $subtopic_list): ?>
                     <tr class="bg-color-white">
-                        <td><?= $key ?></td>
-                        <td><?= implode("<br>", $res); ?></td>
-                        <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
-                        <td><a class="waves-effect waves-dark btn bg-primary-yellow">Edit</a></td>
-                        <td><a class="waves-effect waves-dark btn red">Delete</a></td>
+                        <td><?= $subtopic_list->topic_list_name ?></td>
+                        <td><?= $subtopic_list->topic_list_description ?></td>
+                        <td><a data-id="<?= $subtopic_list->topic_list_id ?>" class="waves-effect waves-dark btn red btn_remove">REMOVE</a></td>
                     </tr>
                 <?php endforeach ?>
             </tbody>
@@ -54,10 +49,9 @@
 
 <script>
     $(document).ready(function () {
-        $(".btn_view").click(function () {
+        $(".btn_remove").click(function () {
             $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "SubjectArea/view/" ?>" + $data;
+            window.location.href = "<?= base_url() . "SubjectArea/remove_topic/" . $this->uri->segment(3) ?>" + $data;
         });
-
     });
 </script>

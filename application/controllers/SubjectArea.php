@@ -53,8 +53,7 @@ class SubjectArea extends CI_Controller {
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
                 $info = $this->session->userdata('userInfo');
 
-//                $col = 'sl.subject_list_id, sl.subject_list_name, yl.year_level_name, yl.year_level_id';
-                $col = "tl.topic_list_id, tl.topic_list_name";
+                $col = "tl.topic_list_id, tl.topic_list_name, tl.topic_list_description";
                 $where = array(
                     'sl.subject_list_department' => $info['user']->professor_department,
                     'sl.subject_list_is_active' => 1,
@@ -66,10 +65,7 @@ class SubjectArea extends CI_Controller {
                     array("topic_list as tl", "tl.topic_list_id = sltl.topic_list_id")
                 );
                 $topic_list = $this->Crud_model->fetch_join2("subject_list as sl", $col, $join, NULL, $where);
-                //LAST - FORMATTING OF TOPICS
-//                echo "<pre>";
-//                print_r($topic_list);
-//                echo "</pre>";
+
                 $data = array(
                     "title" => "Subject Area Management",
                     'info' => $info,
@@ -86,6 +82,24 @@ class SubjectArea extends CI_Controller {
                 $this->load->view('includes/header', $data);
                 $this->load->view('subject_area/view');
                 $this->load->view('includes/footer');
+            } else {
+                redirect("SubjectArea");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function remove_topic() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($subject_id = $this->uri->segment(3)) && is_numeric($subject_id) &&
+                    !empty($topic_id = $this->uri->segment(4)) && is_numeric($topic_id)) {    //topic_id
+                //LAST - delete topics
+//                $where = array(
+//                    "subject_list_id" => $subject_id,
+//                    "topic_list_id" => $topic_id
+//                );
+//                $this->Crud_model->delete("sbuject_list_has_topic_list", $where);
             } else {
                 redirect("SubjectArea");
             }
