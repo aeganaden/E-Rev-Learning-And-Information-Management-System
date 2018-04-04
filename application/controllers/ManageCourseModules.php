@@ -130,6 +130,7 @@ class ManageCourseModules extends CI_Controller {
 		$status = "";
 		$msg = "";
 
+
 		$title = $this->input->post('cm_name');
 		$subject_id = $this->uri->segment(3);  
 		$topic_id = $this->uri->segment(4);  
@@ -138,6 +139,8 @@ class ManageCourseModules extends CI_Controller {
 		$config['upload_path']          = './assets/modules/';
 		$config['allowed_types']        = 'pdf|doc|docx';
 		$config['max_size']             = 20000; 
+		$config['encrypt_name']             = true; 
+	    // $config['encrypt_name']  			= "CM"sha1(time());
 
 		$this->load->library('upload', $config);
 
@@ -155,6 +158,7 @@ class ManageCourseModules extends CI_Controller {
 			// echo  $title;
 			if ($data) {
 				$data_insert = array(
+
 					"course_modules_path"=>$data['upload_data']['file_name'],
 					"course_modules_name"=>$title,
 					"topic_id"=>$topic_id
@@ -269,9 +273,10 @@ class ManageCourseModules extends CI_Controller {
 	public function downloadFile()
 	{
 		$filePath = $this->uri->segment(3);
-		$pth    =   file_get_contents(base_url()."assets/modules"+$filePath);
+		$pth    =   "./assets/modules/".$filePath;
+		echo $pth;
 		$nme    =   $filePath;
-		force_download($nme, $pth);
+		force_download($pth, NULL);
 	}
 }
 /* End of file ManageCourseModules.php */
