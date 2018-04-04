@@ -274,8 +274,6 @@ class ManageCourseModules extends CI_Controller {
 	{
 		$filePath = $this->uri->segment(3);
 		$pth    =   "./assets/modules/".$filePath;
-		echo $pth;
-		$nme    =   $filePath;
 		force_download($pth, NULL);
 	}
 }
