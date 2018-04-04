@@ -33,17 +33,17 @@ class Admin extends CI_Controller {
           =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
           ============================================================= */
 
-          $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-          $active_enrollment = $active_enrollment[0];
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+        $active_enrollment = $active_enrollment[0];
 
-          /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+        /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
 
         /* ==============================================
           =         LECTURER'S FEEDBACK BY MARK          =
           ============================================== */
 
-          $col = array('lecturer_id,id_number,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
-          $feedback = $this->Crud_model->fetch_join('lecturer', $col);
+        $col = array('lecturer_id,id_number,image_path, CONCAT(firstname, " ",midname, " ",lastname) AS full_name', FALSE);
+        $feedback = $this->Crud_model->fetch_join('lecturer', $col);
 
         /* ==============================================
           =            COSML REPORTS FETCHING            =
@@ -51,14 +51,14 @@ class Admin extends CI_Controller {
 
 
         // Fetch Schedule
-          $report_cosml = $this->Crud_model->fetch("schedule");
+        $report_cosml = $this->Crud_model->fetch("schedule");
 
         // Count Schedule
-          $count_res = $this->Crud_model->countResult("schedule");
+        $count_res = $this->Crud_model->countResult("schedule");
 
-          $this->verify_login();
+        $this->verify_login();
 
-          if ($report_cosml) {
+        if ($report_cosml) {
             foreach ($report_cosml as $key => $value) {
                 // Fetch Offering Data
                 $offering_data = $this->Crud_model->fetch("offering", array("offering_id" => $value->offering_id));
@@ -99,7 +99,7 @@ class Admin extends CI_Controller {
           =            Course OFFERING per term            =
           ================================================ */
 
-          if ($active_enrollment) {
+        if ($active_enrollment) {
             $course_total = $this->Crud_model->fetch("course", array("enrollment_id" => $active_enrollment->enrollment_id));
         } else {
             $course_total = null;
@@ -112,9 +112,9 @@ class Admin extends CI_Controller {
         /* ==========================================
           =            LECTURERS SCHEDULE            =
           ========================================== */
-          $sched = (object) array();
-          $schedule = array();
-          if ($active_enrollment) {
+        $sched = (object) array();
+        $schedule = array();
+        if ($active_enrollment) {
             $course = $this->Crud_model->fetch("course", array("enrollment_id" => $active_enrollment->enrollment_id));
             if ($course) {
                 foreach ($course as $key => $value) {
@@ -166,12 +166,12 @@ class Admin extends CI_Controller {
           =            Lecturer Attendance            =
           =========================================== */
 
-          $lecturer = $this->Crud_model->fetch("lecturer");
+        $lecturer = $this->Crud_model->fetch("lecturer");
 
 
-          /* =====  End of Lecturer Attendance  ====== */
+        /* =====  End of Lecturer Attendance  ====== */
 
-          $data = array(
+        $data = array(
             "title" => "Administrator - Learning Management System | FEU - Institute of Techonology",
             "div_cosml_data" => $report_cosml,
             "course" => $course_total,
@@ -180,12 +180,12 @@ class Admin extends CI_Controller {
             "feedback" => $feedback,
             "active_enrollment" => $active_enrollment,
         );
-          $this->load->view('includes/header', $data);
-          $this->load->view('admin');
-          $this->load->view('includes/footer');
-      }
+        $this->load->view('includes/header', $data);
+        $this->load->view('admin');
+        $this->load->view('includes/footer');
+    }
 
-      public function Announcements() {
+    public function Announcements() {
         // update date
         $ann_full = $this->Crud_model->fetch("announcement");
         if ($ann_full) {
@@ -342,13 +342,13 @@ class Admin extends CI_Controller {
         /* =============================================================
           =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
           ============================================================= */
-          $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-          $active_enrollment = $active_enrollment[0];
-          /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+        $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+        $active_enrollment = $active_enrollment[0];
+        /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
 
         // necessary initialization
-          $sum = 0;
-          $total_hours = 0;
+        $sum = 0;
+        $total_hours = 0;
         $lec_id = $this->uri->segment(3); //lec id
         $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
         $lec_data = $lec_data[0];
@@ -436,9 +436,9 @@ class Admin extends CI_Controller {
                                         $remarks_e = "Overtime";
                                     }
 
-                                    if ($remarks_s == "-") { 
-                                        $remarks_e = ""; 
-                                    } 
+                                    if ($remarks_s == "-") {
+                                        $remarks_e = "";
+                                    }
                                     $attendance_data['lecturer_attendance_id'] = $lec->lecturer_attendance_id;
                                     $attendance_data['lecturer_attendance_date'] = $lec->lecturer_attendance_date;
                                     $attendance_data['lecturer_attendance_in'] = $value->attendance_in_time;
@@ -454,17 +454,17 @@ class Admin extends CI_Controller {
                                     $lec_out = date("h:i", $l_a_e->attendance_out_time);
                                     $stend = date("h:i", $schedule->schedule_end_time);
                                     $interval = $this->diff($lec_in, $lec_out);
-                                    if ($remarks_e == "Overtime" && $remarks_s != "-") { 
+                                    if ($remarks_e == "Overtime" && $remarks_s != "-") {
                                         $interval = $this->diff($lec_in, $stend);
                                         // echo $lec_in."---".$stend."<br>";
                                     }
                                     $sum = $interval['h'] . ":" . $interval['i'];
                                     $attendance_data['hours_rendered'] = $sum;
 
-                                    if ($remarks_s == "-") {  
+                                    if ($remarks_s == "-") {
                                         $attendance_data['hours_rendered'] = 0;
                                         $sum = "0:0";
-                                    } 
+                                    }
                                     $attendance[] = $attendance_data;
                                     array_push($total_time, $sum);
                                 }
@@ -501,13 +501,13 @@ class Admin extends CI_Controller {
             /* =============================================================
               =            FETCH ACTIVE SEASON/TERM - ENROLLMENT            =
               ============================================================= */
-              $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
-              $active_enrollment = $active_enrollment[0];
-              /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
+            $active_enrollment = $this->Crud_model->fetch("enrollment", array("enrollment_is_active" => 1));
+            $active_enrollment = $active_enrollment[0];
+            /* =====  End of FETCH ACTIVE SEASON/TERM - ENROLLMENT  ====== */
 
             // necessary initialization
-              $sum = 0;
-              $total_hours = 0;
+            $sum = 0;
+            $total_hours = 0;
             $lec_id = $this->uri->segment(3); //lec id
             $lec_data = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $lec_id));
             $lec_data = $lec_data[0];
@@ -652,57 +652,57 @@ class Admin extends CI_Controller {
             date_default_timezone_set("Asia/Manila");
             if (!empty($attendance)) {
                 $doc->setCellValue("A1", 'Name:')
-                ->setCellValue("B1", ucwords($lec_data->firstname . " " . $lec_data->lastname))
-                ->setCellValue("A2", 'Expertise:')
-                ->setCellValue("B2", ucwords($lec_data->lecturer_expertise))
-                ->setCellValue("A3", 'Total Rendered Hours:')
-                ->setCellValue("B3", $this->totalRenderedHours($total_time))
-                ->setCellValue("A5", 'ID')
-                ->setCellValue("B5", 'Date')
-                ->setCellValue("C5", 'Schedule Start')
-                ->setCellValue("D5", 'Schedule End')
-                ->setCellValue("E5", 'Hours Rendered')
-                ->setCellValue("F5", 'Time In')
-                ->setCellValue("G5", 'Time Out')
-                ->setCellValue("H5", 'Remarks (in)')
-                ->setCellValue("I5", 'Remarks (out)');
+                        ->setCellValue("B1", ucwords($lec_data->firstname . " " . $lec_data->lastname))
+                        ->setCellValue("A2", 'Expertise:')
+                        ->setCellValue("B2", ucwords($lec_data->lecturer_expertise))
+                        ->setCellValue("A3", 'Total Rendered Hours:')
+                        ->setCellValue("B3", $this->totalRenderedHours($total_time))
+                        ->setCellValue("A5", 'ID')
+                        ->setCellValue("B5", 'Date')
+                        ->setCellValue("C5", 'Schedule Start')
+                        ->setCellValue("D5", 'Schedule End')
+                        ->setCellValue("E5", 'Hours Rendered')
+                        ->setCellValue("F5", 'Time In')
+                        ->setCellValue("G5", 'Time Out')
+                        ->setCellValue("H5", 'Remarks (in)')
+                        ->setCellValue("I5", 'Remarks (out)');
                 foreach ($attendance as $key => $value) {
                     $doc->setCellValue("A" . $number, $value['lecturer_attendance_id'])
-                    ->setCellValue("B" . $number, date("M d, Y - l", $value['lecturer_attendance_date']))
-                    ->setCellValue("C" . $number, date("h:i A", $value['sched_start']))
-                    ->setCellValue("D" . $number, date("h:i A", $value['sched_end']))
-                    ->setCellValue("E" . $number, str_replace(":", ".", $value['hours_rendered']) . " Hours")
-                    ->setCellValue("F" . $number, date("h:i A", $value['lecturer_attendance_in']))
-                    ->setCellValue("G" . $number, date("h:i A", $value['lecturer_attendance_out']))
-                    ->setCellValue("H" . $number, $value['remarks_s'])
-                    ->setCellValue("I" . $number, $value['remarks_e']);
+                            ->setCellValue("B" . $number, date("M d, Y - l", $value['lecturer_attendance_date']))
+                            ->setCellValue("C" . $number, date("h:i A", $value['sched_start']))
+                            ->setCellValue("D" . $number, date("h:i A", $value['sched_end']))
+                            ->setCellValue("E" . $number, str_replace(":", ".", $value['hours_rendered']) . " Hours")
+                            ->setCellValue("F" . $number, date("h:i A", $value['lecturer_attendance_in']))
+                            ->setCellValue("G" . $number, date("h:i A", $value['lecturer_attendance_out']))
+                            ->setCellValue("H" . $number, $value['remarks_s'])
+                            ->setCellValue("I" . $number, $value['remarks_e']);
                     $number++;
                 }
             } else {
                 $doc->setCellValue("A1", 'Name:')
-                ->setCellValue("B1", ucwords($lec_data->firstname . " " . $lec_data->lastname))
-                ->setCellValue("A2", 'Expertise:')
-                ->setCellValue("B2", ucwords($lec_data->lecturer_expertise))
-                ->setCellValue("A3", 'Total Rendered Hours:')
-                ->setCellValue("B3", "<no data>")
-                ->setCellValue("A5", 'ID')
-                ->setCellValue("B5", 'Date')
-                ->setCellValue("C5", 'Schedule Start')
-                ->setCellValue("D5", 'Schedule End')
-                ->setCellValue("E5", 'Hours Rendered')
-                ->setCellValue("F5", 'Time In')
-                ->setCellValue("G5", 'Time Out')
-                ->setCellValue("H5", 'Remarks (in)')
-                ->setCellValue("I5", 'Remarks (out)');
+                        ->setCellValue("B1", ucwords($lec_data->firstname . " " . $lec_data->lastname))
+                        ->setCellValue("A2", 'Expertise:')
+                        ->setCellValue("B2", ucwords($lec_data->lecturer_expertise))
+                        ->setCellValue("A3", 'Total Rendered Hours:')
+                        ->setCellValue("B3", "<no data>")
+                        ->setCellValue("A5", 'ID')
+                        ->setCellValue("B5", 'Date')
+                        ->setCellValue("C5", 'Schedule Start')
+                        ->setCellValue("D5", 'Schedule End')
+                        ->setCellValue("E5", 'Hours Rendered')
+                        ->setCellValue("F5", 'Time In')
+                        ->setCellValue("G5", 'Time Out')
+                        ->setCellValue("H5", 'Remarks (in)')
+                        ->setCellValue("I5", 'Remarks (out)');
                 $doc->setCellValue("A" . $number, "<no data>")
-                ->setCellValue("B" . $number, "<no data>")
-                ->setCellValue("C" . $number, "<no data>")
-                ->setCellValue("D" . $number, "<no data>")
-                ->setCellValue("E" . $number, "<no data>")
-                ->setCellValue("F" . $number, "<no data>")
-                ->setCellValue("G" . $number, "<no data>")
-                ->setCellValue("H" . $number, "<no data>")
-                ->setCellValue("I" . $number, "<no data>");
+                        ->setCellValue("B" . $number, "<no data>")
+                        ->setCellValue("C" . $number, "<no data>")
+                        ->setCellValue("D" . $number, "<no data>")
+                        ->setCellValue("E" . $number, "<no data>")
+                        ->setCellValue("F" . $number, "<no data>")
+                        ->setCellValue("G" . $number, "<no data>")
+                        ->setCellValue("H" . $number, "<no data>")
+                        ->setCellValue("I" . $number, "<no data>");
             }
 
             $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
@@ -791,21 +791,21 @@ class Admin extends CI_Controller {
             foreach ($students as $key => $value) {
                 switch ($value->student_department) {
                     case 'CE':
-                    $ce++;
-                    break;
+                        $ce++;
+                        break;
                     case 'ME':
-                    $me++;
-                    break;
+                        $me++;
+                        break;
                     case 'ECE':
-                    $ece++;
-                    break;
+                        $ece++;
+                        break;
                     case 'EE':
-                    $ee++;
-                    break;
+                        $ee++;
+                        break;
 
                     default:
                         # code...
-                    break;
+                        break;
                 }
             }
         }
@@ -844,7 +844,13 @@ class Admin extends CI_Controller {
         $this->db->order_by('lecturer_feedback_timedate', 'ASC');
         if ($feedback = $this->Crud_model->fetch_join('lecturer_feedback', $col, $join1, $jointype, $join2, $where)) {
             for ($i = 0; $i < sizeof($feedback); $i++) {
-
+                if (strpos(strtolower($feedback[$i]->lecturer_feedback_comment), '<script>') !== false &&
+                        strpos(strtolower($feedback[$i]->lecturer_feedback_comment), '</script>') !== false) {
+                    $feedback[$i]->lecturer_feedback_comment = $this->security->xss_clean($feedback[$i]->lecturer_feedback_comment) .
+                            "<br><span class='red-text'>(possible XSS)</span>";
+                } else {
+                    $feedback[$i]->lecturer_feedback_comment = $this->security->xss_clean($feedback[$i]->lecturer_feedback_comment);
+                }
                 $feedback[$i]->date = date("M d, Y", $feedback[$i]->lecturer_feedback_timedate);
             }
         } else {
