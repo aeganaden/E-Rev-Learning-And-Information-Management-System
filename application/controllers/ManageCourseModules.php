@@ -275,6 +275,9 @@ class ManageCourseModules extends CI_Controller {
 		$filePath = $this->uri->segment(3);
 		$pth    =   "./assets/modules/".$filePath;
 		force_download($pth, NULL);
+
+		//closes the tab
+            echo "<script>window.close();</script>";
 	}
 }
 /* End of file ManageCourseModules.php */
