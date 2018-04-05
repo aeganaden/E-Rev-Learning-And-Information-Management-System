@@ -27,20 +27,20 @@ class Student_scores extends CI_Controller {
             switch ($info['user']->$ident) {
                 case 'CE':
 
-                $program = 1;
-                break;
+                    $program = 1;
+                    break;
                 case 'ECE':
-                $program = 2;
-                break;
+                    $program = 2;
+                    break;
                 case 'EE':
-                $program = 3;
-                break;
+                    $program = 3;
+                    break;
                 case 'ME':
-                $program = 4;
-                break;
+                    $program = 4;
+                    break;
 
                 default:
-                break;
+                    break;
             }
 
 
@@ -82,20 +82,20 @@ class Student_scores extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                    $program = 1;
-                    break;
+                        $program = 1;
+                        break;
                     case 'ECE':
-                    $program = 2;
-                    break;
+                        $program = 2;
+                        break;
                     case 'EE':
-                    $program = 3;
-                    break;
+                        $program = 3;
+                        break;
                     case 'ME':
-                    $program = 4;
-                    break;
+                        $program = 4;
+                        break;
 
                     default:
-                    break;
+                        break;
                 }
 
 
@@ -130,9 +130,7 @@ class Student_scores extends CI_Controller {
         }
     }
 
-    public function importDataSpecific()
-    {
-
+    public function importDataSpecific() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
 
@@ -143,20 +141,20 @@ class Student_scores extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                    $program = 1;
-                    break;
+                        $program = 1;
+                        break;
                     case 'ECE':
-                    $program = 2;
-                    break;
+                        $program = 2;
+                        break;
                     case 'EE':
-                    $program = 3;
-                    break;
+                        $program = 3;
+                        break;
                     case 'ME':
-                    $program = 4;
-                    break;
+                        $program = 4;
+                        break;
 
                     default:
-                    break;
+                        break;
                 }
 
 
@@ -189,7 +187,6 @@ class Student_scores extends CI_Controller {
         } else {
             redirect();
         }
-        
     }
 
     public function insertScore() {
@@ -217,6 +214,45 @@ class Student_scores extends CI_Controller {
             } else {
                 echo json_encode("Problem in inserting Data Scores");
             }
+        }
+    }
+
+    public function specific_read_excel() { //made by mark
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                require "./application/vendor/autoload.php";
+
+                $config['upload_path'] = "./assets/uploads/";
+                $config['allowed_types'] = 'xls|csv|xlsx';
+                $config['max_size'] = '10000';
+                $config["file_name"] = "student_scores_specific" . time();
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload('excel_file')) {       //success upload
+                    $upload_data = $this->upload->data();
+
+                    /** Load $inputFileName to a Spreadsheet Object  * */
+                    $spreadsheet = IOFactory::load($upload_data["full_path"]);
+                    //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
+
+                    $spreadsheet->setActiveSheetIndex(0);
+                    $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                    echo "<pre>";
+                    print_r($sheetData);
+
+                    if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
+                        unlink($upload_data["full_path"]);
+                    }
+                } else {
+                    echo "error upload";
+                    print_r($this->upload->display_errors());
+                }
+            } else {
+                redirect("Student_scores");
+            }
+        } else {
+            redirect();
         }
     }
 
@@ -345,8 +381,8 @@ class Student_scores extends CI_Controller {
                         );
                         $this->load->view('student_scores_import', $data);
                         if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                        unlink($this->upload->data()["full_path"]);
-                    }
+                            unlink($this->upload->data()["full_path"]);
+                        }
                     } else {//insert to dbase
                         //insert data_scores first
                         $this->db->trans_begin();
@@ -382,38 +418,38 @@ class Student_scores extends CI_Controller {
                             );
                             $this->load->view('student_scores_import', $data);
                             if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                            unlink($this->upload->data()["full_path"]);
-                        }
-                    } else {
-                        $this->db->trans_commit();
-                        echo "<script>
+                                unlink($this->upload->data()["full_path"]);
+                            }
+                        } else {
+                            $this->db->trans_commit();
+                            echo "<script>
                         alert('Successfully added!');
-                        window.location.href='".base_url()."Student_scores';
+                        window.location.href='" . base_url() . "Student_scores';
                         </script>";
-                        // echo '<script>alert("Successfully added!")</script>';
-                        // redirect("");
+                            // echo '<script>alert("Successfully added!")</script>';
+                            // redirect("");
+                        }
+                    }
+                } else {            //upload failed
+                    $error_message[] = $this->upload->display_errors();
+                    $data = array(
+                        'title' => "Imported",
+                        "info" => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "selected-nav",
+                        "error_message" => $error_message
+                    );
+                    $this->load->view('student_scores_import', $data);
+                    if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
+                        unlink($this->upload->data()["full_path"]);
                     }
                 }
-            } else {            //upload failed
-                $error_message[] = $this->upload->display_errors();
-                $data = array(
-                    'title' => "Imported",
-                    "info" => $info,
-                    "s_h" => "",
-                    "s_a" => "",
-                    "s_f" => "",
-                    "s_c" => "",
-                    "s_t" => "",
-                    "s_s" => "",
-                    "s_co" => "",
-                    "s_ss" => "selected-nav",
-                    "error_message" => $error_message
-                );
-                $this->load->view('student_scores_import', $data);
-                if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                unlink($this->upload->data()["full_path"]);
-            }
-        }
             } else {            //no segment
                 redirect("Student_scores");
             }
@@ -433,20 +469,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                $program = 1;
-                break;
+                    $program = 1;
+                    break;
                 case 'ECE':
-                $program = 2;
-                break;
+                    $program = 2;
+                    break;
                 case 'EE':
-                $program = 3;
-                break;
+                    $program = 3;
+                    break;
                 case 'ME':
-                $program = 4;
-                break;
+                    $program = 4;
+                    break;
 
                 default:
-                break;
+                    break;
             }
 
 
@@ -488,20 +524,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                $program = 1;
-                break;
+                    $program = 1;
+                    break;
                 case 'ECE':
-                $program = 2;
-                break;
+                    $program = 2;
+                    break;
                 case 'EE':
-                $program = 3;
-                break;
+                    $program = 3;
+                    break;
                 case 'ME':
-                $program = 4;
-                break;
+                    $program = 4;
+                    break;
 
                 default:
-                break;
+                    break;
             }
 
 
@@ -517,7 +553,7 @@ class Student_scores extends CI_Controller {
                     "s_t" => "",
                     "s_s" => "",
                     "s_co" => "",
-                    "s_ss" => "selected-nav", 
+                    "s_ss" => "selected-nav",
                 );
                 $this->load->view('includes/header', $data);
                 $this->load->view('student_scores_data');
@@ -527,13 +563,11 @@ class Student_scores extends CI_Controller {
             } else {
                 redirect('Welcome', 'refresh');
             }
-
-
-
         } else {
             redirect("Home");
         }
     }
+
     public function view_allScores() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             $info = $this->session->userdata('userInfo');
@@ -545,20 +579,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                $program = 1;
-                break;
+                    $program = 1;
+                    break;
                 case 'ECE':
-                $program = 2;
-                break;
+                    $program = 2;
+                    break;
                 case 'EE':
-                $program = 3;
-                break;
+                    $program = 3;
+                    break;
                 case 'ME':
-                $program = 4;
-                break;
+                    $program = 4;
+                    break;
 
                 default:
-                break;
+                    break;
             }
 
 
@@ -574,7 +608,7 @@ class Student_scores extends CI_Controller {
                     "s_t" => "",
                     "s_s" => "",
                     "s_co" => "",
-                    "s_ss" => "selected-nav", 
+                    "s_ss" => "selected-nav",
                 );
                 $this->load->view('includes/header', $data);
                 $this->load->view('student_scores_all');
@@ -584,9 +618,6 @@ class Student_scores extends CI_Controller {
             } else {
                 redirect('Welcome', 'refresh');
             }
-
-
-
         } else {
             redirect("Home");
         }
