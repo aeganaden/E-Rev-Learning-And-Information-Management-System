@@ -6,7 +6,7 @@
     <div class="col s1"></div>
     <div class="col s11">
         <blockquote class="color-primary-green">
-            <h5 class="color-black">Import Student Scores</h5>
+            <h5 class="color-black">Multiple Topics</h5>
         </blockquote>
         <?php // echo form_open_multipart("Student_scores/read_excel/" . $this->uri->segment(3)); ?>
         <form enctype="multipart/form-data" action="<?php echo base_url() . "Student_scores/read_excel/" . $this->uri->segment(3); ?>" method="POST">

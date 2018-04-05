@@ -130,6 +130,68 @@ class Student_scores extends CI_Controller {
         }
     }
 
+    public function importDataSpecific()
+    {
+
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
+
+                $info = $this->session->userdata('userInfo');
+                $ident = $info['identifier'];
+                $ident.="_department";
+                $program = 0;
+
+                switch ($info['user']->$ident) {
+                    case 'CE':
+                    $program = 1;
+                    break;
+                    case 'ECE':
+                    $program = 2;
+                    break;
+                    case 'EE':
+                    $program = 3;
+                    break;
+                    case 'ME':
+                    $program = 4;
+                    break;
+
+                    default:
+                    break;
+                }
+
+
+                if ($info['logged_in'] && $info['identifier'] != "administrator") {
+                    $data = array(
+                        "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                        "info" => $info,
+                        "program" => $program,
+                        "course_id" => $course_id,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "",
+                        "s_co" => "",
+                        "s_ss" => "selected-nav",
+                    );
+                    $this->load->view('includes/header', $data);
+                    $this->load->view('student_scores_import_specific');
+                    $this->load->view('includes/footer');
+                } elseif ($info['identifier'] == "administrator") {
+                    redirect('Admin');
+                } else {
+                    redirect('Welcome', 'refresh');
+                }
+            } else {                //no segment
+                redirect("Student_scores");
+            }
+        } else {
+            redirect();
+        }
+        
+    }
+
     public function insertScore() {
         $total_s = $this->input->post("total_s");
         $total_s_alt = str_replace(" ", "", strip_tags($total_s));
