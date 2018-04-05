@@ -220,6 +220,8 @@ class Student_scores extends CI_Controller {
     public function specific_read_excel() { //made by mark
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+
                 require "./application/vendor/autoload.php";
 
                 $config['upload_path'] = "./assets/uploads/";
@@ -238,8 +240,49 @@ class Student_scores extends CI_Controller {
 
                     $spreadsheet->setActiveSheetIndex(0);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+                    $sheetnames = $spreadsheet->getSheetNames();
                     echo "<pre>";
-                    print_r($sheetData);
+//                    print_r($sheetData);
+                    //CHECKING
+                    $array_size = count($sheetData);
+                    for ($i = 1; $i <= $array_size; $i++) {
+                        if ($i != 1) {
+                            //LAST - check the stud numbers on section, and other validations
+                        } else {                            //1st row - checking of the word student number and the topics indicated
+                            foreach ($sheetData[$i] as $key => $subsheet) {
+                                if ($key == "A") {               //correct
+                                    if (strtolower($subsheet) != "student number") {
+                                        $error_message[] = "Cell 1A should be 'student number'";
+                                    }
+                                } else {                    //get all topic names
+                                    $topic_names[] = $subsheet;
+                                }
+                            }
+                            $wherein = array(
+                                0 => "topic_name",
+                                1 => $topic_names
+                            );
+                            $join = array(
+                                array("subject as sub", "cou.course_id = sub.course_id"),
+                                array("topic as top", "top.subject_id = sub.subject_id")
+                            );
+                            $where = array(
+                                "cou.course_id" => $segment,
+                                "cou.course_department" => $info['user']->fic_department
+                            );
+                            $col = "top.topic_name";
+                            $result = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
+                            if (count($result) != count($topic_names)) {
+                                $message = "Topic results: ";
+                                foreach ($result as $subresult) {
+                                    $message = $message . "'" . $subresult->topic_name . "' ";
+                                }
+                                $error_message[] = $message;
+                                $error_message[] = "Check if the topics covered is valid, also check the spelling";
+                            }
+                        }
+                    }
+                    echo "</pre>";
 
                     if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
                         unlink($upload_data["full_path"]);

@@ -9,7 +9,7 @@
             <h5 class="color-black">Specific Topic</h5>
         </blockquote>
         <?php // echo form_open_multipart("Student_scores/read_excel/" . $this->uri->segment(3)); ?>
-        <form enctype="multipart/form-data" action="<?php echo base_url() . "Student_scores/read_excel/" . $this->uri->segment(3); ?>" method="POST">
+        <form enctype="multipart/form-data" action="<?php echo base_url() . "Student_scores/specific_read_excel/" . $this->uri->segment(3); ?>" method="POST">
             <ul class="collection"  style="margin-bottom: 5%;">
                 <li class="collection-item" id="li_s1" style="padding: 5%; margin-bottom: 1%;">
                     <div class="row  ">
@@ -45,7 +45,7 @@
                             <div class="file-field input-field">
                                 <div class="btn">
                                     <span>File</span>
-                                    <input type="file" id="input_excel" name="excel">
+                                    <input type="file" id="input_excel" name="excel_file">
                                 </div>
                                 <div class="file-path-wrapper">
                                     <input class="file-path validate" type="text">
@@ -170,7 +170,7 @@
         $("#btn_submit_ss").click(function (event) {
 
             $select = $("#select_ss").val();
-            if (  $select == null) {
+            if ($select == null) {
                 $toast = '<span>All values must not be null</span>';
                 Materialize.toast($toast, 2000);
             } else {
@@ -179,13 +179,13 @@
                 });
             }
 
-        }); 
+        });
 
         /*==========================================
          =            jQuery Animate Css            =
          ==========================================*/
 
-         $.fn.extend({
+        $.fn.extend({
             animateCss: function (animationName, callback) {
                 var animationEnd = (function (el) {
                     var animations = {
@@ -213,8 +213,8 @@
             },
         });
 
-         /*=====  End of jQuery Animate Css  ======*/
+        /*=====  End of jQuery Animate Css  ======*/
 
 
-     });
- </script>
+    });
+</script>
