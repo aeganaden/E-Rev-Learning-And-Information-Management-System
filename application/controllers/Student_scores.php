@@ -349,17 +349,13 @@ class Student_scores extends CI_Controller {
             } else {
                 echo "error upload";
                 print_r($this->upload->display_errors());
-            }
+            } 
         } else {
-            echo "error upload";
-            print_r($this->upload->display_errors());
+            redirect("Student_scores");
         }
     } else {
-        redirect("Student_scores");
+        redirect();
     }
-} else {
-    redirect();
-}
 }
 
 public function read_excel() {
