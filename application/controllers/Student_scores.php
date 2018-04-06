@@ -27,20 +27,20 @@ class Student_scores extends CI_Controller {
             switch ($info['user']->$ident) {
                 case 'CE':
 
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'ECE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 
@@ -71,6 +71,15 @@ class Student_scores extends CI_Controller {
         }
     }
 
+    public function checkCourse($id)
+    {
+        $info = $this->session->userdata('userInfo');
+        $course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+        echo "<pre>";
+        // Check course if sa kanya
+        
+    }
+
     public function importData() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
@@ -82,20 +91,20 @@ class Student_scores extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                        $program = 1;
-                        break;
+                    $program = 1;
+                    break;
                     case 'ECE':
-                        $program = 2;
-                        break;
+                    $program = 2;
+                    break;
                     case 'EE':
-                        $program = 3;
-                        break;
+                    $program = 3;
+                    break;
                     case 'ME':
-                        $program = 4;
-                        break;
+                    $program = 4;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
 
 
@@ -141,20 +150,20 @@ class Student_scores extends CI_Controller {
 
                 switch ($info['user']->$ident) {
                     case 'CE':
-                        $program = 1;
-                        break;
+                    $program = 1;
+                    break;
                     case 'ECE':
-                        $program = 2;
-                        break;
+                    $program = 2;
+                    break;
                     case 'EE':
-                        $program = 3;
-                        break;
+                    $program = 3;
+                    break;
                     case 'ME':
-                        $program = 4;
-                        break;
+                    $program = 4;
+                    break;
 
                     default:
-                        break;
+                    break;
                 }
 
 
@@ -242,53 +251,53 @@ class Student_scores extends CI_Controller {
                     print_r($sheetData);
 
                     if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
-                        unlink($upload_data["full_path"]);
-                    }
-                } else {
-                    echo "error upload";
-                    print_r($this->upload->display_errors());
+                    unlink($upload_data["full_path"]);
                 }
             } else {
-                redirect("Student_scores");
+                echo "error upload";
+                print_r($this->upload->display_errors());
             }
         } else {
-            redirect();
+            redirect("Student_scores");
         }
+    } else {
+        redirect();
     }
+}
 
-    public function read_excel() {
-        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
-            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
-                $info = $this->session->userdata('userInfo');
-                require "./application/vendor/autoload.php";
+public function read_excel() {
+    if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+        if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+            $info = $this->session->userdata('userInfo');
+            require "./application/vendor/autoload.php";
 
-                $config['upload_path'] = "./assets/uploads/";
-                $config['allowed_types'] = 'xls|csv|xlsx';
-                $config['max_size'] = '10000';
-                $config["file_name"] = "student_scores_" . time();
+            $config['upload_path'] = "./assets/uploads/";
+            $config['allowed_types'] = 'xls|csv|xlsx';
+            $config['max_size'] = '10000';
+            $config["file_name"] = "student_scores_" . time();
 
-                $this->load->library('upload', $config);
-                /* GETTING ALL OFFERINGS */
-                $data = array(
-                    'title' => "Imported",
-                    "info" => $info
-                );
-                $col = "off.offering_name, off.offering_id";
-                $where = array(
-                    "off.fic_id" => $info["user"]->fic_id,
-                    "off.offering_department" => $info["user"]->fic_department,
-                    "enr.enrollment_is_active" => 1,
-                    "cou.course_department" => $info["user"]->fic_department,
-                    "cou.course_id" => (int) $segment
-                );
-                $join = array(
-                    array("course as cou", "enr.enrollment_id = cou.enrollment_id"),
-                    array("offering as off", "cou.course_id = off.course_id")
-                );
-                $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
-                /* END - GETTING ALL OFFERINGS */
+            $this->load->library('upload', $config);
+            /* GETTING ALL OFFERINGS */
+            $data = array(
+                'title' => "Imported",
+                "info" => $info
+            );
+            $col = "off.offering_name, off.offering_id";
+            $where = array(
+                "off.fic_id" => $info["user"]->fic_id,
+                "off.offering_department" => $info["user"]->fic_department,
+                "enr.enrollment_is_active" => 1,
+                "cou.course_department" => $info["user"]->fic_department,
+                "cou.course_id" => (int) $segment
+            );
+            $join = array(
+                array("course as cou", "enr.enrollment_id = cou.enrollment_id"),
+                array("offering as off", "cou.course_id = off.course_id")
+            );
+            $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
+            /* END - GETTING ALL OFFERINGS */
 
-                $this->load->view('includes/header', $data);
+            $this->load->view('includes/header', $data);
                 if ($this->upload->do_upload('excel')) {       //success upload
                     $upload_data = $this->upload->data();
                     $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
@@ -381,8 +390,8 @@ class Student_scores extends CI_Controller {
                         );
                         $this->load->view('student_scores_import', $data);
                         if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                            unlink($this->upload->data()["full_path"]);
-                        }
+                        unlink($this->upload->data()["full_path"]);
+                    }
                     } else {//insert to dbase
                         //insert data_scores first
                         $this->db->trans_begin();
@@ -418,18 +427,18 @@ class Student_scores extends CI_Controller {
                             );
                             $this->load->view('student_scores_import', $data);
                             if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                                unlink($this->upload->data()["full_path"]);
-                            }
-                        } else {
-                            $this->db->trans_commit();
-                            echo "<script>
+                            unlink($this->upload->data()["full_path"]);
+                        }
+                    } else {
+                        $this->db->trans_commit();
+                        echo "<script>
                         alert('Successfully added!');
                         window.location.href='" . base_url() . "Student_scores';
                         </script>";
                             // echo '<script>alert("Successfully added!")</script>';
                             // redirect("");
-                        }
                     }
+                }
                 } else {            //upload failed
                     $error_message[] = $this->upload->display_errors();
                     $data = array(
@@ -447,9 +456,9 @@ class Student_scores extends CI_Controller {
                     );
                     $this->load->view('student_scores_import', $data);
                     if (file_exists($this->upload->data()["full_path"])) {      //file is deleted when there's error
-                        unlink($this->upload->data()["full_path"]);
-                    }
+                    unlink($this->upload->data()["full_path"]);
                 }
+            }
             } else {            //no segment
                 redirect("Student_scores");
             }
@@ -469,20 +478,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'ECE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 
@@ -524,20 +533,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'ECE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 
@@ -579,20 +588,20 @@ class Student_scores extends CI_Controller {
 
             switch ($info['user']->$ident) {
                 case 'CE':
-                    $program = 1;
-                    break;
+                $program = 1;
+                break;
                 case 'ECE':
-                    $program = 2;
-                    break;
+                $program = 2;
+                break;
                 case 'EE':
-                    $program = 3;
-                    break;
+                $program = 3;
+                break;
                 case 'ME':
-                    $program = 4;
-                    break;
+                $program = 4;
+                break;
 
                 default:
-                    break;
+                break;
             }
 
 
