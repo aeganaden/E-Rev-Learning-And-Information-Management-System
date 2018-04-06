@@ -238,16 +238,63 @@ class Student_scores extends CI_Controller {
                     $spreadsheet = IOFactory::load($upload_data["full_path"]);
                     //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
 
-                    $spreadsheet->setActiveSheetIndex(0);
-                    $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     $sheetnames = $spreadsheet->getSheetNames();
+
+
+                    //CHECKING - SPREADSHEET 1
+                    $spreadsheet->setActiveSheetIndex(1);
+                    $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     echo "<pre>";
 //                    print_r($sheetData);
-                    //CHECKING
+                    foreach ($sheetData as $key => $subsheetData) {
+                        if ($key != 1) {
+                            $temp = array(
+                                "data_scores_type" => $this->input->post('type_of_score'),
+                                "data_scores_score" => $subsheetData["B"],
+                                "data_scores_passing" => $subsheetData["C"]
+                            );
+                            $data_scores[] = $temp;
+                            unset($temp);
+                        }
+                    }
+                    //compute the ids
+                    $last_id = $this->Crud_model->fetch_last("data_scores", "data_scores_id");
+                    $fetch_last_id = $last_id->data_scores_id;
+                    $this->Crud_model->insert_batch("data_scores", $data_scores);
+                    $last_id = $fetch_last_id + count($data_scores);
+                    for ($fetch_last_id; $fetch_last_id < $last_id; $fetch_last_id++) {
+                        $data_scores_id[] = $fetch_last_id + 1;
+                    }
+                    //CHECKING - SPREADSHEET 0
+                    $spreadsheet->setActiveSheetIndex(0);
+                    $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     $array_size = count($sheetData);
                     for ($i = 1; $i <= $array_size; $i++) {
                         if ($i != 1) {
                             //LAST - check the stud numbers on section, and other validations
+                            $counter = 0;
+                            foreach ($sheetData[$i] as $key => $subsheetData) {
+                                if ($key != "A") {          //get only scores
+//                                    print_r("key: " . $key . " val: " . $subsheetData . "<br>");
+                                    if ($subsheetData >= $data_scores[$counter]["data_scores_passing"]) {           //pass
+                                        $is_failed = 0;
+                                    } else {
+                                        $is_failed = 1;
+                                    }
+
+                                    $temp[] = array(
+                                        "student_scores_is_failed" => $is_failed,
+                                        "student_scores_score" => $subsheetData,
+                                        "student_scores_stud_num" => $sheetData[$i]["A"],
+                                        "student_scores_topic_id" => $result[$counter]->topic_id,
+                                        "course_id" => $segment,
+                                        "data_scores_id" => $data_scores_id[$counter]
+                                    );
+                                    $counter++;
+                                    $insert_student_scores[] = $temp[0];
+                                    unset($temp);
+                                }
+                            }
                         } else {                            //1st row - checking of the word student number and the topics indicated
                             foreach ($sheetData[$i] as $key => $subsheet) {
                                 if ($key == "A") {               //correct
@@ -270,7 +317,7 @@ class Student_scores extends CI_Controller {
                                 "cou.course_id" => $segment,
                                 "cou.course_department" => $info['user']->fic_department
                             );
-                            $col = "top.topic_name";
+                            $col = "top.topic_name, top.topic_id";
                             $result = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
                             if (count($result) != count($topic_names)) {
                                 $message = "Topic results: ";
@@ -283,10 +330,12 @@ class Student_scores extends CI_Controller {
                         }
                     }
                     echo "</pre>";
-
+                    //insert
+                    $this->Crud_model->insert_batch("student_scores", $insert_student_scores);
                     if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
                         unlink($upload_data["full_path"]);
                     }
+                    redirect("Student_scores/view_scores");
                 } else {
                     echo "error upload";
                     print_r($this->upload->display_errors());
