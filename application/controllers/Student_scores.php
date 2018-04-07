@@ -71,6 +71,13 @@ class Student_scores extends CI_Controller {
         }
     }
 
+    public function checkCourse($id) {
+        $info = $this->session->userdata('userInfo');
+        $course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+        echo "<pre>";
+        // Check course if sa kanya
+    }
+
     public function importData() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
