@@ -42,7 +42,7 @@
 						$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
 						$lecturer = $lecturer[0];
 						?>
-						<div class=" col s12  col s3" >
+						<div class=" col s12  col m3" >
 							<div class="card sticky-action" >
 								<div class="card-image waves-effect waves-block waves-light" >
 									<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
@@ -62,7 +62,7 @@
 
 								<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
 									<div class="row ">
-										<div class=" col s12  col s12 ">
+										<div class=" col s12  col m12 ">
 
 											<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
@@ -77,13 +77,13 @@
 			<?php endforeach ?>
 		<?php else: ?>
 			<div class="row valign-wrapper">
-				<div class=" col s12  col s4 ">
+				<div class=" col s12  col m4 ">
 					<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No Courses Yet</h3>
 				</div>
-				<div class=" col s12  col s4">
+				<div class=" col s12  col m4">
 					<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
 				</div>	
-				<div class=" col s12  col s4"> 
+				<div class=" col s12  col m4"> 
 				</div>
 			</div>
 		<?php endif ?>
@@ -95,12 +95,12 @@
 <div id="topics-section" class="row container" style="display: none;">
 
 	<!-- DIV FOR TOPICS -->
-	<div class=" col s12  col s1"></div>
-	<div class=" col s12  col s11">
+	<div class=" col s12  col m1"></div>
+	<div class=" col s12  col m11">
 		<ul class="collapsible" id="topic_content" data-collapsible="accordion">
 
 		</ul>
-		<div class=" col s12  col s12" style="display: none" id="div-topics"></div>
+		<div class=" col s12  col m12" style="display: none" id="div-topics"></div>
 	</div>
 
 </div>
@@ -112,8 +112,8 @@
 ======================================================-->
 
 <div class="row container" id="question-section" style="display: none;">
-	<div class=" col s12  col s1"></div>
-	<div class=" col s12  col s11" id="div-q-sec">
+	<div class=" col s12  col m1"></div>
+	<div class=" col s12  col m11" id="div-q-sec">
 		
 
 	</div>
@@ -143,18 +143,18 @@
 <div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
 		<div class="row">
-			<div class=" col s12  col s6">
+			<div class=" col s12  col m6">
 				<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
 			</div>
-			<div class=" col s12  col s6">
+			<div class=" col s12  col m6">
 				<button class="btn red right modal-trigger modal-close"><i class="material-icons">highlight_off</i></button>
 			</div>
 		</div>
 		<div class="row">
-			<div class=" col s12  col s12">
+			<div class=" col s12  col m12">
 				<ul class="tabs bg-primary-green">
-					<li class="tab  col s12  col s6"><a class="color-white active" href="#content">Question</a></li>
-					<li class="tab  col s12  col s6"><a class="color-white" href="#answers">Answers</a></li>
+					<li class="tab  col s12  col m6"><a class="color-white active" href="#content">Question</a></li>
+					<li class="tab  col s12  col m6"><a class="color-white" href="#answers">Answers</a></li>
 				</ul>
 			</div>
 			<div id="content" class=" col s12  col s12">
@@ -164,16 +164,16 @@
 				<!-- Editor -->
 				<textarea name="editor1" id="q_editor"></textarea>
 			</div>
-			<div id="answers" class=" col s12  col s12">
+			<div id="answers" class=" col s12  col m12">
 				
 				<div class="row">
-					<div class=" col s12  col s6">
+					<div class=" col s12  col m6">
 						<blockquote class="color-primary-yellow">
 							<h5 class="color-black">Answers</h5> 
 						</blockquote>
 					</div>
-					<div class=" col s12  col s6">
-						<div class="input-field  col s12  col s12">
+					<div class=" col s12  col m6">
+						<div class="input-field  col s12  col m12">
 							<select id="sl_choices">
 								<option value="" disabled >Choices Type</option>
 								<option value="1" selected>Multiple Choice</option>
