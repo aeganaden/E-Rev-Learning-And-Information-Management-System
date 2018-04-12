@@ -82,7 +82,7 @@ class Student_scores extends CI_Controller {
 
         foreach ($arrayCourseId as $key => $arrVal) {
             if ($id == $arrVal) { 
-                $cheker = 1;
+                $checker = 1;
             }
         } 
         return $checker; 
@@ -93,10 +93,12 @@ class Student_scores extends CI_Controller {
 
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
-
-                if ($this->checkCourse($course_id) == 0) {
-        //  ERROR HINDI GUMAGANA IF ELSE
-                    echo "<script>alert('You don't have access with this module);</script>";
+                // echo $this->checkCourse($course_id);
+                if ($this->checkCourse($course_id) == 0) { 
+                    echo '<script type="text/javascript">'; 
+                    echo "alert('You don\'t have access with this module');"; 
+                    echo 'window.location.href = "index.php";';
+                    echo '</script>';
                 } 
                 $info = $this->session->userdata('userInfo');
                 $ident = $info['identifier'];

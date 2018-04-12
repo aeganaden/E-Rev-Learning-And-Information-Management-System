@@ -5,7 +5,8 @@
   <li class="bg-color-white"><a href="<?=base_url()?>Login/logout " class="color-black">Log Out</a></li>
 </ul>
 <nav class="bg-primary-yellow">
-  <div class="nav-wrapper nav-admin">
+
+  <div class="nav-wrapper nav-admin"> 
     <a href="#" class="brand-logo center"><img src="<?=base_url()?>assets/img/feu-header.png" style="width: 40vh; margin-top: 2%;"></a>
     <ul class="right hide-on-med-and-down ">
       <li><a class="color-black" href="<?=base_url()?>Admin">Home</a></li>

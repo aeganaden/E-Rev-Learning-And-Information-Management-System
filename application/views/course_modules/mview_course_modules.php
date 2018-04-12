@@ -69,7 +69,9 @@
 												$strTitle =  strtolower($strTitle[1]);
 												?>
 												<li class="collection-item bg-color-white" style="text-transform: capitalize;">
-													<?=$k_value->course_modules_name?> 
+													<p>
+														<?=$k_value->course_modules_name?> 
+													</p>
 													
 													<span class="new badge bg-primary-green btn_edit_name modal-trigger"
 													href="#mdl_edit_cname"
@@ -110,13 +112,13 @@
 					</ul>
 				<?php else: ?>
 					<div class="row valign-wrapper">
-						<div class="col s4 ">
+						<div class="col s12 m4 ">
 							<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No </h3>
 						</div>
-						<div class="col s4">
+						<div class="col s12 m4">
 							<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
 						</div>	
-						<div class="col s4">
+						<div class="col s12 m4">
 							<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">Data</h3>
 						</div>
 					</div>
@@ -159,13 +161,13 @@
 			<div class="modal-content">
 				<h4>Edit Course Module Title</h4>
 				<div class="row valign-wrapper">
-					<div class="col s8">
+					<div class="col  s12 m8">
 						<div class="input-field">
 							<input placeholder="" id="mdl_cname" type="text" class="validate">
 							<label for="mdl_cname">Course Module Name</label>
 						</div>
 					</div>
-					<div class="col s4">
+					<div class="col s12 m4">
 						<a href="#!" id="mdl_btn_edit_cname" disabled class="waves-effect waves-green btn bg-primary-green right">Update</a>
 					</div>
 

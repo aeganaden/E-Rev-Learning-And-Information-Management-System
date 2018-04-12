@@ -38,11 +38,11 @@
 				$is_overdue = "";
 			}	
 			?>
-			<div class="col s6">
+			<div class="col s12 m6">
 				<div class="card bg-primary-green ">
 					<div class="card-content white-text">
 						<div class="row" style="margin-bottom: 0 !important;">
-							<div class="col s8">
+							<div class="col s12 m8">
 								<blockquote class="color-primary-yellow">
 									<span class="card-title color-white"><?=$details->activity_details_name?> 
 										- 	<b><?=$offering->offering_name?></b>
@@ -85,19 +85,19 @@
 											</div>
 										</div>
 										<div class="row">
-											<div class="col s6 input-field">
+											<div class="col s12 m6 input-field">
 												<input type="text"  class="timepicker" id="time_s<?=$value->activity_id?>" value="Change Start Time">
 											</div>
-											<div class="col s6 input-field">
+											<div class="col s12 m6 input-field">
 												<input type="text"  class="timepicker" id="time_e<?=$value->activity_id?>" value="Change End Time">
 											</div>
 										</div>
 										<div class="row">
-											<div class="input-field col s6">
+											<div class="input-field col s12 m6">
 												<input type="text" class="datepicker " id="date<?=$value->activity_id?>" value="Change Date">
 											</div>
 
-											<div class="input-field col s6">
+											<div class="input-field col s12 m6">
 												<input placeholder="E.g F1102" id="venue<?=$value->activity_id?>" value="<?=strtoupper($value->activity_venue)?>" type="text" class="validate">
 												<label for="venue<?=$value->activity_id?>">Venue</label>
 											</div>
@@ -113,7 +113,7 @@
 									<button class="btn bg-primary-yellow waves-effect right btn_update_activity" data-sched="<?=$value->activity_schedule_id?>" data-offering="<?=$value->offering_id?>" data-id="<?=$value->activity_id?>">Update</button>
 								</div>
 							</div>
-							<div class="col s4">
+							<div class="col s12 m4">
 								<i class="material-icons right color-white tooltipped btn_delete_activity" data-tooltip="Delete Activity" data-id="<?=$value->activity_id?>" style="cursor: pointer;">delete</i>
 
 								<i class="tooltipped btn_edit_activity material-icons right color-primary-yellow" data-id="<?=$value->activity_id?>" href="#modal_activity" style="cursor: pointer;" data-tooltip="Edit Activity">edit</i>
@@ -204,19 +204,19 @@ switch ($info['user']->$ident) {
 			</h5>
 		</blockquote>
 		<div class="row col s12">
-			<div class="col s3 input-field">
+			<div class="col m3 s12 input-field">
 				<input type="text"  class="datepicker" id="modal_date" value="Add Date">
 				<label for="modal_date">DATE</label>
 			</div>
-			<div class="col s3 input-field">
+			<div class="col m3 s12 input-field">
 				<input type="text"  class="timepicker" id="modal_s_time" value="Add Start Time">
 				<label for="modal_date">START TIME</label>
 			</div>
-			<div class="col s3 input-field">
+			<div class="col m3 s12 input-field">
 				<input type="text"  class="timepicker" id="modal_e_time" value="Add End Time">
 				<label for="modal_date">END TIME</label>
 			</div>
-			<div class="col s3 input-field">
+			<div class="col m3 s12 input-field">
 				<input placeholder="E.g T506" id="modal_venue" type="text" class="validate">
 				<label for="modal_venue">VENUE</label>
 			</div>
@@ -227,11 +227,11 @@ switch ($info['user']->$ident) {
 			</h5>
 		</blockquote>
 		<div class="row">
-			<div class="input-field col s6">
+			<div class="input-field col s12 m6">
 				<textarea id="modal_desciption" class="materialize-textarea"></textarea>
 				<label for="modal_desciption">ACTIVITY DESCRIPTION</label>
 			</div>
-			<div class="input-field  col s6">
+			<div class="input-field  col s12 m6">
 				<select id="modal_type">
 					<option value="" disabled selected>Choose Type</option>
 					<?php 

@@ -6,8 +6,9 @@
     =            Cards            =
     ============================-->
 
+
     <div class="row" >
-        <div class="col s3" >
+        <div class="col s12 m3" >
             <div class="row" id="card-chart" onclick="store(this.id)" style="cursor: pointer;">
                 <div class="card">
                     <div class="card-content bg-primary-yellow">
@@ -28,6 +29,9 @@
             <div class="row">
                 <h4>Actions</h4>
                 <ul class="collapsible" data-collapsible="accordion">
+                    <li>
+                        <a href="<?=base_url()?>Login/logout " class="collapsible-header bg-primary-green color-white bg-primary-green color-white"><i class="material-icons ">arrow_back</i>Log Out</a>
+                    </li>
                     <li>
                         <div class="collapsible-header bg-primary-green color-white" ><i class="material-icons ">chrome_reader_mode</i>Reports</div>
                         <div class="collapsible-body">
@@ -112,23 +116,23 @@
         <!--============================
         =            CHARTS            =
         =============================-->
-        <div class="col s9 valign-wrapper" id="div-card-chart" style="display: none;">
+        <div class="col s12 m9 valign-wrapper" id="div-card-chart" style="display: none;">
             <h4 class="center">
                 <span style="text-transform: uppercase; border-bottom: 2px solid #F2A900" >Total Number Of Students</span>
             </h4>
-            <div class="col s3"></div>
-            <div class="col s6">
+            <div class="col s12 m3"></div>
+            <div class="col s12 m6">
                 <br>
                 <canvas id="myChart"></canvas>
             </div>
-            <div class="col s3 ">
+            <div class="col s12 m3 ">
 
             </div>
         </div>
 
         <!--====  End of CHARTS  ====-->
 
-        <div class="col s9">
+        <div class="col s12 m9">
 
 
             <!-- Lecturers' Feedback Account -->

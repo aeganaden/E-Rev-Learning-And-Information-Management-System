@@ -12,7 +12,7 @@
 <div class="row container">
 	<nav  style="background-color: transparent; box-shadow: none;">
 		<div class="nav-wrapper">
-			<div class=" col s12  col s12" id="div-bread">
+			<div class="col s12" id="div-bread">
 				<a href="#!" class="breadcrumb" id="btn_launch_subjects"><i class="material-icons">map</i>Subject Area</a>
 			</div>
 		</div>
@@ -77,13 +77,13 @@
 			<?php endforeach ?>
 		<?php else: ?>
 			<div class="row valign-wrapper">
-				<div class=" col s12  col m4 ">
+				<div class=" col s12 m4 ">
 					<h3 class="center" style="text-transform: uppercase; text-align: justify-all;">No Courses Yet</h3>
 				</div>
-				<div class=" col s12  col m4">
+				<div class=" col s12 m4">
 					<img src="<?=base_url()?>assets/chibi/Chibi_crying.svg " alt="">
 				</div>	
-				<div class=" col s12  col m4"> 
+				<div class=" col s12 m4"> 
 				</div>
 			</div>
 		<?php endif ?>
@@ -95,12 +95,12 @@
 <div id="topics-section" class="row container" style="display: none;">
 
 	<!-- DIV FOR TOPICS -->
-	<div class=" col s12  col m1"></div>
-	<div class=" col s12  col m11">
+	<div class=" col s12 m1"></div>
+	<div class=" col s12 m11">
 		<ul class="collapsible" id="topic_content" data-collapsible="accordion">
 
 		</ul>
-		<div class=" col s12  col m12" style="display: none" id="div-topics"></div>
+		<div class=" col s12 m12" style="display: none" id="div-topics"></div>
 	</div>
 
 </div>
@@ -112,8 +112,8 @@
 ======================================================-->
 
 <div class="row container" id="question-section" style="display: none;">
-	<div class=" col s12  col m1"></div>
-	<div class=" col s12  col m11" id="div-q-sec">
+	<div class=" col s12 m1"></div>
+	<div class=" col s12 m11" id="div-q-sec">
 		
 
 	</div>
@@ -143,37 +143,37 @@
 <div id="modal_q" class="modal modal-fixed-footer bg-color-white">
 	<div class="modal-content">
 		<div class="row">
-			<div class=" col s12  col m6">
+			<div class=" col s12 m6">
 				<h4 style="border-bottom: 3px solid #007A33; padding-bottom: 2%;">Question <span id="q_id_num"></span></h4>
 			</div>
-			<div class=" col s12  col m6">
+			<div class=" col s12 m6">
 				<button class="btn red right modal-trigger modal-close"><i class="material-icons">highlight_off</i></button>
 			</div>
 		</div>
 		<div class="row">
-			<div class=" col s12  col m12">
+			<div class=" col s12 m12">
 				<ul class="tabs bg-primary-green">
-					<li class="tab  col s12  col m6"><a class="color-white active" href="#content">Question</a></li>
-					<li class="tab  col s12  col m6"><a class="color-white" href="#answers">Answers</a></li>
+					<li class="tab  col s12 m6"><a class="color-white active" href="#content">Question</a></li>
+					<li class="tab  col s12 m6"><a class="color-white" href="#answers">Answers</a></li>
 				</ul>
 			</div>
-			<div id="content" class=" col s12  col s12">
+			<div id="content" class=" col s12 s12">
 				<blockquote class="color-primary-yellow">
 					<h5 class="color-black">Content</h5>
 				</blockquote>
 				<!-- Editor -->
 				<textarea name="editor1" id="q_editor"></textarea>
 			</div>
-			<div id="answers" class=" col s12  col m12">
+			<div id="answers" class=" col s12 m12">
 				
 				<div class="row">
-					<div class=" col s12  col m6">
+					<div class=" col s12 m6">
 						<blockquote class="color-primary-yellow">
 							<h5 class="color-black">Answers</h5> 
 						</blockquote>
 					</div>
-					<div class=" col s12  col m6">
-						<div class="input-field  col s12  col m12">
+					<div class=" col s12 m6">
+						<div class="input-field  col s12 m12">
 							<select id="sl_choices">
 								<option value="" disabled >Choices Type</option>
 								<option value="1" selected>Multiple Choice</option>
@@ -778,18 +778,18 @@ function fetchCourseware(topic_id) {
 
 			for(var j = 0; j < i_data.length; j++){
 				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
-				'<div class=" col s12  col s6">'+
+				'<div class="col s12 m6">'+
 				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
 				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
 				'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
 				'</div>'+
-				'<div class=" col s12  col s6">'+
-				'<div class=" col s12  col s6">'+
+				'<div class=" col s12 m6">'+
+				'<div class=" col s12 m6">'+
 				'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
 				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
 				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failing remarks">mood_bad</i>46</span>'+
 				'</div>'+
-				'<div class=" col s12  col s6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
+				'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 				'</div>'+
 				'</div>';
 			}

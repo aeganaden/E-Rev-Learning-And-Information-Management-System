@@ -11,7 +11,7 @@
             </blockquote>
         </div>
         <div class="row">
-            <div class="col s6"> 
+            <div class="col s12 m6"> 
                 <div class="card bg-primary-green">
                     <div class="card-content white-text">
                         <span class="card-title">Long Quizzes</span>
@@ -22,7 +22,7 @@
                     </div>  
                 </div>
             </div>
-            <div class="col s6"> 
+            <div class="col s12 m6"> 
                 <div class="card bg-primary-green">
                     <div class="card-content white-text">
                         <span class="card-title">Short Quizzes</span>
@@ -35,7 +35,7 @@
             </div> 
         </div>    
         <div class="row">
-            <div class="col s6"> 
+            <div class="col s12 m6"> 
                 <div class="card bg-primary-green">
                     <div class="card-content white-text">
                         <span class="card-title">Seatworks</span>
@@ -46,7 +46,7 @@
                     </div>  
                 </div>
             </div>
-            <div class="col s6"> 
+            <div class="col s12 m6"> 
                 <div class="card bg-primary-green">
                     <div class="card-content white-text">
                         <span class="card-title">Exam</span>

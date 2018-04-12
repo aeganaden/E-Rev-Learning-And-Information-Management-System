@@ -21,7 +21,7 @@
 					
 					<?php foreach ($course as $key => $value): ?>
 						<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?>
-							<div class="col s4" >
+							<div class="col s12 m4" >
 								<div class="row">
 									<div class="col s12">
 										<div class="card bg-primary-green">
