@@ -71,8 +71,7 @@ class Student_scores extends CI_Controller {
         }
     }
 
-    public function checkCourse($id)
-    {
+    public function checkCourse($id) {
         $info = $this->session->userdata('userInfo');
         $course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
         $arrayCourseId = array();
@@ -86,7 +85,7 @@ class Student_scores extends CI_Controller {
                 $cheker = 1;
             }
         } 
-        return $checker;
+        return $checker; 
     }
 
     public function importData() {
@@ -176,11 +175,9 @@ class Student_scores extends CI_Controller {
                     case 'ME':
                     $program = 4;
                     break;
-
                     default:
                     break;
                 }
-
 
                 if ($info['logged_in'] && $info['identifier'] != "administrator") {
                     $data = array(
@@ -255,6 +252,41 @@ class Student_scores extends CI_Controller {
 
                 $this->load->library('upload', $config);
 
+                $ident = $info['identifier'];
+                $ident.="_department";
+                $program = 0;
+                switch ($info['user']->$ident) {
+                    case 'CE':
+                    $program = 1;
+                    break;
+                    case 'ECE':
+                    $program = 2;
+                    break;
+                    case 'EE':
+                    $program = 3;
+                    break;
+                    case 'ME':
+                    $program = 4;
+                    break;
+                    default:
+                    break;
+                }
+                $data = array(
+                    "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                    "info" => $info,
+                    "program" => $program,
+                    "course_id" => $segment,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "selected-nav"
+                );
+                $this->load->view('includes/header', $data);
+
                 if ($this->upload->do_upload('excel_file')) {       //success upload
                     $upload_data = $this->upload->data();
 
@@ -264,23 +296,51 @@ class Student_scores extends CI_Controller {
 
                     $sheetnames = $spreadsheet->getSheetNames();
 
-
                     //CHECKING - SPREADSHEET 1
                     $spreadsheet->setActiveSheetIndex(1);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-                    echo "<pre>";
-//                    print_r($sheetData);
+
+                    $type_of_score = $this->input->post('type_of_score');
+                    $counter = 0;
                     foreach ($sheetData as $key => $subsheetData) {
                         if ($key != 1) {
-                            $temp = array(
-                                "data_scores_type" => $this->input->post('type_of_score'),
-                                "data_scores_score" => $subsheetData["B"],
-                                "data_scores_passing" => $subsheetData["C"]
-                            );
-                            $data_scores[] = $temp;
-                            unset($temp);
+                            if (is_numeric($subsheetData["B"]) && (fmod($subsheetData["B"], 1) == 0) &&
+                                is_numeric($subsheetData["C"]) && (fmod($subsheetData["C"], 1) == 0)) {
+                                if ($subsheetData["B"] >= 0 && $subsheetData["C"] >= 0) {
+                                    if ($subsheetData["B"] >= $subsheetData["C"]) {
+                                        $temp = array(
+                                            "data_scores_type" => $type_of_score,
+                                            "data_scores_score" => $subsheetData["B"],
+                                            "data_scores_passing" => $subsheetData["C"]
+                                        );
+                                        $data_scores[] = $temp;
+                                        unset($temp);
+
+                                        $sheet2_list_of_topics[$counter]["topics"] = $subsheetData["A"];
+                                        $counter++;
+                                    } else {
+                                        $error_message[] = "Row " . $key . ": PASSING SCORE must be greater than or equal to TOTAL SCORE";
+                                    }
+                                } else {
+                                    $error_message[] = "Row " . $key . ": TOTAL SCORE and PASSING SCORE cannot be zero";
+                                }
+                            } else {
+                                $error_message[] = "Row " . $key . ": TOTAL SCORE and PASSING SCORE should be whole numbers";
+                                break;
+                            }
+                        } else {                //checks row 1
+                            if (strcmp($subsheetData["A"], "topics") != 0) {
+                                $error_message[] = "Row " . $key . "A: Should be labeled as 'topics'";
+                            }
+                            if (strcmp($subsheetData["B"], "total score") != 0) {
+                                $error_message[] = "Row " . $key . "A: Should be labeled as 'total score'";
+                            }
+                            if (strcmp($subsheetData["C"], "passing score") != 0) {
+                                $error_message[] = "Row " . $key . "A: Should be labeled as 'passing score'";
+                            }
                         }
                     }
+                    $this->db->trans_begin();
                     //compute the ids
                     $last_id = $this->Crud_model->fetch_last("data_scores", "data_scores_id");
                     $fetch_last_id = $last_id->data_scores_id;
@@ -289,123 +349,205 @@ class Student_scores extends CI_Controller {
                     for ($fetch_last_id; $fetch_last_id < $last_id; $fetch_last_id++) {
                         $data_scores_id[] = $fetch_last_id + 1;
                     }
+                    $insert_student_scores;
                     //CHECKING - SPREADSHEET 0
                     $spreadsheet->setActiveSheetIndex(0);
                     $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
                     $array_size = count($sheetData);
+
                     for ($i = 1; $i <= $array_size; $i++) {
+                        //RECOMMENDATION: get all column or row values then check if all is empty, if so, then declared as empty row or column [BUG].
                         if ($i != 1) {
                             //LAST - check the stud numbers on section, and other validations
                             $counter = 0;
+
                             foreach ($sheetData[$i] as $key => $subsheetData) {
                                 if ($key != "A") {          //get only scores
 //                                    print_r("key: " . $key . " val: " . $subsheetData . "<br>");
-                                    if ($subsheetData >= $data_scores[$counter]["data_scores_passing"]) {           //pass
-                                        $is_failed = 0;
+                                    if (!empty($subsheetData) && "" != trim($subsheetData)) {
+                                        if ($subsheetData >= $data_scores[$counter]["data_scores_passing"]) {           //pass
+                                            $is_failed = 0;
+                                        } else {
+                                            $is_failed = 1;
+                                        }
+                                        if ($data_scores[$counter]["data_scores_score"] < $subsheetData) {
+                                            $error_message[] = "Error on $i$key: Student's score($subsheetData) cannot be greater than the total score(" . $data_scores[$counter]["data_scores_score"] . ")";
+                                        }
+                                        if (0 > $subsheetData) {
+                                            $error_message[] = "Error on $i$key: Student's score($subsheetData) cannot be a negative number";
+                                        }
+                                        $temp[] = array(
+                                            "student_scores_is_failed" => $is_failed,
+                                            "student_scores_score" => $subsheetData,
+                                            "student_scores_stud_num" => $sheetData[$i]["A"],
+                                            "student_scores_topic_id" => $result[$counter]->topic_id,
+                                            "course_id" => $segment,
+                                            "data_scores_id" => $data_scores_id[$counter]
+                                        );
+                                        $counter++;
+                                        $insert_student_scores[] = $temp[0];
+                                        unset($temp);
                                     } else {
-                                        $is_failed = 1;
+                                        $error_message[] = "Error on $i$key: Cells cannot be empty";
+                                        $counter++;
                                     }
-
-                                    $temp[] = array(
-                                        "student_scores_is_failed" => $is_failed,
-                                        "student_scores_score" => $subsheetData,
-                                        "student_scores_stud_num" => $sheetData[$i]["A"],
-                                        "student_scores_topic_id" => $result[$counter]->topic_id,
-                                        "course_id" => $segment,
-                                        "data_scores_id" => $data_scores_id[$counter]
-                                    );
-                                    $counter++;
-                                    $insert_student_scores[] = $temp[0];
-                                    unset($temp);
+                                } else {
+                                    //collect student numbers
+                                    if (is_numeric($subsheetData) && fmod($subsheetData, 1) == 0) {
+                                        if (strlen($subsheetData) == 9) {
+                                            $stud_ids[] = $subsheetData;
+                                        } else {
+                                            $error_message[] = "Invalid student number on <b>$i$key</b>: $subsheetData. Should be 9-digit number";
+                                        }
+                                    } else {
+                                        $error_message[] = "Invalid student number on $i$key: $subsheetData";
+                                    }
                                 }
                             }
                         } else {                            //1st row - checking of the word student number and the topics indicated
                             foreach ($sheetData[$i] as $key => $subsheet) {
-                                if ($key == "A") {               //correct
-                                    if (strtolower($subsheet) != "student number") {
-                                        $error_message[] = "Cell 1A should be 'student number'";
+//                                echo strlen($subsheet) . " " . $key . "(result here) <br>";
+                                if ("" == trim($subsheet) && strlen($subsheet) == 0 && empty($subsheet)) {
+                                    $error_message[] = "Empty cell on 1" . $key;
+                                    break;
+                                } else {
+                                    if ($key == "A") {               //correct
+                                        if (strtolower($subsheet) != "student number") {
+                                            $error_message[] = "Cell 1A should be 'student number'";
+                                        }
+                                    } else {                    //get all topic names
+                                        $topic_names[] = $subsheet;
                                     }
-                                } else {                    //get all topic names
-                                    $topic_names[] = $subsheet;
                                 }
                             }
-                            $wherein = array(
-                                0 => "topic_name",
-                                1 => $topic_names
-                            );
-                            $join = array(
-                                array("subject as sub", "cou.course_id = sub.course_id"),
-                                array("topic as top", "top.subject_id = sub.subject_id")
-                            );
-                            $where = array(
-                                "cou.course_id" => $segment,
-                                "cou.course_department" => $info['user']->fic_department
-                            );
-                            $col = "top.topic_name, top.topic_id";
-                            $result = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
-                            if (count($result) != count($topic_names)) {
-                                $message = "Topic results: ";
-                                foreach ($result as $subresult) {
-                                    $message = $message . "'" . $subresult->topic_name . "' ";
+
+                            if (!isset($error_message)) {
+                                $wherein = array(
+                                    0 => "topic_name",
+                                    1 => $topic_names
+                                );
+                                $join = array(
+                                    array("subject as sub", "cou.course_id = sub.course_id"),
+                                    array("topic as top", "top.subject_id = sub.subject_id")
+                                );
+                                $where = array(
+                                    "cou.course_id" => $segment,
+                                    "cou.course_department" => $info['user']->fic_department
+                                );
+                                $col = "top.topic_name, top.topic_id";
+                                $result = $this->Crud_model->fetch_join2("course as cou", $col, $join, NULL, $where, NULL, NULL, $wherein);
+                                if (count($result) != count($topic_names)) {
+                                    $error_message[] = "Check if the topics covered is valid, also check the spelling";
+                                    $message = "&emsp;&emsp;- Topic results: ";
+                                    foreach ($result as $subresult) {
+                                        $message = $message . "'" . $subresult->topic_name . "' ";
+                                    }
+                                    $error_message[] = $message;
+                                } else {
+                                    for ($x = 0; $x < count($result); $x++) {
+                                        if (strcasecmp($sheet2_list_of_topics[$x]["topics"], $topic_names[$x]) != 0) {
+                                            $error_message[] = "Topics in sheet 1 and 2, and the arrangement of topics should match";
+                                            break;
+                                        }
+                                    }
                                 }
-                                $error_message[] = $message;
-                                $error_message[] = "Check if the topics covered is valid, also check the spelling";
                             }
                         }
                     }
-                    echo "</pre>";
+                    //check the students in section
+                    $wherein = array(
+                        0 => "student_num",
+                        1 => $stud_ids
+                    );
+                    $join = array(
+                        array("offering as off", "off.offering_id = stud.offering_id"),
+                        array("course as cou", "cou.course_id = off.course_id"),
+                        array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id")
+                    );
+                    $where = array(
+                        "cou.course_id" => $segment,
+                        "cou.course_department" => $info['user']->fic_department,
+                        "stud.student_department" => $info['user']->fic_department,
+                        "off.offering_department" => $info['user']->fic_department,
+                        "off.offering_name" => strtoupper($sheetnames[0]),
+                        "enr.enrollment_id" => $info["active_enrollment"]
+                    );
+                    $col = "stud.student_num";
+                    $stud_section = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, NULL, $wherein);
+                    if (count($stud_section) != count($stud_ids)) {
+                        $error_message[] = "Student number/s not included to the indicated section";
+                    }
                     //insert
-                    $this->Crud_model->insert_batch("student_scores", $insert_student_scores);
-                    if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
+                    if (empty($error_message)) {
+                        $this->Crud_model->insert_batch("student_scores", $insert_student_scores);
+                    } else {
+                        $error_message[] = "Please edit the file and upload it again";
+                    }
 
-                    unlink($upload_data["full_path"]);
+                    if (isset($error_message) && !empty($error_message)) {
+                        $data = array("error_message" => $error_message);
+                        $this->load->view('student_scores_import_specific', $data);
+                    } else {
+                        if ($this->db->trans_status() === FALSE) {
+                            $error_message[] = "There is an error inserting data to database";
+                            $data = array("error_message" => $error_message);
+                            $this->load->view('student_scores_import_specific', $data);
+                            $this->db->trans_rollback();
+                            if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
+                            unlink($upload_data["full_path"]);
+                        }
+                        } else {                                //success
+                            $this->db->trans_commit();
+                            redirect("Student_scores/view_scores");
+                        }
+                    }
+                } else {            //upload failed
+                    $error_message[] = $this->upload->display_errors();
+                    $data = array("error_message" => $error_message);
+                    $this->load->view('student_scores_import_specific', $data);
                 }
-                redirect("Student_scores/view_scores");
+                $this->load->view('includes/footer');
             } else {
-                echo "error upload";
-                print_r($this->upload->display_errors());
-            } 
+                redirect("Student_scores");
+            }
         } else {
-            redirect("Student_scores");
+            redirect();
         }
-    } else {
-        redirect();
     }
-}
 
-public function read_excel() {
-    if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
-        if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
-            $info = $this->session->userdata('userInfo');
-            require "./application/vendor/autoload.php";
+    public function read_excel() {
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                require "./application/vendor/autoload.php";
 
-            $config['upload_path'] = "./assets/uploads/";
-            $config['allowed_types'] = 'xls|csv|xlsx';
-            $config['max_size'] = '10000';
-            $config["file_name"] = "student_scores_" . time();
+                $config['upload_path'] = "./assets/uploads/";
+                $config['allowed_types'] = 'xls|csv|xlsx';
+                $config['max_size'] = '10000';
+                $config["file_name"] = "student_scores_" . time();
 
-            $this->load->library('upload', $config);
-            /* GETTING ALL OFFERINGS */
-            $data = array(
-                'title' => "Imported",
-                "info" => $info
-            );
-            $col = "off.offering_name, off.offering_id";
-            $where = array(
-                "off.fic_id" => $info["user"]->fic_id,
-                "off.offering_department" => $info["user"]->fic_department,
-                "enr.enrollment_is_active" => 1,
-                "cou.course_department" => $info["user"]->fic_department,
-                "cou.course_id" => (int) $segment
-            );
-            $join = array(
-                array("course as cou", "enr.enrollment_id = cou.enrollment_id"),
-                array("offering as off", "cou.course_id = off.course_id")
-            );
-            $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
-            /* END - GETTING ALL OFFERINGS */
+                $this->load->library('upload', $config);
+                /* GETTING ALL OFFERINGS */
+                $data = array(
+                    'title' => "Imported",
+                    "info" => $info
+                );
+                $col = "off.offering_name, off.offering_id";
+                $where = array(
+                    "off.fic_id" => $info["user"]->fic_id,
+                    "off.offering_department" => $info["user"]->fic_department,
+                    "enr.enrollment_is_active" => 1,
+                    "cou.course_department" => $info["user"]->fic_department,
+                    "cou.course_id" => (int) $segment
+                );
+                $join = array(
+                    array("course as cou", "enr.enrollment_id = cou.enrollment_id"),
+                    array("offering as off", "cou.course_id = off.course_id")
+                );
+                $sections = $this->Crud_model->fetch_join2("enrollment as enr", $col, $join, NULL, $where, TRUE);
+                /* END - GETTING ALL OFFERINGS */
 
-            $this->load->view('includes/header', $data);
+                $this->load->view('includes/header', $data);
                 if ($this->upload->do_upload('excel')) {       //success upload
                     $upload_data = $this->upload->data();
                     $input = $this->input->post(array('type_of_score', 'total_score', 'passing_score'));
