@@ -75,15 +75,30 @@ class Student_scores extends CI_Controller {
     {
         $info = $this->session->userdata('userInfo');
         $course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
-        echo "<pre>";
-        // Check course if sa kanya
-        
+        $arrayCourseId = array();
+        $checker = 0;
+        foreach ($course as $key => $value) {
+            $arrayCourseId[] = $value->course_id; 
+        }
+
+        foreach ($arrayCourseId as $key => $arrVal) {
+            if ($id == $arrVal) { 
+                $cheker = 1;
+            }
+        } 
+        return $checker;
     }
 
     public function importData() {
+
+
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
 
+                if ($this->checkCourse($course_id) == 0) {
+        //  ERROR HINDI GUMAGANA IF ELSE
+                    echo "<script>alert('You don't have access with this module);</script>";
+                } 
                 $info = $this->session->userdata('userInfo');
                 $ident = $info['identifier'];
                 $ident.="_department";
@@ -190,7 +205,7 @@ class Student_scores extends CI_Controller {
                 } else {
                     redirect('Welcome', 'refresh');
                 }
-            } else {                //no segment
+            } else { 
                 redirect("Student_scores");
             }
         } else {
