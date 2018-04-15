@@ -13,11 +13,18 @@ class Mobile extends CI_Controller {
 //        $_POST['username'] = "mgbabaran";
 //        $_POST['password'] = "mark";
         $where = array(
-            "username" => $_POST['username'],
-            "password" => $_POST['password']
+            "stud.username" => $_POST['username'],
+            "stud.password" => $_POST['password'],
+            "enr.enrollment_is_active" => 1
         );
-
-        if ($result['result'] = $this->Crud_model->fetch_array("student", NULL, $where)) {
+//        $where = "stud.username = " . $_POST['username'] . " AND stud.password = " . $_POST['password'] . " AND enr.enrollment_is_active = 1";
+        $join = array(
+            array("offering as off", "off.offering_id = stud.offering_id "),
+            array("course as cou", "cou.course_id = off.course_id"),
+            array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id")
+        );
+        $col = "stud.*";
+        if ($result['result'] = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE)) {
             $result['result'][0]['full_name'] = ucwords(strtolower($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']));
             $result['result'][0]['identifier'] = "Student";
             $result['result'][0]['offering_id'];
@@ -32,9 +39,14 @@ class Mobile extends CI_Controller {
             $result_hold = $this->Crud_model->fetch_join2('offering as off', $col, $join, $jointype, $where);
             $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
 //            echo "<pre>";
-//            print_r($result_hold);
+//            print_r($result);
             print_r(json_encode($result));
-        } else if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
+        }
+        $where = array(
+            "username" => $_POST['username'],
+            "password" => $_POST['password']
+        );
+        if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
             if ($result['result'][0]['fic_status'] == 1) {
                 $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
                 $result['result'][0]['identifier'] = "Faculty in Charge";
@@ -52,10 +64,6 @@ class Mobile extends CI_Controller {
             } else {
                 print_r("");
             }
-        } else if ($result['result'] = $this->Crud_model->fetch_array("prof", NULL, $where)) {
-            $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
-            $result['result'][0]['identifier'] = "Professor";
-            print_r(json_encode($result));
         } else {
             print_r("");
         }
