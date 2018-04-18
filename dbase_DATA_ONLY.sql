@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2018 at 03:02 AM
+-- Generation Time: Apr 17, 2018 at 04:30 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -23,11 +23,47 @@ SET time_zone = "+00:00";
 --
 
 --
+-- Dumping data for table `activity_details`
+--
+
+INSERT INTO `activity_details` (`activity_details_id`, `activity_details_name`) VALUES
+(1, 'Lecture'),
+(2, 'Seatwork'),
+(3, 'Quiz'),
+(4, 'Other');
+
+--
 -- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`, `lastname`, `image_path`) VALUES
-(999999999, 'admin', 'admin', 'admin', 'admin', 'admin', 'adad');
+(999999999, 'admin', 'admin', 'admin', 'admin', 'admin', 'admin');
+
+--
+-- Dumping data for table `choice`
+--
+
+INSERT INTO `choice` (`choice_id`, `choice_choice`, `choice_is_answer`, `courseware_question_id`) VALUES
+(1, '<p>True</p>', 0, 1),
+(2, '<p>False</p>', 1, 1),
+(3, '<p>True</p>', 0, 2),
+(4, '<p>False</p>', 1, 2),
+(5, '<p>True</p>', 0, 3),
+(6, '<p>False</p>', 1, 3),
+(7, '<p>True</p>', 0, 4),
+(8, '<p>False</p>', 1, 4),
+(9, '<p>True</p>', 0, 5),
+(10, '<p>False</p>', 1, 5),
+(11, '<p>True</p>', 0, 6),
+(12, '<p>False</p>', 1, 6),
+(13, '<p>True</p>', 0, 7),
+(14, '<p>False</p>', 1, 7),
+(15, '<p>True</p>', 0, 8),
+(16, '<p>False</p>', 1, 8),
+(17, '<p>True</p>', 0, 9),
+(18, '<p>False</p>', 1, 9),
+(19, '<p>True</p>', 0, 10),
+(20, '<p>False</p>', 1, 10);
 
 --
 -- Dumping data for table `course`
@@ -36,10 +72,46 @@ INSERT INTO `admin` (`admin_id`, `username`, `password`, `firstname`, `midname`,
 INSERT INTO `course` (`course_id`, `course_course_code`, `course_course_title`, `course_department`, `course_is_active`, `enrollment_id`, `professor_id`, `year_level_id`) VALUES
 (1, 'CECORREL1', 'CE CORRELATION COURSE 1', 'CE', 1, 1, 201111111, 2),
 (2, 'CECORREL2', 'CE CORRELATION COURSE 2', 'CE', 1, 1, 201111111, 3),
-(3, 'MECORREL1', 'ME CORRELATION 1', 'ME', 1, 1, 201122222, 2),
+(3, 'MECORREL1', 'ME CORRELATION COURSE 1', 'ME', 1, 1, 201122222, 2),
 (4, 'MECORREL2', 'ME CORRELATION COURSE 2', 'ME', 1, 1, 201122222, 3),
 (5, 'ECECORREL1', 'ECE CORRELATION COURSE 1', 'ECE', 1, 1, 201133333, 2),
 (6, 'ECECORREL2', 'ECE CORRELATION COURSE 2', 'ECE', 1, 1, 201133333, 3);
+
+--
+-- Dumping data for table `courseware`
+--
+
+INSERT INTO `courseware` (`courseware_id`, `courseware_name`, `courseware_description`, `courseware_date_added`, `courseware_date_edited`, `courseware_status`, `topic_id`) VALUES
+(1, 'Algebra 1', 'algebra here', 1523086577, 1523086577, 1, 69),
+(2, 'Plane and spherical geo 1', 'bla bla', 1523086998, 1523086998, 1, 70),
+(3, 'Plane and spherical trigo', 'bla bla', 1523087012, 1523087012, 1, 70),
+(4, 'plane and spherical trigo', 'bla bla', 1523087033, 1523087033, 1, 70),
+(5, 'test trigo', 'hey', 1523087104, 1523087104, 1, 71);
+
+--
+-- Dumping data for table `courseware_question`
+--
+
+INSERT INTO `courseware_question` (`courseware_question_id`, `courseware_question_question`, `courseware_question_status`, `courseware_id`) VALUES
+(1, '<div><p>trigo question 1</p>\n</div>', 1, 5),
+(2, '<div><p>trigo question 2</p>\n</div>', 1, 5),
+(3, '<div><p>geo question 1</p>\n</div>', 1, 2),
+(4, '<div><p>geo question 2</p>\n</div>', 1, 2),
+(5, '<div><p>algebra question 1</p>\n</div>', 1, 1),
+(6, '<div><p>algebra question 2</p>\n</div>', 1, 1),
+(7, '<div><p>geo question 3</p>\n</div>', 1, 3),
+(8, '<div><p>geo question 4</p>\n</div>', 1, 3),
+(9, '<div><p>geo question 5</p>\n</div>', 1, 4),
+(10, '<div><p>geo question 6</p>\n</div>', 1, 4);
+
+--
+-- Dumping data for table `data_scores`
+--
+
+INSERT INTO `data_scores` (`data_scores_id`, `data_scores_type`, `data_scores_score`, `data_scores_passing`) VALUES
+(1, 1, 30, 20),
+(2, 1, 30, 20),
+(3, 1, 40, 20);
 
 --
 -- Dumping data for table `enrollment`
@@ -53,10 +125,10 @@ INSERT INTO `enrollment` (`enrollment_id`, `enrollment_sy`, `enrollment_term`, `
 --
 
 INSERT INTO `fic` (`fic_id`, `firstname`, `midname`, `lastname`, `username`, `password`, `email`, `image_path`, `fic_department`, `fic_status`) VALUES
-(1, 'Riza', 'Blossom', 'Malaya', 'cefic', 'cefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'CE', 1),
-(2, 'Riza1', 'Blossom', 'Malaya', 'mefic', 'mefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ME', 1),
-(3, 'Riza2', 'Blossom', 'Malaya', 'ecefic', 'ecefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ECE', 1),
-(4, 'Riza3', 'Blossom', 'Malaya', 'eefic', 'eefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'EE', 1);
+(201200001, 'Riza', 'Blossom', 'Malaya', 'cefic', 'cefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'CE', 1),
+(201200002, 'Fabian', 'Javier ', 'Ladera', 'mefic', 'mefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ME', 1),
+(201200003, 'Monte', 'Jovany', 'Castillo', 'ecefic', 'ecefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'ECE', 1),
+(201200004, 'Jack', 'Elvin', 'Manahan', 'eefic', 'eefic', 'rbmalaya@fit.edu.ph', 'assets/img/profiles/profile.jpg', 'EE', 1);
 
 --
 -- Dumping data for table `lecturer`
@@ -77,16 +149,25 @@ INSERT INTO `lecturer` (`lecturer_id`, `id_number`, `firstname`, `midname`, `las
 --
 
 INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log_content_id`) VALUES
-(1, 201111111, 1520924227, 1, 1),
-(2, 201122222, 1520924249, 1, 1),
-(3, 201133333, 1520924278, 1, 1),
-(4, 1, 1520924299, 1, 1),
-(5, 2, 1520924898, 1, 1),
-(6, 3, 1520925497, 1, 1),
-(7, 201133333, 1520925860, 1, 1),
-(8, 2, 1520925869, 1, 1),
-(9, 3, 1520925997, 1, 1),
-(10, 1, 1520926391, 1, 1);
+(1, 201200003, 1523086498, 1, 1),
+(2, 21, 1523087327, 1, 1),
+(3, 201200003, 1523087388, 1, 1),
+(4, 201200003, 1523089244, 1, 1),
+(5, 21, 1523090890, 1, 1),
+(6, 21, 1523090898, 1, 1),
+(7, 23, 1523091175, 1, 1),
+(8, 999999999, 1523974915, 1, 1),
+(9, 201200001, 1523974923, 1, 1);
+
+--
+-- Dumping data for table `login_sessions`
+--
+
+INSERT INTO `login_sessions` (`login_sessions_id`, `login_sessions_identifier`, `login_sessions_status`) VALUES
+(1, 201310584, 0),
+(2, 201310584, 0),
+(3, 201310584, 1),
+(4, 201410367, 1);
 
 --
 -- Dumping data for table `log_content`
@@ -101,12 +182,12 @@ INSERT INTO `log_content` (`log_content_id`, `log_content_name`) VALUES
 --
 
 INSERT INTO `offering` (`offering_id`, `offering_name`, `offering_department`, `course_id`, `fic_id`) VALUES
-(1, 'V21', 'CE', 1, 1),
-(2, 'V22', 'CE', 1, 1),
-(3, 'K21', 'ME', 3, 2),
-(4, 'K22', 'ME', 3, 2),
-(5, 'F21', 'ECE', 5, 3),
-(6, 'F22', 'ECE', 5, 3);
+(1, 'V21', 'CE', 1, 201200001),
+(2, 'V22', 'CE', 1, 201200001),
+(3, 'K21', 'ME', 3, 201200002),
+(4, 'K22', 'ME', 3, 201200002),
+(5, 'F21', 'ECE', 5, 201200003),
+(6, 'F22', 'ECE', 5, 201200003);
 
 --
 -- Dumping data for table `professor`
@@ -117,6 +198,31 @@ INSERT INTO `professor` (`professor_id`, `firstname`, `midname`, `lastname`, `pr
 (201122222, 'Angelo Markus', 'Buan', 'Zaguirre', 'ME', 'abzaguirre@fit.edu.ph', 'meprof', 'meprof', 'assets/img/profiles/profile.jpg', 0, 1),
 (201133333, 'Allen', 'Pogi', 'Torres', 'ECE', 'aptorres@fit.edu.ph', 'eceprof', 'eceprof', 'assets/img/profiles/profile.jpg', 0, 1),
 (201144444, 'Ralph Adrian', 'Cute', 'Buen', 'EE', 'rbuen@fit.edu.ph', 'eeprof', 'eeprof', 'assets/img/profiles/profile.jpg', 0, 1);
+
+--
+-- Dumping data for table `remedial_coursewares`
+--
+
+INSERT INTO `remedial_coursewares` (`remedial_coursewares_id`, `is_done`, `student_scores_id`, `courseware_id`) VALUES
+(1, 0, 1, 1),
+(2, 0, 2, 2),
+(3, 0, 7, 1);
+
+--
+-- Dumping data for table `remedial_grade_assessment`
+--
+
+INSERT INTO `remedial_grade_assessment` (`remedial_grade_assessment_id`, `remedial_grade_assessment_score`, `remedial_grade_assessment_total`, `remedial_grade_assessment_time`, `student_id`, `courseware_id`, `remedial_coursewares_id`) VALUES
+(1, 0, 2, '00:00:13', 21, 1, 1),
+(2, 1, 2, '00:00:08', 21, 1, 1);
+
+--
+-- Dumping data for table `remedial_student_answer`
+--
+
+INSERT INTO `remedial_student_answer` (`remedial_student_answer_id`, `choice_is_correct`, `courseware_question_id`, `choice_id`, `student_id`, `courseware_id`) VALUES
+(1, 0, 5, 9, 21, 1),
+(2, 0, 6, 11, 21, 1);
 
 --
 -- Dumping data for table `schedule`
@@ -155,16 +261,11 @@ INSERT INTO `student` (`student_id`, `student_num`, `firstname`, `midname`, `las
 (18, 201410821, 'SHAIRA MAE', 'COSTALES', 'BUNAO', 'COSTALES', 'COSTALES', 'COSTALES@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
 (19, 201412224, 'ROGER', 'CAJES JR.', 'DATALIO', 'CAJES JR.', 'CAJES JR.', 'CAJES JR.@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
 (20, 201412670, 'PAUL DERICK', 'ENRIQUEZ', 'NOCHE', 'ENRIQUEZ', 'ENRIQUEZ', 'ENRIQUEZ@fit.edu.ph', 'ME', 'assets/img/profiles/profile.jpg', 0, 4),
-(21, 201310584, 'BRIAN PAUL', 'ANDAYA', 'MARTINEZ', 'ANDAYA', 'ANDAYA', 'ANDAYA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
+(21, 201310584, 'BRIAN PAUL', 'ANDAYA', 'MARTINEZ', 'ANDAYA', 'ANDAYA', 'ANDAYA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 1, 5),
 (22, 201310916, 'JOSE GABRIEL', 'QUEDDENG', 'SUÑGA', 'QUEDDENG', 'QUEDDENG', 'QUEDDENG@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
-(23, 201410367, 'JENNY LIZA', 'SUNGA', 'BATALLA', 'SUNGA', 'SUNGA', 'SUNGA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
+(23, 201410367, 'JENNY LIZA', 'SUNGA', 'BATALLA', 'SUNGA', 'SUNGA', 'SUNGA@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 1, 5),
 (24, 201512691, 'MARCO JERIC', 'ROSALES', 'NAVARRO', 'ROSALES', 'ROSALES', 'ROSALES@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
-(25, 201710117, 'HARRY MILLE', 'ANG', 'WANG', 'ANG', 'ANG', 'ANG@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5),
-(26, 201710074, 'MARK JOHNNEL', 'BALEN', 'ALORO', 'BALEN', 'BALEN', 'BALEN@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
-(27, 201710100, 'DARRYLL D`WAYNE', 'BUSTILLOS', 'CUSTAN', 'BUSTILLOS', 'BUSTILLOS', 'BUSTILLOS@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
-(28, 201710424, 'HANS PETER KARL', 'BRUNNER', 'FERRERA', 'BRUNNER', 'BRUNNER', 'BRUNNER@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
-(29, 201710447, 'MARTIN DAVE', 'BADINAS', 'TOBIAS', 'BADINAS', 'BADINAS', 'BADINAS@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6),
-(30, 201710453, 'QAEDA VENETT', 'CINCO', 'CRUZ', 'CINCO', 'CINCO', 'CINCO@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 6);
+(25, 201710117, 'HARRY MILLE', 'ANG', 'WANG', 'ANG', 'ANG', 'ANG@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg', 0, 5);
 
 --
 -- Dumping data for table `student_list`
@@ -250,6 +351,27 @@ INSERT INTO `student_list` (`student_id`, `firstname`, `midname`, `lastname`, `u
 (201710458, 'SAMI', 'IBRAHIM', 'YOUSUF', 'IBRAHIM', 'IBRAHIM', 'IBRAHIM@fit.edu.ph', 'ECE', 'assets/img/profiles/profile.jpg');
 
 --
+-- Dumping data for table `student_scores`
+--
+
+INSERT INTO `student_scores` (`student_scores_id`, `student_scores_is_failed`, `student_scores_score`, `student_scores_stud_num`, `student_scores_topic_id`, `course_id`, `data_scores_id`) VALUES
+(1, 1, 19, 201310584, '69', 5, 1),
+(2, 1, 10, 201310584, '70', 5, 2),
+(3, 0, 21, 201310584, '71', 5, 3),
+(4, 0, 29, 201310916, '69', 5, 1),
+(5, 0, 29, 201310916, '70', 5, 2),
+(6, 0, 27, 201310916, '71', 5, 3),
+(7, 1, 9, 201410367, '69', 5, 1),
+(8, 0, 29, 201410367, '70', 5, 2),
+(9, 0, 40, 201410367, '71', 5, 3),
+(10, 0, 20, 201512691, '69', 5, 1),
+(11, 0, 30, 201512691, '70', 5, 2),
+(12, 0, 39, 201512691, '71', 5, 3),
+(13, 0, 21, 201710117, '69', 5, 1),
+(14, 0, 30, 201710117, '70', 5, 2),
+(15, 0, 39, 201710117, '71', 5, 3);
+
+--
 -- Dumping data for table `subject`
 --
 
@@ -270,32 +392,32 @@ INSERT INTO `subject` (`subject_id`, `subject_name`, `subject_description`, `lec
 --
 
 INSERT INTO `subject_list` (`subject_list_id`, `subject_list_name`, `subject_list_department`, `subject_list_is_active`, `subject_list_description`, `year_level_id`) VALUES
-(1, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 'This subject area is exclusive for CE department', 2),
-(2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 'This subject area is exclusive for CE department', 3),
-(3, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, 'This subject area is exclusive for CE department', 5),
-(4, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, 'This subject area is exclusive for CE department', 3),
-(5, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, 'This subject area is exclusive for CE department', 5),
-(6, 'STRUCTURAL ENGINEERING AND CONSTRUCTION', 'CE', 1, 'This subject area is exclusive for CE department', 5),
-(7, 'MATHEMATICS', 'EE', 1, 'This subject area is exclusive for EE department', 2),
-(8, 'MATHEMATICS', 'EE', 1, 'This subject area is exclusive for EE department', 3),
-(9, 'MATHEMATICS', 'EE', 1, 'This subject area is exclusive for EE department', 5),
-(10, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, 'This subject area is exclusive for EE department', 3),
-(11, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, 'This subject area is exclusive for EE department', 5),
-(12, 'ENGINEERING SCIENCES AND ALLIED SUBJECTS', 'EE', 1, 'This subject area is exclusive for EE department', 5),
-(13, 'MATHEMATICS', 'ECE', 1, 'This subject area is exclusive for ECE department', 2),
-(14, 'MATHEMATICS', 'ECE', 1, 'This subject area is exclusive for ECE department', 3),
-(15, 'MATHEMATICS', 'ECE', 1, 'This subject area is exclusive for ECE department', 5),
-(16, 'ELECTRONICS ENGINEERING', 'ECE', 1, 'This subject area is exclusive for ECE department', 3),
-(17, 'ELECTRONICS ENGINEERING', 'ECE', 1, 'This subject area is exclusive for ECE department', 5),
-(18, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'ECE', 1, 'This subject area is exclusive for ECE department', 3),
-(19, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'ECE', 1, 'This subject area is exclusive for ECE department', 5),
-(20, 'ELECTRONICS SYSTEMS AND TECHNOLOGIES', 'ECE', 1, 'This subject area is exclusive for ECE department', 5),
-(21, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 'This subject area is exclusive for ME department', 2),
-(22, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 'This subject area is exclusive for ME department', 3),
-(23, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, 'This subject area is exclusive for ME department', 5),
-(24, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, 'This subject area is exclusive for ME department', 3),
-(25, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, 'This subject area is exclusive for ME department', 5),
-(26, 'POWER AND INDUSTRIAL PLANT ENGINEERING', 'ME', 1, 'This subject area is exclusive for ME department', 5);
+(1, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, NULL, 2),
+(2, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, NULL, 3),
+(3, 'MATHEMATICS, SURVEYING AND TRANSPORTATION ENGINEERING', 'CE', 1, NULL, 5),
+(4, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, NULL, 3),
+(5, 'HYDRAULICS AND GEOTECHNICAL ENGINEERING', 'CE', 1, NULL, 5),
+(6, 'STRUCTURAL ENGINEERING AND CONSTRUCTION', 'CE', 1, NULL, 5),
+(7, 'MATHEMATICS', 'EE', 1, NULL, 2),
+(8, 'MATHEMATICS', 'EE', 1, NULL, 3),
+(9, 'MATHEMATICS', 'EE', 1, NULL, 5),
+(10, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, NULL, 3),
+(11, 'ELECTRICAL ENGINEERING PROFESSIONAL SUBJECTS', 'EE', 1, NULL, 5),
+(12, 'ENGINEERING SCIENCES AND ALLIED SUBJECTS', 'EE', 1, NULL, 5),
+(13, 'MATHEMATICS', 'ECE', 1, NULL, 2),
+(14, 'MATHEMATICS', 'ECE', 1, NULL, 3),
+(15, 'MATHEMATICS', 'ECE', 1, NULL, 5),
+(16, 'ELECTRONICS ENGINEERING', 'ECE', 1, NULL, 3),
+(17, 'ELECTRONICS ENGINEERING', 'ECE', 1, NULL, 5),
+(18, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'ECE', 1, NULL, 3),
+(19, 'GENERAL ENGINEERING AND APPLIED SCIENCES', 'ECE', 1, NULL, 5),
+(20, 'ELECTRONICS SYSTEMS AND TECHNOLOGIES', 'ECE', 1, NULL, 5),
+(21, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, NULL, 2),
+(22, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, NULL, 3),
+(23, 'MATHEMATICS, ENGINEERING ECONOMICS AND BASIC ENGINEERING SCIENCES', 'ME', 1, NULL, 5),
+(24, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, NULL, 3),
+(25, 'MACHINE DESIGN, MATERIALS, AND SHOP PRACTICE', 'ME', 1, NULL, 5),
+(26, 'POWER AND INDUSTRIAL PLANT ENGINEERING', 'ME', 1, NULL, 5);
 
 --
 -- Dumping data for table `subject_list_has_topic_list`
@@ -671,95 +793,95 @@ INSERT INTO `topic` (`topic_id`, `topic_name`, `topic_description`, `topic_done`
 --
 
 INSERT INTO `topic_list` (`topic_list_id`, `topic_list_name`, `topic_list_is_active`, `topic_list_description`) VALUES
-(1, 'Algebra', 1, 'This is Algebra'),
-(2, 'Plane and Spherical Geometry', 1, 'This is Plane and Spherical Geometry'),
-(3, 'Plane and Spherical Trigo', 1, 'This is Plane and Spherical Trigo'),
-(4, 'Analytic Geometry', 1, 'This is Analytic Geometry'),
-(5, 'Differential Calculus', 1, 'This is Differential Calculus'),
-(6, 'Integral Calculus', 1, 'This is Integral Calculus'),
-(7, 'Differential Equation', 1, 'This is Differential Equation'),
-(8, 'Probability', 1, 'This is Probability'),
-(9, 'Economy', 1, 'This is Economy'),
-(10, 'Survey 1', 1, 'This is Survey 1'),
-(11, 'Survey 2', 1, 'This is Survey 2'),
-(12, 'Survey 3', 1, 'This is Survey 3'),
-(13, 'Hydraulics 1', 1, 'This is Hydraulics 1'),
-(14, 'Hydraulics 2', 1, 'This is Hydraulics 2'),
-(15, 'Hydraulics 3', 1, 'This is Hydraulics 3'),
-(16, 'Hydraulics 4', 1, 'This is Hydraulics 4'),
-(17, 'Geotech 2', 1, 'This is Geotech 2'),
-(18, 'Geotech 3', 1, 'This is Geotech 3'),
-(19, 'Geotech 4', 1, 'This is Geotech 4'),
-(20, 'Mechanics 1', 1, 'This is Mechanics 1'),
-(21, 'Mechanics 2', 1, 'This is Mechanics 2'),
-(22, 'Mechanics 3', 1, 'This is Mechanics 3'),
-(23, 'Strength 1', 1, 'This is Strength 1'),
-(24, 'Strength 2', 1, 'This is Strength 2'),
-(25, 'Theory 1', 1, 'This is Theory 1'),
-(26, 'Theory 2', 1, 'This is Theory 2'),
-(27, 'Theory 3', 1, 'This is Theory 3'),
-(28, 'Steel 1', 1, 'This is Steel 1'),
-(29, 'Steel 2', 1, 'This is Steel 2'),
-(30, 'Steel 3', 1, 'This is Steel 3'),
-(31, 'RCD 1', 1, 'This is RCD 1'),
-(32, 'RCD 2', 1, 'This is RCD 2'),
-(33, 'RCD 3', 1, 'This is RCD 3'),
-(34, 'Advance Math', 1, 'This is Advance Math'),
-(35, 'Probability and Statistics', 1, 'This is Probability and Statistics'),
-(36, 'Chemistry', 1, 'This is Chemistry'),
-(37, 'Physics', 1, 'This is Physics'),
-(38, 'Mechanics', 1, 'This is Mechanics'),
-(39, 'Strength of Materials', 1, 'This is Strength of Materials'),
-(40, 'Thermodynamics', 1, 'This is Thermodynamics'),
-(41, 'Hydraulics', 1, 'This is Hydraulics'),
-(42, 'Fluid Mechanics', 1, 'This is Fluid Mechanics'),
-(43, 'Engineering Econmy', 1, 'This is Engineering Econmy'),
-(44, 'Philippine Electrical Code', 1, 'This is Philippine Electrical Code'),
-(45, 'Laws and Ethics', 1, 'This is Laws and Ethics'),
-(46, 'Computer Fundamentals', 1, 'This is Computer Fundamentals'),
-(47, 'Circuits 1', 1, 'This is Circuits 1'),
-(48, 'Circuits 2', 1, 'This is Circuits 2'),
-(49, 'Circuits 3', 1, 'This is Circuits 3'),
-(50, 'DC Machine', 1, 'This is DC Machine'),
-(51, 'AC Machinces', 1, 'This is AC Machinces'),
-(52, 'Aparatus and Equipment', 1, 'This is Aparatus and Equipment'),
-(53, 'Power Systems', 1, 'This is Power Systems'),
-(54, 'Illumination', 1, 'This is Illumination'),
-(55, 'Transient', 1, 'This is Transient'),
-(56, 'Power Plant', 1, 'This is Power Plant'),
-(57, 'Electronics', 1, 'This is Electronics'),
-(58, 'Vector Analysis and Electromagnets', 1, 'This is Vector Analysis and Electromagnets'),
-(59, 'Engineering Economy', 1, 'This is Engineering Economy'),
-(60, 'Electrical Elements', 1, 'This is Electrical Elements'),
-(61, 'DC and AC circuits', 1, 'This is DC and AC circuits'),
-(62, 'Electricity and Magnetism', 1, 'This is Electricity and Magnetism'),
-(63, 'Microelectronics', 1, 'This is Microelectronics'),
-(64, 'Semiconductor Devices', 1, 'This is Semiconductor Devices'),
-(65, 'Logic Circuits', 1, 'This is Logic Circuits'),
-(66, 'Industrial Electronics and Power Supply', 1, 'This is Industrial Electronics and Power Supply'),
-(67, 'Radiowave Communications', 1, 'This is Radiowave Communications'),
-(68, 'Transmission Lines and Waveguides', 1, 'This is Transmission Lines and Waveguides'),
-(69, 'Antenna', 1, 'This is Antenna'),
-(70, 'Microwave Communications', 1, 'This is Microwave Communications'),
-(71, 'Analog Modulation', 1, 'This is Analog Modulation'),
-(72, 'Digital Communications ', 1, 'This is Digital Communications '),
-(73, 'Fiber Oprics', 1, 'This is Fiber Oprics'),
-(74, 'Trigonometry', 1, 'This is Trigonometry'),
-(75, 'Solid Mensuration', 1, 'This is Solid Mensuration'),
-(76, 'Statics and Dynamics', 1, 'This is Statics and Dynamics'),
-(77, 'Heat Transfer', 1, 'This is Heat Transfer'),
-(78, 'Combustion Engineering', 1, 'This is Combustion Engineering'),
-(79, 'Machine Elements', 1, 'This is Machine Elements'),
-(80, 'Machine Shop Theory', 1, 'This is Machine Shop Theory'),
-(81, 'Material Science Engineering', 1, 'This is Material Science Engineering'),
-(82, 'Fluid Machinery', 1, 'This is Fluid Machinery'),
-(83, 'Combustion Engine', 1, 'This is Combustion Engine'),
-(84, 'Refrigeration, Heating, Ventilation and Airconditioning', 1, 'This is Refrigeration, Heating, Ventilation and Airconditioning'),
-(85, 'Industrial Process', 1, 'This is Industrial Process'),
-(86, 'Safety Engineering and Intrumentation', 1, 'This is Safety Engineering and Intrumentation'),
-(87, 'Industrial Plant Engineering', 1, 'This is Industrial Plant Engineering'),
-(88, 'Power Plant Engineering', 1, 'This is Power Plant Engineering'),
-(89, 'Vibration Engineering', 1, 'This is Vibration Engineering');
+(1, 'Algebra', 1, NULL),
+(2, 'Plane and Spherical Geometry', 1, NULL),
+(3, 'Plane and Spherical Trigo', 1, NULL),
+(4, 'Analytic Geometry', 1, NULL),
+(5, 'Differential Calculus', 1, NULL),
+(6, 'Integral Calculus', 1, NULL),
+(7, 'Differential Equation', 1, NULL),
+(8, 'Probability', 1, NULL),
+(9, 'Economy', 1, NULL),
+(10, 'Survey 1', 1, NULL),
+(11, 'Survey 2', 1, NULL),
+(12, 'Survey 3', 1, NULL),
+(13, 'Hydraulics 1', 1, NULL),
+(14, 'Hydraulics 2', 1, NULL),
+(15, 'Hydraulics 3', 1, NULL),
+(16, 'Hydraulics 4', 1, NULL),
+(17, 'Geotech 2', 1, NULL),
+(18, 'Geotech 3', 1, NULL),
+(19, 'Geotech 4', 1, NULL),
+(20, 'Mechanics 1', 1, NULL),
+(21, 'Mechanics 2', 1, NULL),
+(22, 'Mechanics 3', 1, NULL),
+(23, 'Strength 1', 1, NULL),
+(24, 'Strength 2', 1, NULL),
+(25, 'Theory 1', 1, NULL),
+(26, 'Theory 2', 1, NULL),
+(27, 'Theory 3', 1, NULL),
+(28, 'Steel 1', 1, NULL),
+(29, 'Steel 2', 1, NULL),
+(30, 'Steel 3', 1, NULL),
+(31, 'RCD 1', 1, NULL),
+(32, 'RCD 2', 1, NULL),
+(33, 'RCD 3', 1, NULL),
+(34, 'Advance Math', 1, NULL),
+(35, 'Probability and Statistics', 1, NULL),
+(36, 'Chemistry', 1, NULL),
+(37, 'Physics', 1, NULL),
+(38, 'Mechanics', 1, NULL),
+(39, 'Strength of Materials', 1, NULL),
+(40, 'Thermodynamics', 1, NULL),
+(41, 'Hydraulics', 1, NULL),
+(42, 'Fluid Mechanics', 1, NULL),
+(43, 'Engineering Econmy', 1, NULL),
+(44, 'Philippine Electrical Code', 1, NULL),
+(45, 'Laws and Ethics', 1, NULL),
+(46, 'Computer Fundamentals', 1, NULL),
+(47, 'Circuits 1', 1, NULL),
+(48, 'Circuits 2', 1, NULL),
+(49, 'Circuits 3', 1, NULL),
+(50, 'DC Machine', 1, NULL),
+(51, 'AC Machinces', 1, NULL),
+(52, 'Aparatus and Equipment', 1, NULL),
+(53, 'Power Systems', 1, NULL),
+(54, 'Illumination', 1, NULL),
+(55, 'Transient', 1, NULL),
+(56, 'Power Plant', 1, NULL),
+(57, 'Electronics', 1, NULL),
+(58, 'Vector Analysis and Electromagnets', 1, NULL),
+(59, 'Engineering Economy', 1, NULL),
+(60, 'Electrical Elements', 1, NULL),
+(61, 'DC and AC circuits', 1, NULL),
+(62, 'Electricity and Magnetism', 1, NULL),
+(63, 'Microelectronics', 1, NULL),
+(64, 'Semiconductor Devices', 1, NULL),
+(65, 'Logic Circuits', 1, NULL),
+(66, 'Industrial Electronics and Power Supply', 1, NULL),
+(67, 'Radiowave Communications', 1, NULL),
+(68, 'Transmission Lines and Waveguides', 1, NULL),
+(69, 'Antenna', 1, NULL),
+(70, 'Microwave Communications', 1, NULL),
+(71, 'analog Modulation', 1, NULL),
+(72, 'Digital Communications ', 1, NULL),
+(73, 'Fiber Oprics', 1, NULL),
+(74, 'Trigonometry', 1, NULL),
+(75, 'Solid Mensuration', 1, NULL),
+(76, 'Statics and Dynamics', 1, NULL),
+(77, 'Heat Transfer', 1, NULL),
+(78, 'Combustion Engineering', 1, NULL),
+(79, 'Machine Elements', 1, NULL),
+(80, 'Machine Shop Theory', 1, NULL),
+(81, 'Material Science Engineering', 1, NULL),
+(82, 'Fluid Machinery', 1, NULL),
+(83, 'Combustion Engine', 1, NULL),
+(84, 'Refrigeration, Heating, Ventilation and Airconditioning', 1, NULL),
+(85, 'Industrial Process', 1, NULL),
+(86, 'Safety Engineering and Intrumentation', 1, NULL),
+(87, 'Industrial Plant Engineering', 1, NULL),
+(88, 'Power Plant Engineering', 1, NULL),
+(89, 'Vibration Engineering', 1, NULL);
 
 --
 -- Dumping data for table `year_level`

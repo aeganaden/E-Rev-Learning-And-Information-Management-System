@@ -213,6 +213,8 @@ class Mobile extends CI_Controller {
                 $result['message'][0]['message'] = "No data";
                 print_r(json_encode($result));
             }
+        } else {
+            print_r("");
         }
     }
 
@@ -312,6 +314,65 @@ class Mobile extends CI_Controller {
         } else {
             $result['message'][0]['message'] = "Submitting failed";
             print_r(json_encode($result));
+        }
+    }
+
+    public function course_modules() {
+        $_POST['identifier'] = "student";
+        $_POST['firstname'] = "mark denver";
+        $_POST['midname'] = "gatan";
+        $_POST['lastname'] = "babaran";
+        $_POST['id'] = '4';
+        $_POST['department'] = "CE";
+        $_POST['offering_id'] = 1;
+
+        $like[0] = "firstname";
+        $like[1] = $_POST['firstname'];
+        $like[2] = "midname";
+        $like[3] = $_POST['midname'];
+        $like[4] = "lastname";
+        $like[5] = $_POST['lastname'];
+        $identifier = $_POST['identifier'];
+        if (strtolower($identifier) == "student") {
+            $like[6] = "student_id";
+        } else if (strtolower($identifier) == "faculty in charge") {
+            $like[6] = "fic_id";
+        }
+        $like[7] = $_POST['id'];
+
+        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+            $col = "cm.course_modules_id, top.topic_name, cm.course_modules_path, cm.course_modules_name,top.topic_id, top.topic_name";
+            $join = array(
+                array("topic as top", "top.topic_id= cm.topic_id"),
+                array("subject as sub", "sub.subject_id = top.subject_id"),
+                array("course as cou", "cou.course_id = sub.course_id"),
+                array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id"),
+                array("offering as off", "off.course_id = cou.course_id")
+            );
+            $where = array(
+                "cou.course_department" => $_POST['department'],
+                "enr.enrollment_is_active" => $this->get_active_enrollment()[0]->enrollment_id,
+                "off.offering_id" => $_POST['offering_id'],
+                "cm.course_modules_status" => 1
+            );
+            $result = $this->Crud_model->fetch_join2("course_modules as cm", $col, $join, NULL, $where, NULL, TRUE);
+
+            $topic_hold = [];
+            for ($i = 0; $i < count($result); $i++) {
+                $name = $result[$i]["topic_name"];
+                //  LAST!!!!!!!!!!!
+                if (!in_array($name, $topic_hold)) {        //not yet found
+                    $topic_hold[] = $name;
+                }
+            }
+
+            unset($result);
+            $result["result"] = $topic_hold;
+            print_r(json_encode($result));
+        } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
+
+        } else {
+            print_r("");
         }
     }
 
