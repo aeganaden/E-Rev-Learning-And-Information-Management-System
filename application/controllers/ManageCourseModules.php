@@ -66,6 +66,31 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+
+	public function checkSubject($id)
+	{
+		$info = $this->session->userdata('userInfo');
+		$course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+		$arrayCourseId = array();
+		$checker = 0;
+		foreach ($course as $key => $value) {
+			$arrayCourseId[] = $value->course_id; 
+		}
+
+		$subject =  $this->Crud_model->fetch("subject", array("subject_id" => $id));
+		$subject = $subject[0];
+
+		if ($subject) { 
+			foreach ($arrayCourseId as $key => $arrVal) {
+				if ($subject->course_id == $arrVal) { 
+					$checker = 1;
+				}
+			} 
+		}
+		return $checker; 
+	}
+
+
 	public function viewCourseModules()
 	{
 		$sub_id = $this->uri->segment(3);
@@ -94,8 +119,13 @@ class ManageCourseModules extends CI_Controller {
 				default:
 				break;
 			}
-
 			
+			if ($this->checkSubject($this->uri->segment(3)) == 0) { 
+				echo '<script type="text/javascript">'; 
+				echo "alert('You don\'t have access with this module');"; 
+				echo 'window.history.back();';
+				echo '</script>';
+			} 
 
 			if ($info['logged_in'] && ($info['identifier'] == "fic" || $info['identifier'] == "professor")) {
 				$data = array(
@@ -146,7 +176,6 @@ class ManageCourseModules extends CI_Controller {
 		$this->load->library('upload', $config); 
 		if (!$this->upload->do_upload('cm_file')){
 			$error = array('error' => $this->upload->display_errors());
-
 			$this->session->set_flashdata('error', $error);
 			redirect('ManageCourseModules/viewCourseModules/'.$subject_id);
 
@@ -217,6 +246,24 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+	public function checkCourse($id) {
+		$info = $this->session->userdata('userInfo');
+		$course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+		$arrayCourseId = array();
+		$checker = 0;
+		foreach ($course as $key => $value) {
+			$arrayCourseId[] = $value->course_id; 
+		}
+
+		foreach ($arrayCourseId as $key => $arrVal) {
+			if ($id == $arrVal) { 
+				$checker = 1;
+			}
+		} 
+		return $checker; 
+	}
+
+
 	public function viewModules()
 	{
 		$info = $this->session->userdata('userInfo');
@@ -243,7 +290,12 @@ class ManageCourseModules extends CI_Controller {
 			break;
 		}
 
-
+		if ($this->checkCourse($this->uri->segment(3)) == 0) { 
+			echo '<script type="text/javascript">'; 
+			echo "alert('You don\'t have access with this module');"; 
+			echo 'window.history.back();';
+			echo '</script>';
+		} 
 
 		if ($info['logged_in'] && ($info['identifier'] == "fic")) {
 			$data = array(
