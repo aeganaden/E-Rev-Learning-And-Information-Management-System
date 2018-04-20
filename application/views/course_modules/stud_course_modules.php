@@ -48,7 +48,7 @@
 							<?php if ($courseware_count == 0): ?>
 								<span class="new badge bg-primary-yellow" data-badge-caption="empty"></span>
 							<?php else: ?>
-								<span class="new badge" data-badge-caption="<?=$courseware_count?> Courseware"></span>
+								<span class="new badge" data-badge-caption="<?=$courseware_count?> Course Modules"></span>
 							<?php endif ?>
 
 						</div>
@@ -64,16 +64,28 @@
 												<h6 class="color-black"><?=$j_value->topic_name?> Course Modules</h6>
 											</blockquote>
 											<?php foreach ($course_modules as $k_key => $k_value): ?>
+												<?php 
+												$strTitle = explode(".", $k_value->course_modules_path);
+												$strTitle =  strtolower($strTitle[1]);
+												?>
 												<li class="collection-item bg-color-white" style="text-transform: capitalize;">
+													
 													<?=$k_value->course_modules_name?> 
+													
 
-													<a target="_blank" href="<?=base_url()?>assets/pdfjs/web/viewer.html?file=
-														<?=base_url()?>assets/modules/<?=$k_value->course_modules_path?>">
+													<?php if ($strTitle == "pdf"): ?>
+														<a target="_blank" href="<?=base_url()?>assets/pdfjs/web/viewer.html?file=
+															<?=base_url()?>assets/modules/<?=$k_value->course_modules_path?>">
+															<span class="new badge "
+															data-badge-caption="view" 
+															style="margin-right: 1%; cursor: pointer;"></span>
+														</a> 
+													<?php endif ?>
+													<a target="_blank" href="<?=base_url()?>ManageCourseModules/downloadFile/<?=$k_value->course_modules_path?>/<?=$k_value->course_modules_name?>">
 														<span class="new badge "
-														data-badge-caption="view" 
+														data-badge-caption="download" 
 														style="margin-right: 1%; cursor: pointer;"></span>
 													</a>
-
 
 
 												</li> 

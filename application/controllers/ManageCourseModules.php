@@ -125,6 +125,8 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+
+
 	public function uploadCourseModule()
 	{
 		$status = "";
@@ -139,28 +141,27 @@ class ManageCourseModules extends CI_Controller {
 		$config['upload_path']          = './assets/modules/';
 		$config['allowed_types']        = 'pdf|doc|docx';
 		$config['max_size']             = 20000; 
-		$config['encrypt_name']             = true; 
-	    // $config['encrypt_name']  			= "CM"sha1(time());
+		$config['encrypt_name']          = true;  
 
-		$this->load->library('upload', $config);
-
+		$this->load->library('upload', $config); 
 		if (!$this->upload->do_upload('cm_file')){
 			$error = array('error' => $this->upload->display_errors());
 
 			$this->session->set_flashdata('error', $error);
 			redirect('ManageCourseModules/viewCourseModules/'.$subject_id);
+
 		}
 		else
 		{
 			$data = array('upload_data' => $this->upload->data());
 			// echo "<pre>";
-			// print_r($data);
-			// echo  $title;
+			// print_r($data); 
+			// die;
 			if ($data) {
 				$data_insert = array(
 
 					"course_modules_path"=>$data['upload_data']['file_name'],
-					"course_modules_name"=>$title,
+					"course_modules_name"=> $title,
 					"topic_id"=>$topic_id
 				);
 				$file_id = $this->Crud_model->insert("course_modules",$data_insert);
@@ -273,8 +274,19 @@ class ManageCourseModules extends CI_Controller {
 	public function downloadFile()
 	{
 		$filePath = $this->uri->segment(3);
+		$name = $this->uri->segment(4);
 		$pth    =   "./assets/modules/".$filePath;
-		force_download($pth, NULL);
+		$strTitle = explode(".", $filePath);
+		$strTitle =  strtolower($strTitle[1]);
+
+		// echo $name.".".$strTitle;
+		// die;
+		// force_download($pth, NULL);
+		force_download(
+			$name.".".$strTitle, 
+			file_get_contents($pth), 
+			NULL
+		);
 	}
 }
 /* End of file ManageCourseModules.php */
