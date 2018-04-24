@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-//        $_POST['username'] = "mgbabaran";
-//        $_POST['password'] = "mark";
+//        $_POST['username'] = "eefic";
+//        $_POST['password'] = "eefic";
         $where = array(
             "stud.username" => $_POST['username'],
             "stud.password" => $_POST['password'],
@@ -42,6 +42,7 @@ class Mobile extends CI_Controller {
 //            print_r($result);
             print_r(json_encode($result));
         }
+        unset($where);
         $where = array(
             "username" => $_POST['username'],
             "password" => $_POST['password']
@@ -58,9 +59,12 @@ class Mobile extends CI_Controller {
                 $jointype = "INNER";
                 $where = array('enrollment.enrollment_is_active' => 1, "offering.fic_id" => $result['result'][0]['fic_id']);
                 $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
-                $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
-
-                print_r(json_encode($result));
+                if (!empty($result_hold)) {
+                    $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
+                    print_r(json_encode($result));
+                } else {
+                    print_r("");
+                }
             } else {
                 print_r("");
             }
@@ -292,12 +296,12 @@ class Mobile extends CI_Controller {
     }
 
     public function feedback_submit() {
-        $lect_id = $_POST['lect_id'];
-        $stud_id = $_POST['stud_id'];
-        $department = $_POST['department'];
-        $enrollment_id = $_POST['enrollment_id'];
-        $offering_id = $_POST['offering_id'];
-        $content = $_POST["content"];
+//        $lect_id = $_POST['lect_id'];
+//        $stud_id = $_POST['stud_id'];
+//        $department = $_POST['department'];
+//        $enrollment_id = $_POST['enrollment_id'];
+//        $offering_id = $_POST['offering_id'];
+//        $content = $_POST["content"];
 
         $data = array(
             "lecturer_feedback_timedate" => time(),
@@ -318,13 +322,13 @@ class Mobile extends CI_Controller {
     }
 
     public function course_modules() {
-        $_POST['identifier'] = "student";
-        $_POST['firstname'] = "mark denver";
-        $_POST['midname'] = "gatan";
-        $_POST['lastname'] = "babaran";
-        $_POST['id'] = '4';
-        $_POST['department'] = "CE";
-        $_POST['offering_id'] = 1;
+//        $_POST['identifier'] = "student";
+//        $_POST['firstname'] = "mark denver";
+//        $_POST['midname'] = "gatan";
+//        $_POST['lastname'] = "babaran";
+//        $_POST['id'] = '4';
+//        $_POST['department'] = "CE";
+//        $_POST['offering_id'] = 1;
 
         $like[0] = "firstname";
         $like[1] = $_POST['firstname'];
@@ -341,7 +345,7 @@ class Mobile extends CI_Controller {
         $like[7] = $_POST['id'];
 
         if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
-            $col = "cm.course_modules_id, top.topic_name, cm.course_modules_path, cm.course_modules_name,top.topic_id, top.topic_name";
+            $col = "top.topic_name,top.topic_id";
             $join = array(
                 array("topic as top", "top.topic_id= cm.topic_id"),
                 array("subject as sub", "sub.subject_id = top.subject_id"),
@@ -355,20 +359,52 @@ class Mobile extends CI_Controller {
                 "off.offering_id" => $_POST['offering_id'],
                 "cm.course_modules_status" => 1
             );
-            $result = $this->Crud_model->fetch_join2("course_modules as cm", $col, $join, NULL, $where, NULL, TRUE);
-
-            $topic_hold = [];
-            for ($i = 0; $i < count($result); $i++) {
-                $name = $result[$i]["topic_name"];
-                //  LAST!!!!!!!!!!!
-                if (!in_array($name, $topic_hold)) {        //not yet found
-                    $topic_hold[] = $name;
-                }
+            $result = $this->Crud_model->fetch_join2("course_modules as cm", $col, $join, NULL, $where, TRUE, TRUE);
+            if (!empty($result)) {
+                $temp["result"] = $result;
+                print_r(json_encode($temp));
+            } else {
+                print_r("");
             }
+        } else {
+            print_r("");
+        }
+    }
 
-            unset($result);
-            $result["result"] = $topic_hold;
-            print_r(json_encode($result));
+    public function course_modules_detail() {
+//        $_POST['identifier'] = "student";
+//        $_POST['firstname'] = "mark denver";
+//        $_POST['midname'] = "gatan";
+//        $_POST['lastname'] = "babaran";
+//        $_POST['id'] = '4';
+//        $_POST['department'] = "CE";
+//        $_POST['topic_id'] = 1;
+
+        $like[0] = "firstname";
+        $like[1] = $_POST['firstname'];
+        $like[2] = "midname";
+        $like[3] = $_POST['midname'];
+        $like[4] = "lastname";
+        $like[5] = $_POST['lastname'];
+        $identifier = $_POST['identifier'];
+        if (strtolower($identifier) == "student") {
+            $like[6] = "student_id";
+        } else if (strtolower($identifier) == "faculty in charge") {
+            $like[6] = "fic_id";
+        }
+        $like[7] = $_POST['id'];
+
+        $topic_id = $_POST['topic_id'];
+        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+            $col = "course_modules_id, course_modules_path, course_modules_name";
+            $where = array("topic_id" => $topic_id);
+            $result = $this->Crud_model->fetch_select("course_modules", $col, $where);
+            if (!empty($result)) {
+                $temp["result"] = $result;
+                print_r(json_encode($temp));
+            } else {
+                print_r("");
+            }
         } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
 
         } else {
