@@ -94,59 +94,59 @@ class Student_scores extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
                 // echo $this->checkCourse($course_id);
-                if ($this->checkCourse($course_id) == 0) { 
-                    echo '<script type="text/javascript">'; 
-                    echo "alert('You don\'t have access with this module');"; 
-                    echo 'window.location.href = "index.php";';
-                    echo '</script>';
-                } 
-                $info = $this->session->userdata('userInfo');
-                $ident = $info['identifier'];
-                $ident.="_department";
-                $program = 0;
+             if ($this->checkCourse($this->uri->segment(3)) == 0) { 
+                echo '<script type="text/javascript">'; 
+                echo "alert('You don\'t have access with this module');"; 
+                echo 'window.history.back();';
+                echo '</script>';
+            } 
+            $info = $this->session->userdata('userInfo');
+            $ident = $info['identifier'];
+            $ident.="_department";
+            $program = 0;
 
-                switch ($info['user']->$ident) {
-                    case 'CE':
-                    $program = 1;
-                    break;
-                    case 'ECE':
-                    $program = 2;
-                    break;
-                    case 'EE':
-                    $program = 3;
-                    break;
-                    case 'ME':
-                    $program = 4;
-                    break;
+            switch ($info['user']->$ident) {
+                case 'CE':
+                $program = 1;
+                break;
+                case 'ECE':
+                $program = 2;
+                break;
+                case 'EE':
+                $program = 3;
+                break;
+                case 'ME':
+                $program = 4;
+                break;
 
-                    default:
-                    break;
-                }
+                default:
+                break;
+            }
 
 
-                if ($info['logged_in'] && $info['identifier'] != "administrator") {
-                    $data = array(
-                        "title" => "Home - Learning Management System | FEU - Institute of Techonology",
-                        "info" => $info,
-                        "program" => $program,
-                        "course_id" => $course_id,
-                        "s_h" => "",
-                        "s_a" => "",
-                        "s_f" => "",
-                        "s_c" => "",
-                        "s_t" => "",
-                        "s_s" => "",
-                        "s_co" => "",
-                        "s_ss" => "selected-nav",
-                    );
-                    $this->load->view('includes/header', $data);
-                    $this->load->view('student_scores_import');
-                    $this->load->view('includes/footer');
-                } elseif ($info['identifier'] == "administrator") {
-                    redirect('Admin');
-                } else {
-                    redirect('Welcome', 'refresh');
-                }
+            if ($info['logged_in'] && $info['identifier'] != "administrator") {
+                $data = array(
+                    "title" => "Home - Learning Management System | FEU - Institute of Techonology",
+                    "info" => $info,
+                    "program" => $program,
+                    "course_id" => $course_id,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "",
+                    "s_co" => "",
+                    "s_ss" => "selected-nav",
+                );
+                $this->load->view('includes/header', $data);
+                $this->load->view('student_scores_import');
+                $this->load->view('includes/footer');
+            } elseif ($info['identifier'] == "administrator") {
+                redirect('Admin');
+            } else {
+                redirect('Welcome', 'refresh');
+            }
             } else {                //no segment
                 redirect("Student_scores");
             }

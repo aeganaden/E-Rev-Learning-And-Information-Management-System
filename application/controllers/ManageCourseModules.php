@@ -66,6 +66,31 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+
+	public function checkSubject($id)
+	{
+		$info = $this->session->userdata('userInfo');
+		$course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+		$arrayCourseId = array();
+		$checker = 0;
+		foreach ($course as $key => $value) {
+			$arrayCourseId[] = $value->course_id; 
+		}
+
+		$subject =  $this->Crud_model->fetch("subject", array("subject_id" => $id));
+		$subject = $subject[0];
+
+		if ($subject) { 
+			foreach ($arrayCourseId as $key => $arrVal) {
+				if ($subject->course_id == $arrVal) { 
+					$checker = 1;
+				}
+			} 
+		}
+		return $checker; 
+	}
+
+
 	public function viewCourseModules()
 	{
 		$sub_id = $this->uri->segment(3);
@@ -94,8 +119,13 @@ class ManageCourseModules extends CI_Controller {
 				default:
 				break;
 			}
-
 			
+			if ($this->checkSubject($this->uri->segment(3)) == 0) { 
+				echo '<script type="text/javascript">'; 
+				echo "alert('You don\'t have access with this module');"; 
+				echo 'window.history.back();';
+				echo '</script>';
+			} 
 
 			if ($info['logged_in'] && ($info['identifier'] == "fic" || $info['identifier'] == "professor")) {
 				$data = array(
@@ -125,6 +155,8 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+
+
 	public function uploadCourseModule()
 	{
 		$status = "";
@@ -139,28 +171,26 @@ class ManageCourseModules extends CI_Controller {
 		$config['upload_path']          = './assets/modules/';
 		$config['allowed_types']        = 'pdf|doc|docx';
 		$config['max_size']             = 20000; 
-		$config['encrypt_name']             = true; 
-	    // $config['encrypt_name']  			= "CM"sha1(time());
+		$config['encrypt_name']          = true;  
 
-		$this->load->library('upload', $config);
-
+		$this->load->library('upload', $config); 
 		if (!$this->upload->do_upload('cm_file')){
 			$error = array('error' => $this->upload->display_errors());
-
 			$this->session->set_flashdata('error', $error);
 			redirect('ManageCourseModules/viewCourseModules/'.$subject_id);
+
 		}
 		else
 		{
 			$data = array('upload_data' => $this->upload->data());
 			// echo "<pre>";
-			// print_r($data);
-			// echo  $title;
+			// print_r($data); 
+			// die;
 			if ($data) {
 				$data_insert = array(
 
 					"course_modules_path"=>$data['upload_data']['file_name'],
-					"course_modules_name"=>$title,
+					"course_modules_name"=> $title,
 					"topic_id"=>$topic_id
 				);
 				$file_id = $this->Crud_model->insert("course_modules",$data_insert);
@@ -216,6 +246,24 @@ class ManageCourseModules extends CI_Controller {
 		}
 	}
 
+	public function checkCourse($id) {
+		$info = $this->session->userdata('userInfo');
+		$course = $this->Crud_model->fetch("course", array("course_department" => $info['user']->fic_department));
+		$arrayCourseId = array();
+		$checker = 0;
+		foreach ($course as $key => $value) {
+			$arrayCourseId[] = $value->course_id; 
+		}
+
+		foreach ($arrayCourseId as $key => $arrVal) {
+			if ($id == $arrVal) { 
+				$checker = 1;
+			}
+		} 
+		return $checker; 
+	}
+
+
 	public function viewModules()
 	{
 		$info = $this->session->userdata('userInfo');
@@ -242,7 +290,12 @@ class ManageCourseModules extends CI_Controller {
 			break;
 		}
 
-
+		if ($this->checkCourse($this->uri->segment(3)) == 0) { 
+			echo '<script type="text/javascript">'; 
+			echo "alert('You don\'t have access with this module');"; 
+			echo 'window.history.back();';
+			echo '</script>';
+		} 
 
 		if ($info['logged_in'] && ($info['identifier'] == "fic")) {
 			$data = array(
@@ -273,8 +326,19 @@ class ManageCourseModules extends CI_Controller {
 	public function downloadFile()
 	{
 		$filePath = $this->uri->segment(3);
+		$name = $this->uri->segment(4);
 		$pth    =   "./assets/modules/".$filePath;
-		force_download($pth, NULL);
+		$strTitle = explode(".", $filePath);
+		$strTitle =  strtolower($strTitle[1]);
+
+		// echo $name.".".$strTitle;
+		// die;
+		// force_download($pth, NULL);
+		force_download(
+			$name.".".$strTitle, 
+			file_get_contents($pth), 
+			NULL
+		);
 	}
 }
 /* End of file ManageCourseModules.php */

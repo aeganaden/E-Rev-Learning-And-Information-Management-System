@@ -48,7 +48,7 @@
 							<?php if ($courseware_count == 0): ?>
 								<span class="new badge red" data-badge-caption="empty"></span>
 							<?php else: ?>
-								<span class="new badge" data-badge-caption="<?=$courseware_count?> Courseware"></span>
+								<span class="new badge" data-badge-caption="<?=$courseware_count?> Course Modules"></span>
 							<?php endif ?>
 
 						</div>
@@ -69,9 +69,9 @@
 												$strTitle =  strtolower($strTitle[1]);
 												?>
 												<li class="collection-item bg-color-white" style="text-transform: capitalize;">
-													<p>
-														<?=$k_value->course_modules_name?> 
-													</p>
+													
+													<?=$k_value->course_modules_name?> 
+													
 													
 													<span class="new badge bg-primary-green btn_edit_name modal-trigger"
 													href="#mdl_edit_cname"
@@ -94,7 +94,7 @@
 															style="margin-right: 1%; cursor: pointer;"></span>
 														</a> 
 													<?php endif ?>
-													<a target="_blank" href="<?=base_url()?>ManageCourseModules/downloadFile/<?=$k_value->course_modules_path?>">
+													<a target="_blank" href="<?=base_url()?>ManageCourseModules/downloadFile/<?=$k_value->course_modules_path?>/<?=$k_value->course_modules_name?>">
 														<span class="new badge "
 														data-badge-caption="download" 
 														style="margin-right: 1%; cursor: pointer;"></span>
