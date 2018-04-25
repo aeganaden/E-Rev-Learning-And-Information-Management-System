@@ -506,7 +506,9 @@ function fetchCourseware(topic_id) {
         },
         success: function(i_data){
             $("#preloader").css('display', 'none');
-            for (var j = 0; j < i_data.length; j++){
+
+            if (i_data != false) {
+             for (var j = 0; j < i_data.length; j++){
                 if (!i_data[j].time) {
                     time = " -----";
                 } else{
@@ -531,8 +533,12 @@ function fetchCourseware(topic_id) {
             }
             $("#courseware_" + topic_id).html(courseware_content);
             $('.tooltipped').tooltip({delay: 50});
+        }else{ 
+            $("#courseware_"+topic_id).html("<p class='center'>No practice exams yet</p>");
+
         }
-    });
+    }
+});
 }
 
 

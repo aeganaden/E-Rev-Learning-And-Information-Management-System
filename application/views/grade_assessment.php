@@ -45,53 +45,57 @@
 												<?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$k_value->topic_id,"courseware_status"=>1)) ?>
 												<?php if ($courseware): ?>
 													<?php foreach ($courseware as $key => $l_value): ?>
-														<li>
-															<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?></div>
+														<?php  
+														$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+														?> 
+														<?php if ($r_grade_assessment): ?>
+															<li>
+																<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?>
+																</div>
 
-															<div class="collapsible-body">
-																<?php  
-																$r_grade_assessment = $this->Crud_model->fetch("remedial_grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
-																?>
-																<?php if ($r_grade_assessment): ?>
-																	<table class="data-table">
-																		<thead>
-																			<tr>
-																				<th>Take #</th>
-																				<th>SCORE</th>
-																				<th>TOTAL SCORE</th>
-																				<th>PERCENTAGE</th>
-																				<th>TIME</th>
-																				<th>REMARKS</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
-																				<?php 
-																				$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%";
-																				$remarks = $percent >= 70 ? "passed" : "failed";
-																				$remarks_color = $percent >= 70 ? "" : "red";
-
-																				if ($m_value->remedial_grade_assessment_time) {
-																					$time = $m_value->remedial_grade_assessment_time;
-																				}else{
-																					$time ="-";
-																				}
-																				?>
+																<div class="collapsible-body">
+																	<?php if ($r_grade_assessment): ?>
+																		<table class="data-table">
+																			<thead>
 																				<tr>
-																					<td><?=$m_key+1?></td>
-																					<td><?=$m_value->remedial_grade_assessment_score?></td>
-																					<td><?=$m_value->remedial_grade_assessment_total?></td>
-																					<td><?=$percent?></td>
-																					<td><?=$time?></td>
-																					<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
+																					<th>Take #</th>
+																					<th>SCORE</th>
+																					<th>TOTAL SCORE</th>
+																					<th>PERCENTAGE</th>
+																					<th>TIME</th>
+																					<th>REMARKS</th>
 																				</tr>
-																			<?php endforeach ?>
-																		</tbody>
-																	</table>
-																<?php endif ?>
+																			</thead>
+																			<tbody>
+																				<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
+																					<?php 
+																					$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%";
+																					$remarks = $percent >= 70 ? "passed" : "failed";
+																					$remarks_color = $percent >= 70 ? "" : "red";
 
-															</div>
-														</li>		
+																					if ($m_value->remedial_grade_assessment_time) {
+																						$time = $m_value->remedial_grade_assessment_time;
+																					}else{
+																						$time ="-";
+																					}
+																					?>
+																					<tr>
+																						<td><?=$m_key+1?></td>
+																						<td><?=$m_value->remedial_grade_assessment_score?></td>
+																						<td><?=$m_value->remedial_grade_assessment_total?></td>
+																						<td><?=$percent?></td>
+																						<td><?=$time?></td>
+																						<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
+																					</tr>
+																				<?php endforeach ?>
+																			</tbody>
+																		</table>
+																	<?php endif ?>
+
+																</div>
+															</li>	
+														<?php else: ?>
+														<?php endif ?>	
 													<?php endforeach ?>
 												<?php endif ?>		
 											<?php endforeach ?>
@@ -128,54 +132,58 @@
 												<?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$k_value->topic_id,"courseware_status"=>1)) ?>
 												<?php if ($courseware): ?>
 													<?php foreach ($courseware as $key => $l_value): ?>
-														<li>
-															<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?></div>
+														<?php 
+														$grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+														?>
+														<?php if ($grade_assessment): ?>
+															
+															<li>
+																<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?></div>
 
-															<div class="collapsible-body">
-																<?php 
-																$grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
-																?>
-																<?php if ($grade_assessment): ?>
-																	<table class="data-table">
-																		<thead>
-																			<tr>
-																				<th>Take #</th>
-																				<th>SCORE</th>
-																				<th>TOTAL SCORE</th>
-																				<th>PERCENTAGE</th>
-																				<th>TIME</th>
-																				<th>REMARKS</th>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			<?php foreach ($grade_assessment as $m_key => $m_value): ?>
-																				<?php 
-																				$percent = (($m_value->grade_assessment_score / $m_value->grade_assessment_total) * 100)."%";
-																				$remarks = $percent >= 70 ? "passed" : "failed";
-																				$remarks_color = $percent >= 70 ? "" : "red";
-
-																				if ($time = $this->Crud_model->fetch("courseware_time",array("grade_assessment_id"=>$m_value->grade_assessment_id))) {
-																					$time = $time[0];
-																					$time = $time->courseware_time_time;
-																				}else{
-																					$time ="-";
-																				}
-																				?>
+																<div class="collapsible-body">
+																	<?php if ($grade_assessment): ?>
+																		<table class="data-table">
+																			<thead>
 																				<tr>
-																					<td><?=$m_key+1?></td>
-																					<td><?=$m_value->grade_assessment_score?></td>
-																					<td><?=$m_value->grade_assessment_total?></td>
-																					<td><?=$percent?></td>
-																					<td><?=$time?></td>
-																					<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
+																					<th>Take #</th>
+																					<th>SCORE</th>
+																					<th>TOTAL SCORE</th>
+																					<th>PERCENTAGE</th>
+																					<th>TIME</th>
+																					<th>REMARKS</th>
 																				</tr>
-																			<?php endforeach ?>
-																		</tbody>
-																	</table>
-																<?php endif ?>
+																			</thead>
+																			<tbody>
+																				<?php foreach ($grade_assessment as $m_key => $m_value): ?>
+																					<?php 
+																					$percent = (($m_value->grade_assessment_score / $m_value->grade_assessment_total) * 100)."%";
+																					$remarks = $percent >= 70 ? "passed" : "failed";
+																					$remarks_color = $percent >= 70 ? "" : "red";
 
-															</div>
-														</li>		
+																					if ($time = $this->Crud_model->fetch("courseware_time",array("grade_assessment_id"=>$m_value->grade_assessment_id))) {
+																						$time = $time[0];
+																						$time = $time->courseware_time_time;
+																					}else{
+																						$time ="-";
+																					}
+																					?>
+																					<tr>
+																						<td><?=$m_key+1?></td>
+																						<td><?=$m_value->grade_assessment_score?></td>
+																						<td><?=$m_value->grade_assessment_total?></td>
+																						<td><?=$percent?></td>
+																						<td><?=$time?></td>
+																						<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
+																					</tr>
+																				<?php endforeach ?>
+																			</tbody>
+																		</table>
+																	<?php endif ?>
+
+																</div>
+															</li>	
+														<?php else: ?>															
+														<?php endif ?>	
 													<?php endforeach ?>
 												<?php endif ?>		
 											<?php endforeach ?>

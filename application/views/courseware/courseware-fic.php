@@ -97,7 +97,7 @@
 	<!-- DIV FOR TOPICS -->
 	<div class=" col s12 m1"></div>
 	<div class=" col s12 m11">
-		<ul class="collapsible" id="topic_content" data-collapsible="accordion">
+		<ul class="collapsible" id="topic_content" style="display: block;" data-collapsible="accordion">
 
 		</ul>
 		<div class=" col s12 m12" style="display: none" id="div-topics"></div>
@@ -401,7 +401,7 @@
 						var content = CKEDITOR.instances['q_editor'].getData();
 
 						content = "<div>"+content+"</div>";
-						console.log(content);	
+						// console.log(content);	
 						var answer1 = CKEDITOR.instances['answer_1'].getData();
 						var answer2 = CKEDITOR.instances['answer_2'].getData();
 						var answer3 = CKEDITOR.instances['answer_3'].getData();
@@ -774,27 +774,30 @@ function fetchCourseware(topic_id) {
 			$("#preloader").css('display', 'block');
 		},
 		success: function(i_data){
+			// console.log(i_data);
 			$("#preloader").css('display', 'none');
+			if (i_data != false) {
 
-			for(var j = 0; j < i_data.length; j++){
-				courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
-				'<div class="col s12 m6">'+
-				'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
-				'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
-				'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
-				'</div>'+
-				'<div class=" col s12 m6">'+
-				'<div class=" col s12 m6">'+
-				'<span class="valign-wrapper" ><i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who took this courseware">supervisor_account</i>46 </span> '+
-				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have passing remarks">mood</i>46</span>'+
-				' <span class="valign-wrapper "> <i class="material-icons tooltipped" data-position="bottom" data-delay="50" data-tooltip="No. of students who have failing remarks">mood_bad</i>46</span>'+
-				'</div>'+
-				'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
-				'</div>'+
-				'</div>';
+				for(var j = 0; j < i_data.length; j++){
+					courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
+					'<div class="col s12 m6">'+
+					'<p id="cw_t_'+i_data[j].courseware_id+'"><b>'+i_data[j].courseware_name+'</b></p>'+
+					'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
+					'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
+					'</div>'+
+					'<div class=" col s12 m6">'+
+					'<div class=" col s12 m6">'+
+
+					'</div>'+
+					'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
+					'</div>'+
+					'</div>';
+				}
+				$("#courseware_"+topic_id).html(courseware_content);
+				$('.tooltipped').tooltip({delay: 50});
+			}else{
+				$("#courseware_"+topic_id).html("<p class='center'>No practice exams yet</p>");
 			}
-			$("#courseware_"+topic_id).html(courseware_content);
-			$('.tooltipped').tooltip({delay: 50});
 
 		}
 	});
@@ -813,24 +816,22 @@ function fetchTopics(id) {
 			$("#preloader").css('display', 'block');
 		},
 		success: function(data){
-			$("#preloader").css('display', 'none');
-
+			$("#preloader").css('display', 'none'); 
 			if (data!=false) {
 				$("#div-topics").css('display', 'none');
 
 				for(var i = 0; i < data.length; i++){
-					$topic_id = data[i].topic_id;
-
+					$topic_id = data[i].topic_id; 
 					html_content += '<li>'+
-					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;"><div class=" col s12  col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-					'<div class=" col s12  col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
+					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;">'+
+					'<div class=" col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
+					'<div class=" col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+
 					'</li>';
-
 					fetchCourseware($topic_id);
 				}
-
+				
 				$("#topic_content").html(html_content);
 			}else{
 				$("#topic_content").html("");
@@ -860,7 +861,7 @@ function fetchQuestion(id) {
 			$("#btn_add_q").attr("data-cwid",id)
 		},
 		error: function(){
-			console.log("error");	
+			// console.log("error");	
 		}
 	});
 }

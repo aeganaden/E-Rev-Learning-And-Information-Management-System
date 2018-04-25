@@ -43,6 +43,7 @@ class Coursewares_fic extends CI_Controller {
 		$info = $this->session->userdata('userInfo');
 		$stud_num = "";
 		$topic_id = $this->input->post("topic_id");
+		// echo $topic_id;
 		if ($data = $this->Crud_model->fetch("courseware",array("topic_id"=>$topic_id,"courseware_status"=>1))) {
 			foreach ($data as $key => $value) {
 				$value->date_added = date("M d, Y",$value->courseware_date_added);
@@ -59,7 +60,7 @@ class Coursewares_fic extends CI_Controller {
 			}
 			echo json_encode($data);
 		}else{
-			echo "false";
+			echo json_encode(false);
 		}
 	}
 
