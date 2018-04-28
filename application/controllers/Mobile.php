@@ -412,6 +412,74 @@ class Mobile extends CI_Controller {
         }
     }
 
+    public function grade_assess() {
+        $_POST['identifier'] = "student";
+        $_POST['firstname'] = "BRIAN PAUL";
+        $_POST['midname'] = "ANDAYA";
+        $_POST['lastname'] = "MARTINEZ";
+        $_POST['id'] = '21';
+        $_POST['department'] = "ECE";
+
+        $like[0] = "firstname";
+        $like[1] = $_POST['firstname'];
+        $like[2] = "midname";
+        $like[3] = $_POST['midname'];
+        $like[4] = "lastname";
+        $like[5] = $_POST['lastname'];
+        $identifier = $_POST['identifier'];
+        if (strtolower($identifier) == "student") {
+            $like[6] = "student_id";
+        } else if (strtolower($identifier) == "faculty in charge") {
+            $like[6] = "fic_id";
+        }
+        $like[7] = $_POST['id'];
+
+        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+            $col = "rga.remedial_grade_assessment_score, rga.remedial_grade_assessment_total, rga.remedial_grade_assessment_time,"
+                    . "cw.courseware_name, top.topic_name";
+            $where = array(
+                "stud.student_id" => $like[7],
+                "stud.student_department" => $_POST['department'],
+                "off.offering_department" => $_POST['department'],
+                "cou.course_department" => $_POST['department'],
+                "rga.student_id" => $like[7],
+                "stud.student_id" => $like[7]
+            );
+            $join = array(
+                array("offering as off", "off.offering_id = stud.offering_id"),
+                array("course as cou", "off.course_id = cou.course_id"),
+                array("subject as sub", "cou.course_id = sub.course_id"),
+                array("topic as top", "sub.subject_id = top.subject_id"),
+                array("courseware as cw", "top.topic_id = cw.topic_id"),
+                array("remedial_grade_assessment as rga", "cw.courseware_id = rga.courseware_id")
+            );
+            $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+            if (!empty($result_hold)) {
+                $temp_values = [];
+                $temp_topics = [];
+                $cw_name_counter = 0;
+                for ($i = 0; $i < count($result_hold); $i++) {
+                    $hold_cw_name = $result_hold[$i]["courseware_name"];
+                    if ($temp_key = array_search($hold_cw_name, $temp_topics) === FALSE) {
+                        $temp_topics["topic_name"][] = $hold_cw_name;
+                        $temp_values["values"][$cw_name_counter][] = $result_hold[$i];
+                        $cw_name_counter++;
+                    } else {
+                        $temp_values["values"][$temp_key][] = $result_hold[$i];
+                    }
+                }
+                //LAST!!!
+                print_r(json_encode($temp_topics) . json_encode($temp_values));
+            } else {
+                print_r("");
+            }
+        } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
+
+        } else {
+            print_r("");
+        }
+    }
+
     private function get_active_enrollment() {
         $where = array("enrollment_is_active" => 1);
         if (count($result = $this->Crud_model->fetch_select("enrollment", NULL, $where)) != 1) {
