@@ -413,12 +413,12 @@ class Mobile extends CI_Controller {
     }
 
     public function grade_assess() {
-        $_POST['identifier'] = "student";
-        $_POST['firstname'] = "BRIAN PAUL";
-        $_POST['midname'] = "ANDAYA";
-        $_POST['lastname'] = "MARTINEZ";
-        $_POST['id'] = '21';
-        $_POST['department'] = "ECE";
+//        $_POST['identifier'] = "student";
+//        $_POST['firstname'] = "BRIAN PAUL";
+//        $_POST['midname'] = "ANDAYA";
+//        $_POST['lastname'] = "MARTINEZ";
+//        $_POST['id'] = '21';
+//        $_POST['department'] = "ECE";
 
         $like[0] = "firstname";
         $like[1] = $_POST['firstname'];
