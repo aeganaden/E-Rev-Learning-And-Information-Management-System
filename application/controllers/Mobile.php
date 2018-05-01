@@ -454,22 +454,29 @@ class Mobile extends CI_Controller {
                 array("remedial_grade_assessment as rga", "cw.courseware_id = rga.courseware_id")
             );
             $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+
             if (!empty($result_hold)) {
                 $temp_values = [];
                 $temp_topics = [];
+                $temp_topics2 = [];
                 $cw_name_counter = 0;
                 for ($i = 0; $i < count($result_hold); $i++) {
                     $hold_cw_name = $result_hold[$i]["courseware_name"];
-                    if ($temp_key = array_search($hold_cw_name, $temp_topics) === FALSE) {
-                        $temp_topics["topic_name"][] = $hold_cw_name;
-                        $temp_values["values"][$cw_name_counter][] = $result_hold[$i];
+                    if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
+                        $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
+                        $temp_topics2[] = $hold_cw_name;
+                        $result_hold[$i]["take"] = "Take 1";
+                        $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
                         $cw_name_counter++;
                     } else {
-                        $temp_values["values"][$temp_key][] = $result_hold[$i];
+                        $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
+                        $count = count($temp_values["values"][$temp_key]["inner_val"]);
+                        $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
                     }
                 }
-                //LAST!!!
-                print_r(json_encode($temp_topics) . json_encode($temp_values));
+                $temp_topics["values"] = $temp_values["values"];
+
+                print_r(json_encode($temp_topics));
             } else {
                 print_r("");
             }
