@@ -526,7 +526,7 @@
 				$t_id = $(this).data('id');
 				$s_id = $(this).data('subid');
 
-
+				console.log($t_id);
 				$.ajax({
 					url: '<?=base_url()?>Coursewares_fic/addCourseware ',
 					type: 'post',
@@ -633,8 +633,8 @@
 			$s_id = $(this).data("subid");
 			$("#send_cw").html("add");
 			// console.log($t_id);	
-			$('#send_cw').attr('data-id', $t_id);
-			$('#send_cw').attr('data-subid', $s_id);
+			$('#send_cw').data('id', $t_id);
+			$('#send_cw').data('subid', $s_id);
 
 
 		});
@@ -789,8 +789,8 @@ function fetchCourseware(topic_id) {
 					'<div class=" col s12 m6">'+
 
 					'</div>'+
-					'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 					'</div>'+
+					'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 					'</div>';
 				}
 				$("#courseware_"+topic_id).html(courseware_content);
@@ -825,7 +825,7 @@ function fetchTopics(id) {
 					html_content += '<li>'+
 					'<div class="collapsible-header" style="background-color: transparent; text-transform: uppercase;">'+
 					'<div class=" col s6"><i class="material-icons color-primary-green">navigate_next</i>'+data[i].topic_name+'</div>'+
-					'<div class=" col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware"  data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
+					'<div class=" col s6"><i class="material-icons btn-add-cw right color-primary-green tooltipped modal-trigger" data-position="left" data-tooltip="Add Courseware" data-target="modal_cw" data-subid="'+id+'" data-id="'+data[i].topic_id+'">add_box</i></div></div>'+
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+
 					'</li>';

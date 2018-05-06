@@ -508,7 +508,7 @@ function fetchCourseware(topic_id) {
             $("#preloader").css('display', 'none');
 
             if (i_data != false) {
-             for (var j = 0; j < i_data.length; j++){
+               for (var j = 0; j < i_data.length; j++){
                 if (!i_data[j].time) {
                     time = " -----";
                 } else{
@@ -581,9 +581,7 @@ function countQuestion(id) {
             console.log();
             if (data !== "true") {
                 $("#btn_cw_question" + id).html(
-                    `
-                    < i class = "material-icons right tooltipped" data - position = "left" data - tooltip = "No Questions Yet" > remove_circle_outline < /i>
-                    `);
+                    '<i class = "material-icons right tooltipped" data-position = "left" data-tooltip= "No Questions Yet" > remove_circle_outline </i>');
                 $('.tooltipped').tooltip({delay: 50});
             }
         }
