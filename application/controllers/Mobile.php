@@ -85,17 +85,17 @@ class Mobile extends CI_Controller {
         $temp = 0;
         switch ($_POST['department']) {
             case "CE":
-                $temp = 1;
-                break;
+            $temp = 1;
+            break;
             case "ECE":
-                $temp = 2;
-                break;
+            $temp = 2;
+            break;
             case "EE":
-                $temp = 3;
-                break;
+            $temp = 3;
+            break;
             case "ME":
-                $temp = 4;
-                break;
+            $temp = 4;
+            break;
         }
 
         $where = array(
@@ -197,32 +197,32 @@ class Mobile extends CI_Controller {
                     print_r(json_encode($result));
                 }
             } else {                //stud's enrollment is inactive
-                $result['message'][0]['message'] = "No data";
-                print_r(json_encode($result));
-            }
-        } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
-            $department = $_POST['department'];
-            $current_enrollment = $this->get_active_enrollment()[0]->enrollment_id;
-
-            $col = array('lec.lecturer_id, lec.image_path, lec.lecturer_expertise, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
-            $join = array(
-                array('subject as sub', 'sub.course_id = cou.course_id'),
-                array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
-            );
-            $where = array("cou.course_department" => $department, "cou.enrollment_id" => $current_enrollment);
-            if ($result_hold = $this->Crud_model->fetch_join2('course as cou', $col, $join, NULL, $where, TRUE)) {
-                $result["result"] = $result_hold;
-                print_r(json_encode($result));
-            } else {
-                $result['message'][0]['message'] = "No data";
-                print_r(json_encode($result));
-            }
-        } else {
-            print_r("");
+            $result['message'][0]['message'] = "No data";
+            print_r(json_encode($result));
         }
-    }
+    } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
+        $department = $_POST['department'];
+        $current_enrollment = $this->get_active_enrollment()[0]->enrollment_id;
 
-    public function feedback_fetch() {
+        $col = array('lec.lecturer_id, lec.image_path, lec.lecturer_expertise, CONCAT(lec.firstname, " ",lec.midname, " ",lec.lastname) AS full_name', FALSE);
+        $join = array(
+            array('subject as sub', 'sub.course_id = cou.course_id'),
+            array("lecturer as lec", "lec.lecturer_id = sub.lecturer_id")
+        );
+        $where = array("cou.course_department" => $department, "cou.enrollment_id" => $current_enrollment);
+        if ($result_hold = $this->Crud_model->fetch_join2('course as cou', $col, $join, NULL, $where, TRUE)) {
+            $result["result"] = $result_hold;
+            print_r(json_encode($result));
+        } else {
+            $result['message'][0]['message'] = "No data";
+            print_r(json_encode($result));
+        }
+    } else {
+        print_r("");
+    }
+}
+
+public function feedback_fetch() {
 //        $_POST['lect_id'] = 1;
 //        $_POST['stud_id'] = 201511281;
 //        $_POST['department'] = "CE";
@@ -234,16 +234,16 @@ class Mobile extends CI_Controller {
 //        $_POST['higher_limit'] = 2;
 //        $_POST['sort'] = "ASC";
 
-        $identifier = $_POST['identifier'];
-        $department = $_POST['department'];
-        if (strtolower($identifier) == "student") {
-            $lect_id = $_POST['lect_id'];
-            $stud_id = $_POST['stud_id'];
-            $enrollment_id = $_POST['enrollment_id'];
-            $offering_id = $_POST['offering_id'];
+    $identifier = $_POST['identifier'];
+    $department = $_POST['department'];
+    if (strtolower($identifier) == "student") {
+        $lect_id = $_POST['lect_id'];
+        $stud_id = $_POST['stud_id'];
+        $enrollment_id = $_POST['enrollment_id'];
+        $offering_id = $_POST['offering_id'];
 
-            $where = array("lecturer_feedback_department" => $department, "student_id" => $stud_id, "lecturer_id" => $lect_id, "enrollment_id" => $enrollment_id, "offering_id" => $offering_id);
-            $result_hold = $this->Crud_model->fetch("lecturer_feedback", $where);
+        $where = array("lecturer_feedback_department" => $department, "student_id" => $stud_id, "lecturer_id" => $lect_id, "enrollment_id" => $enrollment_id, "offering_id" => $offering_id);
+        $result_hold = $this->Crud_model->fetch("lecturer_feedback", $where);
             if ($this->Crud_model->fetch("lecturer_feedback", $where)) {      //already submitted
                 $result['message'][0]['message'] = "Feedback already submitted";
                 print_r(json_encode($result));
@@ -412,90 +412,242 @@ class Mobile extends CI_Controller {
         }
     }
 
-    public function grade_assess() {
-//        $_POST['identifier'] = "student";
-//        $_POST['firstname'] = "BRIAN PAUL";
-//        $_POST['midname'] = "ANDAYA";
-//        $_POST['lastname'] = "MARTINEZ";
-//        $_POST['id'] = '21';
-//        $_POST['department'] = "ECE";
+    public function rem_grade_assess() {
+       // $_POST['identifier'] = "student";
+       // $_POST['firstname'] = "BERNADETTE";
+       // $_POST['midname'] = "ALCARAZ";
+       // $_POST['lastname'] = "ANGELES";
+       // $_POST['id'] = '2';
+       // $_POST['department'] = "CE";
 
-        $like[0] = "firstname";
-        $like[1] = $_POST['firstname'];
-        $like[2] = "midname";
-        $like[3] = $_POST['midname'];
-        $like[4] = "lastname";
-        $like[5] = $_POST['lastname'];
-        $identifier = $_POST['identifier'];
-        if (strtolower($identifier) == "student") {
-            $like[6] = "student_id";
-        } else if (strtolower($identifier) == "faculty in charge") {
-            $like[6] = "fic_id";
-        }
-        $like[7] = $_POST['id'];
+       $like[0] = "firstname";
+       $like[1] = $_POST['firstname'];
+       $like[2] = "midname";
+       $like[3] = $_POST['midname'];
+       $like[4] = "lastname";
+       $like[5] = $_POST['lastname'];
+       $identifier = $_POST['identifier'];
+       if (strtolower($identifier) == "student") {
+        $like[6] = "student_id";
+    } else if (strtolower($identifier) == "faculty in charge") {
+        $like[6] = "fic_id";
+    }
+    $like[7] = $_POST['id'];
 
-        if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
-            $col = "rga.remedial_grade_assessment_score, rga.remedial_grade_assessment_total, rga.remedial_grade_assessment_time,"
-                    . "cw.courseware_name, top.topic_name";
-            $where = array(
-                "stud.student_id" => $like[7],
-                "stud.student_department" => $_POST['department'],
-                "off.offering_department" => $_POST['department'],
-                "cou.course_department" => $_POST['department'],
-                "rga.student_id" => $like[7],
-                "stud.student_id" => $like[7]
-            );
-            $join = array(
-                array("offering as off", "off.offering_id = stud.offering_id"),
-                array("course as cou", "off.course_id = cou.course_id"),
-                array("subject as sub", "cou.course_id = sub.course_id"),
-                array("topic as top", "sub.subject_id = top.subject_id"),
-                array("courseware as cw", "top.topic_id = cw.topic_id"),
-                array("remedial_grade_assessment as rga", "cw.courseware_id = rga.courseware_id")
-            );
-            $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
-
-            if (!empty($result_hold)) {
-                $temp_values = [];
-                $temp_topics = [];
-                $temp_topics2 = [];
-                $cw_name_counter = 0;
-                for ($i = 0; $i < count($result_hold); $i++) {
-                    $hold_cw_name = $result_hold[$i]["courseware_name"];
-                    if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
-                        $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
-                        $temp_topics2[] = $hold_cw_name;
-                        $result_hold[$i]["take"] = "Take 1";
-                        $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
-                        $cw_name_counter++;
-                    } else {
-                        $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
-                        $count = count($temp_values["values"][$temp_key]["inner_val"]);
-                        $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
-                    }
+    if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+        $col = "rga.remedial_grade_assessment_score, rga.remedial_grade_assessment_total, rga.remedial_grade_assessment_time,"
+        . "cw.courseware_name, top.topic_name";
+        $where = array(
+            "stud.student_id" => $like[7],
+            "stud.student_department" => $_POST['department'],
+            "off.offering_department" => $_POST['department'],
+            "cou.course_department" => $_POST['department'],
+            "rga.student_id" => $like[7],
+            "stud.student_id" => $like[7]
+        );
+        $join = array(
+            array("offering as off", "off.offering_id = stud.offering_id"),
+            array("course as cou", "off.course_id = cou.course_id"),
+            array("subject as sub", "cou.course_id = sub.course_id"),
+            array("topic as top", "sub.subject_id = top.subject_id"),
+            array("courseware as cw", "top.topic_id = cw.topic_id"),
+            array("remedial_grade_assessment as rga", "cw.courseware_id = rga.courseware_id")
+        );
+        $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+        // echo "<pre>";
+        // print_r($result_hold);
+        if (!empty($result_hold)) {
+            $temp_values = [];
+            $temp_topics = [];
+            $temp_topics2 = [];
+            $cw_name_counter = 0;
+            for ($i = 0; $i < count($result_hold); $i++) {
+                $hold_cw_name = $result_hold[$i]["courseware_name"];
+                if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
+                    $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
+                    $temp_topics2[] = $hold_cw_name;
+                    $result_hold[$i]["take"] = "Take 1";
+                    $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
+                    $cw_name_counter++;
+                } else {
+                    $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
+                    $count = count($temp_values["values"][$temp_key]["inner_val"]);
+                    $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
                 }
-                $temp_topics["values"] = $temp_values["values"];
-
-                print_r(json_encode($temp_topics));
-            } else {
-                print_r("");
             }
-        } else if (strtolower($identifier) == "faculty in charge" && $this->Crud_model->mobile_check("fic", "fic_id", $like)) {
+            $temp_topics["values"] = $temp_values["values"];
 
+            print_r(json_encode($temp_topics));
         } else {
             print_r("");
         }
+    } else {
+        print_r("");
     }
+}
 
-    private function get_active_enrollment() {
-        $where = array("enrollment_is_active" => 1);
-        if (count($result = $this->Crud_model->fetch_select("enrollment", NULL, $where)) != 1) {
-            return "There are multiple active enrollment.";
-        } else if ($result) {
-            return $result;
-        } else {
-            return "There is no activated enrollment";
+public function grade_assess() {
+ // $_POST['identifier'] = "student";
+ // $_POST['firstname'] = "BERNADETTE";
+ // $_POST['midname'] = "ALCARAZ";
+ // $_POST['lastname'] = "ANGELES";
+ // $_POST['id'] = '2';
+ // $_POST['department'] = "CE";
+
+ $like[0] = "firstname";
+ $like[1] = $_POST['firstname'];
+ $like[2] = "midname";
+ $like[3] = $_POST['midname'];
+ $like[4] = "lastname";
+ $like[5] = $_POST['lastname'];
+ $identifier = $_POST['identifier'];
+ if (strtolower($identifier) == "student") {
+    $like[6] = "student_id";
+} else if (strtolower($identifier) == "faculty in charge") {
+    $like[6] = "fic_id";
+}
+$like[7] = $_POST['id'];
+
+if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+    $col = "ga.grade_assessment_score, ga.grade_assessment_total, top.topic_name, ct.courseware_time_time, cw.courseware_name";
+    $where = array(
+        "stud.student_id" => $like[7],
+        "stud.student_department" => $_POST['department'],
+        "off.offering_department" => $_POST['department'],
+        "cou.course_department" => $_POST['department'],
+        "ga.student_id" => $like[7],
+        "stud.student_id" => $like[7]
+    );
+    $join = array(
+        array("offering as off", "off.offering_id = stud.offering_id"),
+        array("course as cou", "off.course_id = cou.course_id"),
+        array("subject as sub", "cou.course_id = sub.course_id"),
+        array("topic as top", "sub.subject_id = top.subject_id"),
+        array("courseware as cw", "top.topic_id = cw.topic_id"),
+        array("grade_assessment as ga", "cw.courseware_id = ga.courseware_id"),
+        array("courseware_time as ct", "ga.grade_assessment_id = ct.grade_assessment_id")
+    );
+    $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+    // echo "<pre>";
+    // print_r($result_hold);
+
+    if (!empty($result_hold)) {
+        $temp_values = [];
+        $temp_topics = [];
+        $temp_topics2 = [];
+        $cw_name_counter = 0;
+        for ($i = 0; $i < count($result_hold); $i++) {
+            $hold_cw_name = $result_hold[$i]["courseware_name"];
+            if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
+                $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
+                $temp_topics2[] = $hold_cw_name;
+                $result_hold[$i]["take"] = "Take 1";
+                $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
+                $cw_name_counter++;
+            } else {
+                $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
+                $count = count($temp_values["values"][$temp_key]["inner_val"]);
+                $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
+            }
         }
+        $temp_topics["values"] = $temp_values["values"];
+
+        print_r(json_encode($temp_topics));
+    } else {
+        print_r("");
     }
+} else {
+    print_r("");
+}
+}
+
+public function perc_per_sub(){
+ $_POST['identifier'] = "student";
+ $_POST['firstname'] = "BERNADETTE";
+ $_POST['midname'] = "ALCARAZ";
+ $_POST['lastname'] = "ANGELES";
+ $_POST['id'] = '2';
+ $_POST['department'] = "CE";
+
+ $like[0] = "firstname";
+ $like[1] = $_POST['firstname'];
+ $like[2] = "midname";
+ $like[3] = $_POST['midname'];
+ $like[4] = "lastname";
+ $like[5] = $_POST['lastname'];
+ $identifier = $_POST['identifier'];
+ if (strtolower($identifier) == "student") {
+    $like[6] = "student_id";
+} else if (strtolower($identifier) == "faculty in charge") {
+    $like[6] = "fic_id";
+}
+$like[7] = $_POST['id'];
+
+if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+    $col = "ga.grade_assessment_score, ga.grade_assessment_total, sub.subject_name";
+    $where = array(
+        "stud.student_id" => $like[7],
+        "stud.student_department" => $_POST['department'],
+        "off.offering_department" => $_POST['department'],
+        "cou.course_department" => $_POST['department'],
+        "ga.student_id" => $like[7],
+        "stud.student_id" => $like[7]
+    );
+    $join = array(
+        array("offering as off", "off.offering_id = stud.offering_id"),
+        array("course as cou", "off.course_id = cou.course_id"),
+        array("subject as sub", "cou.course_id = sub.course_id"),
+        array("topic as top", "sub.subject_id = top.subject_id"),
+        array("courseware as cw", "top.topic_id = cw.topic_id"),
+        array("grade_assessment as ga", "cw.courseware_id = ga.courseware_id"),
+        array("courseware_time as ct", "ga.grade_assessment_id = ct.grade_assessment_id")
+    );
+    $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+    // echo "<pre>";
+    // print_r($result_hold);
+
+    if (!empty($result_hold)) {
+        $hold_name = [];
+        $avg  = [];
+        $cw_name_counter = 0;
+        for ($i = 0; $i < count($result_hold); $i++) {
+            $hold_cw_name = $result_hold[$i]["subject_name"];
+            if($index = array_search($hold_cw_name, $hold_name) === FALSE){
+                $hold_name[] = $hold_cw_name;
+                $avg[$cw_name_counter]["name"] = $hold_cw_name;
+                $avg[$cw_name_counter]["score"] = $result_hold[$i]["grade_assessment_score"];
+                $avg[$cw_name_counter]["total"] = $result_hold[$i]["grade_assessment_total"];
+
+                $cw_name_counter++;
+            } else {
+                $avg[$index]["score"] += $result_hold[$i]["grade_assessment_score"];
+                $avg[$index]["total"] += $result_hold[$i]["grade_assessment_total"];
+            }
+        }
+        $avg[1]["name"] = "HEEEEY SECOND SUBJECT AREA!";
+        $avg[1]["score"] = 10;
+        $avg[1]["total"] = 25;
+        unset($result);
+        $result["result"] = $avg;
+        // print_r($result);
+        print_r(json_encode($result));
+    } else {
+        print_r("");
+    }
+} else {
+    print_r("");
+}
+}
+
+private function get_active_enrollment() {
+    $where = array("enrollment_is_active" => 1);
+    if (count($result = $this->Crud_model->fetch_select("enrollment", NULL, $where)) != 1) {
+        return "There are multiple active enrollment.";
+    } else if ($result) {
+        return $result;
+    } else {
+        return "There is no activated enrollment";
+    }
+}
 
 }
