@@ -10,8 +10,8 @@ class Mobile extends CI_Controller {
     }
 
     public function login() {
-//        $_POST['username'] = "eefic";
-//        $_POST['password'] = "eefic";
+     // $_POST['username'] = "eefic";
+     // $_POST['password'] = "eefic";
         $where = array(
             "stud.username" => $_POST['username'],
             "stud.password" => $_POST['password'],
@@ -74,8 +74,8 @@ class Mobile extends CI_Controller {
     }
 
     public function announcement() {
-//        $_POST['department'] = "CE";
-        $_POST['department'] = strtoupper($_POST['department']);
+       // $_POST['department'] = "CE";
+       $_POST['department'] = strtoupper($_POST['department']);
         /*
          * 1 = CE   civil
          * 2 = EE   electrical and electronics
@@ -420,14 +420,14 @@ public function feedback_fetch() {
        // $_POST['id'] = '2';
        // $_POST['department'] = "CE";
 
-       $like[0] = "firstname";
-       $like[1] = $_POST['firstname'];
-       $like[2] = "midname";
-       $like[3] = $_POST['midname'];
-       $like[4] = "lastname";
-       $like[5] = $_POST['lastname'];
-       $identifier = $_POST['identifier'];
-       if (strtolower($identifier) == "student") {
+     $like[0] = "firstname";
+     $like[1] = $_POST['firstname'];
+     $like[2] = "midname";
+     $like[3] = $_POST['midname'];
+     $like[4] = "lastname";
+     $like[5] = $_POST['lastname'];
+     $identifier = $_POST['identifier'];
+     if (strtolower($identifier) == "student") {
         $like[6] = "student_id";
     } else if (strtolower($identifier) == "faculty in charge") {
         $like[6] = "fic_id";
@@ -476,7 +476,6 @@ public function feedback_fetch() {
                 }
             }
             $temp_topics["values"] = $temp_values["values"];
-
             print_r(json_encode($temp_topics));
         } else {
             print_r("");
@@ -562,12 +561,12 @@ if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("stu
 }
 
 public function perc_per_sub(){
- $_POST['identifier'] = "student";
- $_POST['firstname'] = "BERNADETTE";
- $_POST['midname'] = "ALCARAZ";
- $_POST['lastname'] = "ANGELES";
- $_POST['id'] = '2';
- $_POST['department'] = "CE";
+ // $_POST['identifier'] = "student";
+ // $_POST['firstname'] = "BERNADETTE";
+ // $_POST['midname'] = "ALCARAZ";
+ // $_POST['lastname'] = "ANGELES";
+ // $_POST['id'] = '2';
+ // $_POST['department'] = "CE";
 
  $like[0] = "firstname";
  $like[1] = $_POST['firstname'];
