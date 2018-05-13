@@ -10,21 +10,21 @@ $program = "";
 
 switch ($info['user']->$ident) {
     case 'CE':
-        $program = "Civil Engineering";
-        break;
+    $program = "Civil Engineering";
+    break;
     case 'EE':
-        $program = "Electrical Engineering";
-        break;
+    $program = "Electrical Engineering";
+    break;
     case 'ECE':
-        $program = "Electronics and Electrical Engineering";
-        break;
+    $program = "Electronics and Electrical Engineering";
+    break;
     case 'ME':
-        $program = "Mechanical Engineering";
-        break;
+    $program = "Mechanical Engineering";
+    break;
 
     default:
 # code...
-        break;
+    break;
 }
 // echo "<pre>";
 // print_r($info);
@@ -125,7 +125,7 @@ switch ($info['user']->$ident) {
 
     <?php if ($info["identifier"] == "professor"): ?>
         <li class="color-black <?= $s_s ?>">
-            <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Areas</a>
+            <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Area/Topics</a>
         </li>
     <?php endif ?>
 
@@ -235,42 +235,42 @@ switch ($info['user']->$ident) {
                             <li class="color-black ">
                                 <a href="<?= base_url() ?>Student_scores/view_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
                             </li>
-                    </div>
-                </li>
-            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        <?php endif ?>
+
+        <li>
+            <div class="divider"></div>
         </li>
-    <?php endif ?>
-
-    <li>
-        <div class="divider"></div>
-    </li>
-    <li>
-        <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
-    </li>
-</ul>
+        <li>
+            <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
+        </li>
+    </ul>
 
 
-<!--====  End of Side-Nav Section  ====-->
+    <!--====  End of Side-Nav Section  ====-->
 
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    jQuery(document).ready(function ($) {
+        jQuery(document).ready(function ($) {
 
-        $("#btn_click_feed").click(function (event) {
-            if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i").html("keyboard_arrow_right");
-            }
+            $("#btn_click_feed").click(function (event) {
+                if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
+                    $("#btn_click_feed_i").html("keyboard_arrow_down");
+                } else {
+                    $("#btn_click_feed_i").html("keyboard_arrow_right");
+                }
+            });
+            $("#btn_click_feed_ss").click(function (event) {
+                if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
+                    $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
+                } else {
+                    $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
+                }
+            });
         });
-        $("#btn_click_feed_ss").click(function (event) {
-            if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
-            } else {
-                $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
-            }
-        });
-    });
-</script>
+    </script>

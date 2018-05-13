@@ -14,13 +14,8 @@
             <h3 class="color-black">Add Course</h3>
         </blockquote>
     </div>
-    <div class=" col s12 col m4"></div>
-    <div class=" col s12 col m4"></div>
 </div>
 <div class="row container">
-    <pre>
-        <?php // print_r($course2); ?>
-    </pre>
     <div class="row">
         <form action="<?= base_url() . "Course/add/" . $this->uri->segment(3) ?>" method="POST" class=" col s12 col m12">
             <blockquote class="color-red">

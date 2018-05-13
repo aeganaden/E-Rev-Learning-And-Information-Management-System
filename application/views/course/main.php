@@ -9,26 +9,21 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class=" col s12  col m4">
+    <div class=" col s12">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Course Management <a href="<?= base_url() ?>Course/add" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Course</a></h3>
+            <h3 class="color-black">Course Management <br><a href="<?= base_url() ?>Course/add" class="waves-effect waves-dark btn bg-primary-green"><i class="material-icons left">add</i>Add Course</a></h3>
         </blockquote>
     </div>
-    <div class=" col s12  col m4"></div>
-    <div class=" col s12  col m4"></div>
 </div>
 <div class="row container">
-    <pre>
-        <?php // print_r($result); ?>
-    </pre>
 
     <?php if (isset($result) && !empty($result)): ?>
-        <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
+        <table class="data-table" id="tbl-feedback">
             <thead>
                 <tr>
                     <th>Course Code</th>
                     <th>Course Title</th>
-                    <th></th>
+                    <th>Actions</th>
                     <th></th>
                     <th></th>
                 </tr>

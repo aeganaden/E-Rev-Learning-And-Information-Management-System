@@ -9,13 +9,11 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class="col s4">
+    <div class="col s12">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Subject Area Management</h3>
+            <h3 class="color-black">Subject Area Management <br><a href="<?= base_url() ?>SubjectArea/add_subject_area" class="waves-effect waves-dark btn bg-primary-green"><i class="material-icons left">add</i>Add Subject Area</a></h3>
         </blockquote>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
 </div>
 <div class="row container">
     <pre>
@@ -54,13 +52,11 @@
 </div>
 
 <div class="row container">
-    <div class="col s4">
+    <div class="col s12">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">Topic Management</h3>
+            <h3 class="color-black">Topic Management <br><a href="<?= base_url() ?>SubjectArea/add_subject_area" class="waves-effect waves-dark btn bg-primary-green"><i class="material-icons left">add</i>Add Topic</a></h3>
         </blockquote>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
 </div>
 <div class="row container">
     <pre>
@@ -96,48 +92,12 @@
     <?php endif; ?>
 </div>
 
-<div class="row container container1">
-    <button class="waves-effect waves-dark btn green add_form_field">Add new field &nbsp;</button>
-    <form method="post">
-        <div class="row new_field_here">
-            <div class="input-field row">
-                <div class="col s12">
-                    <label class="color-black" for="input_fields">Subject Area</label>
-                    <input name="input_fields[]" type="text">
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
 <script>
     $(document).ready(function () {
         $(".btn_view_a").click(function () {
             $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "SubjectArea/view/" ?>" + $data;
+            window.location.href = "<?= base_url() . "SubjectArea/sub_view/" ?>" + $data;
         });
 
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        var max_fields      = 10;
-        var wrapper         = $(".new_field_here");
-        var add_button      = $(".add_form_field");
-
-        var x = 1;
-        $(add_button).click(function(e){
-            e.preventDefault();
-            if(x < max_fields){
-                x++;
-            $(wrapper).append('<div class="input-field row"><div class="col s10"><label class="color-black" for="input_fields">Subject Area</label><input name="input_fields[]" type="text"></div><div class="col s2"><a href="#" class="waves-effect waves-dark btn red delete_field">Delete</a></div>'); //add input box
-        } else {
-          alert('You Reached the limits')
-      }
-  });
-
-        $(wrapper).on("click",".delete_field", function(e){
-            e.preventDefault(); $(this).parent('div').remove(); x--;
-        });
     });
 </script>
