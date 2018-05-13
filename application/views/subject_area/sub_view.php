@@ -22,7 +22,7 @@
         <?php // print_r($topic_list); ?>
     </pre>
     <?php if (isset($topic_list) && !empty($topic_list)): ?>
-        <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
+        <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
                     <th>Topic</th>

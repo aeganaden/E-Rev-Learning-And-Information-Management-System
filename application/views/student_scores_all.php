@@ -25,8 +25,8 @@ $data_scores = $this->Crud_model->fetch("student_scores",array("data_scores_id"=
 					</thead>
 
 					<tbody>
-							<?php foreach ($data_scores as $key => $value): ?>
-						<tr>
+						<?php foreach ($data_scores as $key => $value): ?>
+							<tr>
 								<?php 
 								$student = $this->Crud_model->fetch("student",array("student_num"=>$value->student_scores_stud_num));
 								$student = $student[0];  
@@ -43,8 +43,8 @@ $data_scores = $this->Crud_model->fetch("student_scores",array("data_scores_id"=
 										<span class="new badge" data-badge-caption="">Passed</span> 
 									<?php endif ?>
 								</td>
-						</tr>
-							<?php endforeach ?>
+							</tr>
+						<?php endforeach ?>
 					</tbody>
 				</table>
 			<?php endif ?>

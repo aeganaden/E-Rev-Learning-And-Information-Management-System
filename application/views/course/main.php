@@ -59,42 +59,42 @@
 
 <script>
     $(document).ready(function () {
-    $(".btn_view").click(function () {
-    $data = $(this).data('id');
-    window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
-    });
-    $(".btn_edit").click(function () {
-    $data = $(this).data('id');
-    window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
-    });
-    $(".btn_delete").click(function () {
-    swal({
-    title: "Are you sure?",
-            text: "This will disable the course you selected. You may undo it later.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-    }).then((willDelete) <?= "=>" ?>{
-    if (willDelete) {
-    $data = $(this).data('id');
-    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/0";
-    }
-    });
-    });
-    $(".btn_undo").click(function () {
-    swal({
-    title: "Are you sure?",
-            text: "This will activate the course you selected.",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-    }).then((willDelete)<?= "=>" ?>{
-    if (willDelete) {
-    $data = $(this).data('id');
-    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/1";
-    }
-    });
-    });
+        $(".btn_view").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "Course/view/" ?>" + $data;
+        });
+        $(".btn_edit").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "Course/edit/" ?>" + $data;
+        });
+        $(".btn_delete").click(function () {
+            swal({
+                title: "Are you sure?",
+                text: "This will disable the course you selected. You may undo it later.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) <?= "=>" ?>{
+                if (willDelete) {
+                    $data = $(this).data('id');
+                    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/0";
+                }
+            });
+        });
+        $(".btn_undo").click(function () {
+            swal({
+                title: "Are you sure?",
+                text: "This will activate the course you selected.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete)<?= "=>" ?>{
+                if (willDelete) {
+                    $data = $(this).data('id');
+                    window.location.href = "<?= base_url() . "Course/delete/" ?>" + $data + "/1";
+                }
+            });
+        });
     });
 
 </script>

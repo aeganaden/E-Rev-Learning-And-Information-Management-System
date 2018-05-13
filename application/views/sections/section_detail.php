@@ -56,18 +56,18 @@
         $(".btn_view").click(function () {
             $data = $(this).data('id');
             swal({
-            title: "This student will be removed. Do you want to continue?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                    closeOnClickOutside: true,
-                    closeOnEsc: true,
+                title: "This student will be removed. Do you want to continue?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnClickOutside: true,
+                closeOnEsc: true,
             }).then((willDelete) <?= "=>" ?> {
-            if (willDelete) {
-                window.location.href = "<?= base_url() . "Sections/remove_student/" . $this->uri->segment(3) . "/" ?>" + $data;
+                if (willDelete) {
+                    window.location.href = "<?= base_url() . "Sections/remove_student/" . $this->uri->segment(3) . "/" ?>" + $data;
+                }
             }
-        }
-        );
-    });
+            );
+        });
     });
 </script>

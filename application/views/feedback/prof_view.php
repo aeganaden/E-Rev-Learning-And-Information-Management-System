@@ -10,12 +10,12 @@
 
 
 <div class="row container">        <div class="col s4">
-        <blockquote class="color-primary-green">
-            <h3 class="color-black">Feedback</h3>
-        </blockquote>
-    </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
+    <blockquote class="color-primary-green">
+        <h3 class="color-black">Feedback</h3>
+    </blockquote>
+</div>
+<div class="col s4"></div>
+<div class="col s4"></div>
 </div>
 <div class="row container">
     <form method="post" action="<?= base_url() ?>feedback/">
