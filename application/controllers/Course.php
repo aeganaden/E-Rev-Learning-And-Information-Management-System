@@ -183,8 +183,8 @@ class Course extends CI_Controller {
                 $holdpost = $this->input->post(array('course_code', 'course_title'));
                 $col = "course_id";
                 $where = "(course_course_code='" . $holdpost["course_code"] . "' OR course_course_title='" .
-                        $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
-                        "' AND course_department='" . $info["user"]->professor_department . "'";
+                $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
+                "' AND course_department='" . $info["user"]->professor_department . "'";
 
                 if ($this->Crud_model->fetch_select("course", $col, $where)) {
                     $error_message[] = "Course Code and Coude Title should be unique to other courses in your department. (Duplicate data)";
@@ -194,8 +194,8 @@ class Course extends CI_Controller {
                     $this->load->view('course/add', $data);
                 } else {
                     $data = array(
-                        "course_course_code" => $holdpost["course_code"],
-                        "course_course_title" => $holdpost["course_title"],
+                        "course_course_code" => strtoupper($holdpost["course_code"]),
+                        "course_course_title" => strtoupper($holdpost["course_title"]),
                         "course_department" => $info["user"]->professor_department,
                         "course_is_active" => 1,
                         "enrollment_id" => $this->get_active_enrollment()[0]->enrollment_id,
@@ -278,8 +278,8 @@ class Course extends CI_Controller {
                         $holdpost = $this->input->post(array('course_code', 'course_title', 'subject-area'));
                         $col = "course_id";
                         $where = "(course_course_code='" . $holdpost["course_code"] . "' OR course_course_title='" .
-                                $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
-                                "' AND course_department='" . $info["user"]->professor_department . "' AND course_id !='" . $match_course . "'";
+                        $holdpost["course_title"] . "') AND enrollment_id='" . $this->get_active_enrollment()[0]->enrollment_id .
+                        "' AND course_department='" . $info["user"]->professor_department . "' AND course_id !='" . $match_course . "'";
 
                         if ($this->Crud_model->fetch_select("course", $col, $where)) {
                             $error_message[] = "Course Code and Coude Title should be unique to other courses in your department. (Duplicate data)";

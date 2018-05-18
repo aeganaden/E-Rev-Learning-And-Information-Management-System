@@ -9,20 +9,21 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class="col s4">
+    <div class="col s12">
         <blockquote class="color-primary-green">
             <h3 class="color-black">View Topics</h3>
         </blockquote>
+        <blockquote class="color-primary-green">
+            <h6 class="color-black">These are the topics inside the subject area</h6>
+        </blockquote>
     </div>
-    <div class="col s4"></div>
-    <div class="col s4"></div>
 </div>
 <div class="row container">
     <pre>
         <?php // print_r($topic_list); ?>
     </pre>
     <?php if (isset($topic_list) && !empty($topic_list)): ?>
-        <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
+        <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>
                 <tr>
                     <th>Topic</th>

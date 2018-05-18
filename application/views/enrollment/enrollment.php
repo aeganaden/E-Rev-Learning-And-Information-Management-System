@@ -91,11 +91,11 @@ $enrollment = $this->Crud_model->fetch("enrollment");
          =            year            =
          ============================*/
 
-        var min = new Date().getFullYear(),
-                max = min + 4,
-                select = document.getElementById('startYear');
+         var min = new Date().getFullYear(),
+         max = min + 4,
+         select = document.getElementById('startYear');
 
-        for (var i = min; i <= max; i++) {
+         for (var i = min; i <= max; i++) {
             var opt = document.createElement('option');
             opt.value = i;
             opt.innerHTML = i;

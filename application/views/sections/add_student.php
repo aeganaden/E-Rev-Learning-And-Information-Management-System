@@ -91,18 +91,18 @@
         $(".btn_view").click(function () {
             $data = $(this).data('id');
             swal({
-            title: "This student will be added to <?= $section[0]->offering_name ?>. Do you want to proceed?",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                    closeOnClickOutside: false,
-                    closeOnEsc: false,
+                title: "This student will be added to <?= $section[0]->offering_name ?>. Do you want to proceed?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                closeOnClickOutside: false,
+                closeOnEsc: false,
             }).then((willDelete) <?= "=>" ?> {
-            if (willDelete) {
-                window.location.href = "<?= base_url() . "Sections/add_student_process_by_one/" . $this->uri->segment(3) . "/" ?>" + $data;
+                if (willDelete) {
+                    window.location.href = "<?= base_url() . "Sections/add_student_process_by_one/" . $this->uri->segment(3) . "/" ?>" + $data;
+                }
             }
-        }
-        );
-    });
+            );
+        });
     });
 </script>

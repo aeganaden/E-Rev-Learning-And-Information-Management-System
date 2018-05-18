@@ -13,7 +13,7 @@ class SubjectArea extends CI_Controller {
     public function index() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
-
+            //FETCHING SUBJECTS
             $col = 'sl.subject_list_id, sl.subject_list_name, yl.year_level_name, yl.year_level_id';
             $where = array('sl.subject_list_department' => $info['user']->professor_department, 'sl.subject_list_is_active' => 1);
             $join = array(
@@ -27,6 +27,19 @@ class SubjectArea extends CI_Controller {
                 $year_holder[$subsl->year_level_id][$subsl->year_level_name][] = "— " . $subsl->subject_list_name;
             }
 
+            //FETCHING TOPICS
+            $col = 'tl.topic_list_id, tl.topic_list_name, tl.topic_list_description';
+            $where = array(
+                'sl.subject_list_department' => $info['user']->professor_department,
+                'sl.subject_list_is_active' => 1,
+                'tl.topic_list_is_active' => 1
+            );
+            $join = array(
+                array("subject_list_has_topic_list as sltl", "sltl.subject_list_id = sltl.topic_list_id"),
+                array("subject_list as sl", "sl.subject_list_id = sltl.subject_list_id")
+            );
+            $topic_list = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE);
+
             $data = array(
                 "title" => "Subject Area Management",
                 'info' => $info,
@@ -38,7 +51,8 @@ class SubjectArea extends CI_Controller {
                 "s_s" => "selected-nav",
                 "s_co" => "",
                 "s_ss" => "",
-                "year_holder" => $year_holder
+                "year_holder" => $year_holder,
+                "topic_holder" => $topic_list
             );
             $this->load->view('includes/header', $data);
             $this->load->view('subject_area/main');
@@ -48,7 +62,7 @@ class SubjectArea extends CI_Controller {
         }
     }
 
-    public function view() {
+    public function sub_view() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
                 $info = $this->session->userdata('userInfo');
@@ -80,7 +94,7 @@ class SubjectArea extends CI_Controller {
                     "topic_list" => $topic_list
                 );
                 $this->load->view('includes/header', $data);
-                $this->load->view('subject_area/view');
+                $this->load->view('subject_area/sub_view');
                 $this->load->view('includes/footer');
             } else {
                 redirect("SubjectArea");
@@ -108,4 +122,63 @@ class SubjectArea extends CI_Controller {
         }
     }
 
+    public function add_subject_area(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            $info = $this->session->userdata('userInfo');
+
+            $result = $this->Crud_model->fetch_select("year_level");
+            $col = "topic_list_id, topic_list_name, topic_list_description";
+            $where = array("topic_list_is_active" => 1);
+            $topics = $this->Crud_model->fetch_select("topic_list", $col, $where);
+
+            $data = array(
+                "title" => "Subject Area Management",
+                'info' => $info,
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "selected-nav",
+                "s_co" => "",
+                "s_ss" => "",
+                "option_select" => $result,
+                "topics" => $topics
+            );
+            $this->load->view('includes/header', $data);
+
+            $this->load->view('subject_area/add_subject_area');
+            $this->load->view('includes/footer');
+        } else {
+            redirect();
+        }
+    }
+
+    public function add_submit(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            $info = $this->session->userdata('userInfo');
+
+            $result = $this->Crud_model->fetch_select("year_level");
+
+            $data = array(
+                "title" => "Subject Area Management",
+                'info' => $info,
+                "s_h" => "",
+                "s_a" => "",
+                "s_f" => "",
+                "s_c" => "",
+                "s_t" => "",
+                "s_s" => "selected-nav",
+                "s_co" => "",
+                "s_ss" => "",
+                "option_select" => $result
+            );
+            $this->load->view('includes/header', $data);
+
+            $this->load->view('subject_area/add_subject_area');
+            $this->load->view('includes/footer');
+        } else {
+            redirect();
+        }
+    }
 }

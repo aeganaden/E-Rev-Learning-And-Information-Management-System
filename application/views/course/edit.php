@@ -9,13 +9,11 @@
 <!--ABOVE IS PERMA-->
 
 <div class="row container">
-    <div class=" col s12  col m4">
+    <div class=" col s12">
         <blockquote class="color-primary-green">
             <h3 class="color-black">Edit Course</h3>
         </blockquote>
     </div>
-    <div class=" col s12  col m4"></div>
-    <div class=" col s12  col m4"></div>
 </div>
 <div class="row container">
     <pre>
