@@ -217,7 +217,7 @@ class SubjectArea extends CI_Controller {
             $col = "topic_list_id, topic_list_name, topic_list_description";
             $where = array("topic_list_is_active" => 1);
             $topics = $this->Crud_model->fetch_select("topic_list", $col, $where);
-                //END - GET TOPICS AND YEAR LEVEL
+            //END - GET TOPICS AND YEAR LEVEL
 
             if ($this->form_validation->run() == FALSE || !empty($error_message)) { //wrong
                 unset($data);
@@ -272,6 +272,39 @@ class SubjectArea extends CI_Controller {
         } else {
             redirect();
         }
+    }
+
+    public function update_topic_list(){
+        //call this kapag nagselect yung user sa year_level
+        $info = $this->session->userdata('userInfo');
+        $yl_id = 3;     //year_level_id
+        $col = "tl.topic_list_id";
+        $where = array(
+            "sl.subject_list_department" => $info['user']->professor_department,
+            "yl.year_level_id" => $yl_id,
+            "sl.subject_list_is_active" => 1,
+            "tl.topic_list_is_active" => 1
+        );
+        $join = array(
+            array("subject_list_has_topic_list as slhtl", "tl.topic_list_id = slhtl.topic_list_id"),
+            array("subject_list as sl", "slhtl.subject_list_id = sl.subject_list_id"),
+            array("year_level as yl", "sl.year_level_id = yl.year_level_id")
+        );
+        $result = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE);
+
+        foreach($result as $res){
+            $topic_ids[] = $res->topic_list_id;
+        }
+        $wherenotin[0] = "topic_list_id";
+        $wherenotin[1] = $topic_ids;
+        unset($result);
+        $col = "topic_list_id, topic_list_name, topic_list_description";
+        $orderby[0] = "topic_list_name";
+        $orderby[1] = "ASC";
+        $result = $this->Crud_model->fetch_select("topic_list", $col, NULL, NULL, TRUE, NULL, NULL, true, $orderby, NULL, $wherenotin);
+        unset($data);
+        $data["data"] = $result;
+        print_r(json_encode($data));
     }
 
     private function hack_check($str){
