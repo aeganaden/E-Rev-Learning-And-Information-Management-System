@@ -8,6 +8,8 @@ class SubjectArea extends CI_Controller {
         parent::__construct();
         $this->load->model('Crud_model');
         $this->load->helper('cookie');
+        $this->load->library('form_validation');
+        $this->load->helper(array('form', 'url'));
     }
 
     public function index() {
@@ -158,8 +160,6 @@ class SubjectArea extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
 
-            $result = $this->Crud_model->fetch_select("year_level");
-
             $data = array(
                 "title" => "Subject Area Management",
                 'info' => $info,
@@ -170,15 +170,118 @@ class SubjectArea extends CI_Controller {
                 "s_t" => "",
                 "s_s" => "selected-nav",
                 "s_co" => "",
-                "s_ss" => "",
-                "option_select" => $result
+                "s_ss" => ""
             );
             $this->load->view('includes/header', $data);
+            
+            $this->form_validation->set_rules('subject_area', 'Subject Area name', 'required|max_length[100]|min_length[5]');
+            $this->form_validation->set_rules('subject_description', 'Subject Area description', 'required|min_length[5]');
+            $this->form_validation->set_rules('year_level', 'Year Level', 'required|numeric');
+            //rules for topics
+            $rules = array(
+                'required' => 'Please select at least 2 in the list of topics'
+            );
+            $this->form_validation->set_rules('topic_list[]', 'Topics', 'required', $rules);
 
-            $this->load->view('subject_area/add_subject_area');
+            $error_message=[];
+
+            $temp = $this->hack_check($this->input->post("subject_area"));
+            if($temp["confirm"] === true){ //xss positive, repeat input
+                $error_message[] = "There is invalid input in the Subject Area field. Please try again.";
+            } else {
+                $subject_area = $temp["string"];
+                $is_duplicate = $this->Crud_model->fetch_select("subject_list", "subject_list_name", 
+                    array("subject_list_name" => $subject_area, "subject_list_department" => $info['user']->professor_department));
+                
+                if(!empty($is_duplicate)){
+                    $error_message[] = "There is '$subject_area' already in the subject area list";
+                }
+            }
+
+            $temp = $this->hack_check($this->input->post("subject_description"));
+            if($temp["confirm"] === true){ //xss positive, repeat input
+                $error_message[] = "There is invalid input in the Subject Area desription field. Please try again.";
+            } else {
+                $subject_desc = $temp["string"];
+            }
+
+            $temp = $this->hack_check($this->input->post("year_level"));
+            if($temp["confirm"] === true){ //xss positive, repeat input
+                $error_message[] = "There is invalid input in the Year Level field. Please try again.";
+            } else {
+                $year_level = $temp["string"];
+            }
+
+            //GET TOPICS AND YEAR LEVEL
+            $result = $this->Crud_model->fetch_select("year_level");
+            $col = "topic_list_id, topic_list_name, topic_list_description";
+            $where = array("topic_list_is_active" => 1);
+            $topics = $this->Crud_model->fetch_select("topic_list", $col, $where);
+                //END - GET TOPICS AND YEAR LEVEL
+
+            if ($this->form_validation->run() == FALSE || !empty($error_message)) { //wrong
+                unset($data);
+                $data = array(
+                    "option_select" => $result,
+                    "topics" => $topics,
+                    "error" => true,
+                    "error_message" => $error_message
+                );
+                $this->load->view('subject_area/add_subject_area', $data);
+            } else {
+                $this->db->trans_begin();
+                $insert_data = array(
+                    "subject_list_name" => strtoupper($subject_area),
+                    "subject_list_department" => $info['user']->professor_department,
+                    "subject_list_is_active" => 1,
+                    "subject_list_description" => $subject_desc,
+                    "year_level_id" => $year_level
+                );
+                $result = $this->Crud_model->insert("subject_list", $insert_data);
+                $last_id = $this->db->insert_id();
+
+                $topics = $this->input->post("topic_list");
+                $insert_batch = [];
+                foreach($topics as $each){
+                    $temp = array(
+                        "subject_list_id" => $last_id,
+                        "topic_list_id" => (int)$each+1
+                    );
+                    $insert_batch[] = $temp;
+                }
+                $this->Crud_model->insert_batch("subject_list_has_topic_list", $insert_batch);
+
+                if ($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+                    $error_message[] = "An error occured when ";
+                    unset($data);
+                    $data = array(
+                        "option_select" => $result,
+                        "topics" => $topics,
+                        "error" => true,
+                        "error_message" => $error_message
+                    );
+                    $this->load->view('subject_area/add_subject_area', $data);
+                } else {
+                    $this->db->trans_commit();
+                    redirect("SubjectArea/");
+                }
+            }
+
             $this->load->view('includes/footer');
         } else {
             redirect();
         }
+    }
+
+    private function hack_check($str){
+        $return["confirm"] = false;
+        $return["string"] = $str;
+        $data = $this->security->xss_clean($str);
+        if(strpos($data, '[removed]') !== FALSE){
+            $return["confirm"] = true;
+        }
+        $return["string"] = html_escape($str);
+        return $return;
     }
 }
