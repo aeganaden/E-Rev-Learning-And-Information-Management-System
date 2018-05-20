@@ -1,4 +1,6 @@
 
+<?php $this->load->view('includes/home-navbar'); ?>
+<?php $this->load->view('includes/home-sidenav'); ?>
 <div class="row container">
     <div class="col s12">
         <blockquote class="color-primary-green">
