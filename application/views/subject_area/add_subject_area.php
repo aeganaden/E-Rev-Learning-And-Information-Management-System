@@ -53,7 +53,7 @@
 						<?php endforeach;?>
 					</li>
 				</ul> -->
-				<h5>Select Topics</h5>
+				<h5 class="center">Select Topics</h5>
 				<table class="data-table" id="table-topics-add">
 					<thead>
 						<tr>
