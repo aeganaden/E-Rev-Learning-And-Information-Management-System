@@ -36,28 +36,50 @@
 				</select>
 				<label class="color-black">Assigned to:</label>
 			</div>
-			<div class="input-field col s12">
-				<ul class="collapsible">
+			<div class=" col s12">
+				<!-- <ul class="collapsible">
 					<li>
 						<div class="collapsible-header">Select topics:</div>
-						<div class="collapsible-body"><span>
-							<?php foreach($topics as $top):?>
-								<div class="col s3">
-									<p>
-										<label>
-											<input type="checkbox" />
-											<span><?= $top->topic_list_name ?><br></span>
-										</label>
-									</p>
-								</div>
-							<?php endforeach;?>
-						</span></div>
+						<?php foreach($topics as $top):?>
+							<div class="collapsible-body"> 
+								<p>
+									<label>
+										<input type="checkbox" />
+										<span></span>
+									</label>
+									<?= $top->topic_list_name ?>
+								</p>
+							</div>
+						<?php endforeach;?>
 					</li>
-				</ul>
+				</ul> -->
+				<h5>Select Topics</h5>
+				<table class="data-table" id="table-topics-add">
+					<thead>
+						<tr>
+							<th>Topic</th> 
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody> 
+						<?php foreach ($topics as $key => $top): ?>
+							<tr class="bg-color-white">
+								<td class="valign-wrapper"><?= $top->topic_list_name ?></td> 
+								<td>
+									<p>
+										<input type="checkbox" id="chk<?=$key?>">
+										<label for="chk<?=$key?>"> </label>
+
+									</p>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 			</div>
 			<div class="input-field">
 				<button class="btn waves-effect waves-light right green" type="submit" name="submit">Submit</button>
-				<a href="<?= base_url() ?>Course" class="waves-effect waves-light btn left red">Cancel</a>
+				<a href="<?= base_url() ?>SubjectArea" class="waves-effect waves-light btn left red">Cancel</a>
 			</div>
 		</form>
 	</div>

@@ -51,49 +51,49 @@
 														<?php if ($r_grade_assessment): ?>
 															<li>
 																<div class="collapsible-header bg-primary-green color-white"><i class="material-icons color-white">book</i><?=$l_value->courseware_name?>
-																</div>
+															</div>
 
-																<div class="collapsible-body">
-																	<?php if ($r_grade_assessment): ?>
-																		<table class="data-table">
-																			<thead>
+															<div class="collapsible-body">
+																<?php if ($r_grade_assessment): ?>
+																	<table class="data-table">
+																		<thead>
+																			<tr>
+																				<th>Take #</th>
+																				<th>SCORE</th>
+																				<th>TOTAL SCORE</th>
+																				<th>PERCENTAGE</th>
+																				<th>TIME</th>
+																				<th>REMARKS</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
+																				<?php 
+																				$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%";
+																				$remarks = $percent >= 70 ? "passed" : "failed";
+																				$remarks_color = $percent >= 70 ? "" : "red";
+
+																				if ($m_value->remedial_grade_assessment_time) {
+																					$time = $m_value->remedial_grade_assessment_time;
+																				}else{
+																					$time ="-";
+																				}
+																				?>
 																				<tr>
-																					<th>Take #</th>
-																					<th>SCORE</th>
-																					<th>TOTAL SCORE</th>
-																					<th>PERCENTAGE</th>
-																					<th>TIME</th>
-																					<th>REMARKS</th>
+																					<td><?=$m_key+1?></td>
+																					<td><?=$m_value->remedial_grade_assessment_score?></td>
+																					<td><?=$m_value->remedial_grade_assessment_total?></td>
+																					<td><?=$percent?></td>
+																					<td><?=$time?></td>
+																					<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
 																				</tr>
-																			</thead>
-																			<tbody>
-																				<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
-																					<?php 
-																					$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%";
-																					$remarks = $percent >= 70 ? "passed" : "failed";
-																					$remarks_color = $percent >= 70 ? "" : "red";
+																			<?php endforeach ?>
+																		</tbody>
+																	</table>
+																<?php endif ?>
 
-																					if ($m_value->remedial_grade_assessment_time) {
-																						$time = $m_value->remedial_grade_assessment_time;
-																					}else{
-																						$time ="-";
-																					}
-																					?>
-																					<tr>
-																						<td><?=$m_key+1?></td>
-																						<td><?=$m_value->remedial_grade_assessment_score?></td>
-																						<td><?=$m_value->remedial_grade_assessment_total?></td>
-																						<td><?=$percent?></td>
-																						<td><?=$time?></td>
-																						<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
-																					</tr>
-																				<?php endforeach ?>
-																			</tbody>
-																		</table>
-																	<?php endif ?>
-
-																</div>
-															</li>	
+															</div>
+														</li>	
 														<?php else: ?>
 														<?php endif ?>	
 													<?php endforeach ?>
@@ -182,130 +182,130 @@
 
 																</div>
 															</li>	
-														<?php else: ?>															
-														<?php endif ?>	
-													<?php endforeach ?>
-												<?php endif ?>		
-											<?php endforeach ?>
-										<?php endif ?>
-									<?php endforeach ?>
-								<?php endif ?>
-							<?php endforeach ?>
-						<?php endforeach ?>				
-					</ul>
-				<?php endif ?>
+															<?php else: ?>															
+															<?php endif ?>	
+														<?php endforeach ?>
+													<?php endif ?>		
+												<?php endforeach ?>
+											<?php endif ?>
+										<?php endforeach ?>
+									<?php endif ?>
+								<?php endforeach ?>
+							<?php endforeach ?>				
+						</ul>
+					<?php endif ?>
 
-			</div>
-			<div id="saPercentage" class="col s12">
-				<?php if ($offering): ?>
-					<ul class="collapsible" data-collapsible="accordion">
-						<?php foreach ($offering as $key => $value): ?>
-							<?php $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id)) ?>
-							<?php foreach ($course as $key => $i_value): ?>
-								<?php $subject = $this->Crud_model->fetch("subject",array("course_id"=>$i_value->course_id));?>
-								<?php if ($subject): ?>
-									<?php foreach ($subject as $key => $j_value): ?>
-										<?php $topic = $this->Crud_model->fetch("topic",array("subject_id"=>$j_value->subject_id)) ?>
-										<?php if ($topic): ?>
-											<?php foreach ($topic as $key => $k_value): ?>
-												<?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$k_value->topic_id,"courseware_status"=>1)) ?>
-												<?php if ($courseware): ?>
-													<?php foreach ($courseware as $key => $l_value): ?>
+				</div>
+				<div id="saPercentage" class="col s12">
+					<?php if ($offering): ?>
+						<ul class="collapsible" data-collapsible="accordion">
+							<?php foreach ($offering as $key => $value): ?>
+								<?php $course = $this->Crud_model->fetch("course",array("course_id"=>$value->course_id)) ?>
+								<?php foreach ($course as $key => $i_value): ?>
+									<?php $subject = $this->Crud_model->fetch("subject",array("course_id"=>$i_value->course_id));?>
+									<?php if ($subject): ?>
+										<?php foreach ($subject as $key => $j_value): ?>
+											<?php $topic = $this->Crud_model->fetch("topic",array("subject_id"=>$j_value->subject_id)) ?>
+											<?php if ($topic): ?>
+												<?php foreach ($topic as $key => $k_value): ?>
+													<?php $courseware = $this->Crud_model->fetch("courseware",array("topic_id"=>$k_value->topic_id,"courseware_status"=>1)) ?>
+													<?php if ($courseware): ?>
+														<?php foreach ($courseware as $key => $l_value): ?>
 
-														<?php $grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
-														?>
-														<?php if ($grade_assessment): ?>
-															<?php foreach ($grade_assessment as $m_key => $m_value): ?>
-																<?php 
-																$p_scores += $m_value->grade_assessment_score;
-																$p_total_score += $m_value->grade_assessment_total;
-																?>
-															<?php endforeach ?>
+															<?php $grade_assessment = $this->Crud_model->fetch("grade_assessment",array("student_id"=>$info['user']->student_id,"courseware_id"=>$l_value->courseware_id));
+															?>
+															<?php if ($grade_assessment): ?>
+																<?php foreach ($grade_assessment as $m_key => $m_value): ?>
+																	<?php 
+																	$p_scores += $m_value->grade_assessment_score;
+																	$p_total_score += $m_value->grade_assessment_total;
+																	?>
+																<?php endforeach ?>
 
-														<?php endif ?>
-													<?php endforeach ?>
+															<?php endif ?>
+														<?php endforeach ?>
 
-												<?php endif ?>		
-											<?php endforeach ?>
-										<?php endif ?>
-										<?php 
-										if ($p_scores && $p_total_score) {
-											$total = ($p_scores/$p_total_score)*100;
-										}else{
-											$total = 0;
-										}
-										$p_scores = 0;
-										$p_total_score = 0;
-										$cw_percentage[$j_value->subject_id] = $total;
-										?>
-									<?php endforeach ?>
-								<?php endif ?>
-							<?php endforeach ?>
-						<?php endforeach ?>				
-					</ul>
-				<?php endif ?>
-				<blockquote class="color-primary-green">
-					<i class="color-black">Remedial Courseware Grades are not included in the computation</i>
-					
-				</blockquote>
-				<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
-				<?php foreach ($cw_percentage as $key => $value): ?>
-					<?php 
-					$subject = $this->Crud_model->fetch("subject",array("subject_id"=>$key));
-					$subject = $subject[0];
-					?>
-					<div class="row valign-wrapper">
-						<div class="col s6">
-							<h5 class="center"><?=$subject->subject_name?></h5>
-						</div>
-						<div class="col s6">
-							<div id="sa_<?=$key?>" style="width: 50%; position: relative;">
-								
+													<?php endif ?>		
+												<?php endforeach ?>
+											<?php endif ?>
+											<?php 
+											if ($p_scores && $p_total_score) {
+												$total = ($p_scores/$p_total_score)*100;
+											}else{
+												$total = 0;
+											}
+											$p_scores = 0;
+											$p_total_score = 0;
+											$cw_percentage[$j_value->subject_id] = $total;
+											?>
+										<?php endforeach ?>
+									<?php endif ?>
+								<?php endforeach ?>
+							<?php endforeach ?>				
+						</ul>
+					<?php endif ?>
+					<blockquote class="color-primary-green">
+						<i class="color-black">Remedial Courseware Grades are not included in the computation</i>
+						
+					</blockquote>
+					<link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+					<?php foreach ($cw_percentage as $key => $value): ?>
+						<?php 
+						$subject = $this->Crud_model->fetch("subject",array("subject_id"=>$key));
+						$subject = $subject[0];
+						?>
+						<div class="row valign-wrapper">
+							<div class="col s6">
+								<h5 class="center"><?=$subject->subject_name?></h5>
 							</div>
+							<div class="col s6">
+								<div id="sa_<?=$key?>" style="width: 50%; position: relative;">
+									
+								</div>
 
+							</div>
 						</div>
-					</div>
 
-					<script type="text/javascript">
+						<script type="text/javascript">
 
-						jQuery(document).ready(function($) {
+							jQuery(document).ready(function($) {
 
-							var bar = new ProgressBar.Circle(sa_<?=$key?>, {
-								color: '#F2A900',
-								strokeWidth: 4,
+								var bar = new ProgressBar.Circle(sa_<?=$key?>, {
+									color: '#F2A900',
+									strokeWidth: 4,
 
-								trailColor: '#007A33',
-								trailWidth: 1,
-								easing: 'easeInOut',
-								duration: 3000,
-								text: {
-									autoStyleContainer: false
-								},
-								from: { color: '#F2A900', width: 1 },
-								to: { color: '#F2A900', width: 4 },
-								step: function(state, circle) {
-									circle.path.setAttribute('stroke', state.color);
-									circle.path.setAttribute('stroke-width', state.width);
+									trailColor: '#007A33',
+									trailWidth: 1,
+									easing: 'easeInOut',
+									duration: 3000,
+									text: {
+										autoStyleContainer: false
+									},
+									from: { color: '#F2A900', width: 1 },
+									to: { color: '#F2A900', width: 4 },
+									step: function(state, circle) {
+										circle.path.setAttribute('stroke', state.color);
+										circle.path.setAttribute('stroke-width', state.width);
 
-									var value = Math.round(circle.value() * 100);
-									if (value === 0) {
-										circle.setText('0');
-									} else {
-										circle.setText(value+"%");
+										var value = Math.round(circle.value() * 100);
+										if (value === 0) {
+											circle.setText('0');
+										} else {
+											circle.setText(value+"%");
+										}
+
 									}
+								});
+								bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+								bar.text.style.fontSize = '2rem';
 
-								}
+								bar.animate(<?=$value/100?>);  
 							});
-							bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-							bar.text.style.fontSize = '2rem';
+						</script>
 
-							bar.animate(<?=$value/100?>);  
-						});
-					</script>
-
-				<?php endforeach ?>
+					<?php endforeach ?>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 

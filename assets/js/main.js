@@ -187,6 +187,7 @@ function getDivHeightID(x){
 
 $(document).ready(function() {
 	$('.data-table').DataTable();
+	
 } );
 
 /*=====  End of Datatables JS  ======*/
