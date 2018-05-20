@@ -106,24 +106,6 @@ class SubjectArea extends CI_Controller {
         }
     }
 
-    public function remove_topic() {
-        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
-            if (!empty($subject_id = $this->uri->segment(3)) && is_numeric($subject_id) &&
-                    !empty($topic_id = $this->uri->segment(4)) && is_numeric($topic_id)) {    //topic_id
-                //LAST - delete topics
-//                $where = array(
-//                    "subject_list_id" => $subject_id,
-//                    "topic_list_id" => $topic_id
-//                );
-//                $this->Crud_model->delete("sbuject_list_has_topic_list", $where);
-            } else {
-                redirect("SubjectArea");
-            }
-        } else {
-            redirect();
-        }
-    }
-
     public function add_subject_area(){
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');

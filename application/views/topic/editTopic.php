@@ -4,7 +4,7 @@
 <div class="row container">
 	<div class="col s12">
 		<blockquote class="color-primary-green">
-			<h3 class="color-black">Edit Topic <br><a href="<?= base_url() ?>TopicManagement" class="waves-effect waves-dark btn bg-color-red"><i class="material-icons left">arrow_back</i>Return</a></h3>
+			<h3 class="color-black">Edit Topic <br></h3>
 		</blockquote>
 	</div>
 </div>
@@ -16,13 +16,12 @@
 			<input  id="topicName" placeholder="topic_name_here" type="text" class="validate">
 			<label for="topicName">Topic Name</label>
 		</div> 
-		<div class="input-field col s12 m12"> 
-			<div class="input-field col s12">
-				<textarea id="topicDescription" placeholder="topic_description_here" class="materialize-textarea"></textarea>
-				<label for="topicDescription">Topic Description</label>
-			</div>
+		<div class="input-field col m12">
+			<textarea id="topicDescription" placeholder="topic_description_here" class="materialize-textarea"></textarea>
+			<label for="topicDescription">Topic Description</label>
 		</div>
 		<dic class="row">
+			<a href="<?= base_url() ?>Topic" class="waves-effect waves-light btn left red">Cancel</a>
 			<button class="btn right bg-primary-green waves-effect waves-light">EDIT</button>
 		</dic>
 	</div>
