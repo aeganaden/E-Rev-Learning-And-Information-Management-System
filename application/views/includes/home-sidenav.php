@@ -139,10 +139,11 @@ switch ($info['user']->$ident) {
             <li class="<?= $s_ga ?>">
                 <a href="<?= base_url() ?>GradeAssessment " class="color-black "><i class="material-icons color-black">assessment</i>Grade Assessment</a> <!--mark - naglagay-->
             </li>
-        <?php endif ?>
+        <?php endif ?> 
+
         <?php if ($info["identifier"] == "professor"): ?>
-            <li class="color-black <?= $s_s ?>">
-                <a href="<?= base_url() ?>SubjectArea" class="color-black"><i class="material-icons color-black">assignment</i>Subject Area/Topics</a>
+            <li class="color-black">
+                <a href="<?= base_url() ?>TopicManagement" class="color-black"><i class="material-icons color-black">assignment</i>Topic Area</a>
             </li>
         <?php endif ?>
 
