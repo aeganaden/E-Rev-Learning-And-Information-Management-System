@@ -64,6 +64,14 @@ class SubjectArea extends CI_Controller {
         }
     }
 
+    public function form_data()
+    {   
+        $title = $this->input->post("title");
+        $desc = $this->input->post("desc");
+        $this->session->set_userdata('title', $title);
+        $this->session->set_userdata('desc', $desc);
+    }
+
     public function sub_view() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
@@ -132,8 +140,30 @@ class SubjectArea extends CI_Controller {
             $col = "topic_list_id, topic_list_name, topic_list_description";
             $where = array("topic_list_is_active" => 1);
             $topics = $this->Crud_model->fetch_select("topic_list", $col, $where);
+            $segYearLevel = $this->uri->segment(3);
+            if ($segYearLevel) {
 
-            $data = array(
+                // echo "<pre>";
+                // print_r($this->update_topic_list($segYearLevel));
+                // die;
+                $res = $this->update_topic_list($segYearLevel);
+                $data = array(
+                    "title" => "Subject Area Management",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "selected-nav",
+                    "s_co" => "",
+                    "s_ss" => "",
+                    "option_select" => $result,
+                    "topics" => $res
+                );
+
+            }else{
+              $data = array(
                 "title" => "Subject Area Management",
                 'info' => $info,
                 "s_h" => "",
@@ -147,45 +177,46 @@ class SubjectArea extends CI_Controller {
                 "option_select" => $result,
                 "topics" => $topics
             );
-            $this->load->view('includes/header', $data);
-
-            $this->load->view('subject_area/add_subject_area');
-            $this->load->view('includes/footer');
-        } else {
-            redirect();
-        }
+          }
+          
+          $this->load->view('includes/header', $data); 
+          $this->load->view('subject_area/add_subject_area');
+          $this->load->view('includes/footer');
+      } else {
+        redirect();
     }
+}
 
-    public function add_submit(){
-        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
-            $info = $this->session->userdata('userInfo');
+public function add_submit(){
+    if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+        $info = $this->session->userdata('userInfo');
 
-            $data = array(
-                "title" => "Subject Area Management",
-                'info' => $info,
-                "s_h" => "",
-                "s_a" => "",
-                "s_f" => "",
-                "s_c" => "",
-                "s_t" => "",
-                "s_s" => "selected-nav",
-                "s_co" => "",
-                "s_ss" => ""
-            );
-            $this->load->view('includes/header', $data);
-            
-            $this->form_validation->set_rules('subject_area', 'Subject Area name', 'required|max_length[100]|min_length[5]');
-            $this->form_validation->set_rules('subject_description', 'Subject Area description', 'required|min_length[5]');
-            $this->form_validation->set_rules('year_level', 'Year Level', 'required|numeric');
+        $data = array(
+            "title" => "Subject Area Management",
+            'info' => $info,
+            "s_h" => "",
+            "s_a" => "",
+            "s_f" => "",
+            "s_c" => "",
+            "s_t" => "",
+            "s_s" => "selected-nav",
+            "s_co" => "",
+            "s_ss" => ""
+        );
+        $this->load->view('includes/header', $data);
+
+        $this->form_validation->set_rules('subject_area', 'Subject Area name', 'required|max_length[100]|min_length[5]');
+        $this->form_validation->set_rules('subject_description', 'Subject Area description', 'required|min_length[5]');
+        $this->form_validation->set_rules('year_level', 'Year Level', 'required|numeric');
             //rules for topics
-            $rules = array(
-                'required' => 'Please select at least 2 in the list of topics'
-            );
-            $this->form_validation->set_rules('topic_list[]', 'Topics', 'required', $rules);
+        $rules = array(
+            'required' => 'Please select at least 2 in the list of topics'
+        );
+        $this->form_validation->set_rules('topic_list[]', 'Topics', 'required', $rules);
 
-            $error_message=[];
+        $error_message=[];
 
-            $temp = $this->hack_check($this->input->post("subject_area"));
+        $temp = $this->hack_check($this->input->post("subject_area"));
             if($temp["confirm"] === true){ //xss positive, repeat input
                 $error_message[] = "There is invalid input in the Subject Area field. Please try again.";
             } else {
@@ -274,10 +305,10 @@ class SubjectArea extends CI_Controller {
         }
     }
 
-    public function update_topic_list(){
+    public function update_topic_list($id){
         //call this kapag nagselect yung user sa year_level
         $info = $this->session->userdata('userInfo');
-        $yl_id = 3;     //year_level_id
+        $yl_id = $id;     //year_level_id
         $col = "tl.topic_list_id";
         $where = array(
             "sl.subject_list_department" => $info['user']->professor_department,
@@ -290,21 +321,30 @@ class SubjectArea extends CI_Controller {
             array("subject_list as sl", "slhtl.subject_list_id = sl.subject_list_id"),
             array("year_level as yl", "sl.year_level_id = yl.year_level_id")
         );
-        $result = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE);
+        $result = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE); 
+        
+        // echo $this->db->last_query();
 
-        foreach($result as $res){
-            $topic_ids[] = $res->topic_list_id;
+        if ($result) {
+            foreach($result as $res){
+                $topic_ids[] = $res->topic_list_id;
+            }
+            $wherenotin[0] = "topic_list_id";
+            $wherenotin[1] = $topic_ids;
+            unset($result);
+            $col = "topic_list_id, topic_list_name, topic_list_description";
+            $orderby[0] = "topic_list_name";
+            $orderby[1] = "ASC";
+            $result = $this->Crud_model->fetch_select("topic_list", $col, NULL, NULL, TRUE, NULL, NULL, true, $orderby, NULL, $wherenotin);
+            // unset($data);
+            // $data["data"] = $result;
+            // echo "<pre>";
+            // print_r(json_encode($result));
+            return $result;
+        }else{
+            return false;
         }
-        $wherenotin[0] = "topic_list_id";
-        $wherenotin[1] = $topic_ids;
-        unset($result);
-        $col = "topic_list_id, topic_list_name, topic_list_description";
-        $orderby[0] = "topic_list_name";
-        $orderby[1] = "ASC";
-        $result = $this->Crud_model->fetch_select("topic_list", $col, NULL, NULL, TRUE, NULL, NULL, true, $orderby, NULL, $wherenotin);
-        unset($data);
-        $data["data"] = $result;
-        print_r(json_encode($data));
+        // print_r(json_encode($data));
     }
 
     private function hack_check($str){
