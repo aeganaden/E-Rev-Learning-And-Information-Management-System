@@ -245,11 +245,12 @@ class Crud_model extends CI_Model {
             return ($query->num_rows() > 0) ? $query->result() : FALSE;
         }
     }
-    public function delete2($table, $where = NULL) {
+    public function delete2($table, $where = NULL, $wherein = NULL) {
         if (!empty($where)) {
-            foreach($where as $each){
-                $this->db->where($each);
-            }
+            $this->db->where($where);
+        }
+        if (!empty($wherein)) {
+            $this->db->where_in($wherein[0], $wherein[1]);
         }
         $this->db->delete($table);
         return $this->db->last_query();

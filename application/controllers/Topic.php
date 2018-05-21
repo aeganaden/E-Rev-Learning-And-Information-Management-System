@@ -12,7 +12,7 @@ class Topic extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
 
-         //FETCHING TOPICS
+            //FETCHING TOPICS
             $col = 'tl.topic_list_id, tl.topic_list_name, tl.topic_list_description';
             $where = array(
                 'sl.subject_list_department' => $info['user']->professor_department,
@@ -20,7 +20,7 @@ class Topic extends CI_Controller {
                 'tl.topic_list_is_active' => 1
             );
             $join = array(
-                array("subject_list_has_topic_list as sltl", "sltl.subject_list_id = sltl.topic_list_id"),
+                array("subject_list_has_topic_list as sltl", "tl.topic_list_id = sltl.topic_list_id"),
                 array("subject_list as sl", "sl.subject_list_id = sltl.subject_list_id")
             );
             $topic_list = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE);
@@ -110,19 +110,26 @@ class Topic extends CI_Controller {
                 array("subject_list as sl", "sl.subject_list_id = slhtl.subject_list_id")
             );
             $result = $this->Crud_model->fetch_join2("subject_list_has_topic_list as slhtl", $col, $join, NULL, $where, NULL, TRUE);
-            echo "<pre>";
-            print_r($result);
-            // $this->db->trans_begin();
-            // $this->Crud_model->delete2("subject_list_has_topic_list", $result);
-
-            // if ($this->db->trans_status() === FALSE){
-            //     $this->db->trans_rollback();
-            //     echo json_encode("false");
-            // } else {
-            //     $this->db->trans_commit();
-            //     echo json_encode("true");
-            // }
-
+            
+            if(!empty($result)){
+                foreach($result as $sub){
+                    $subjects[] = (string)$sub["subject_list_id"];
+                }
+                $wherein[0] = "subject_list_id";
+                $wherein[1] = $subjects;
+                $where = array("topic_list_id" => $result[0]["topic_list_id"]);
+                $this->db->trans_begin();
+                $this->Crud_model->delete2("subject_list_has_topic_list", $where, $wherein);
+                if ($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+                    echo json_encode("false");
+                } else {
+                    $this->db->trans_commit();
+                    echo json_encode("true");
+                }
+            } else {
+                echo json_encode("false");
+            }
         } else {
             redirect();
         }

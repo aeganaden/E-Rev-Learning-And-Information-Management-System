@@ -8,7 +8,7 @@
         </blockquote>
     </div>
 </div>
-<div class="row container">   
+<div class="row container">
     <?php if (!empty($topic_holder)): ?>
         <table class="data-table" id="tbl-feedback"">
             <thead>
@@ -30,49 +30,51 @@
                 <?php endforeach;?>
             </tbody>
         </table>
-    <?php else: ?>
-        <h5 class="center">No list of topics</h5>
-    <?php endif ?>  
-</div>
+        <?php else: ?>
+            <h5 class="center">No list of topics</h5>
+        <?php endif ?>  
+    </div>
 
 
-<script>
-    jQuery(document).ready(function($) {
-        $(".btn_delete").click(function(event) { 
-            $id = $(this).data('id');
-            $name = $(this).data('name');
-            swal({
-                title: "Are you sure?",
-                text: "You are about to remove this topic ("+$name+") to ALL of its Subject Area",
-                icon: "error",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        url: "<?= base_url().'Topic/deleteTopic' ?>",
-                        type: "post",
-                        dataType: "json",
-                        data: {
-                            id: $id
-                        },
-                        success: function (data) {
-                            swal($name+" has been deleted!", {
-                                icon: "success",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        },
-                        error: function (data) {
-                            swal("An error occured. Please try again", {
-                                icon: "error",
-                            }).then(function () {
-                                window.location.reload(true);
-                            });
-                        }
-                    });
-                }
-            }); 
+    <script>
+        jQuery(document).ready(function($) {
+            $(".btn_delete").click(function(event) { 
+                $id = $(this).data('id');
+                $name = $(this).data('name');
+                swal({
+                    title: "Are you sure?",
+                    text: "You are about to remove this topic ("+$name+") to ALL of its Subject Area",
+                    icon: "error",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "<?= base_url().'Topic/deleteTopic' ?>",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: $id
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                swal($name+" has been deleted!", {
+                                    icon: "success",
+                                }).then(function () {
+                                    window.location.reload(true);
+                                });
+                            },
+                            error: function (data) {
+                                console.log(data);
+                                swal("An error occured. Please try again", {
+                                    icon: "error",
+                                }).then(function () {
+                                    window.location.reload(true);
+                                });
+                            }
+                        });
+                    }
+                }); 
+            });
         });
-    });
-</script>
+    </script>

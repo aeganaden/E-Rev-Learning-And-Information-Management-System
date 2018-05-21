@@ -64,7 +64,7 @@ else{
 							<?php else: ?>
 								<option value="<?=$each->year_level_id?>" <?=set_select('year_level', $each->year_level_id); ?>><?=$each->year_level_name?></option>
 							<?php endif ?>
-							
+
 						<?php endforeach;?>
 					</select>
 					<label class="color-black">Assign to:</label>
@@ -142,7 +142,7 @@ else{
 							desc: $desc,
 						}, 
 					});
-					
+
 				});
 			});
 		</script>

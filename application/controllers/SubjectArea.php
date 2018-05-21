@@ -324,7 +324,11 @@ public function add_submit(){
             // print_r(json_encode($result));
             return $result;
         }else{
-            return false;
+            $col = "topic_list_id, topic_list_name, topic_list_description";
+            $orderby[0] = "topic_list_name";
+            $orderby[1] = "ASC";
+            $result = $this->Crud_model->fetch_select("topic_list", $col, NULL, NULL, TRUE, NULL, NULL, true, $orderby);
+            return $result;
         }
         // print_r(json_encode($data));
     }
