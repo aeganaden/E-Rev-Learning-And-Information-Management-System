@@ -23,7 +23,7 @@
                 <i class="material-icons left ">play_arrow</i><?=$value->offering_section?>
               </button>
             </a>
-          <?php endforeach ?>
+          <?php endforeach; ?>
         <?php else: ?>
           <h5>No Section Assigned</h5>
         <?php endif ?>
@@ -32,7 +32,6 @@
   </div>
 </div>
 <div class="col s10">
-  
   <?php if ($schedule): ?>
     <?php $x = 1;
     ?> 
@@ -46,40 +45,40 @@
           <li>
             <div class="collapsible-header  bg-primary-green color-white"><i class="material-icons">people_outline</i><?=$value->offering_section?></div>
             <div>
-             <table id="tbl-<?=$value->offering_section?>" class="data-table" style="padding: 2%;">
-              <thead >
-                <tr>
-                  <th>Student ID</th>
-                  <th>Last Name</th>
-                  <th>First Name</th>
-                  <th>Middle Name</th>
-                  <th>Program</th>
-                  <th>Email</th>
-                </tr>
-              </thead>
-
-              <tbody class="bg-color-white">
-                <?php foreach ($student as $key => $value_inner): ?>
-                  <tr class="bg-color-white">
-                    <td><?= $value_inner->student_id ?></td>
-                    <td><?= ucwords($value_inner->firstname) ?></td>
-                    <td><?= ucwords($value_inner->midname) ?></td>
-                    <td><?= ucwords($value_inner->lastname) ?></td>
-                    <td><?= strtoupper($value_inner->student_department) ?></td>
-                    <td><?=$value_inner->email?></td>
+              <table id="tbl-<?=$value->offering_section?>" class="data-table" style="padding: 2%;">
+                <thead >
+                  <tr>
+                    <th>Student ID</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Program</th>
+                    <th>Email</th>
                   </tr>
-                <?php endforeach ?>
-              </tbody>
-            </table>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <?php $x++; ?>
-    <script>
-      $('#tbl-<?=$value->offering_section?>').DataTable();
-    </script>
-  <?php endforeach ?>
-<?php endif ?>
+                </thead>
+
+                <tbody class="bg-color-white">
+                  <?php foreach ($student as $key => $value_inner): ?>
+                    <tr class="bg-color-white">
+                      <td><?= $value_inner->student_num ?></td>
+                      <td><?= ucwords($value_inner->firstname) ?></td>
+                      <td><?= ucwords($value_inner->midname) ?></td>
+                      <td><?= ucwords($value_inner->lastname) ?></td>
+                      <td><?= strtoupper($value_inner->student_department) ?></td>
+                      <td><?=$value_inner->email?></td>
+                    </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <?php $x++; ?>
+      <script>
+        $('#tbl-<?=$value->offering_section?>').DataTable();
+      </script>
+    <?php endforeach ?>
+  <?php endif ?>
 </div>
 </div>

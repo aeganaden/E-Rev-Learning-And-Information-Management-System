@@ -401,7 +401,7 @@
                                         </td>
                                         <td>
                                             <a href="<?= base_url() ?>Admin/viewClassList/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect">View</a>
-                                            <button class="btn bg-primary-green waves-effect">Download</button></td>
+                                            <a href="<?= base_url() ?>Admin/downloadClassList/<?= $value->lecturer_id ?>" target="_blank" class="btn bg-primary-green waves-effect">Download</a>
                                         </tr>
                                     <?php endforeach ?>
                                 <?php endif ?>
