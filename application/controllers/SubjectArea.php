@@ -200,7 +200,7 @@ public function add_submit(){
 
         $temp = $this->hack_check($this->input->post("subject_area"));
             if($temp["confirm"] === true){ //xss positive, repeat input
-                $error_message[] = "There is invalid input in the Subject Area field. Please try again.";
+                $error_message[] = "The system detected invalid input in the Subject Area field. Please try again.";
             } else {
                 $subject_area = $temp["string"];
                 $is_duplicate = $this->Crud_model->fetch_select("subject_list", "subject_list_name", 
@@ -213,14 +213,14 @@ public function add_submit(){
 
             $temp = $this->hack_check($this->input->post("subject_description"));
             if($temp["confirm"] === true){ //xss positive, repeat input
-                $error_message[] = "There is invalid input in the Subject Area desription field. Please try again.";
+                $error_message[] = "The system detected invalid input in the Subject Area desription field. Please try again.";
             } else {
                 $subject_desc = $temp["string"];
             }
 
             $temp = $this->hack_check($this->input->post("year_level"));
             if($temp["confirm"] === true){ //xss positive, repeat input
-                $error_message[] = "There is invalid input in the Year Level field. Please try again.";
+                $error_message[] = "The system detected invalid input in the Year Level field. Please try again.";
             } else {
                 $year_level = $temp["string"];
             }
