@@ -24,11 +24,19 @@
 	<div class="col s8">
 		<form action="<?php echo base_url() . "Topic/submit_editTopic/". $topic_id; ?>" method="POST">
 			<div class="input-field col m12">
-				<input  id="topicName" type="text" name="topic_name" value="<?=$topic_name?>" autofocus required>
+				<?php if(!empty(set_value("topic_name"))) :?>
+					<input type="text" name="topic_name" value='<?=set_value("topic_name")?>' autofocus required>
+				<?php else:?>
+					<input type="text" name="topic_name" value='<?=$topic_name?>' autofocus required>
+				<?php endif;?>
 				<label for="topicName">Topic Name</label>
 			</div> 
 			<div class="input-field col m12">
-				<textarea id="topicDescription" class="materialize-textarea" name="topic_desc" required><?=$topic_desc?></textarea>
+				<?php if(!empty(set_value("topic_desc"))) :?>
+					<textarea class="materialize-textarea" name="topic_desc" required><?=set_value("topic_desc")?></textarea>
+				<?php else:?>
+					<textarea class="materialize-textarea" name="topic_desc" required><?=$topic_desc?></textarea>
+				<?php endif;?>
 				<label for="topicDescription">Topic Description</label>
 			</div>
 			<dic class="row">

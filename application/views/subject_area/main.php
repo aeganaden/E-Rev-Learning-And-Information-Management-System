@@ -35,10 +35,40 @@
                             <td><?= $key ?></td>
                             <td><?= implode("<br>", $res); ?></td>
                             <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-green btn_view_a">View</a></td>
-                            <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_vedit_a">Edit</a></td>
+                            <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_edit_a">Edit</a></td>
                             <td><a class="waves-effect waves-dark btn red btn_delete_a">Delete</a></td>
                         </tr>
                     <?php endforeach ?>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <center style="margin-top:20vh;">
+            <h3>No data to show</h3>
+        </center>
+    <?php endif; ?>
+    <br>
+    <h4 class="center">List of Subject Area</h4>
+    <?php if (isset($subject_holder) && !empty($subject_holder)): ?>
+        <table class="data-table" id="tbl-feedback">
+            <thead>
+                <tr>
+                    <th>Subject Area</th>
+                    <th>Subject Area Description</th>
+                    <th>Actions</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($subject_holder as $subsubject_areas): ?>
+                    <tr class="bg-color-white">
+                        <td><?= $subsubject_areas->subject_list_name ?></td>
+                        <td><?= $subsubject_areas->subject_list_description ?></td>
+                        <td><a data-id="<?= $subsubject_areas->subject_list_id ?>" class="waves-effect waves-dark btn bg-primary-green btn_view_b">View</a></td>
+                        <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_edit_b">Edit</a></td>
+                        <td><a class="waves-effect waves-dark btn red btn_delete_b">Delete</a></td>
+                    </tr>
                 <?php endforeach ?>
             </tbody>
         </table>

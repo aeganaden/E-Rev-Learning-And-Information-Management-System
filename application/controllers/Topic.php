@@ -229,15 +229,20 @@ class Topic extends CI_Controller {
                 if($temp["confirm"] === true){ //xss positive, repeat input
                     $error_message[] = "The system detected invalid input in the Topic Name field. Please try again.";
                 } else {
-                    //LAST! THIS TOPIC SHOULD BE EXEMPT!
                     $hold = $temp["string"];
-                    $wherenotin = array("topic_list_id", array($segment));
+                    $where = array(
+                        "topic_list_name" => $hold
+                    );
                     $col = "topic_list_id";
-                    $result = $this->Crud_model->fetch_select("topic_list", $col,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL, $wherenotin);
+                    $result = $this->Crud_model->fetch_select("topic_list", $col, $where);
                     if(empty($result)){
                         $topic_name = $hold;
                     } else {
-                        $error_message[] = "There is '$hold' already in the topic list";
+                        if($result[0]->topic_list_id == $segment){
+                            $topic_name = $hold;
+                        } else {
+                            $error_message[] = "There is '$hold' already in the topic list";
+                        }
                     }
                 }
 

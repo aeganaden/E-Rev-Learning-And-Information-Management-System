@@ -30,17 +30,12 @@ class SubjectArea extends CI_Controller {
             }
 
             //FETCHING TOPICS
-            $col = 'tl.topic_list_id, tl.topic_list_name, tl.topic_list_description';
+            $col = 'subject_list_name, subject_list_description, subject_list_id';
             $where = array(
-                'sl.subject_list_department' => $info['user']->professor_department,
-                'sl.subject_list_is_active' => 1,
-                'tl.topic_list_is_active' => 1
+                'subject_list_department' => $info['user']->professor_department,
+                'subject_list_is_active' => 1
             );
-            $join = array(
-                array("subject_list_has_topic_list as sltl", "sltl.subject_list_id = sltl.topic_list_id"),
-                array("subject_list as sl", "sl.subject_list_id = sltl.subject_list_id")
-            );
-            $topic_list = $this->Crud_model->fetch_join2("topic_list as tl", $col, $join, NULL, $where, TRUE);
+            $subject_areas = $this->Crud_model->fetch_select("subject_list", $col, $where);
 
             $data = array(
                 "title" => "Subject Area Management",
@@ -54,7 +49,7 @@ class SubjectArea extends CI_Controller {
                 "s_co" => "",
                 "s_ss" => "",
                 "year_holder" => $year_holder,
-                "topic_holder" => $topic_list
+                "subject_holder" => $subject_areas
             );
             $this->load->view('includes/header', $data);
             $this->load->view('subject_area/main');
