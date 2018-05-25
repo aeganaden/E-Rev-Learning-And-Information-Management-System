@@ -19,40 +19,51 @@
     </div>
 </div>
 <div class="row container">
-    <pre>
-        <?php // print_r($topic_list); ?>
-    </pre>
-    <?php if (isset($topic_list) && !empty($topic_list)): ?>
-        <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
-            <thead>
-                <tr>
-                    <th>Topic</th>
-                    <th>Description</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($topic_list as $subtopic_list): ?>
-                    <tr class="bg-color-white">
-                        <td><?= $subtopic_list->topic_list_name ?></td>
-                        <td><?= $subtopic_list->topic_list_description ?></td>
-                        <td><a data-id="<?= $subtopic_list->topic_list_id ?>" class="waves-effect waves-dark btn red btn_remove">REMOVE</a></td>
-                    </tr>
-                <?php endforeach ?>
-            </tbody>
-        </table>
-    <?php else: ?>
-        <center style="margin-top:20vh;">
-            <h3>No data to show</h3>
-        </center>
-    <?php endif; ?>
+    <?php foreach($dissect as $subj_id => $sub_dissect): ?>
+        <ul class="collapsible">
+            <li>
+                <!-- LAST! - need button to the right of collapsible -->
+                <div class="collapsible-header"><i class="material-icons">assignment</i><?php echo $sub_dissect["subj_name"] ?></div>
+                <div class="collapsible-body"><span>
+                    Description: <?php echo $sub_dissect["subj_desc"] ?>
+                    <br>
+                    <br>
+                    <br>
+                    <?php if (!empty($sub_dissect["values"])): ?>
+                        <table class="data-table" id="tbl-feedback" style="table-layout:auto;">
+                            <thead>
+                                <tr>
+                                    <th>Topic</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($sub_dissect["values"] as $sub_values): ?>
+                                    <tr class="bg-color-white">
+                                        <td><?= $sub_values["topic_list_name"] ?></td>
+                                        <td><?= $sub_values["topic_list_desc"] ?></td>
+                                        <td><a data-id="<?= $sub_values['topic_list_id'] ?>" class="waves-effect waves-dark btn red btn_remove">REMOVE</a></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <center style="margin-top:20vh;">
+                            <h3>No data to show</h3>
+                        </center>
+                    <?php endif; ?>
+                </span></div>
+            </li>
+        </ul>
+    <?php endforeach ?>
 </div>
 
 <script>
     $(document).ready(function () {
         $(".btn_remove").click(function () {
             $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "SubjectArea/remove_topic/" . $this->uri->segment(3) ?>" + $data;
+            window.location.href = "<?= base_url() . "SubjectArea/remove_topic/" + $data ?>";
         });
     });
 </script>
