@@ -19,13 +19,30 @@
     </div>
 </div>
 <div class="row container">
-    <?php foreach($dissect as $subj_id => $sub_dissect): ?>
-        <ul class="collapsible">
+    <ul class="collapsible" data-collapsible = "expandable">
+        <?php foreach($dissect as $subj_id => $sub_dissect): ?>
             <li>
-                <!-- LAST! - need button to the right of collapsible -->
-                <div class="collapsible-header"><i class="material-icons">assignment</i><?php echo $sub_dissect["subj_name"] ?></div>
+                <div class="collapsible-header valign-wrapper">
+                    <div class="col s8 valign-wrapper">
+                        <i class="material-icons">assignment</i>
+                        <?php echo $sub_dissect["subj_name"] ?>
+                    </div>
+                    <div class="col s4 right-align center">
+                        <!-- LAST! - ayaw gumana ng hover -->
+                        <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+                        <!-- Dropdown Structure -->
+                        <ul id='dropdown1' class='dropdown-content'>
+                            <li><a href="#!">one</a></li>
+                            <li><a href="#!">two</a></li>
+                            <li class="divider" tabindex="-1"></li>
+                            <li><a href="#!">three</a></li>
+                            <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+                            <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="collapsible-body"><span>
-                    Description: <?php echo $sub_dissect["subj_desc"] ?>
+                    <h5>Description: <?php echo $sub_dissect["subj_desc"] ?></h5>
                     <br>
                     <br>
                     <br>
@@ -55,15 +72,16 @@
                     <?php endif; ?>
                 </span></div>
             </li>
-        </ul>
-    <?php endforeach ?>
+        <?php endforeach ?>
+    </ul>
 </div>
-
 <script>
     $(document).ready(function () {
         $(".btn_remove").click(function () {
             $data = $(this).data('id');
             window.location.href = "<?= base_url() . "SubjectArea/remove_topic/" + $data ?>";
         });
+        // LAST! - ayaw gumana ng hover
+        $('.dropdown-trigger').dropdown({hover:true});
     });
 </script>
