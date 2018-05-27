@@ -8,6 +8,14 @@
 <?php $this->load->view('includes/home-sidenav'); ?>
 <!--ABOVE IS PERMA-->
 
+<script>
+    $(document).ready(function(){
+        $('.collapsible').collapsible('open', 0);
+        $('.collapsible').collapsible('open', 1);
+        $('.collapsible').collapsible('open', 2);
+    });
+</script>
+
 <div class="row container">
     <div class="col s12">
         <blockquote class="color-primary-green">
@@ -29,20 +37,16 @@
                     </div>
                     <div class="col s4 right-align center">
                         <!-- LAST! - ayaw gumana ng hover -->
-                        <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+                        <a class='dropdown-button btn green' data-beloworigin="true" href='#' data-activates='dropdown1'>ACTIONS</a>
                         <!-- Dropdown Structure -->
                         <ul id='dropdown1' class='dropdown-content'>
-                            <li><a href="#!">one</a></li>
-                            <li><a href="#!">two</a></li>
-                            <li class="divider" tabindex="-1"></li>
-                            <li><a href="#!">three</a></li>
-                            <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-                            <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+                            <li><a data-id="<?=$subj_id?>" class="no-collapse waves-effect waves-dark black-text subj_edit">EDIT</a></li>
+                            <li><a data-id="<?=$subj_id?>" class="no-collapse waves-effect waves-dark black-text subj_remove">REMOVE</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="collapsible-body"><span>
-                    <h5>Description: <?php echo $sub_dissect["subj_desc"] ?></h5>
+                    Description: <?php echo $sub_dissect["subj_desc"] ?>
                     <br>
                     <br>
                     <br>
@@ -76,12 +80,22 @@
     </ul>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function(){
+        $segment = <?=$this->uri->segment(3)?>;
         $(".btn_remove").click(function () {
             $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "SubjectArea/remove_topic/" + $data ?>";
+            window.location.href = "<?= base_url() . "SubjectArea/remove_topic/"?>"+ $data;
         });
-        // LAST! - ayaw gumana ng hover
-        $('.dropdown-trigger').dropdown({hover:true});
+        $(".subj_edit").click(function () {
+            console.log("subj_edit");
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "SubjectArea/edit_subjectarea/"?>" + $segment+"/"+$data;
+        });
+        $('.dropdown-button').dropdown({
+            hover: true, // Activate on hover
+        });
+        $(".no-collapse, .dropdown-button").click(function (e) {
+            e.stopPropagation();
+        });
     });
 </script>

@@ -68,7 +68,7 @@ class SubjectArea extends CI_Controller {
 
     public function sub_view() {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
-            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {    //course_id
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
                 $info = $this->session->userdata('userInfo');
 
                 $col = "tl.topic_list_id, tl.topic_list_name, tl.topic_list_description, sl.subject_list_name, sl.subject_list_id, subject_list_description";
@@ -357,6 +357,119 @@ class SubjectArea extends CI_Controller {
                 return $result;
             }
         // print_r(json_encode($data));
+        } else {
+            redirect();
+        }
+    }
+
+    public function edit_subjectarea(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($segment_yl = $this->uri->segment(3)) && !empty($segment_subj = $this->uri->segment(4)) && is_numeric($segment_yl) && is_numeric($segment_subj)) {
+                $info = $this->session->userdata('userInfo');
+
+                $col = "sl.subject_list_name, sl.subject_list_id, sl.subject_list_description, yl.year_level_name, yl.year_level_id";
+                $where = array(
+                    "yl.year_level_id" => $segment_yl,
+                    "sl.subject_list_department" => $info['user']->professor_department,
+                    "sl.subject_list_id" => $segment_subj
+                );
+                $join = array(
+                    array("year_level as yl", "yl.year_level_id = sl.year_level_id")
+                );
+                $subj = $this->Crud_model->fetch_join2("subject_list as sl", $col, $join, NULL, $where);
+
+                $data = array(
+                    "title" => "Subject Area Management",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "selected-nav",
+                    "s_co" => "",
+                    "s_ss" => "",
+                    "subj" => $subj
+                );
+                $this->load->view('includes/header', $data); 
+                $this->load->view('subject_area/edit_subject_area');
+                $this->load->view('includes/footer');
+            } else {
+                redirect("SubjectArea");
+            }
+        } else {
+            redirect();
+        }
+    }
+
+    public function edit_submit(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($segment_yl = $this->uri->segment(3)) && !empty($segment_subj = $this->uri->segment(4)) && is_numeric($segment_yl) && is_numeric($segment_subj)) {
+                $info = $this->session->userdata('userInfo');
+
+                $col = "sl.subject_list_name, sl.subject_list_id, sl.subject_list_description, yl.year_level_name, yl.year_level_id";
+                $where = array(
+                    "yl.year_level_id" => $segment_yl,
+                    "sl.subject_list_department" => $info['user']->professor_department,
+                    "sl.subject_list_id" => $segment_subj
+                );
+                $join = array(
+                    array("year_level as yl", "yl.year_level_id = sl.year_level_id")
+                );
+                $subj = $this->Crud_model->fetch_join2("subject_list as sl", $col, $join, NULL, $where);
+
+                if(!empty($subj)){
+                    $this->form_validation->set_rules('subject_area', 'Subject Area name', 'required|max_length[100]|min_length[5]');
+                    $this->form_validation->set_rules('subject_description', 'Subject Area description', 'required|min_length[5]');
+
+                    $temp = $this->hack_check($this->input->post("subject_area"));
+                    if($temp["confirm"] === true){ //xss positive, repeat input
+                        $error_message[] = "The system detected invalid input in the Subject Area field. Please try again.";
+                    } else {
+                        $subj_name = $temp["string"];
+                    }
+
+                    $temp = $this->hack_check($this->input->post("subject_description"));
+                    if($temp["confirm"] === true){ //xss positive, repeat input
+                        $error_message[] = "The system detected invalid input in the Subject Area Description field. Please try again.";
+                    } else {
+                        $subj_desc = $temp["string"];
+                    }
+                    $data = array(
+                        "title" => "Subject Area Management",
+                        'info' => $info,
+                        "s_h" => "",
+                        "s_a" => "",
+                        "s_f" => "",
+                        "s_c" => "",
+                        "s_t" => "",
+                        "s_s" => "selected-nav",
+                        "s_co" => "",
+                        "s_ss" => ""
+                    );
+                    $this->load->view('includes/header', $data);
+                    if ($this->form_validation->run() == FALSE || !empty($error_message)) { //wrong
+                        unset($data);
+                        $data = array(
+                            "error_message" => $error_message
+                        );
+                        $this->load->view('subject_area/edit_subject_area', $data);
+                    } else {
+                        // LAST - update query
+                        $this->db->trans_begin();
+                        if ($this->db->trans_status() === FALSE){
+                            $this->db->trans_rollback();
+                        } else {
+                            $this->db->trans_commit();
+                        }
+                    }
+                    $this->load->view('includes/footer');
+                } else {
+                    redirect("SubjectArea");
+                }
+            } else {
+                redirect("SubjectArea");
+            }
         } else {
             redirect();
         }
