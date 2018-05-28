@@ -35,7 +35,7 @@
                             <td><?= $key ?></td>
                             <td><?= implode("<br>", $res); ?></td>
                             <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-green btn_view_a">View</a></td>
-                            <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_vedit_a">Edit</a></td>
+                            <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_edit_a">Edit</a></td>
                             <td><a class="waves-effect waves-dark btn red btn_delete_a">Delete</a></td>
                         </tr>
                     <?php endforeach ?>

@@ -1,15 +1,17 @@
-<form enctype="multipart/form-data" action="<?= base_url() . "testing/testing_upload/" ?>" method="POST">
-    <div class="file-field input-field">
-        <div class="btn">
-            <span>File</span>
-            <input type="file" name="excel_file" required/>
-        </div>
-        <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-            <i class="material-icons right">send</i>
-        </button>
-    </div>
+<!-- LAST! - ayaw gumana ng hover -->
+<a class='dropdown-button btn' data-beloworigin="true" href='#' data-activates='dropdown1'>Drop Me!</a>
+<!-- Dropdown Structure -->
+<ul id='dropdown1' class='dropdown-content'>
+    <li><a href="#!">one</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">three</a></li>
+    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
+    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
+</ul>
 
-</form>
+<script>
+    $('.dropdown-button').dropdown({
+        hover: true, // Activate on hover
+    });
+</script>

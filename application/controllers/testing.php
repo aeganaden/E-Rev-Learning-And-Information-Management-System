@@ -42,12 +42,12 @@ class testing extends CI_Controller {
             print_r($sheetData);
 
             if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
-                unlink($upload_data["full_path"]);
-            }
-        } else {
-            echo "error upload";
-            print_r($this->upload->display_errors());
+            unlink($upload_data["full_path"]);
         }
+    } else {
+        echo "error upload";
+        print_r($this->upload->display_errors());
     }
+}
 
 }
