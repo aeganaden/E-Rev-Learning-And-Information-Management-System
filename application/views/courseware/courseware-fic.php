@@ -38,43 +38,43 @@
 					<?php $count++; ?> 
 					<?php if ($count == 3): ?><?= "<div class='row'>" ?><?php endif ?> 
 
-						<?php  
-						$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
-						$lecturer = $lecturer[0];
-						?>
-						<div class=" col s12  col m3" >
-							<div class="card sticky-action" >
-								<div class="card-image waves-effect waves-block waves-light" >
-									<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
-								</div>
-								<div class="card-content bg-primary-yellow" >
-									<blockquote class="color-primary-green" style="margin-top: 0;">
-										<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$i_value->subject_name?><i class="material-icons right ">more_vert</i></span>
-									</blockquote>
-									<?php if ($lecturer): ?>
-										<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
-									<?php endif ?>
-								</div>
-								<div class="card-reveal bg-primary-green">
-									<span class="card-title color-white ">ABOUT</span>
-									<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$i_value->subject_description?></span></p>
-								</div>
+					<?php  
+					$lecturer = $this->Crud_model->fetch("lecturer",array("lecturer_id"=>$i_value->lecturer_id));
+					$lecturer = $lecturer[0];
+					?>
+					<div class=" col s12  col m3" >
+						<div class="card sticky-action" >
+							<div class="card-image waves-effect waves-block waves-light" >
+								<img class="activator" src="<?=base_url()?>assets/img/background-2.jpg">
+							</div>
+							<div class="card-content bg-primary-yellow" >
+								<blockquote class="color-primary-green" style="margin-top: 0;">
+									<span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?=$i_value->subject_name?><i class="material-icons right ">more_vert</i></span>
+								</blockquote>
+								<?php if ($lecturer): ?>
+									<h6><?=$lecturer->firstname." ".$lecturer->midname." ".$lecturer->lastname?></h6>
+								<?php endif ?>
+							</div>
+							<div class="card-reveal bg-primary-green">
+								<span class="card-title color-white ">ABOUT</span>
+								<p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?=$i_value->subject_description?></span></p>
+							</div>
 
-								<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-									<div class="row ">
-										<div class=" col s12  col m12 ">
+							<div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+								<div class="row ">
+									<div class=" col s12  col m12 ">
 
-											<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
+										<a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?=$i_value->subject_id?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
-										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
-					<?php endforeach ?>
-				<?php endif ?>
-			<?php endforeach ?>
+					</div>
+					<?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
+				<?php endforeach ?>
+			<?php endif ?>
+		<?php endforeach ?>
 		<?php else: ?>
 			<div class="row valign-wrapper">
 				<div class=" col s12 m4 ">
@@ -774,10 +774,9 @@ function fetchCourseware(topic_id) {
 			$("#preloader").css('display', 'block');
 		},
 		success: function(i_data){
-			// console.log(i_data);
+			// console.log(typeof i_data);
 			$("#preloader").css('display', 'none');
-			if (i_data != false) {
-
+			if (i_data != false) { 
 				for(var j = 0; j < i_data.length; j++){
 					courseware_content +='<div class="row valign-wrapper" style="margin: 0; border: 1px solid #007A33; border-radius: 5px; margin-bottom: 1%;">'+
 					'<div class="col s12 m6">'+
@@ -785,11 +784,7 @@ function fetchCourseware(topic_id) {
 					'<p style="font-size: 0.8vw">Date added: '+i_data[j].date_added+' | Edited:<span id="cw_te_'+i_data[j].courseware_id+'">'+i_data[j].date_edited+'</span><p>'+ 
 					'<blockquote class="color-primary-green"><span class="color-black" id="cw_d_'+i_data[j].courseware_id+'">'+i_data[j].courseware_description+'</span> </blockquote>'+
 					'</div>'+
-					'<div class=" col s12 m6">'+
-					'<div class=" col s12 m6">'+
-
-					'</div>'+
-					'</div>'+
+					'<div class=" col s12 m6"><div class=" col s12 m6"></div></div>'+
 					'<div class=" col s12 m6"><a class=" waves-effect waves-light btn right color-black btn_cw_question" data-cwid="'+i_data[j].courseware_id+'" style="background-color: transparent; box-shadow: none !important;">View<i class="material-icons right ">launch</i></a><i class="material-icons btn-edit-cw tooltipped modal-trigger" data-position="left" data-tooltip="Edit Courseware Details" style="cursor: pointer;" data-target="modal_cw" data-cwid="'+i_data[j].courseware_id+'">edit</i></div>'+
 					'</div>';
 				}
@@ -829,9 +824,10 @@ function fetchTopics(id) {
 					'<div class="collapsible-body" id="courseware_'+data[i].topic_id+'">'+
 					'</div>'+
 					'</li>';
-					fetchCourseware($topic_id);
+					// console.log($topic_id)
+					fetchCourseware($topic_id); 	
 				}
-				
+
 				$("#topic_content").html(html_content);
 			}else{
 				$("#topic_content").html("");

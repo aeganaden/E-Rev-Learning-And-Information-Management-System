@@ -12,43 +12,55 @@ $enrollment = $this->Crud_model->fetch("enrollment");
         </blockquote>
         <div class="row" style="padding-top: 5%;">
             <?php if (isset($enrollment) && !empty($enrollment)): ?>
-                <table class="data-table">
-                    <thead>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Enrollment S.Y</th>
+                        <th>Enrollment Term</th>
+                        <th>Actions</th>
+                        <th>Based Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($enrollment as $key => $value): ?>
                         <tr>
-                            <th>#</th>
-                            <th>Enrollment S.Y</th>
-                            <th>Enrollment Term</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($enrollment as $key => $value): ?>
-                            <tr>
-                                <td><?= $value->enrollment_id ?></td>
-                                <td><?= $value->enrollment_sy ?></td>
-                                <td><?= $value->enrollment_term == 4 ? "Summer" : $value->enrollment_term ?></td>
-                                <td>
-                                    <?php
-                                    $checked = $value->enrollment_is_active == 1 ? "checked" : "";
-                                    ?>
-                                    <div class="switch">
-                                        <label>
-                                            Deactivated
-                                            <input type="checkbox" class="chk_admin" data-id="<?= $value->enrollment_id ?>" <?= $checked ?> >
-                                            <span class="lever"></span>
-                                            Activated
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <center><h3>No data to show.</h3></center>
-            <?php endif; ?>
-        </div>
+                            <td><?= $value->enrollment_id ?></td>
+                            <td><?= $value->enrollment_sy ?></td>
+                            <td><?= $value->enrollment_term == 4 ? "Summer" : $value->enrollment_term ?></td>
+                            <td>
+                                <?php
+                                $checked = $value->enrollment_is_active == 1 ? "checked" : "";
+                                ?>
+                                <div class="switch">
+                                    <label>
+                                        Deactivated
+                                        <input type="checkbox" class="chk_admin" data-id="<?= $value->enrollment_id ?>" <?= $checked ?> >
+                                        <span class="lever"></span>
+                                        Activated
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                               <?php if ($checked): ?>
+                                <p class="range-field" id="range<?= $value->enrollment_id ?>">
+                                    <input type="range" id="slider<?= $value->enrollment_id ?>" value="<?= $value->passingPercentage?>" data-id="<?= $value->enrollment_id ?>" min="0" max="100" />
+                                </p>
+                                <?php else: ?>
+                                   <p class="range-field" style="display: none;" id="range<?= $value->enrollment_id ?>">
+                                    <input type="range" id="slider<?= $value->enrollment_id ?>" value="<?= $value->passingPercentage?>" data-id="<?= $value->enrollment_id ?>" min="0" max="100" />
+                                </p>
+                            <?php endif ?>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+        <?php else: ?>
+            <center><h3>No data to show.</h3></center>
+        <?php endif; ?>
     </div>
+</div>
 </div>
 
 <div id="modal1" class="modal bg-color-white  modal-fixed-footer">
@@ -87,6 +99,64 @@ $enrollment = $this->Crud_model->fetch("enrollment");
 
 <script type="text/javascript">
     $(document).ready(function () {
+        // Grade SLider
+        $defGrade = 0;
+        $("[type=range]").on("mousedown", function () { 
+            $defGrade = $(this).val();
+        });
+
+        $("[type=range]").on("mouseup", function () { 
+            $currGrade = $(this).val();
+            $id = $(this).data('id');
+            if ($defGrade != $currGrade) {
+                // console.log($id);
+
+                swal({
+                    title: "Change passing grade?",
+                    text: "This will change the passing percentage of practice exams!",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: "<?= base_url() ?>Enrollment/changeGradePercentage",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                id: $id,
+                                value: $currGrade
+                            },
+                            success: function (data) {
+                               if (data == true) {
+                                 swal("Success! Passing Percentage has been changed!", {
+                                    icon: "success",
+                                }).then(function () {
+                                    // window.location.reload(true);
+                                    $(this).val($currGrade);
+
+                                });
+                            }else{
+
+                                $toast = "<span>Error Updating Passing Percentage!</span>";
+                                Materialize.toast($toast, 2000);
+                            }
+                        },
+                        error: function (data) {
+
+                        }
+
+                    });
+                    }else{
+                        $(this).val($defGrade);
+                    }
+                });
+            }
+        });
+        
+
+
+
         /*============================
          =            year            =
          ============================*/
@@ -117,7 +187,11 @@ $enrollment = $this->Crud_model->fetch("enrollment");
         $(document).on('click', '.chk_admin', function () {
             $('.chk_admin').prop('checked', false);
             $(this).prop('checked', true);
+            
             $data = $(this).data("id");
+
+            $('.range-field').hide('fast');
+            $('#range'+$data).show('fast');
             // console.log($data);
             $.ajax({
                 url: '<?= base_url() ?>Enrollment/updateEnrollment ',

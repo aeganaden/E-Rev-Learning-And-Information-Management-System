@@ -81,6 +81,19 @@ class Enrollment extends CI_Controller {
 
 	}
 
+	public function changeGradePercentage()
+	{
+		$id = $this->input->post("id");
+		$value = $this->input->post("value");
+
+		if ($this->Crud_model->update("enrollment",array("passingPercentage"=>$value),array("enrollment_id"=>$id))) {
+			echo json_encode(true);
+		}else{
+			echo json_encode(false);
+		}
+
+	}
+
 
 
 
