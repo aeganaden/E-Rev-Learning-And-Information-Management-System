@@ -291,7 +291,7 @@ class SubjectArea extends CI_Controller {
 
                 if ($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
-                    $error_message[] = "An error occured when ";
+                    $error_message[] = "An error occured when your action is on process. Please try again.";
                     unset($data);
                     $data = array(
                         "option_select" => $result,
@@ -302,7 +302,7 @@ class SubjectArea extends CI_Controller {
                     $this->load->view('subject_area/add_subject_area', $data);
                 } else {
                     $this->db->trans_commit();
-                    redirect("SubjectArea/");
+                    $this->load->view("subject_area/success_add_subject_area");
                 }
             }
 
@@ -417,7 +417,7 @@ class SubjectArea extends CI_Controller {
                     array("year_level as yl", "yl.year_level_id = sl.year_level_id")
                 );
                 $subj = $this->Crud_model->fetch_join2("subject_list as sl", $col, $join, NULL, $where);
-
+                $error_message = [];
                 if(!empty($subj)){
                     $this->form_validation->set_rules('subject_area', 'Subject Area name', 'required|max_length[100]|min_length[5]');
                     $this->form_validation->set_rules('subject_description', 'Subject Area description', 'required|min_length[5]');
@@ -435,6 +435,11 @@ class SubjectArea extends CI_Controller {
                     } else {
                         $subj_desc = $temp["string"];
                     }
+
+                    if(strcasecmp($subj_name, $subj[0]->subject_list_name) === 0 && strcasecmp($subj_desc, $subj[0]->subject_list_description) === 0){
+                        $error_message[] = "Do not enter same words/characters. Please try again.";
+                    }
+
                     $data = array(
                         "title" => "Subject Area Management",
                         'info' => $info,
@@ -445,7 +450,8 @@ class SubjectArea extends CI_Controller {
                         "s_t" => "",
                         "s_s" => "selected-nav",
                         "s_co" => "",
-                        "s_ss" => ""
+                        "s_ss" => "",
+                        "subj" => $subj
                     );
                     $this->load->view('includes/header', $data);
                     if ($this->form_validation->run() == FALSE || !empty($error_message)) { //wrong
@@ -455,12 +461,65 @@ class SubjectArea extends CI_Controller {
                         );
                         $this->load->view('subject_area/edit_subject_area', $data);
                     } else {
-                        // LAST - update query
+                        //GET ID'S WITH SAME NAME AND DESC
+                        $record_name = $subj[0]->subject_list_name;
+                        $record_desc = $subj[0]->subject_list_description;
+                        $col = "subject_list_id";
+                        $where = array(
+                            "subject_list_name" => $record_name,
+                            "subject_list_description" => $record_desc,
+                            "subject_list_department" => $info['user']->professor_department
+                        );
+                        $with_same = $this->Crud_model->fetch_select("subject_list", $col, $where);
+
+                        foreach($with_same as $same){
+                            $list[] = $same->subject_list_id;
+                        }
+
+                        $wherenotin = array(
+                            0 => "subject_list_id",
+                            1 => $list
+                        );
+                        $col = "subject_list_id";
+                        $where = array(
+                            "subject_list_name" => $subj_name,
+                            "subject_list_department" => $info['user']->professor_department
+                        );
+                        $subj_check = $this->Crud_model->fetch_select("subject_list", $col, $where, NULL, NULL,NULL, NULL, NULL, NULL, NULL, $wherenotin);
+
+                        //THERE'S ALREADY THIS NAME IN THIS DEPT
+                        if(!empty($subj_check)) {
+                            $error_message[] = "There is already '$subj_name' Subject Area. Please try again.";
+                        }
+                            // LAST - update query
+                        $check = false;
                         $this->db->trans_begin();
-                        if ($this->db->trans_status() === FALSE){
+                        if(!empty($error_message)){
+                            $check = true;
+                        } else {
+                            unset($data);
+                            $data = [];
+                            foreach($list as $li){
+                                $temp = array(
+                                    "subject_list_id" => $li,
+                                    "subject_list_name" => strtoupper($subj_name),
+                                    "subject_list_description" => $subj_desc,
+                                );
+                                $data[] = $temp;
+                            }
+                            $this->Crud_model->updatebatch("subject_list", $data, "subject_list_id");
+                        }
+
+                        if ($this->db->trans_status() === FALSE || $check){
                             $this->db->trans_rollback();
+                            unset($data);
+                            $data = array(
+                                "error_message" => $error_message
+                            );
+                            $this->load->view('subject_area/edit_subject_area', $data);
                         } else {
                             $this->db->trans_commit();
+                            $this->load->view("subject_area/success_edit_subject_area");
                         }
                     }
                     $this->load->view('includes/footer');
@@ -472,6 +531,16 @@ class SubjectArea extends CI_Controller {
             }
         } else {
             redirect();
+        }
+    }
+
+    public function delete_subject_area($id){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            $info = $this->session->userdata('userInfo');
+
+            //LAST - fetch select the id with dept then delete subj area
+        } else {
+            reirect();
         }
     }
 

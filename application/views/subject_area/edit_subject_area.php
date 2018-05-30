@@ -13,7 +13,7 @@
 		<blockquote class="color-primary-green">
 			<h3 class="color-black">Edit Subject Area <br></h3>
 		</blockquote>
-		<?php if((isset($error) && $error == true) || (isset($error_message) && !empty($error_message))) :?>
+		<?php if((isset($error_message) && !empty($error_message))) :?>
 			<blockquote class="color-red">
 				<h6><b>ERROR:</b></h6>
 				<?php foreach ($error_message as $err): ?>
