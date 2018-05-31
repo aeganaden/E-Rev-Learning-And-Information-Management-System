@@ -23,7 +23,7 @@
                 <tr>
                     <th>Year Level</th>
                     <th>Subject Area</th>
-                    <th></th>
+                    <th>Actions</th>
                     <th></th>
                     <th></th>
                 </tr>

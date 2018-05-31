@@ -108,7 +108,7 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "<?= base_url().'Topic/deleteTopic' ?>",
+                        url: "<?= base_url().'SubjectArea/delete_subject_area/' . $this->uri->segment(3)?>",
                         type: "post",
                         dataType: "json",
                         data: {

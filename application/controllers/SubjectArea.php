@@ -534,11 +534,31 @@ class SubjectArea extends CI_Controller {
         }
     }
 
-    public function delete_subject_area($id){
+    public function delete_subject_area(){
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
+            $id = $this->input->post("id");
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment) && !empty($id) && is_numeric($id)) {
+                $where = array(
+                    "subject_list_id" => $id,
+                    "year_level_id" => $segment
+                );
+                $data = array("subject_list_is_active" => 0);
+                $this->db->trans_begin();
+                $result = $this->Crud_model->update("subject_list", $data, $where);
 
-            //LAST - fetch select the id with dept then delete subj area
+                if ($this->db->trans_status() === FALSE || $result = 0){
+                    $this->db->trans_rollback();
+
+                    echo json_encode("false");
+                } else {
+                    $this->db->trans_commit();
+
+                    echo json_encode("true");
+                }
+            } else {
+                echo json_encode("false");
+            }
         } else {
             reirect();
         }
