@@ -34,9 +34,9 @@
                         <tr class="bg-color-white">
                             <td><?= $key ?></td>
                             <td><?= implode("<br>", $res); ?></td>
-                            <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-green btn_view_a">View</a></td>
-                            <td><a class="waves-effect waves-dark btn bg-primary-yellow btn_edit_a">Edit</a></td>
-                            <td><a class="waves-effect waves-dark btn red btn_delete_a">Delete</a></td>
+                            <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-green btn_view">View</a></td>
+                            <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn bg-primary-yellow btn_edit">Edit</a></td>
+                            <td><a data-id="<?= $idkey ?>" class="waves-effect waves-dark btn red btn_delete">Delete</a></td>
                         </tr>
                     <?php endforeach ?>
                 <?php endforeach ?>
@@ -52,10 +52,13 @@
 
 <script>
     $(document).ready(function () {
-        $(".btn_view_a").click(function () {
+        $(".btn_view").click(function () {
             $data = $(this).data('id');
             window.location.href = "<?= base_url() . "SubjectArea/sub_view/" ?>" + $data;
         });
-
+        $(".btn_edit").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "SubjectArea/editSubjectArea/" ?>" + $data;
+        });
     });
 </script>

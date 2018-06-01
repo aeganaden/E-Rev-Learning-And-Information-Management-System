@@ -564,6 +564,45 @@ class SubjectArea extends CI_Controller {
         }
     }
 
+    public function editSubjectArea(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $col = "subject_list_id, subject_list_name";
+                $where = array(
+                    "year_level_id" => $segment,
+                    "subject_list_department" => $info['user']->professor_department,
+                    "subject_list_is_active" => 1
+                );
+                $result = $this->Crud_model->fetch_select("subject_list", $col, $where);
+                unset($col);
+                unset($where);
+                $col = "subject_list_name";
+                $where = array(
+                    "subject_list_department" => $info['user']->professor_department,
+                    "subject_list_is_active" => 1
+                );
+                $result2 = $this->Crud_model->fetch_select("subject_list", $col, $where, NULL, TRUE);
+                if(!empty($result)){
+                    $ids = [];
+                    foreach($result as $res){
+                        $ids[] = $res->subject_list_id;
+                    }
+                        //LAST - ginagaw na yung edit
+
+                    echo "<pre>";
+                    print_r($result);
+                    print_r($result2);                    
+                } else {
+                    redirect("SubjectArea");
+                }
+            } else {
+                redirect("SubjectArea");
+            }
+        } else {
+            redirect();
+        }
+    }
     private function hack_check($str){
         $return["confirm"] = false;
         $return["string"] = $str;
