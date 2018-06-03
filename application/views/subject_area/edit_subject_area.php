@@ -25,7 +25,7 @@
 	</div>
 </div>
 <div class="row container">
-	<h5 class="center"><?=$subj[0]->year_level_name ."<br>". $subj[0]->subject_list_name?></h5>
+	<h5 class="center"><?= $subj[0]->subject_list_name?></h5>
 	<div class="col s1"></div>
 	<div class="col s10">
 		<form method="post" action="<?php echo base_url() . "SubjectArea/edit_submit/" . $subj[0]->year_level_id ."/" .$subj[0]->subject_list_id?>" style="margin-top: 20px;">
@@ -40,7 +40,7 @@
 			</div>
 			<div class="row valign-wrapper">
 				<div class="input-field col s11">
-					<textarea name="subject_description" class="materialize-textarea" required><?= $subj[0]->subject_list_description?></textarea>
+					<textarea name="subject_description" class="materialize-textarea"><?= $subj[0]->subject_list_description?></textarea>
 					<label for="textarea1">Subject Area Description</label>
 				</div>
 				<div class="col s1">
@@ -52,6 +52,37 @@
 				<a href="<?= base_url() ?>SubjectArea" class="waves-effect waves-light btn left red">Cancel</a>
 			</div>
 		</form>
+		<div style="padding-top: 100px;"></div>
+		<center><h4>List of Topics</h4></center>
+
+		<?php if (isset($top) && !empty($top)): ?>
+	        <table class="data-table" id="tbl-feedback">
+	            <thead>
+	                <tr>
+	                    <th>Topic Name</th>
+	                    <th>Topic Description</th>
+	                    <th>Actions</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <?php foreach ($top as $sub_top): ?>
+                        <tr class="bg-color-white">
+                            <td><?= $sub_top->topic_list_name ?></td>
+                            <td><?= $sub_top->topic_list_description ?></td>
+                            <?php if($sub_top->included == 1): ?>
+                            	<td><a data-id="<?= $sub_top->topic_list_id ?>" data-name="<?= $sub_top->topic_list_name ?>" class="waves-effect waves-dark btn red btn_remove">Remove</a></td>
+                            <?php else: ?>
+						        <td><a data-id="<?= $sub_top->topic_list_id ?>" data-name="<?= $sub_top->topic_list_name ?>" class="waves-effect waves-dark btn bg-primary-green btn_add">Add</a></td>
+						    <?php endif; ?>
+                        </tr>
+	                <?php endforeach ?>
+	            </tbody>
+	        </table>
+	    <?php else: ?>
+	        <center style="margin-top:20vh;">
+	            <h3>No data to show</h3>
+	        </center>
+    	<?php endif; ?>
 	</div>
 </div>
 <script>
@@ -64,5 +95,96 @@
 			$default = "<?=$subj[0]->subject_list_description?>";
 			$('textarea[name=subject_description]').val($default);
 		});
+		$(".btn_remove").click(function(event) { 
+            $id = $(this).data('id');
+            $name = $(this).data('name');
+            swal({
+                title: "Are you sure?",
+                text: "You are about to remove this Topic ("+$name+") to this Subject Area.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url().'SubjectArea/remove_topic_to_subj/' . $this->uri->segment(4)?>",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $id
+                        },
+                        success: function (data) {
+                            if (data == "true"){
+                            	console.log("true success");
+                            	swal($name+" has been removed!", {
+	                                icon: "success",
+	                            }).then(function () {
+	                                window.location.reload(true);
+	                            });
+                            } else {
+                            	console.log("false success");
+                            	swal("An error occured. Please try again", {
+	                                icon: "error",
+	                            }).then(function () {
+	                                window.location.reload(true);
+	                            });
+                            }
+                        },
+                        error: function (data) {
+                        	console.log("false error");
+                            swal("An error occured. Please try again", {
+                                icon: "error",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+		$(".btn_add").click(function(event) { 
+            $id = $(this).data('id');
+            $name = $(this).data('name');
+            swal({
+                title: "Are you sure?",
+                text: "You are about to add this Topic ("+$name+") to this Subject Area.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url().'SubjectArea/add_topic_to_subj/' . $this->uri->segment(4)?>",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $id
+                        },
+                        success: function (data) {
+                            if (data == "true"){
+                            	swal($name+" has been added!", {
+	                                icon: "success",
+	                            }).then(function () {
+	                                window.location.reload(true);
+	                            });
+                            } else {
+                            	swal("An error occured. Please try again", {
+	                                icon: "error",
+	                            }).then(function () {
+	                                window.location.reload(true);
+	                            });
+                            }
+                        },
+                        error: function (data) {
+                            swal("An error occured. Please try again", {
+                                icon: "error",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        }
+                    });
+                }
+            });
+        });
 	});
 </script>
