@@ -549,11 +549,9 @@ class SubjectArea extends CI_Controller {
 
                 if ($this->db->trans_status() === FALSE || $result = 0){
                     $this->db->trans_rollback();
-
                     echo json_encode("false");
                 } else {
                     $this->db->trans_commit();
-
                     echo json_encode("true");
                 }
             } else {
@@ -568,6 +566,8 @@ class SubjectArea extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
                 $info = $this->session->userdata('userInfo');
+
+                //GET INCLUDED SUBJ AREA HERE
                 $col = "subject_list_id, subject_list_name";
                 $where = array(
                     "year_level_id" => $segment,
@@ -575,27 +575,61 @@ class SubjectArea extends CI_Controller {
                     "subject_list_is_active" => 1
                 );
                 $result = $this->Crud_model->fetch_select("subject_list", $col, $where);
+                $already = [];
+                foreach($result as $res){
+                    $already[] = $res->subject_list_name;
+                }
+
+                //GET ALL SUBJ AREA DISTINCT
                 unset($col);
                 unset($where);
-                $col = "subject_list_name";
+                $col = "subject_list_name, subject_list_description";
                 $where = array(
                     "subject_list_department" => $info['user']->professor_department,
                     "subject_list_is_active" => 1
                 );
                 $result2 = $this->Crud_model->fetch_select("subject_list", $col, $where, NULL, TRUE);
-                if(!empty($result)){
-                    $ids = [];
-                    foreach($result as $res){
-                        $ids[] = $res->subject_list_id;
-                    }
-                        //LAST - ginagaw na yung edit
 
-                    echo "<pre>";
-                    print_r($result);
-                    print_r($result2);                    
-                } else {
-                    redirect("SubjectArea");
+                //GET YEAR LEVEL NAME
+                unset($col);
+                unset($where);
+                $col = "year_level_name";
+                $where = array(
+                    "year_level_id" => $segment
+                );
+                $year_level = $this->Crud_model->fetch_select("year_level", $col, $where, NULL, TRUE);
+
+                $holder = [];
+                $counter = 0;
+                foreach($result2 as $res2){
+                    $temp = $res2->subject_list_name;
+                    if(in_array($temp, $already)){
+                        $holder[$counter]["included"] = 1;
+                    } else {
+                        $holder[$counter]["included"] = 0;
+                    }
+                    $holder[$counter]["name"] = $res2->subject_list_name;
+                    $holder[$counter]["desc"] = $res2->subject_list_description;
+                    $counter++;
                 }
+
+                $data = array(
+                    "title" => "Subject Area Management",
+                    'info' => $info,
+                    "s_h" => "",
+                    "s_a" => "",
+                    "s_f" => "",
+                    "s_c" => "",
+                    "s_t" => "",
+                    "s_s" => "selected-nav",
+                    "s_co" => "",
+                    "s_ss" => "",
+                    "subj" => $year_level,
+                    "subject_area" => $holder
+                );
+                $this->load->view('includes/header', $data); 
+                $this->load->view('subject_area/edit_year_level');
+                $this->load->view('includes/footer');
             } else {
                 redirect("SubjectArea");
             }
@@ -603,6 +637,87 @@ class SubjectArea extends CI_Controller {
             redirect();
         }
     }
+
+    public function remove_subj_from_year_level(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                $name = $this->input->post("id");
+                // $name = "HYDRAULICS AND GEOTECHNICAL ENGINEERING";
+                $where = array(
+                    "subject_list_department" => $info['user']->professor_department,
+                    "subject_list_name" => $name,
+                    "year_level_id" => $segment
+                );
+                $data = array("subject_list_is_active" => 0);
+                
+                $this->db->trans_begin();
+
+                $this->Crud_model->update("subject_list", $data, $where);
+
+                if ($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+                    echo json_encode("false");
+                } else {
+                    $this->db->trans_commit();
+                    echo json_encode("true");
+                }
+            } else {
+                redirect("SubjectArea");
+            } 
+        } else {
+            redirect();
+        }
+    }
+
+    public function add_subj_from_year_level(){
+        if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
+            if (!empty($segment = $this->uri->segment(3)) && is_numeric($segment)) {
+                $info = $this->session->userdata('userInfo');
+                // $name = $this->input->post("id");
+                $name = "STRUCTURAL ENGINEERING AND CONSTRUCTION";
+                $where = array(
+                    "subject_list_department" => $info['user']->professor_department,
+                    "subject_list_name" => $name
+                );
+                $info = $this->Crud_model->fetch_select("subject_list", NULL, $where);
+                $info = $info[0];
+                $info->year_level_id = $segment;
+                $col = "slhtl.topic_list_id";
+                unset($where);
+                $where = array(
+                    "slhtl.subject_list_id" => $info->subject_list_id
+                );
+                $topic_list = $this->Crud_model->fetch_select("subject_list_has_topic_list as slhtl", $col, $where);
+
+                $this->db->trans_begin();
+                unset($info->subject_list_id);
+                $this->Crud_model->insert("subject_list", $info);
+                $sub_id = $this->db->insert_id();
+                $data = [];
+                foreach ($topic_list as $top){
+                    $temp = array(
+                        "topic_list_id" => $top->topic_list_id,
+                        "subject_list_id" => $sub_id
+                    );
+                    $data[] = $temp;
+                }
+                $this->Crud_model->insert_batch("subject_list_has_topic_list", $data);
+                if ($this->db->trans_status() === FALSE){
+                    $this->db->trans_rollback();
+                    echo json_encode("false");
+                } else {
+                    $this->db->trans_commit();
+                    echo json_encode("true");
+                }
+            } else {
+                redirect("SubjectArea");
+            } 
+        } else {
+            redirect();
+        }
+    }
+
     private function hack_check($str){
         $return["confirm"] = false;
         $return["string"] = $str;

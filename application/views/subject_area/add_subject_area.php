@@ -128,7 +128,6 @@ else{
 
 		<script>
 			jQuery(document).ready(function($) { 
-
 				$('select[name=year_level]').on('change', function() {
 					$title = $("input[name=subject_area]").val();
 					$desc = $("textarea[name=subject_description]").val(); 

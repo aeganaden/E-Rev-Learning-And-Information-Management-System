@@ -19,7 +19,7 @@
 <div class="row container">
     <div class="col s12">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">View Topics</h3>
+            <h3 class="color-black">View Topics<br><a href="<?= base_url() ?>SubjectArea/" class="waves-effect waves-dark btn red"><i class="material-icons left">arrow_back</i>Back</a></h3>
         </blockquote>
         <blockquote class="color-primary-green">
             <h6 class="color-black">These are the topics inside the subject area</h6>
