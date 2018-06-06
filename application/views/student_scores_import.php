@@ -181,6 +181,7 @@
                                 <?php if ($subjects): ?>
                                     <?php foreach ($subjects as $key => $i_value): ?>
                                         <?php
+                                        // $topic = $this->Crud_model->fetch("topic", array("subject_id" => $i_value->subject_id, "topic_done" => 0));
                                         $topic = $this->Crud_model->fetch("topic", array("subject_id" => $i_value->subject_id));
                                         ?>
                                         <?php if ($topic): ?>
