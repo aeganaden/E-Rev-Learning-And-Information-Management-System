@@ -51,7 +51,17 @@ switch ($info['user']->$ident) {
             </div>
             <div class="row" style="margin-bottom: 0px !important">
                 <blockquote class="color-primary-green">
-                    <h5 class="color-black"><?= $info["identifier"] != 'fic' ? strtoupper($info["identifier"]) : "FACULTY IN CHARGE" ?></h5>
+                    <h5 class="color-black">
+                        <?php
+                        if($info["identifier"] == 'fic'){
+                            echo "FACULTY IN CHARGE";
+                        } else if ($info["identifier"] == 'professor'){
+                            echo "DEPARTMENT HEAD";
+                        } else {
+                            echo "STUDENT";
+                        }
+                        ?>
+                    </h5>
                 </blockquote>
             </div>
 

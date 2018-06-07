@@ -23,9 +23,6 @@
 </div>
 <div class="row container">
     <a href="<?= base_url() ?>Sections/view_sections/<?= $this->uri->segment(3) ?>" class="waves-effect waves-light btn red"><i class="material-icons left">arrow_back</i>BACK</a>
-    <pre>
-        <?php // print_r($student); ?>
-    </pre>
     <?php if (isset($student) && !empty($student)): ?>
         <table class="data-table responsive-table" id="tbl-feedback" style="table-layout:auto;">
             <thead>

@@ -33,7 +33,7 @@
         <table class="data-table responsive-table" id="tbl-course-view" style="table-layout:auto;">
             <thead>
                 <tr>
-                    <th>Offering Name</th>
+                    <th>Section</th>
                     <th>Time</th>
                     <th>Day</th>
                     <th>Venue</th>
