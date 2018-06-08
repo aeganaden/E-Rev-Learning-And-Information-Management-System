@@ -29,8 +29,7 @@ switch ($info['user']->$ident) {
 // echo "<pre>";
 // print_r($info);
 ?>
-
-<ul id="slide-out" class="side-nav bg-color-white ">
+<ul id="slide-out" class="side-nav bg-color-white" style="max-height: 100%;">
     <li>
         <div class="user-view">
             <div class="background" style="background-color: #F2A900">
@@ -85,7 +84,7 @@ switch ($info['user']->$ident) {
 
             </div>
             <div class="row">
-                <!-- <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a> -->
+                <a href="#!email"><span class="color-black"><?= $info["user"]->email ?></span></a>
             </div>
         </div>
     </li>
@@ -171,7 +170,7 @@ switch ($info['user']->$ident) {
             <a href="<?= base_url() ?>Sections" class=" color-black"><i class="material-icons color-black">format_list_bulleted</i>Sections</a> <!--mark - naglagay-->
         </li>
     <?php endif ?>
-    
+
     <li>
         <div class="divider"></div>
     </li>
@@ -236,42 +235,41 @@ switch ($info['user']->$ident) {
                             <li class="color-black ">
                                 <a href="<?= base_url() ?>Student_scores/view_scores" class="color-black"><i class="material-icons color-black">remove_red_eye</i>View Scores</a>
                             </li>
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        <?php endif ?>
-
-        <li>
-            <div class="divider"></div>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </li>
-        <li>
-            <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
-        </li>
-    </ul>
+    <?php endif ?>
+
+    <li>
+        <div class="divider"></div>
+    </li>
+    <li>
+        <a class="waves-effect color-black" href="<?= base_url() ?>Login/logout ">Log Out</a>
+    </li>
+</ul>
+<!--====  End of Side-Nav Section  ====-->
 
 
-    <!--====  End of Side-Nav Section  ====-->
 
+<script type="text/javascript">
 
+    jQuery(document).ready(function ($) {
 
-    <script type="text/javascript">
-
-        jQuery(document).ready(function ($) {
-
-            $("#btn_click_feed").click(function (event) {
-                if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
-                    $("#btn_click_feed_i").html("keyboard_arrow_down");
-                } else {
-                    $("#btn_click_feed_i").html("keyboard_arrow_right");
-                }
-            });
-            $("#btn_click_feed_ss").click(function (event) {
-                if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
-                    $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
-                } else {
-                    $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
-                }
-            });
+        $("#btn_click_feed").click(function (event) {
+            if ($("#btn_click_feed_i").html() == "keyboard_arrow_right") {
+                $("#btn_click_feed_i").html("keyboard_arrow_down");
+            } else {
+                $("#btn_click_feed_i").html("keyboard_arrow_right");
+            }
         });
-    </script>
+        $("#btn_click_feed_ss").click(function (event) {
+            if ($("#btn_click_feed_i_ss").html() == "keyboard_arrow_right") {
+                $("#btn_click_feed_i_ss").html("keyboard_arrow_down");
+            } else {
+                $("#btn_click_feed_i_ss").html("keyboard_arrow_right");
+            }
+        });
+    });
+</script>

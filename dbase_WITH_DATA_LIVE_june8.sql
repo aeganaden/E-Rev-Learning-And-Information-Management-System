@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2018 at 01:49 PM
+-- Generation Time: Jun 08, 2018 at 03:55 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.2
 
@@ -39,6 +39,13 @@ CREATE TABLE `activity` (
   `activity_schedule_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `activity`
+--
+
+INSERT INTO `activity` (`activity_id`, `activity_venue`, `activity_status`, `activity_description`, `activity_details_id`, `lecturer_id`, `offering_id`, `activity_schedule_id`) VALUES
+(1, '15TH', 1, 'Awarding :)', 4, 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -72,6 +79,13 @@ CREATE TABLE `activity_schedule` (
   `activity_schedule_start_time` int(10) NOT NULL,
   `activity_schedule_end_time` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `activity_schedule`
+--
+
+INSERT INTO `activity_schedule` (`activity_schedule_id`, `activity_schedule_date`, `activity_schedule_start_time`, `activity_schedule_end_time`) VALUES
+(1, 1528819200, 1528412400, 1528448400);
 
 -- --------------------------------------------------------
 
@@ -115,6 +129,13 @@ CREATE TABLE `announcement` (
   `announcement_end_datetime` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `announcement`
+--
+
+INSERT INTO `announcement` (`announcement_id`, `announcement_title`, `announcement_content`, `announcement_created_at`, `announcement_edited_at`, `announcement_is_active`, `announcement_audience`, `announcement_announcer`, `announcement_start_datetime`, `announcement_end_datetime`) VALUES
+(1, 'IT Fair 2K18', 'An Innovative Contvention Linking Tomorrow\'s IT Professionals', 1528422696, 1528422696, 1, '1,2,3,4', 'Admin Admin', 1528422696, 1528905600);
+
 -- --------------------------------------------------------
 
 --
@@ -127,6 +148,15 @@ CREATE TABLE `attendance_in` (
   `lecturer_attendance_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `attendance_in`
+--
+
+INSERT INTO `attendance_in` (`attendance_in_id`, `attendance_in_time`, `lecturer_attendance_id`) VALUES
+(1, 1517957400, 1),
+(2, 1518066900, 2),
+(3, 1518166800, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -138,6 +168,15 @@ CREATE TABLE `attendance_out` (
   `attendance_out_time` int(20) NOT NULL,
   `lecturer_attendance_id` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `attendance_out`
+--
+
+INSERT INTO `attendance_out` (`attendance_out_id`, `attendance_out_time`, `lecturer_attendance_id`) VALUES
+(1, 1517967000, 1),
+(2, 1518073200, 2),
+(3, 1518174000, 3);
 
 -- --------------------------------------------------------
 
@@ -434,6 +473,15 @@ CREATE TABLE `lecturer_attendance` (
   `schedule_id` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `lecturer_attendance`
+--
+
+INSERT INTO `lecturer_attendance` (`lecturer_attendance_id`, `lecturer_attendance_date`, `lecturer_id`, `offering_id`, `schedule_id`) VALUES
+(1, 1517957400, 1, 1, 1),
+(2, 1518066900, 2, 2, 2),
+(3, 1518166800, 1, 3, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -479,7 +527,12 @@ INSERT INTO `log` (`log_id`, `log_user_id`, `log_timedate`, `log_platform`, `log
 (7, 23, 1523091175, 1, 1),
 (8, 999999999, 1523974915, 1, 1),
 (9, 201200001, 1523974923, 1, 1),
-(10, 999999999, 1527076105, 1, 1);
+(10, 999999999, 1527076105, 1, 1),
+(11, 999999999, 1528422026, 1, 1),
+(12, 999999999, 1528422413, 1, 1),
+(13, 201111111, 1528422600, 1, 1),
+(14, 999999999, 1528422612, 1, 1),
+(15, 201200001, 1528422703, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1810,7 +1863,7 @@ ALTER TABLE `year_level`
 -- AUTO_INCREMENT for table `activity`
 --
 ALTER TABLE `activity`
-  MODIFY `activity_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `activity_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `activity_details`
@@ -1822,13 +1875,13 @@ ALTER TABLE `activity_details`
 -- AUTO_INCREMENT for table `activity_schedule`
 --
 ALTER TABLE `activity_schedule`
-  MODIFY `activity_schedule_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `activity_schedule_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `announcement`
 --
 ALTER TABLE `announcement`
-  MODIFY `announcement_id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `announcement_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `choice`
@@ -1906,7 +1959,7 @@ ALTER TABLE `lecturer_feedback`
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `login_sessions`

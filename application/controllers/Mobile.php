@@ -75,7 +75,7 @@ class Mobile extends CI_Controller {
 
     public function announcement() {
        // $_POST['department'] = "CE";
-     $_POST['department'] = strtoupper($_POST['department']);
+       $_POST['department'] = strtoupper($_POST['department']);
         /*
          * 1 = CE   civil
          * 2 = EE   electrical and electronics
@@ -296,12 +296,12 @@ public function feedback_fetch() {
     }
 
     public function feedback_submit() {
-//        $lect_id = $_POST['lect_id'];
-//        $stud_id = $_POST['stud_id'];
-//        $department = $_POST['department'];
-//        $enrollment_id = $_POST['enrollment_id'];
-//        $offering_id = $_POST['offering_id'];
-//        $content = $_POST["content"];
+        $lect_id = $_POST['lect_id'];
+        $stud_id = $_POST['stud_id'];
+        $department = $_POST['department'];
+        $enrollment_id = $_POST['enrollment_id'];
+        $offering_id = $_POST['offering_id'];
+        $content = $_POST["content"];
 
         $data = array(
             "lecturer_feedback_timedate" => time(),
@@ -312,7 +312,8 @@ public function feedback_fetch() {
             "enrollment_id" => $enrollment_id,
             "offering_id" => $offering_id
         );
-        if ($this->Crud_model->insert("lecturer_feedback", $data) > 0) {        //if successful
+        $temp = $this->hack_check($content);
+        if ($this->Crud_model->insert("lecturer_feedback", $data) > 0 && $temp["confirm"] !== true) {        //if successful
             $result['result'][0]['result'] = "Successful";
             print_r(json_encode($result));
         } else {
@@ -420,14 +421,14 @@ public function feedback_fetch() {
        // $_POST['id'] = '2';
        // $_POST['department'] = "CE";
 
-       $like[0] = "firstname";
-       $like[1] = $_POST['firstname'];
-       $like[2] = "midname";
-       $like[3] = $_POST['midname'];
-       $like[4] = "lastname";
-       $like[5] = $_POST['lastname'];
-       $identifier = $_POST['identifier'];
-       if (strtolower($identifier) == "student") {
+     $like[0] = "firstname";
+     $like[1] = $_POST['firstname'];
+     $like[2] = "midname";
+     $like[3] = $_POST['midname'];
+     $like[4] = "lastname";
+     $like[5] = $_POST['lastname'];
+     $identifier = $_POST['identifier'];
+     if (strtolower($identifier) == "student") {
         $like[6] = "student_id";
     } else if (strtolower($identifier) == "faculty in charge") {
         $like[6] = "fic_id";
@@ -486,78 +487,78 @@ public function feedback_fetch() {
 }
 
 public function grade_assess() {
- // $_POST['identifier'] = "student";
- // $_POST['firstname'] = "BERNADETTE";
- // $_POST['midname'] = "ALCARAZ";
- // $_POST['lastname'] = "ANGELES";
- // $_POST['id'] = '2';
- // $_POST['department'] = "CE";
+    // $_POST['identifier'] = "student";
+    // $_POST['firstname'] = "BERNADETTE";
+    // $_POST['midname'] = "ALCARAZ";
+    // $_POST['lastname'] = "ANGELES";
+    // $_POST['id'] = '2';
+    // $_POST['department'] = "CE";
 
-   $like[0] = "firstname";
-   $like[1] = $_POST['firstname'];
-   $like[2] = "midname";
-   $like[3] = $_POST['midname'];
-   $like[4] = "lastname";
-   $like[5] = $_POST['lastname'];
-   $identifier = $_POST['identifier'];
-   if (strtolower($identifier) == "student") {
-    $like[6] = "student_id";
-} else if (strtolower($identifier) == "faculty in charge") {
-    $like[6] = "fic_id";
-}
-$like[7] = $_POST['id'];
+    $like[0] = "firstname";
+    $like[1] = $_POST['firstname'];
+    $like[2] = "midname";
+    $like[3] = $_POST['midname'];
+    $like[4] = "lastname";
+    $like[5] = $_POST['lastname'];
+    $identifier = $_POST['identifier'];
+    if (strtolower($identifier) == "student") {
+        $like[6] = "student_id";
+    } else if (strtolower($identifier) == "faculty in charge") {
+        $like[6] = "fic_id";
+    }
+    $like[7] = $_POST['id'];
 
-if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
-    $col = "ga.grade_assessment_score, ga.grade_assessment_total, top.topic_name, ct.courseware_time_time, cw.courseware_name";
-    $where = array(
-        "stud.student_id" => $like[7],
-        "stud.student_department" => $_POST['department'],
-        "off.offering_department" => $_POST['department'],
-        "cou.course_department" => $_POST['department'],
-        "ga.student_id" => $like[7],
-        "stud.student_id" => $like[7]
-    );
-    $join = array(
-        array("offering as off", "off.offering_id = stud.offering_id"),
-        array("course as cou", "off.course_id = cou.course_id"),
-        array("subject as sub", "cou.course_id = sub.course_id"),
-        array("topic as top", "sub.subject_id = top.subject_id"),
-        array("courseware as cw", "top.topic_id = cw.topic_id"),
-        array("grade_assessment as ga", "cw.courseware_id = ga.courseware_id"),
-        array("courseware_time as ct", "ga.grade_assessment_id = ct.grade_assessment_id")
-    );
-    $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
-    // echo "<pre>";
-    // print_r($result_hold);
+    if (strtolower($identifier) == "student" && $this->Crud_model->mobile_check("student", "student_id", $like)) {
+        $col = "ga.grade_assessment_score, ga.grade_assessment_total, top.topic_name, ct.courseware_time_time, cw.courseware_name";
+        $where = array(
+            "stud.student_id" => $like[7],
+            "stud.student_department" => $_POST['department'],
+            "off.offering_department" => $_POST['department'],
+            "cou.course_department" => $_POST['department'],
+            "ga.student_id" => $like[7],
+            "stud.student_id" => $like[7]
+        );
+        $join = array(
+            array("offering as off", "off.offering_id = stud.offering_id"),
+            array("course as cou", "off.course_id = cou.course_id"),
+            array("subject as sub", "cou.course_id = sub.course_id"),
+            array("topic as top", "sub.subject_id = top.subject_id"),
+            array("courseware as cw", "top.topic_id = cw.topic_id"),
+            array("grade_assessment as ga", "cw.courseware_id = ga.courseware_id"),
+            array("courseware_time as ct", "ga.grade_assessment_id = ct.grade_assessment_id")
+        );
+        $result_hold = $this->Crud_model->fetch_join2("student as stud", $col, $join, NULL, $where, NULL, TRUE);
+        // echo "<pre>";
+        // print_r($result_hold);
 
-    if (!empty($result_hold)) {
-        $temp_values = [];
-        $temp_topics = [];
-        $temp_topics2 = [];
-        $cw_name_counter = 0;
-        for ($i = 0; $i < count($result_hold); $i++) {
-            $hold_cw_name = $result_hold[$i]["courseware_name"];
-            if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
-                $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
-                $temp_topics2[] = $hold_cw_name;
-                $result_hold[$i]["take"] = "Take 1";
-                $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
-                $cw_name_counter++;
-            } else {
-                $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
-                $count = count($temp_values["values"][$temp_key]["inner_val"]);
-                $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
+        if (!empty($result_hold)) {
+            $temp_values = [];
+            $temp_topics = [];
+            $temp_topics2 = [];
+            $cw_name_counter = 0;
+            for ($i = 0; $i < count($result_hold); $i++) {
+                $hold_cw_name = $result_hold[$i]["courseware_name"];
+                if ($temp_key = array_search($hold_cw_name, $temp_topics2) === FALSE) {
+                    $temp_topics["topic_name"][]["topic"] = $hold_cw_name;
+                    $temp_topics2[] = $hold_cw_name;
+                    $result_hold[$i]["take"] = "Take 1";
+                    $temp_values["values"][$cw_name_counter]["inner_val"][] = $result_hold[$i];
+                    $cw_name_counter++;
+                } else {
+                    $temp_values["values"][$temp_key]["inner_val"][] = $result_hold[$i];
+                    $count = count($temp_values["values"][$temp_key]["inner_val"]);
+                    $temp_values["values"][$temp_key]["inner_val"][$count - 1]["take"] = "Take " . $count;
+                }
             }
-        }
-        $temp_topics["values"] = $temp_values["values"];
+            $temp_topics["values"] = $temp_values["values"];
 
-        print_r(json_encode($temp_topics));
+            print_r(json_encode($temp_topics));
+        } else {
+            print_r("");
+        }
     } else {
         print_r("");
     }
-} else {
-    print_r("");
-}
 }
 
 public function perc_per_sub(){
@@ -568,14 +569,14 @@ public function perc_per_sub(){
  // $_POST['id'] = '2';
  // $_POST['department'] = "CE";
 
-   $like[0] = "firstname";
-   $like[1] = $_POST['firstname'];
-   $like[2] = "midname";
-   $like[3] = $_POST['midname'];
-   $like[4] = "lastname";
-   $like[5] = $_POST['lastname'];
-   $identifier = $_POST['identifier'];
-   if (strtolower($identifier) == "student") {
+ $like[0] = "firstname";
+ $like[1] = $_POST['firstname'];
+ $like[2] = "midname";
+ $like[3] = $_POST['midname'];
+ $like[4] = "lastname";
+ $like[5] = $_POST['lastname'];
+ $identifier = $_POST['identifier'];
+ if (strtolower($identifier) == "student") {
     $like[6] = "student_id";
 } else if (strtolower($identifier) == "faculty in charge") {
     $like[6] = "fic_id";
@@ -648,5 +649,14 @@ private function get_active_enrollment() {
         return "There is no activated enrollment";
     }
 }
-
+private function hack_check($str){
+    $return["confirm"] = false;
+    $return["string"] = $str;
+    $data = $this->security->xss_clean($str);
+    if(strpos($data, '[removed]') !== FALSE){
+        $return["confirm"] = true;
+    }
+    $return["string"] = html_escape($str);
+    return $return;
+}
 }
