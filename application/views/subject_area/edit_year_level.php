@@ -11,7 +11,7 @@
 <div class="row container">
 	<div class="col s12">
 		<blockquote class="color-primary-green">
-			<h3 class="color-black">Edit Subject Area <br></h3>
+			<h3 class="color-black">Edit <?=$subj[0]->year_level_name?> Level<br> <a href="<?= base_url() ?>SubjectArea/" class="waves-effect waves-dark btn red"><i class="material-icons left">arrow_back</i>Back</a></h3>
 		</blockquote>
 		<?php if((isset($error_message) && !empty($error_message))) :?>
 			<blockquote class="color-red">
@@ -25,54 +25,26 @@
 	</div>
 </div>
 <div class="row container">
-	<h5 class="center"><?= $subj[0]->subject_list_name?></h5>
 	<div class="col s1"></div>
 	<div class="col s10">
-		<form method="post" action="<?php echo base_url() . "SubjectArea/edit_submit/" . $subj[0]->year_level_id ."/" .$subj[0]->subject_list_id?>" style="margin-top: 20px;">
-			<div class="row valign-wrapper">
-				<div class="input-field col s11">
-					<input name="subject_area" type="text" value="<?= $subj[0]->subject_list_name ?>" required>
-					<label for="input_fields">Subject Area</label>
-				</div>
-				<div class="col s1">
-					<a class="waves-effect waves-light red btn-floating tooltipped btn_reset_name" data-position="top" data-delay="0" data-tooltip="Reset"><i class="material-icons left">clear</i></a>
-				</div>
-			</div>
-			<div class="row valign-wrapper">
-				<div class="input-field col s11">
-					<textarea name="subject_description" class="materialize-textarea"><?= $subj[0]->subject_list_description?></textarea>
-					<label for="textarea1">Subject Area Description</label>
-				</div>
-				<div class="col s1">
-					<a class="waves-effect waves-light red btn-floating tooltipped btn_reset_desc" data-position="top" data-delay="0" data-tooltip="Reset"><i class="material-icons left">clear</i></a>
-				</div>
-			</div>
-			<div class="input-field">
-				<button class="btn waves-effect waves-light right green" type="submit" name="submit">Update</button>
-				<a href="<?= base_url() ?>SubjectArea" class="waves-effect waves-light btn left red">Cancel</a>
-			</div>
-		</form>
-		<div style="padding-top: 100px;"></div>
-		<center><h4>List of Topics</h4></center>
-
-		<?php if (isset($top) && !empty($top)): ?>
+		<?php if (isset($subject_area) && !empty($subject_area)): ?>
 	        <table class="data-table" id="tbl-feedback">
 	            <thead>
 	                <tr>
-	                    <th>Topic Name</th>
-	                    <th>Topic Description</th>
+	                    <th>Subject Area</th>
+	                    <th>Subject Area Description</th>
 	                    <th>Actions</th>
 	                </tr>
 	            </thead>
 	            <tbody>
-	                <?php foreach ($top as $sub_top): ?>
+	                <?php foreach ($subject_area as $sub): ?>
                         <tr class="bg-color-white">
-                            <td><?= $sub_top->topic_list_name ?></td>
-                            <td><?= $sub_top->topic_list_description ?></td>
-                            <?php if($sub_top->included == 1): ?>
-                            	<td><a data-id="<?= $sub_top->topic_list_id ?>" data-name="<?= $sub_top->topic_list_name ?>" class="waves-effect waves-dark btn red btn_remove">Remove</a></td>
+                            <td><?= $sub["name"] ?></td>
+                            <td><?= $sub["desc"] ?></td>
+                            <?php if($sub["included"] == 1): ?>
+                            	<td><a data-id="<?= $sub['name'] ?>" class="waves-effect waves-dark btn red btn_remove">Remove</a></td>
                             <?php else: ?>
-						        <td><a data-id="<?= $sub_top->topic_list_id ?>" data-name="<?= $sub_top->topic_list_name ?>" class="waves-effect waves-dark btn bg-primary-green btn_add">Add</a></td>
+						        <td><a data-id="<?= $sub['name'] ?>" class="waves-effect waves-dark btn bg-primary-green btn_add">Add</a></td>
 						    <?php endif; ?>
                         </tr>
 	                <?php endforeach ?>
@@ -82,32 +54,23 @@
 	        <center style="margin-top:20vh;">
 	            <h3>No data to show</h3>
 	        </center>
-    	<?php endif; ?>
+	    <?php endif; ?>
 	</div>
 </div>
 <script>
 	$(document).ready(function(){
-		$(".btn_reset_name").click(function () {
-			$default = "<?=$subj[0]->subject_list_name?>";
-			$('input[name=subject_area]').val($default);
-		});
-		$(".btn_reset_desc").click(function () {
-			$default = "<?=$subj[0]->subject_list_description?>";
-			$('textarea[name=subject_description]').val($default);
-		});
 		$(".btn_remove").click(function(event) { 
             $id = $(this).data('id');
-            $name = $(this).data('name');
             swal({
                 title: "Are you sure?",
-                text: "You are about to remove this Topic ("+$name+") to this Subject Area.",
+                text: "You are about to remove this Subject Area ("+$id+") to this Year Level.",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "<?= base_url().'SubjectArea/remove_topic_to_subj/' . $this->uri->segment(4)?>",
+                        url: "<?= base_url().'SubjectArea/remove_subj_from_year_level/' . $this->uri->segment(3)?>",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -115,14 +78,12 @@
                         },
                         success: function (data) {
                             if (data == "true"){
-                            	console.log("true success");
-                            	swal($name+" has been removed!", {
+                            	swal($id+" has been removed!", {
 	                                icon: "success",
 	                            }).then(function () {
 	                                window.location.reload(true);
 	                            });
                             } else {
-                            	console.log("false success");
                             	swal("An error occured. Please try again", {
 	                                icon: "error",
 	                            }).then(function () {
@@ -131,7 +92,6 @@
                             }
                         },
                         error: function (data) {
-                        	console.log("false error");
                             swal("An error occured. Please try again", {
                                 icon: "error",
                             }).then(function () {
@@ -140,21 +100,20 @@
                         }
                     });
                 }
-            });
+            }); 
         });
 		$(".btn_add").click(function(event) { 
             $id = $(this).data('id');
-            $name = $(this).data('name');
             swal({
                 title: "Are you sure?",
-                text: "You are about to add this Topic ("+$name+") to this Subject Area.",
+                text: "You are about to add this Subject Area ("+$id+") to this Year Level.",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "<?= base_url().'SubjectArea/add_topic_to_subj/' . $this->uri->segment(4)?>",
+                        url: "<?= base_url().'SubjectArea/add_subj_from_year_level/' . $this->uri->segment(3)?>",
                         type: "post",
                         dataType: "json",
                         data: {
@@ -162,7 +121,7 @@
                         },
                         success: function (data) {
                             if (data == "true"){
-                            	swal($name+" has been added!", {
+                            	swal($id+" has been removed!", {
 	                                icon: "success",
 	                            }).then(function () {
 	                                window.location.reload(true);
@@ -184,7 +143,7 @@
                         }
                     });
                 }
-            });
+            }); 
         });
 	});
 </script>

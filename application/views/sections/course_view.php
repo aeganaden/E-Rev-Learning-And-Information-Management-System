@@ -19,15 +19,12 @@
 </div>
 <div class="row container">
     <a href="<?= base_url() ?>Sections" class="waves-effect waves-light btn red"><i class="material-icons left">arrow_back</i>BACK</a>
-    <pre>
-        <?php // print_r($course); ?>
-    </pre>
     <center><h4><?= $course[0]->course_course_title ?> (<?= $course[0]->course_course_code ?>)</h4></center>
     <br>
     <?php
     echo "<h5>" . $subject_year_course[0]->year_level_name . ":</h5>";
     foreach ($subject_year_course as $syc) {
-        echo "<h5>—" . $syc->subject_list_name . "</h5>";
+        echo "<h5>— " . $syc->subject_list_name . "</h5>";
     }
     ?>
     <br>

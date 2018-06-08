@@ -22,28 +22,19 @@ class testing extends CI_Controller {
     public function testing_upload() {
         require "./application/vendor/autoload.php";
 
-        $config['upload_path'] = "./assets/uploads/";
-        $config['allowed_types'] = 'xls|csv|xlsx';
-        $config['max_size'] = '10000';
-        $config["file_name"] = "student_scores_specific" . time();
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getActiveSheet()->getDefaultColumnDimension()->setWidth(20); //bigger space horizontally
+        $doc = $spreadsheet->getActiveSheet();
+        $doc->setCellValue("A1", 'Name:')
+        ->setCellValue("B1", 'value');
+        
 
-        $this->load->library('upload', $config);
+        $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
+        $writer->save("filename");
+        force_download("filename", NULL);
 
-        if ($this->upload->do_upload('excel_file')) {       //success upload
-            $upload_data = $this->upload->data();
-
-            /** Load $inputFileName to a Spreadsheet Object  * */
-            $spreadsheet = IOFactory::load($upload_data["full_path"]);
-            //reference: https://phpspreadsheet.readthedocs.io/en/develop/topics/accessing-cells/#accessing-cells
-
-            $spreadsheet->setActiveSheetIndex(0);
-            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-            echo "<pre>";
-            print_r($sheetData);
-
-            if (file_exists($upload_data["full_path"])) {      //file is deleted when there's error
-            unlink($upload_data["full_path"]);
-        }
+            //closes the tab
+        echo "<script>window.close();</script>";
     } else {
         echo "error upload";
         print_r($this->upload->display_errors());

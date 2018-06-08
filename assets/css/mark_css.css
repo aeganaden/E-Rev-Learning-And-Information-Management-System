@@ -1,9 +1,28 @@
 .bord{
-    border: 2px solid black
+	border: 2px solid black
 }
 .bord1{
-    border: 2px solid pink
+	border: 2px solid pink
 }
 .bord2{
-    border: 2px solid brown
+	border: 2px solid brown
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: rgba(0,122,51,0.8); 
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }

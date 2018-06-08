@@ -92,7 +92,6 @@
                             id: $id
                         },
                         success: function (data) {
-                            console.log(data);
                             swal($name+" has been deleted!", {
                                 icon: "success",
                             }).then(function () {
@@ -100,7 +99,6 @@
                             });
                         },
                         error: function (data) {
-                            console.log(data);
                             swal("An error occured. Please try again", {
                                 icon: "error",
                             }).then(function () {

@@ -331,8 +331,8 @@ class Topic extends CI_Controller {
     public function deleteTopic(){
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "professor") {
             $info = $this->session->userdata('userInfo');
-            $topic_id = 1;
-            // $topic_id= $this->input->post("id");
+            // $topic_id = 1;
+            $topic_id= $this->input->post("id");
             $col = "slhtl.subject_list_id, slhtl.topic_list_id";
             $where = array(
                 "slhtl.topic_list_id" => $topic_id,

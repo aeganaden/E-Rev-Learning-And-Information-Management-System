@@ -19,7 +19,7 @@
 <div class="row container">
     <div class="col s12">
         <blockquote class="color-primary-green">
-            <h3 class="color-black">View Topics</h3>
+            <h3 class="color-black">View Topics<br><a href="<?= base_url() ?>SubjectArea/" class="waves-effect waves-dark btn red"><i class="material-icons left">arrow_back</i>Back</a></h3>
         </blockquote>
         <blockquote class="color-primary-green">
             <h6 class="color-black">These are the topics inside the subject area</h6>
@@ -41,7 +41,7 @@
                         <!-- Dropdown Structure -->
                         <ul id='dropdown1' class='dropdown-content'>
                             <li><a data-id="<?=$subj_id?>" class="no-collapse waves-effect waves-dark black-text subj_edit">EDIT</a></li>
-                            <li><a data-id="<?=$subj_id?>" class="no-collapse waves-effect waves-dark black-text subj_remove">REMOVE</a></li>
+                            <li><a data-id="<?=$subj_id?>" data-name="<?=$sub_dissect['subj_name']?>" class="no-collapse waves-effect waves-dark black-text subj_remove">REMOVE</a></li>
                         </ul>
                     </div>
                 </div>
@@ -86,16 +86,51 @@
             $data = $(this).data('id');
             window.location.href = "<?= base_url() . "SubjectArea/remove_topic/"?>"+ $data;
         });
-        $(".subj_edit").click(function () {
-            console.log("subj_edit");
-            $data = $(this).data('id');
-            window.location.href = "<?= base_url() . "SubjectArea/edit_subjectarea/"?>" + $segment+"/"+$data;
-        });
         $('.dropdown-button').dropdown({
             hover: true, // Activate on hover
         });
         $(".no-collapse, .dropdown-button").click(function (e) {
             e.stopPropagation();
+        });
+        $(".subj_edit").click(function () {
+            $data = $(this).data('id');
+            window.location.href = "<?= base_url() . "SubjectArea/edit_subjectarea/"?>" + $segment+"/"+$data;
+        });
+        $(".subj_remove").click(function(event) { 
+            $id = $(this).data('id');
+            $name = $(this).data('name');
+            swal({
+                title: "Are you sure?",
+                text: "You are about to remove this Subject Area ("+$name+") to this Year Level.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "<?= base_url().'SubjectArea/delete_subject_area/' . $this->uri->segment(3)?>",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            id: $id
+                        },
+                        success: function (data) {
+                            swal($name+" has been deleted!", {
+                                icon: "success",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        },
+                        error: function (data) {
+                            swal("An error occured. Please try again", {
+                                icon: "error",
+                            }).then(function () {
+                                window.location.reload(true);
+                            });
+                        }
+                    });
+                }
+            }); 
         });
     });
 </script>

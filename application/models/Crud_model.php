@@ -255,7 +255,10 @@ class Crud_model extends CI_Model {
         $this->db->delete($table);
         return $this->db->last_query();
     }
-
+    public function updatebatch($table = NULL, $data = NULL, $where = NULL){
+        $this->db->update_batch($table, $data, $where);
+        return $this->db->affected_rows();
+    }
 }
 
 ?>

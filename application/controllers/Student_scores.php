@@ -94,9 +94,9 @@ class Student_scores extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
                 // echo $this->checkCourse($course_id);
-             if ($this->checkCourse($this->uri->segment(3)) == 0) { 
-                echo '<script type="text/javascript">'; 
-                echo "alert('You don\'t have access with this module');"; 
+               if ($this->checkCourse($this->uri->segment(3)) == 0) { 
+                echo '<script type="text/javascript">';
+                echo "alert('You don\'t have access with this module');";
                 echo 'window.history.back();';
                 echo '</script>';
             } 
@@ -582,7 +582,16 @@ class Student_scores extends CI_Controller {
                             break;
                         }
                     }
-
+                    // $wherein[0] = "topic_id";
+                    // $wherein[1] = $topic_list;
+                    // $col = "topic_id";
+                    // $where = array(
+                    //     "topic_is_done" => 0
+                    // );
+                    // $confirm_topics = $this->Crud_model->fetch_select("topic", $col, $where, NULL, NULL, $wherein);
+                    // if(count($confirm_topics) != count($topic_list)){
+                    //     $error_message[] = "";
+                    // }
                     //print_r($sheetData);
                     foreach ($sheetData as $key => $val) {
                         if ($key != 1 && $isit) {        //row 2 and beyond
