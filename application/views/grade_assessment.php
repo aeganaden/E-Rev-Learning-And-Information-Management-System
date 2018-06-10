@@ -63,16 +63,16 @@
 																				<th>TOTAL SCORE</th>
 																				<th>PERCENTAGE</th>
 																				<th>TIME</th>
-																				<!-- <th>REMARKS</th> -->
+																				<th>REMARKS</th>
 																			</tr>
 																		</thead>
 																		<tbody>
 																			<?php foreach ($r_grade_assessment as $m_key => $m_value): ?>
 																				<?php 
 																				$percent = (($m_value->remedial_grade_assessment_score / $m_value->remedial_grade_assessment_total) * 100)."%"; 
-																				$remarks = $percent >= $active_enrollment->passingPercentage ? "passed" : "failed";
+																				$remarks = $percent >= (int)$active_enrollment->passingPercentage ? "passed" : "failed";
 
-																				$remarks_color = $percent >= $active_enrollment->passingPercentage ? "" : "red";
+																				$remarks_color = $percent >= (int)$active_enrollment->passingPercentage ? "" : "red";
 
 																				if ($m_value->remedial_grade_assessment_time) {
 																					$time = $m_value->remedial_grade_assessment_time;
@@ -86,7 +86,7 @@
 																					<td><?=$m_value->remedial_grade_assessment_total?></td>
 																					<td><?=$percent?></td>
 																					<td><?=$time?></td>
-																					<!-- <td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td> -->
+																					<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
 																				</tr>
 																			<?php endforeach ?>
 																		</tbody>
@@ -152,15 +152,16 @@
 																					<th>YOUR PERCENTAGE</th>
 																					<th>PASSING PERCENTAGE</th>
 																					<th>TIME</th>
-																					<!-- <th>REMARKS</th> -->
+																					<th>REMARKS</th>
 																				</tr>
 																			</thead>
 																			<tbody>
 																				<?php foreach ($grade_assessment as $m_key => $m_value): ?>
 																					<?php 
 																					$percent = (($m_value->grade_assessment_score / $m_value->grade_assessment_total) * 100)."%";
-																					$remarks = $percent >= $active_enrollment->passingPercentage ? "passed" : "failed";
-																					$remarks_color = $percent >= $active_enrollment->passingPercentage ? "" : "red";
+																					$remarks = $percent >= (int)$active_enrollment->passingPercentage ? "passed" : "failed";
+
+																					$remarks_color = $percent >= (int)$active_enrollment->passingPercentage ? "" : "red";
 
 																					if ($time = $this->Crud_model->fetch("courseware_time",array("grade_assessment_id"=>$m_value->grade_assessment_id))) {
 																						$time = $time[0];
@@ -176,7 +177,7 @@
 																						<td><?=$percent?></td>
 																						<td><?=$active_enrollment->passingPercentage?>%</td>
 																						<td><?=$time?></td>
-																						<!-- <td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td> -->
+																						<td><span class="new badge <?=$remarks_color?>" data-badge-caption="<?=$remarks?>"></span></td>
 																					</tr>
 																				<?php endforeach ?>
 																			</tbody>
