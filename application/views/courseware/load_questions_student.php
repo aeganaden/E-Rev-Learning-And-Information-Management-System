@@ -31,7 +31,7 @@
 								// echo "<pre>"; 
 								// print_r($answers);
 								$arr = (array)$answers;
-								shuffle($arr);
+								// shuffle($arr);
 								$answers = (object) $arr;
 								// echo "<pre>"; 
 								// print_r($answers);
@@ -48,39 +48,39 @@
 
 										</div>
 									<?php endforeach ?>
-								<?php else: ?>
-									<h5 class="color-black valign-wrapper">No Answers</h5>
-									<!-- id="div_answer_<?=$value->courseware_question_id?>" -->
-								<?php endif ?>
-								
-							</div>
+									<?php else: ?>
+										<h5 class="color-black valign-wrapper">No Answers</h5>
+										<!-- id="div_answer_<?=$value->courseware_question_id?>" -->
+									<?php endif ?>
+									
+								</div>
 
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 
-	<?php endforeach ?>
-</div>
-
+		<?php endforeach ?>
+	</div>
 
 
-<script type="text/javascript">
-	
-	jQuery(document).ready(function($) {
-		$('.tooltipped').tooltip({delay: 50});
-		var getDivId = document.getElementById("imageContainer");
-		var images = getDivId.getElementsByTagName("img");
-		var i;
-		for(i = 0; i < images.length; i++) {
-			images[i].className += "materialboxed";
-		}
 
-		$('.materialboxed').materialbox();
+	<script type="text/javascript">
+		
+		jQuery(document).ready(function($) {
+			$('.tooltipped').tooltip({delay: 50});
+			var getDivId = document.getElementById("imageContainer");
+			var images = getDivId.getElementsByTagName("img");
+			var i;
+			for(i = 0; i < images.length; i++) {
+				images[i].className += "materialboxed";
+			}
 
-	});
-</script>
+			$('.materialboxed').materialbox();
+
+		});
+	</script>
 
 <!-- @snippet 
 <input class="with-gap" name="group<?=$value->courseware_question_id?>" type="radio" id="ans_<?=$i_value->choice_id?>" contenteditable="true"  />

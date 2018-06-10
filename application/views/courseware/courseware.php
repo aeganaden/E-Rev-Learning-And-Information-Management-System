@@ -43,51 +43,51 @@
 
         <?php foreach ($course as $key => $value): ?>
             <?php if ($count == 4): ?><?= "<div class='row'>" ?><?php endif ?>
-                <?php
+            <?php
             // $section = $this->Crud_model->fetch("offering",array("offering_id"=>$info['user']->offering_id));
             // $section = $section[0];
-                $subjects = $this->Crud_model->fetch("subject", array("course_id" => $value->course_id));
-                ?>
-                <?php if ($subjects): ?>
-                    <?php foreach ($subjects as $key => $value): ?>
-                        <?php
-                        $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $value->lecturer_id));
-                        $lecturer = $lecturer[0];
-                        ?>
-                        <div class=" col s12 col m3" >
-                            <div class="card sticky-action" >
-                                <div class="card-image waves-effect waves-block waves-light" >
-                                    <img class="activator" src="<?= base_url() ?>assets/img/background-2.jpg">
-                                </div>
-                                <div class="card-content bg-primary-yellow" >
-                                    <blockquote class="color-primary-green" style="margin-top: 0;">
-                                        <span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?= $value->subject_name ?><i class="material-icons right ">more_vert</i></span>
-                                    </blockquote>
-                                    <?php if ($lecturer): ?>
-                                        <h6><?= $lecturer->firstname . " " . $lecturer->midname . " " . $lecturer->lastname ?></h6>
-                                    <?php endif ?>
-                                </div>
-                                <div class="card-reveal bg-primary-green">
-                                    <span class="card-title color-white ">ABOUT</span>
-                                    <p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?= $value->subject_description ?></span></p>
-                                </div>
+            $subjects = $this->Crud_model->fetch("subject", array("course_id" => $value->course_id));
+            ?>
+            <?php if ($subjects): ?>
+                <?php foreach ($subjects as $key => $value): ?>
+                    <?php
+                    $lecturer = $this->Crud_model->fetch("lecturer", array("lecturer_id" => $value->lecturer_id));
+                    $lecturer = $lecturer[0];
+                    ?>
+                    <div class=" col s12 col m3" >
+                        <div class="card sticky-action" >
+                            <div class="card-image waves-effect waves-block waves-light" >
+                                <img class="activator" src="<?= base_url() ?>assets/img/background-2.jpg">
+                            </div>
+                            <div class="card-content bg-primary-yellow" >
+                                <blockquote class="color-primary-green" style="margin-top: 0;">
+                                    <span class="card-title activator color-black  grey-text text-darken-4 sub_name"><?= $value->subject_name ?><i class="material-icons right ">more_vert</i></span>
+                                </blockquote>
+                                <?php if ($lecturer): ?>
+                                    <h6><?= $lecturer->firstname . " " . $lecturer->midname . " " . $lecturer->lastname ?></h6>
+                                <?php endif ?>
+                            </div>
+                            <div class="card-reveal bg-primary-green">
+                                <span class="card-title color-white ">ABOUT</span>
+                                <p class="valign-wrapper"><i class="material-icons color-primary-yellow">chevron_right</i><span class="color-white"><?= $value->subject_description ?></span></p>
+                            </div>
 
-                                <div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
-                                    <div class="row ">
-                                        <div class=" col s12 col m12 ">
+                            <div class="card-action bg-primary-yellow " style="padding: 0.02px !important;">
+                                <div class="row ">
+                                    <div class=" col s12 col m12 ">
 
-                                            <a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?= $value->subject_id ?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
+                                        <a class="btn_launch_topics waves-effect waves-light btn right" data-id="<?= $value->subject_id ?>" style="background-color: transparent; box-shadow: none !important;">Launch<i class="material-icons right">launch</i></a>
 
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
-                        <?php $count++; ?>
-                    <?php endforeach ?>
-                <?php endif ?>
-            <?php endforeach ?>
+                    </div>
+                    <?php if ($count == 4): ?><?= "</div>" ?><?php endif ?>
+                    <?php $count++; ?>
+                <?php endforeach ?>
+            <?php endif ?>
+        <?php endforeach ?>
         <?php else: ?>
             <h5 class="center">NO SUBJECTS YET</h5>
         <?php endif ?>
@@ -224,6 +224,7 @@
                                     student_id: <?= $info['user']->student_id ?>,
                                 },
                                 success:function(existing){
+                                    // console.log(existing)
                                     if (existing == true) {
                                         updateAnswer($ans_id, $q_id, cw_id);
                                         grade_assessment(cw_id,<?= $info['user']->student_id ?>);
@@ -359,6 +360,9 @@
 
  });
 function insertAnswer(answer_id, q_id, cw_id) {
+    // console.log(answer_id)
+    // console.log(q_id)
+    // console.log(cw_id)
     $.ajax({
         url: '<?= base_url() ?>Coursewares/insertAnswer',
         type: 'post',
@@ -369,7 +373,7 @@ function insertAnswer(answer_id, q_id, cw_id) {
             cw_id: cw_id,
         },
         success: function(data){
-            // console.log(data);	\
+            console.log(data);	
             if (data != false) {
                 o_ex = false;
                 $("#question-section").html(data);
@@ -384,7 +388,7 @@ function updateAnswer(answer_id, q_id, cw_id) {
 
     var answer_json = JSON.stringify(answer_id);
     var q_json = JSON.stringify(q_id);
-    // console.log(answer_id);
+    // console.log(answer_id)   ;
     // console.log(q_id);
     // console.log(cw_id);
 
@@ -415,7 +419,7 @@ function updateAnswer(answer_id, q_id, cw_id) {
 
 function grade_assessment(cw_id, student_id) {
     $time = timer.getTimeValues().toString();
-    console.log($time);
+    // console.log($time);
     $.ajax({
         url: '<?= base_url() ?>Coursewares/countCorrect',
         type: 'post',
@@ -508,7 +512,7 @@ function fetchCourseware(topic_id) {
             $("#preloader").css('display', 'none');
 
             if (i_data != false) {
-               for (var j = 0; j < i_data.length; j++){
+             for (var j = 0; j < i_data.length; j++){
                 if (!i_data[j].time) {
                     time = " -----";
                 } else{
