@@ -175,8 +175,8 @@
 					<div class=" col s12 m6">
 						<div class="input-field  col s12 m12">
 							<select id="sl_choices">
-								<option value="" disabled >Choices Type</option>
-								<option value="1" selected>Multiple Choice</option>
+								<option value="" selected disabled >Choices Type</option>
+								<option value="1">Multiple Choice</option>
 								<option value="2">True or False</option> 
 							</select>
 							<label>Choice Type Options</label>
@@ -184,7 +184,7 @@
 					</div>
 				</div>
 
-				<div class="row" id="mul_choice" >
+				<div class="row" id="mul_choice" style="display: none">
 					<blockquote class="color-primary-green" style="margin-left: 3%;">
 						<h5 class="valign-wrapper">Answer #1 <i class="material-icons" style="cursor: pointer;" id="i_answer_1">check_box</i></h5>
 						<textarea name="editor2" id="answer_1"></textarea>
