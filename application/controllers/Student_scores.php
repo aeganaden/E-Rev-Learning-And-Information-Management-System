@@ -94,7 +94,7 @@ class Student_scores extends CI_Controller {
         if ($this->session->userdata('userInfo')['logged_in'] == 1 && $this->session->userdata('userInfo')['identifier'] == "fic") {
             if (!empty($course_id = $this->uri->segment(3)) && is_numeric($course_id)) {
                 // echo $this->checkCourse($course_id);
-               if ($this->checkCourse($this->uri->segment(3)) == 0) { 
+             if ($this->checkCourse($this->uri->segment(3)) == 0) { 
                 echo '<script type="text/javascript">';
                 echo "alert('You don\'t have access with this module');";
                 echo 'window.history.back();';

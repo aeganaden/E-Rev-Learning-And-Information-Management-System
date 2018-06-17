@@ -246,14 +246,19 @@ class Admin extends CI_Controller {
             "announcement_audience" => $audience,
             "announcement_edited_at" => $edited_at
         );
-
+        $this->send_push_notif(strip_tags($title), strip_tags($content), strip_tags($audience), "update");
         if ($this->Crud_model->update("announcement", $data, array("announcement_id" => $id))) {
             echo json_encode("success");
         }
     }
 
     public function addAnnouncement() {
-
+        /*
+        CE = 1
+        ECE = 2
+        EE = 3
+        ME = 4
+        */
         $column = "";
         $info = $this->session->userdata('userInfo');
 
@@ -284,11 +289,99 @@ class Admin extends CI_Controller {
             "announcement_end_datetime" => strtotime($this->input->post("end_time")),
             "announcement_announcer" => strip_tags(ucwords($info["user"]->firstname . " " . $info["user"]->lastname))
         );
+        $this->send_push_notif(strip_tags($title), strip_tags($content), strip_tags($audience), "new");
         if ($this->Crud_model->insert("announcement", $data)) {
             redirect('Admin/announcements', 'refresh');
             // echo "<pre>";
             // print_r( $data);
         }
+    }
+
+    private function send_push_notif($title, $body, $dept, $status){
+        /*
+        CE = 1
+        ECE = 2
+        EE = 3
+        ME = 4
+        */
+
+        //convert int to string
+        $string_dept = [];
+        $depts = explode(",", $dept);
+        foreach($depts as $subdept){
+            switch ($subdept) {
+                case 1:
+                $string_dept[] = "CE";
+                break;
+                case 2:
+                $string_dept[] = "ECE";
+                break;
+                case 3:
+                $string_dept[] = "EE";
+                break;
+                case 4:
+                $string_dept[] = "ME";
+                break;
+            }
+        }
+
+        $col = "stu.token";
+        $where = array(
+            "enr.enrollment_is_active" => 1
+        );
+        $join = array(
+            array("offering as off"," off.offering_id = stu.offering_id"),
+            array("course as cou"," cou.course_id = off.course_id"),
+            array("enrollment as enr"," enr.enrollment_id = cou.enrollment_id")
+        );
+        $orwherein = array('cou.course_department', $string_dept);
+        $result = $this->Crud_model->fetch_join2("student as stu", $col, $join, NULL , $where, NULL, NULL, NULL, NULL, $orwherein);
+        $registrationIds = [];
+        foreach($result as $res){
+            if(!empty($res)){
+                $registrationIds[] = $res->token;
+            }
+        }
+        $col = "token";
+        $wherein = array("fic_department", $string_dept);
+        $result = $this->Crud_model->fetch_select("fic", $col, NULL, NULL, NULL, $wherein);
+        foreach($result as $res){
+            if(!empty($res)){
+                $registrationIds[] = $res->token;
+            }
+        }
+        // prep the bundle
+        if($status == "update"){
+            $fields = array(
+                'registration_ids' => $registrationIds,
+                'data' => array('title' => "(UPDATE) ". $title,'body' => $body)
+            );
+        } else {
+            $fields = array(
+                'registration_ids' => $registrationIds,
+                'data' => array(
+                    'title' => $title,
+                    'body' => $body
+                )
+            );
+        }
+
+        $headers = array(
+            'Authorization: key=AIzaSyDHyR3pW8tUInWPa-SD1odWq7WRyiI6z5k',
+            'Content-Type: application/json',
+            'project_id: 756991022347'
+        );
+
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        curl_close( $ch );
+        // $result = json_decode($result);
     }
 
     public function deleteAnnouncement() {

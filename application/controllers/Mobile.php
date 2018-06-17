@@ -691,7 +691,7 @@ public function feedback_fetch() {
             $result = $this->Crud_model->fetch_select("fic", $col, $where);
             if(!empty($result)){
                 unset($where);
-                $where = array("student_id" => $like[7]);
+                $where = array("fic_id" => $like[7]);
                 $data = array("token" => $token);
                 $number = $this->Crud_model->update("fic", $data, $where);
                 $msg["result"][0]["msg"] = "success";
@@ -700,6 +700,43 @@ public function feedback_fetch() {
             }
         } else {
             $msg["result"][0]["msg"] = "not_enrolled";
+        }
+        print_r(json_encode($msg));
+    }
+
+    public function delete_token(){
+        // $_POST['identifier'] = "student";
+        // $_POST['firstname'] = "BERNADETTE";
+        // $_POST['midname'] = "ALCARAZ";
+        // $_POST['lastname'] = "ANGELES";
+        // $_POST['id'] = '2';
+        // $_POST['token'] = "qwertyuiop";
+
+        $identifier = $_POST['identifier'];
+        $id = $_POST['id'];
+        $data = array("token" => "");
+        $msg["result"][0]["msg"] = "false";
+        $this->db->trans_begin();
+        if (strtolower($identifier) == "student") {
+            $where = array("student_id" => $id);
+            $this->Crud_model->update("student", $data, $where);
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $msg["result"][0]["msg"] = "false";
+            } else {
+                $this->db->trans_commit();
+                $msg["result"][0]["msg"] = "true";
+            }
+        } else if (strtolower($identifier) == "faculty in charge") {
+            $where = array("fic_id" => $id);
+            $this->Crud_model->update("fic", $data, $where);
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $msg["result"][0]["msg"] = "false";
+            } else {
+                $this->db->trans_commit();
+                $msg["result"][0]["msg"] = "true";
+            }
         }
         print_r(json_encode($msg));
     }

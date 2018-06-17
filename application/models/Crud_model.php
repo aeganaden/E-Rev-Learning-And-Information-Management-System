@@ -206,7 +206,7 @@ class Crud_model extends CI_Model {
         return ($query->num_rows() > 0) ? $query->result() : FALSE;
     }
 
-    public function fetch_join2($table, $col = NULL, $join = NULL, $jointype = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL, $wherein = NULL, $like = NULL) {
+    public function fetch_join2($table, $col = NULL, $join = NULL, $jointype = NULL, $where = NULL, $distinct = NULL, $resultinarray = NULL, $wherein = NULL, $like = NULL, $orwherein = NULL) {
         if (!empty($where)) {
             $this->db->where($where);
         }
@@ -220,6 +220,9 @@ class Crud_model extends CI_Model {
         }
         if (!empty($table)) {
             $this->db->from($table);
+        }
+        if (!empty($orwherein)) {
+            $this->db->or_where_in($orwherein[0], $orwherein[1]);
         }
         if (!empty($wherein)) {
             $this->db->where_in($wherein[0], $wherein[1]);

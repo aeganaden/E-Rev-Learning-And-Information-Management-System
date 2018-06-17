@@ -78,11 +78,11 @@ class testing extends CI_Controller {
 
     public function testing2(){
         $registrationIds[] = "fqRFW3I6EDc:APA91bF8mDoIhgK0_HaPVSltL4IzEznubgWU988gaXJ6-OzluccnevgkqkN50LwQeCLbY9NmbDymHe2-QGTr2hANbwzZvuXNCykOnjs4UQj7wYmD8yiW0PiQ_t-xJvnY9SP40KdCr8bB";
-        $registrationIds[] = "fq36ApRShSM:APA91bFJsYkiMHvlmkwssJTVPKgani9edxghOVcRJe_6rNdA3Z_dV1mCTUhr1yLJ6z_eM9Q-k9T7KS9nw91Mmzt0cMddag64PAOyYC4grcdkIK925CGzjz9EAEfix0nyee6mFVDn0Y4D";
+        $registrationIds[] = "dBRgejJTydw:APA91bEnfrxFh7eUYE3-JGsxNoRhqbyNcZ1QyCwn7hIsWL7GHnTh7lQYR4QPCTMwQmz9cCDM4vL1T9KWB2plA45ne5ix8P0ZINiueas6QjziYEO-gtdzvg3kM7MJnBnH2YAAAs5blK1f";
         // prep the bundle
         $msg = array(
-            'body'   => 'This is a sample announcement77',
-            'title'     => 'Announcement from QA77'
+            'body'   => 'While off',
+            'title'     => 'Announcement from QA'
         );
         $fields = array(
             'registration_ids' => $registrationIds,
@@ -105,6 +105,8 @@ class testing extends CI_Controller {
         curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
         $result = curl_exec($ch );
         curl_close( $ch );
-        echo $result;
+        $result = json_decode($result);
+        echo "<pre>";
+        print_r($result);
     }
 }
