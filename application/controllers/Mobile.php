@@ -17,7 +17,6 @@ class Mobile extends CI_Controller {
             "stud.password" => $_POST['password'],
             "enr.enrollment_is_active" => 1
         );
-//        $where = "stud.username = " . $_POST['username'] . " AND stud.password = " . $_POST['password'] . " AND enr.enrollment_is_active = 1";
         $join = array(
             array("offering as off", "off.offering_id = stud.offering_id "),
             array("course as cou", "cou.course_id = off.course_id"),
@@ -41,25 +40,25 @@ class Mobile extends CI_Controller {
 //            echo "<pre>";
 //            print_r($result);
             print_r(json_encode($result));
-        }
-        unset($where);
-        $where = array(
-            "username" => $_POST['username'],
-            "password" => $_POST['password']
-        );
-        if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
-            if ($result['result'][0]['fic_status'] == 1) {
-                $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
-                $result['result'][0]['identifier'] = "Faculty in Charge";
+        } else {
+            unset($where);
+            $where = array(
+                "username" => $_POST['username'],
+                "password" => $_POST['password']
+            );
+            if ($result['result'] = $this->Crud_model->fetch_array("fic", NULL, $where)) {
+                if ($result['result'][0]['fic_status'] == 1) {
+                    $result['result'][0]['full_name'] = ucwords($result['result'][0]['firstname'] . " " . $result['result'][0]['midname'] . " " . $result['result'][0]['lastname']);
+                    $result['result'][0]['identifier'] = "Faculty in Charge";
 
-                /* GETS THE ENROLLMENT ID OF fic'S ENROLLMENT ID */
-                $col = array('enrollment.enrollment_id', false);
-                $join2 = array('enrollment', 'enrollment.enrollment_id = course.enrollment_id');
-                $join1 = array('course', 'course.course_id = offering.course_id');
-                $jointype = "INNER";
-                $where = array('enrollment.enrollment_is_active' => 1, "offering.fic_id" => $result['result'][0]['fic_id']);
-                $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
-                if (!empty($result_hold)) {
+                    /* GETS THE ENROLLMENT ID OF fic'S ENROLLMENT ID */
+                    $col = array('enrollment.enrollment_id', false);
+                    $join2 = array('enrollment', 'enrollment.enrollment_id = course.enrollment_id');
+                    $join1 = array('course', 'course.course_id = offering.course_id');
+                    $jointype = "INNER";
+                    $where = array('enrollment.enrollment_is_active' => 1, "offering.fic_id" => $result['result'][0]['fic_id']);
+                    $result_hold = $this->Crud_model->fetch_join('offering', $col, $join1, $jointype, $join2, $where);
+                    if (!empty($result_hold)) {
                     $result['result'][0]['enrollment_id'] = $result_hold[0]->enrollment_id;     //store the id of stud's enrollment
                     print_r(json_encode($result));
                 } else {
@@ -72,10 +71,12 @@ class Mobile extends CI_Controller {
             print_r("");
         }
     }
+    
+}
 
-    public function announcement() {
+public function announcement() {
         // $_POST['department'] = "CE";
-        $_POST['department'] = strtoupper($_POST['department']);
+    $_POST['department'] = strtoupper($_POST['department']);
         /*
          * 1 = CE   civil
          * 2 = EE   electrical and electronics
@@ -739,6 +740,27 @@ public function feedback_fetch() {
             }
         }
         print_r(json_encode($msg));
+    }
+
+    public function attendance_lecturers (){
+        // $_POST['id'] = "201200001";
+        // $_POST['department'] = "CE";
+
+        $dept = $_POST['department'];
+
+        $col = "lec.lecturer_id, lec.firstname, lec.midname, lec.lastname, lec.image_path";
+        $join = array(
+            array("subject as sub", "sub.lecturer_id = lec.lecturer_id"),
+            array("course as cou", "cou.course_id = sub.course_id"),
+            array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id")
+        );
+        $where = array(
+            "enr.enrollment_is_active" => 1,
+            // "cou.course_department" => $dept
+        );
+        $result = $this->Crud_model->fetch_join2("lecturer as lec", $col, $join, NULL, $where, true);
+        $hold["result"] = $result;
+        print_r(json_encode($hold));
     }
 
     private function get_active_enrollment() {
