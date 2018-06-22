@@ -1,7 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set("Asia/Manila");
 class Mobile extends CI_Controller {
 
     function __construct() {
@@ -800,7 +800,6 @@ public function feedback_fetch() {
                 $offering = $this->Crud_model->fetch("offering", array("course_id" => $value->course_id));
                 if ($offering) {
                     foreach ($offering as $key => $inner_value) {
-
                         // fetch lecturer
                         $lec_attendance = $this->Crud_model->fetch("lecturer_attendance", array("lecturer_id" => $lec_id, "offering_id" => $inner_value->offering_id));
                         if ($lec_attendance) {
@@ -870,11 +869,11 @@ public function feedback_fetch() {
                                         $remarks_e = "";
                                     }
                                     $attendance_data['lecturer_attendance_id'] = $lec->lecturer_attendance_id;
-                                    $attendance_data['lecturer_attendance_date'] = $lec->lecturer_attendance_date;
-                                    $attendance_data['lecturer_attendance_in'] = $value->attendance_in_time;
-                                    $attendance_data['lecturer_attendance_out'] = $l_a_e->attendance_out_time;
-                                    $attendance_data['sched_start'] = $schedule->schedule_start_time;
-                                    $attendance_data['sched_end'] = $schedule->schedule_end_time;
+                                    $attendance_data['lecturer_attendance_date'] = date("M d, Y\nl", $lec->lecturer_attendance_date);
+                                    $attendance_data['lecturer_attendance_in'] = date("h:i A", $value->attendance_in_time);
+                                    $attendance_data['lecturer_attendance_out'] = date("h:i A", $l_a_e->attendance_out_time);
+                                    $attendance_data['sched_start'] = date("h:i A", $schedule->schedule_start_time);
+                                    $attendance_data['sched_end'] = date("h:i A", $schedule->schedule_end_time);
                                     $attendance_data['remarks_s'] = $remarks_s;
                                     $attendance_data['remarks_e'] = $remarks_e;
                                     // echo "<pre>";
@@ -888,7 +887,7 @@ public function feedback_fetch() {
                                         $interval = $this->diff($lec_in, $stend);
                                         // echo $lec_in."---".$stend."<br>";
                                     }
-                                    $sum = $interval['h'] . ":" . $interval['i'];
+                                    $sum = $interval['h'] . "." . $interval['i'];
                                     $attendance_data['hours_rendered'] = $sum;
 
                                     if ($remarks_s == "-") {
@@ -906,7 +905,6 @@ public function feedback_fetch() {
                 }
             }
             $final_data["result"] = $attendance;
-            echo "<pre>";
             print_r(json_encode($final_data));
         } else {
             print_r(json_encode(""));
