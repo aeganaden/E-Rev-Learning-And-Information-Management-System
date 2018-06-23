@@ -793,7 +793,6 @@ public function feedback_fetch() {
         // create array of object
         $attendance = array();
 
-
         if (!empty($course)) {
             foreach ($course as $key => $value) {
                 // fetch offering with course id that is active
@@ -909,6 +908,49 @@ public function feedback_fetch() {
         } else {
             print_r(json_encode(""));
         }
+    }
+
+    public function fetch_schedule(){
+        $_POST['identifier'] = "student";
+        $_POST['department'] = "CE";
+        $_POST['id'] = "2";
+        $_POST['offering_id'] = "1";
+
+        $identifier = $_POST['identifier'];
+        $dept = $_POST['department'];
+        $id = $_POST['id'];
+
+        if (strtolower($identifier) == "student"){
+            $offering_id = $_POST['offering_id'];
+
+            $col = "sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue, off.offering_name";
+            $where = array(
+                "off.offering_department" => $dept,
+                "off.offering_id" => $offering_id,
+                "enr.enrollment_is_active" => 1
+            );
+            $join = array(
+                array("offering as off", "off.offering_id = sch.offering_id"),
+                array("course as cou", "cou.course_id = off.course_id"),
+                array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id"),
+            );
+            $sched = $this->Crud_model->fetch_join2("schedule as sch", $col, $join, NULL, $where);
+
+            $counter = 0;
+            foreach ($sched as $subsched){
+                $sched[$counter]->schedule = date("h:i A", $sched[0]->schedule_start_time) . " - " . date("h:i A", $sched[0]->schedule_end_time);
+                $sched[$counter]->day = date("l", $sched[0]->schedule_start_time);
+                unset($sched[$counter]->schedule_start_time);
+                unset($sched[$counter]->schedule_end_time);
+
+                $counter++;
+            }
+            $final["result"] = $sched;
+            print_r(json_encode($final));
+        } else if (strtolower($identifier) == "fic"){
+
+        }
+
     }
 
     private function diff($date1, $date2, $format = false) {
