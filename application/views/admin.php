@@ -29,10 +29,7 @@
             <div class="row">
                 <h4>Actions</h4>
                 <ul class="collapsible" data-collapsible="accordion">
-                    <li>
-                        <a href="<?=base_url()?>Login/logout " class="collapsible-header bg-primary-green color-white bg-primary-green color-white"><i class="material-icons ">arrow_back</i>Log Out</a>
-                    </li>
-                    <li>
+                                       <li>
                         <div class="collapsible-header bg-primary-green color-white" ><i class="material-icons ">chrome_reader_mode</i>Reports</div>
                         <div class="collapsible-body">
                             <div class="card" id="card-cosml" onclick="store(this.id)">
