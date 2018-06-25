@@ -1,0 +1,4 @@
+keystore path: second_apk.jks
+key store pass: feuerev123
+key alis: feu erev
+key pass: feuerev
