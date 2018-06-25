@@ -911,10 +911,10 @@ public function feedback_fetch() {
     }
 
     public function fetch_schedule(){
-        $_POST['identifier'] = "student";
-        $_POST['department'] = "CE";
-        $_POST['id'] = "2";
-        $_POST['offering_id'] = "1";
+        // $_POST['identifier'] = "fic";
+        // $_POST['department'] = "CE";
+        // $_POST['id'] = "201200001";
+        // $_POST['offering_id'] = "1";
 
         $identifier = $_POST['identifier'];
         $dept = $_POST['department'];
@@ -938,8 +938,8 @@ public function feedback_fetch() {
 
             $counter = 0;
             foreach ($sched as $subsched){
-                $sched[$counter]->schedule = date("h:i A", $sched[0]->schedule_start_time) . " - " . date("h:i A", $sched[0]->schedule_end_time);
-                $sched[$counter]->day = date("l", $sched[0]->schedule_start_time);
+                $sched[$counter]->schedule = date("h:i A", $sched[$counter]->schedule_start_time) . " - " . date("h:i A", $sched[$counter]->schedule_end_time);
+                $sched[$counter]->day = date("l", $sched[$counter]->schedule_start_time);
                 unset($sched[$counter]->schedule_start_time);
                 unset($sched[$counter]->schedule_end_time);
 
@@ -947,8 +947,35 @@ public function feedback_fetch() {
             }
             $final["result"] = $sched;
             print_r(json_encode($final));
-        } else if (strtolower($identifier) == "fic"){
+        } else if (strtolower($identifier) == "faculty in charge"){
+            $col = "sch.schedule_start_time, sch.schedule_end_time, sch.schedule_venue, off.offering_name";
+            $where = array(
+                "off.offering_department" => $dept,
+                "enr.enrollment_is_active" => 1,
+                "fi.fic_id" => $id,
+                "fi.fic_department" => $dept,
+                "cou.course_department" => $dept
+            );
+            $join = array(
+                array("offering as off", "off.offering_id = sch.offering_id"),
+                array("fic as fi", "fi.fic_id = off.fic_id"),
+                array("course as cou", "cou.course_id = off.course_id"),
+                array("enrollment as enr", "enr.enrollment_id = cou.enrollment_id"),
+            );
+            $sched = $this->Crud_model->fetch_join2("schedule as sch", $col, $join, NULL, $where);
 
+            $counter = 0;
+            foreach ($sched as $subsched){
+                $sched[$counter]->schedule = date("l", $subsched->schedule_start_time) . " " . date("h:i A", $subsched->schedule_start_time) . " - " . date("h:i A", $subsched->schedule_end_time);
+                unset($sched[$counter]->schedule_start_time);
+                unset($sched[$counter]->schedule_end_time);
+
+                $counter++;
+            }
+            $final["result"] = $sched;
+            print_r(json_encode($final));
+        } else {
+            echo "";
         }
 
     }
