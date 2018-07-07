@@ -803,8 +803,8 @@ class Admin extends CI_Controller {
         }
 
         $writer = IOFactory::createWriter($spreadsheet, "Xlsx");
-        $writer->save(ucwords($lec_data->firstname . " " . $lec_data->lastname) . " Rendered Hours.xlsx");
-        force_download(ucwords($lec_data->firstname . " " . $lec_data->lastname) . " Rendered Hours.xlsx", NULL);
+        $writer->save("attendance/".ucwords($lec_data->firstname . " " . $lec_data->lastname) . " Rendered Hours.xlsx");
+        force_download("attendance/".ucwords($lec_data->firstname . " " . $lec_data->lastname) . " Rendered Hours.xlsx", NULL);
 
             //closes the tab
         echo "<script>window.close();</script>";
