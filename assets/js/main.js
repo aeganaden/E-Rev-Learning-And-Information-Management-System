@@ -19,8 +19,7 @@ $(document).ready(function() {
 				CKEDITOR.instances['answer_4'].setData(' ');
 			}
        } // Callback for Modal close
-   }
-   );
+   });
 	
 	$('.collapsible').collapsible();
 	$('select').material_select();
@@ -39,30 +38,82 @@ $(document).ready(function() {
 
 
 	$('.datepicker').pickadate({
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 15, // Creates a dropdown of 15 years to control year,
-    today: false,
-    clear: 'Clear',
-    close: 'Ok',
-    hiddenName: true,
-    min: tomorrow,
-    format: 'mmmm d, yyyy',
-    closeOnSelect: true // Close upon selecting a date,
-});
+	    selectMonths: true, // Creates a dropdown to control month
+	    selectYears: 15, // Creates a dropdown of 15 years to control year,
+	    today: false,
+	    clear: 'Clear',
+	    close: 'Ok',
+	    hiddenName: true,
+	    min: tomorrow,
+	    format: 'mmmm d, yyyy',
+	    closeOnSelect: true // Close upon selecting a date,
+	});
 	$('.timepicker').pickatime({
-    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-    twelvehour: true, // Use AM/PM or 24-hour format
-    donetext: 'OK', // text for done-button
-    cleartext: 'Clear', // text for clear-button
-    canceltext: 'Cancel', // Text for cancel-button
-    autoclose: true, // automatic close timepicker
-    ampmclickable: true, // make AM PM clickable
-    aftershow: function(){} //Function for after opening timepicker
-});
+	    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+	    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+	    twelvehour: true, // Use AM/PM or 24-hour format
+	    donetext: 'OK', // text for done-button
+	    cleartext: 'Clear', // text for clear-button
+	    canceltext: 'Cancel', // Text for cancel-button
+	    autoclose: true, // automatic close timepicker
+	    ampmclickable: true, // make AM PM clickable
+	    aftershow: function(){} //Function for after opening timepicker
+	});
 	initiateOnClick();
 	schedule();
 	navigations();
+
+	//mark's
+	$('#attendanceForm').submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url:BASE_URL+'Importdata/attendanceUpload/',
+			type:"post",
+			data: new FormData(this),
+			processData:false,
+			contentType:false,
+			cache:false,
+			dataType: 'json',
+			// async:false,
+			success: function(data){
+				// console.log(data);
+
+				if(data == "true"){
+					swal({
+						title: "Success",
+						text: "Successfully inserted the data.",
+						icon: "success",
+						buttons: "Ok",
+					}).then((success)=>{
+						window.location.href = BASE_URL + "Admin";
+					});
+				} else if(data == "not_admin") {
+					window.location.href = BASE_URL;
+				}  else if(data == "row1") {	//error on row1 of excel
+					swal({
+						title: "Error",
+						text: "Row 1 should be written like this: EmpID | Date | In | Out",
+						icon: "error",
+						buttons: "Ok",
+					});
+				} else { //other errors
+					swal({
+						title: "Error",
+						text: data,
+						icon: "error",
+						buttons: "Ok",
+					});
+				}
+			}, error: function(data){
+				swal({
+					title: "Error",
+					text: "An unexpected error occured while processing the data. Try refreshing this webpage and try again.",
+					icon: "error",
+					buttons: "Ok",
+				});
+			}
+		});
+	});
 });
 
 

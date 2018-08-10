@@ -95,6 +95,7 @@
 			}
 
 		});
+		var BASE_URL = "<?=base_url()?>";
 	</script>
 </head>
 <body>
