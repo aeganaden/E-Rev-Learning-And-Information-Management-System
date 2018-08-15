@@ -244,144 +244,202 @@ class Importdata extends CI_Controller {
 		echo sha1('on');
 	}
 
-	public function attendanceUpload() {
+	public function attendanceUpload2() {
 		if (!empty($this->session->userdata('insertion_info')['logged_in']) && $this->session->userdata('insertion_info')['logged_in'] == 1) {
 			$config['upload_path'] = './assets/uploads/';
 			$config['allowed_types'] = 'xls|csv|xlsx';
 			$config['max_size'] = '10000';
-			$this->form_validation->set_error_delimiters('', ''); // remove p tag
-			$this->form_validation->set_rules('sched', 'Schedule', 'required');
-			if ($this->form_validation->run() == FALSE) {
-				echo json_encode(validation_errors());
-			} else {
-				$input = $this->input->post('sched');
-				$col = "sch.schedule_id, sch.offering_id, lec.id_number, lec.lecturer_id";
-				$where = array("sch.schedule_id" => $input);
-				$join = array(
-					array("lecturer as lec", "lec.lecturer_id = sch.lecturer_id"),
-				);
-				$fetchSched = $this->Crud_model->fetch_join2("schedule as sch", $col, $join, NULL, $where)[0];
-				$lect_id = $fetchSched->id_number;
 
-				if (!empty($fetchSched)) {
-					$this->load->library('upload', $config);
-					if ($this->upload->do_upload("userfile")) {
-						$upload_data = $this->upload->data();
-						$file_name = './assets/uploads/' . $upload_data['file_name'];
-						require "./application/vendor/autoload.php";
-						$spreadsheet = IOFactory::load($file_name);
-						$spreadsheet->setActiveSheetIndex(0);
-						$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
-						$hold;
-						$counter = 0;
+			$this->load->library('upload', $config);
+			if ($this->upload->do_upload("userfile")) {
+				$upload_data = $this->upload->data();
+				$file_name = './assets/uploads/' . $upload_data['file_name'];
+				require "./application/vendor/autoload.php";
+				$spreadsheet = IOFactory::load($file_name);
+				$spreadsheet->setActiveSheetIndex(0);
+				$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+				$counter =  0;
+				$hold;
+				$validateHold;
+				$validateHoldCounter = 0;
 
-						$orderby = array("attendance_in_id", "DESC");
-						$last_in = $this->Crud_model->fetch_select("attendance_in", "attendance_in_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_in_id;
-						$last_in = $last_in == FALSE ? 0 : $last_in;
-						$orderby = array("attendance_out_id", "DESC");
-						$last_out = $this->Crud_model->fetch_select("attendance_out", "attendance_out_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_out_id;
-						$last_out = $last_out == FALSE ? 0 : $last_out;
-						$orderby = array("lecturer_attendance_id", "DESC");
-						$last_attend = $this->Crud_model->fetch_select("lecturer_attendance", "lecturer_attendance_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->lecturer_attendance_id;
-						$last_attend = $last_attend == FALSE ? 0 : $last_attend;
+				$orderby = array("attendance_in_id", "DESC");
+				$last_in = $this->Crud_model->fetch_select("attendance_in", "attendance_in_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_in_id;
+				$last_in = $last_in == FALSE ? 0 : $last_in;
+				$orderby = array("attendance_out_id", "DESC");
+				$last_out = $this->Crud_model->fetch_select("attendance_out", "attendance_out_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_out_id;
+				$last_out = $last_out == FALSE ? 0 : $last_out;
+				$orderby = array("lecturer_attendance_id", "DESC");
+				$last_attend = $this->Crud_model->fetch_select("lecturer_attendance", "lecturer_attendance_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->lecturer_attendance_id;
+				$last_attend = $last_attend == FALSE ? 0 : $last_attend;
 
-						for ($i = 1; $i <= count($sheetData); $i++) {
-							if ($i != 1) {
-								$check1 = !empty($sheetData[$i]['A']) ? TRUE : FALSE;
-								$check2 = !empty($sheetData[$i]['B']) ? TRUE : FALSE;
-								$check3 = !empty($sheetData[$i]['C']) ? TRUE : FALSE;
-								$check4 = !empty($sheetData[$i]['D']) ? TRUE : FALSE;
+				for ($i = 1; $i <= count($sheetData); $i++) {
+					if ($i != 1) {
+						$valA = $sheetData[$i]['A'];
+						$valB = $sheetData[$i]['B'];
+						$valC = $sheetData[$i]['C'];
+						$valD = $sheetData[$i]['D'];
+						$valE = $sheetData[$i]['E'];
+						$valF = $sheetData[$i]['F'];
+						$valG = $sheetData[$i]['G'];
 
-								if ($check1 && $check2 && $check3 && $check4) {
-									//convert to shorter
-									if (!is_numeric($valA = $sheetData[$i]['A']) || strlen($valA) != 9 || strcmp($lect_id, strval($valA)) != 0) {
-										//9 exact digits of empid
-										echo json_encode('Wrong format in EmpID (Column A, row ' . $i . '), or selected lecturer does not match the ID. Should be 9-digit ID.');
-										break;
-									} else if (!$this->checkmydate($valB = $sheetData[$i]['B'])) {
-										echo json_encode('Wrong format in Date (Column B, row ' . $i . '). Should be in YYYY-MM-DD format.');
-										break;
-									} else if (!$this->checkmytime($valC = $sheetData[$i]['C'])) {
-										echo json_encode('Wrong format in Time In (Column C, row ' . $i . '). Should be in HH:MM:SS military format.');
-										break;
-									} else if (!$this->checkmytime($valD = $sheetData[$i]['D'])) {
-										echo json_encode('Wrong format in Time Out (Column D, row ' . $i . '). Should be in HH:MM:SS military format.');
-										break;
-									} else {
-										if (!strtotime($valB)) {
-											echo json_encode('Wrong format in Date (Column B, row ' . $i . '). Should be in YYYY-MM-DD format.');
-											break;
-										} else if (!strtotime($valB . " " . $valC)) {
-											echo json_encode('Wrong format in Time In (Column C, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM.');
-											break;
-										} else if (!strtotime($valB . " " . $valD)) {
-											echo json_encode('Wrong format in Time Out (Column D, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM.');
-											break;
+						$check1 = !empty($valA) ? TRUE : FALSE;
+						$check2 = !empty($valB) ? TRUE : FALSE;
+						$check3 = !empty($valC) ? TRUE : FALSE;
+						$check4 = !empty($valD) ? TRUE : FALSE;
+						$check5 = !empty($valE) ? TRUE : FALSE;
+						$check6 = !empty($valF) ? TRUE : FALSE;
+						$check7 = !empty($valG) ? TRUE : FALSE;
+
+
+						if ($check1 && $check2 && $check3 && $check4 && $check5 && $check6 && $check7) {
+							//convert to shorter
+							if (!is_numeric($valA) || strlen($valA) != 9) {
+								//9 exact digits of empid
+								echo json_encode('Wrong format or invalid ID, in EmpID (Column A, row ' . $i . '), or selected lecturer does not match the ID. Should be 9-digit ID. The provided value is "'.$valA.'"');
+								break;
+							} else if (!$this->checkmydate($valB) && !strtotime($valB)) {
+								echo json_encode('Wrong format or invalid date, in Date (Column B, row ' . $i . '). Should be in YYYY-MM-DD format. The provided value is "'.$valB.'"');
+								break;
+							} else if (!$this->checkmytime($valC) && !strtotime($valB . " " . $valC)) {
+								echo json_encode('Wrong format or invalid time, in Time In (Column C, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM. The provided value is "'.$valC.'"');
+								break;
+							} else if (!$this->checkmytime($valD) && !strtotime($valB . " " . $valD)) {
+								echo json_encode('Wrong format or invalid time, in Time Out (Column D, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM. The provided value is "'.$valD.'"');
+								break;
+							} else if (!$this->checkmytime($valE)) {
+								echo json_encode('Wrong format or invalid time, in Sched In (Column E, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM. The provided value is "'.$valE.'"');
+								break;
+							} else if (!$this->checkmytime($valF)) {
+								echo json_encode('Wrong format or invalid time, in Sched Out (Column F, row ' . $i . '). Should be in HH:MM:SS military format without AM or PM. The provided value is "'.$valF.'"');
+								break;
+							} else if (!$this->checkmyday($valG)) {
+								echo json_encode('Wrong format or invalid day, in Sched Day (Column G, row ' . $i . '). Should be in whole word format (e.g. Wednesday) or the first 3 letters of that day (e.g. wed). The provided value is "'.$valG.'"');
+								break;
+							} else {
+								if(date("l", strtotime($valB)) != $valG){
+									echo json_encode('In row ' . $i . ', Column A (Date) and Column G (Sched Day) does not match. "'.$valB.'" should be "'.$valG.'" and not the other days. The provided values are "'.$valB.'" and "'.$valG.'"');
+								break;
+								}
+
+								$check_exist = false;
+								if(isset($validateHold)){
+									foreach($validateHold as $sub){
+										if($sub['id'] == $valA && $sub['details_excel'][0] == $valE && $sub['details_excel'][1] == $valF && $sub['details_excel'][2] == $valG){
+											$array_attend[$i]["lecturer_attendance_id"] = ++$last_attend;
+											$array_attend[$i]["lecturer_attendance_date"] = strtotime($valB);
+											$array_attend[$i]["lecturer_id"] = $sub['details_fetch'][0];
+											$array_attend[$i]["offering_id"] = $sub['details_fetch'][1];
+											$array_attend[$i]["schedule_id"] = $sub['details_fetch'][2];
+
+											$array_in[$i]["attendance_in_id"] = ++$last_in;
+											$array_in[$i]["attendance_in_time"] = strtotime($valB . " " . $valC);
+											$array_in[$i]["lecturer_attendance_id"] = $last_attend;
+
+											$array_out[$i]["attendance_out_id"] = ++$last_out;
+											$array_out[$i]["attendance_out_time"] = strtotime($valB . " " . $valD);
+											$array_out[$i]["lecturer_attendance_id"] = $last_attend;
+											
+											$check_exist = true;
 										}
-										$array_attend[$i]["lecturer_attendance_id"] = ++$last_attend;
-										$array_attend[$i]["lecturer_attendance_date"] = strtotime($valB);
-										$array_attend[$i]["lecturer_id"] = $fetchSched->lecturer_id;
-										$array_attend[$i]["offering_id"] = $fetchSched->offering_id;
-										$array_attend[$i]["schedule_id"] = $fetchSched->schedule_id;
-
-										$array_in[$i]["attendance_in_id"] = ++$last_in;
-										$array_in[$i]["attendance_in_time"] = strtotime($valB . " " . $valC);
-										$array_in[$i]["lecturer_attendance_id"] = $last_attend;
-
-										$array_out[$i]["attendance_out_id"] = ++$last_out;
-										$array_out[$i]["attendance_out_time"] = strtotime($valB . " " . $valD);
-										$array_out[$i]["lecturer_attendance_id"] = $last_attend;
-
-										$counter++;
 									}
-								} else if (!$check1 && !$check2 && !$check3 && !$check4) {
-									$counter++;
-								} else {
-									echo json_encode('There is/are empty cell/s in row ' . $i . '. Please edit and re-upload the file.');
-									break;
 								}
-							} else {
-								$check1 = !empty($sheetData[$i]['A']) && strcasecmp('empid', $sheetData[$i]['A']) == 0 ? TRUE : FALSE;
-								$check2 = !empty($sheetData[$i]['B']) && strcasecmp('date', $sheetData[$i]['B']) == 0 ? TRUE : FALSE;
-								$check3 = !empty($sheetData[$i]['C']) && strcasecmp('in', $sheetData[$i]['C']) == 0 ? TRUE : FALSE;
-								$check4 = !empty($sheetData[$i]['D']) && strcasecmp('out', $sheetData[$i]['D']) == 0 ? TRUE : FALSE;
 
-								if (!$check1 || !$check2 || !$check3 || !$check4) {
-									echo json_encode('row1');
-									break;
-								} else {
-									$counter++;
+								if(!$check_exist){
+									$result = $this->fetch_match($valA,$valE,$valF,$valG);
+									if(empty($result)){
+										echo json_encode("No matched schedule in row ".$i.". Please review the excel and try again.");
+										break;
+									}
+									$res = $result[0];
+
+									$validateHold[$validateHoldCounter]["id"] = $valA;
+									$validateHold[$validateHoldCounter]["details_excel"] = array($valE, $valF, $valG);
+									$validateHold[$validateHoldCounter]["details_fetch"] = array($res->lecturer_id, $res->offering_id, $res->sched_id);
+
+									$array_attend[$i]["lecturer_attendance_id"] = ++$last_attend;
+									$array_attend[$i]["lecturer_attendance_date"] = strtotime($valB);
+									$array_attend[$i]["lecturer_id"] = $res->lecturer_id;
+									$array_attend[$i]["offering_id"] = $res->offering_id;
+									$array_attend[$i]["schedule_id"] = $res->sched_id;
+
+									$array_in[$i]["attendance_in_id"] = ++$last_in;
+									$array_in[$i]["attendance_in_time"] = strtotime($valB . " " . $valC);
+									$array_in[$i]["lecturer_attendance_id"] = $last_attend;
+
+									$array_out[$i]["attendance_out_id"] = ++$last_out;
+									$array_out[$i]["attendance_out_time"] = strtotime($valB . " " . $valD);
+									$array_out[$i]["lecturer_attendance_id"] = $last_attend;
+									$validateHoldCounter++;
 								}
-							}
-						}
 
-						// make sure all of the rows got read
-						if ($counter == count($sheetData)) {
-							$this->db->trans_begin();
-							$this->Crud_model->insert_batch("lecturer_attendance", $array_attend);
-							$this->Crud_model->insert_batch("attendance_in", $array_in);
-							$this->Crud_model->insert_batch("attendance_out", $array_out);
-
-							if ($this->db->trans_status() === FALSE) {
-								$this->db->trans_rollback();
-								echo json_encode("An unexpected error occured while processing the data. Try refreshing this webpage and try again.");
-							} else {
-								// $this->db->trans_rollback();
-								$this->db->trans_commit();
-								// echo json_encode(array($array_attend, $array_in, $array_out));
-								echo json_encode("true");
+								$counter++;
 							}
+						} else if (!$check1 && !$check2 && !$check3 && !$check4 && !$check5 && !$check6 && !$check7) {
+							$counter++;
+						} else {
+							echo json_encode('There is/are empty cell/s in row ' . $i . '. Please edit and re-upload the file.');
+							break;
 						}
 					} else {
-						echo json_encode($this->upload->display_errors('', ''));
+						$check1 = !empty($sheetData[$i]['A']) && strcasecmp('empid', $sheetData[$i]['A']) == 0 ? TRUE : FALSE;
+						$check2 = !empty($sheetData[$i]['B']) && strcasecmp('date', $sheetData[$i]['B']) == 0 ? TRUE : FALSE;
+						$check3 = !empty($sheetData[$i]['C']) && strcasecmp('in', $sheetData[$i]['C']) == 0 ? TRUE : FALSE;
+						$check4 = !empty($sheetData[$i]['D']) && strcasecmp('out', $sheetData[$i]['D']) == 0 ? TRUE : FALSE;
+						$check5 = !empty($sheetData[$i]['E']) && strcasecmp('sched in', $sheetData[$i]['E']) == 0 ? TRUE : FALSE;
+						$check6 = !empty($sheetData[$i]['F']) && strcasecmp('sched out', $sheetData[$i]['F']) == 0 ? TRUE : FALSE;
+						$check7 = !empty($sheetData[$i]['G']) && strcasecmp('sched day', $sheetData[$i]['G']) == 0 ? TRUE : FALSE;
+
+						if (!$check1 || !$check2 || !$check3 || !$check4 || !$check5 || !$check6 || !$check7) {
+							echo json_encode('row1');
+							break;
+						} else {
+							$counter++;
+						}
 					}
-				} else {
-					//there's no such sched id
-					echo json_encode("EmpID (Column A) do not match with the selected lecturer.");
 				}
+
+				// make sure all of the rows got read
+				if ($counter == count($sheetData)) {
+					// echo json_encode(array($array_attend, $array_in, $array_out));
+					$this->db->trans_begin();
+					$this->Crud_model->insert_batch("lecturer_attendance", $array_attend);
+					$this->Crud_model->insert_batch("attendance_in", $array_in);
+					$this->Crud_model->insert_batch("attendance_out", $array_out);
+
+					if ($this->db->trans_status() === FALSE) {
+						$this->db->trans_rollback();
+						echo json_encode("An unexpected error occured while processing the data. Try refreshing this webpage and try again.");
+					} else {
+						// $this->db->trans_rollback();
+						$this->db->trans_commit();
+						echo json_encode("true");
+					}
+				}
+			} else {
+				echo json_encode($this->upload->display_errors('', ''));
 			}
 		} else {
 			echo json_encode('not_admin');
+		}
+	}
+	
+	function fetch_match($valA,$valE,$valF,$valG){
+		if(!empty($valE) && !empty($valF) && !empty($valG)){
+			$valIn = strlen($valE) == 7 ? '0'.$valE : $valE;
+			$valOut = strlen($valF) == 7 ? '0'.$valF : $valF;
+			$valDay = ucfirst(strtolower($valG));
+			$col = "sch.schedule_id as sched_id, sch.offering_id, sch.lecturer_id";
+			$where = array(
+				"lec.id_number" => (int)$valA,
+				"FROM_UNIXTIME(sch.schedule_start_time, '%h:%i:%s') = " => $valIn,
+				"FROM_UNIXTIME(sch.schedule_end_time, '%h:%i:%s') = " => $valOut,
+				"FROM_UNIXTIME(sch.schedule_start_time, '%W') = " => (string)$valDay
+			);
+			$join = array(array("lecturer as lec" , "lec.lecturer_id = sch.lecturer_id"));
+			return $this->Crud_model->fetch_join2("schedule as sch", $col, $join, NULL, $where);
+		} else {
+			return false;
 		}
 	}
 
@@ -391,11 +449,35 @@ class Importdata extends CI_Controller {
 		return $date->format('U');
 	}
 
-	function checkmydate($date) {
+	function checkmydate($date) { //YYYY-MM-DD
 		try {
+			if(strlen($date) != 10){
+				return false;
+			}
 			$tempDate = explode('-', strval($date));
 			$isit = checkdate($tempDate[1], $tempDate[2], $tempDate[0]);
 			return $isit;
+		} catch (Exception $e) {
+			return false;
+		}
+	}
+
+	function checkmyday(&$valG) {	//& - change the value of the parameter. passed by reference
+		try {
+			if(strcasecmp('mon', $valG) == 0 || strcasecmp('monday', $valG) == 0) {
+				$valG = 'Monday';
+			} else if(strcasecmp('tue', $valG) == 0 || strcasecmp('tuesday', $valG) == 0) {
+				$valG = 'Tuesday';
+			} else if(strcasecmp('wed', $valG) == 0 || strcasecmp('wednesday', $valG) == 0) {
+				$valG = 'Wednesday';
+			} else if(strcasecmp('thu', $valG) == 0 || strcasecmp('thursday', $valG) == 0) {
+				$valG = 'Thursday';
+			} else if(strcasecmp('fri', $valG) == 0 || strcasecmp('friday', $valG) == 0) {
+				$valG = 'Friday';
+			} else {
+				return false;
+			}
+			return true;
 		} catch (Exception $e) {
 			return false;
 		}
