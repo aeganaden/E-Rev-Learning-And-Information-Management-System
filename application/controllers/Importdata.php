@@ -264,14 +264,14 @@ class Importdata extends CI_Controller {
 				$validateHoldCounter = 0;
 
 				$orderby = array("attendance_in_id", "DESC");
-				$last_in = $this->Crud_model->fetch_select("attendance_in", "attendance_in_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_in_id;
-				$last_in = $last_in == FALSE ? 0 : $last_in;
+				$last_in = $this->Crud_model->fetch_select("attendance_in", "attendance_in_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1);
+				$last_in = $last_in == FALSE ? 0 : $last_in[0]->attendance_in_id;
 				$orderby = array("attendance_out_id", "DESC");
-				$last_out = $this->Crud_model->fetch_select("attendance_out", "attendance_out_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->attendance_out_id;
-				$last_out = $last_out == FALSE ? 0 : $last_out;
+				$last_out = $this->Crud_model->fetch_select("attendance_out", "attendance_out_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1);
+				$last_out = $last_out == FALSE ? 0 : $last_out[0]->attendance_out_id;
 				$orderby = array("lecturer_attendance_id", "DESC");
-				$last_attend = $this->Crud_model->fetch_select("lecturer_attendance", "lecturer_attendance_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1)[0]->lecturer_attendance_id;
-				$last_attend = $last_attend == FALSE ? 0 : $last_attend;
+				$last_attend = $this->Crud_model->fetch_select("lecturer_attendance", "lecturer_attendance_id", NULL, NULL, NULL, NULL, NULL, NULL, $orderby, 1);
+				$last_attend = $last_attend == FALSE ? 0 : $last_attend[0]->lecturer_attendance_id;
 
 				for ($i = 1; $i <= count($sheetData); $i++) {
 					if ($i != 1) {
